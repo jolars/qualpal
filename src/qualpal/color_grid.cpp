@@ -1,16 +1,16 @@
-#include "hsl_grid.h"
+#include "color_grid.h"
 #include <array>
 #include <cmath>
 
 namespace qualpal {
 std::vector<HSL>
-hslGrid(int n,
-        double h_start,
-        double h_end,
-        double s_start,
-        double s_end,
-        double l_start,
-        double l_end)
+colorGrid(int n,
+          double h_start,
+          double h_end,
+          double s_start,
+          double s_end,
+          double l_start,
+          double l_end)
 {
   std::vector<HSL> colors;
   colors.reserve(n);
@@ -24,9 +24,9 @@ hslGrid(int n,
   int n_s = std::round(n * s_range / total_range);
   int n_l = n - n_h - n_s;
 
-  double h_step = (h_end - h_start) / (n_h - 1);
-  double s_step = (s_end - s_start) / (n_s - 1);
-  double l_step = (l_end - l_start) / (n_l - 1);
+  double h_step = h_range / static_cast<double>(n_h - 1);
+  double s_step = s_range / static_cast<double>(n_s - 1);
+  double l_step = l_range / static_cast<double>(n_l - 1);
 
   for (int i = 0; i < n_h; i++) {
     for (int j = 0; j < n_s; j++) {
