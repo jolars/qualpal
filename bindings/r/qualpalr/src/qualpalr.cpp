@@ -1,8 +1,5 @@
+#include "qualpal/colors.h"
 #include "qualpal/qualpal.h"
-
-#include "qualpal/din99d.h"
-#include "qualpal/hsl.h"
-#include "qualpal/rgb.h"
 #include <Rcpp.h>
 
 // [[Rcpp::export]]

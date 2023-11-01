@@ -1,4 +1,4 @@
-#include "rgb.h"
+#include "colors.h"
 #include <vector>
 
 namespace qualpal {

@@ -1,4 +1,4 @@
-#include "din99d.h"
+#include "colors.h"
 #include <vector>
 
 namespace qualpal {

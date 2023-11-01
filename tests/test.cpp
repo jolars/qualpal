@@ -1,7 +1,6 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/matchers/catch_matchers_floating_point.hpp>
-#include <qualpal/rgb.h>
-#include <qualpal/xyz.h>
+#include <qualpal/colors.h>
 
 TEST_CASE("Converting between colors work", "[factorial]")
 {

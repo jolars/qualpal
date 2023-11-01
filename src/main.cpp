@@ -1,5 +1,4 @@
 #include "qualpal/qualpal.h"
-#include "qualpal/rgb.h"
 #include <CLI/CLI.hpp>
 #include <cassert>
 #include <iostream>
