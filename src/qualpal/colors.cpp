@@ -1,6 +1,7 @@
 #include "colors.h"
 #include "matrix.h"
 #include <algorithm>
+#include <cassert>
 #include <cmath>
 #include <iomanip>
 #include <sstream>
@@ -27,6 +28,13 @@ RGB::RGB(const std::string& hex)
   int red = 0;
   int green = 0;
   int blue = 0;
+
+  // Assert that the string starts with '#'
+  assert(hex[0] == '#' && "Hex string must start with '#'");
+
+  // Assert that the string length is either 4 or 7
+  assert(hex.length() == 4 ||
+         hex.length() == 7 && "Hex string length be 4 or 7");
 
   if (hex.length() == 4) {
     ss << std::hex << hex.substr(1, 1) << hex.substr(1, 1);
@@ -55,6 +63,12 @@ RGB::RGB(const std::string& hex)
     ss << std::hex << hex.substr(5, 2);
     ss >> blue;
   }
+
+  assert(red >= 0 && red <= 255 && "The red part of the hex string is valid");
+  assert(green >= 0 && green <= 255 &&
+         "The green part of the hex string is valid");
+  assert(blue >= 0 && blue <= 255 &&
+         "The blue part of the hex string is valid");
 
   r_value = red / 255.0;
   g_value = green / 255.0;
