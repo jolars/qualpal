@@ -24,9 +24,9 @@ RGB::RGB(const std::string& hex)
 {
   std::stringstream ss;
 
-  double red = 0;
-  double green = 0;
-  double blue = 0;
+  int red = 0;
+  int green = 0;
+  int blue = 0;
 
   if (hex.length() == 4) {
     ss << std::hex << hex.substr(1, 1) << hex.substr(1, 1);
