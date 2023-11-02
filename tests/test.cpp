@@ -8,8 +8,9 @@ TEST_CASE("Converting between colors work", "[factorial]")
 
   qualpal::RGB rgb(0.23, 0.5, 0.95);
   qualpal::XYZ xyz(rgb);
+  qualpal::HSL hsl(rgb);
 
-  REQUIRE_THAT(xyz.x_value(), WithinAbsMatcher(0.254958, 0.001));
-  REQUIRE_THAT(xyz.y_value(), WithinAbsMatcher(0.226503, 0.001));
-  REQUIRE_THAT(xyz.z_value(), WithinAbsMatcher(0.872124, 0.001));
+  REQUIRE_THAT(xyz.x(), WithinAbsMatcher(0.254958, 0.001));
+  REQUIRE_THAT(xyz.y(), WithinAbsMatcher(0.226503, 0.001));
+  REQUIRE_THAT(xyz.z(), WithinAbsMatcher(0.872124, 0.001));
 }

@@ -38,15 +38,15 @@ qualpal_cpp(int n,
     qualpal::HSL hsl = rgb;
     std::string hex = rgb.hex();
 
-    r_out.emplace_back(rgb.red());
-    g_out.emplace_back(rgb.green());
-    b_out.emplace_back(rgb.blue());
+    r_out.emplace_back(rgb.r());
+    g_out.emplace_back(rgb.g());
+    b_out.emplace_back(rgb.b());
 
-    h_out.emplace_back(hsl.hue());
-    s_out.emplace_back(hsl.saturation());
-    l_out.emplace_back(hsl.lightness());
+    h_out.emplace_back(hsl.h());
+    s_out.emplace_back(hsl.s());
+    l_out.emplace_back(hsl.l());
 
-    l99d_out.emplace_back(din99d.lightness());
+    l99d_out.emplace_back(din99d.l());
     a99d_out.emplace_back(din99d.a());
     b99d_out.emplace_back(din99d.b());
 

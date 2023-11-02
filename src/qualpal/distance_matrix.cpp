@@ -12,7 +12,7 @@ distanceMatrix(const std::vector<DIN99d>& x)
 
   for (int i = 0; i < N; ++i) {
     for (int j = i; j < N; ++j) {
-      double d = std::sqrt(std::pow(x[i].lightness() - x[j].lightness(), 2) +
+      double d = std::sqrt(std::pow(x[i].l() - x[j].l(), 2) +
                            std::pow(x[i].a() - x[j].a(), 2) +
                            std::pow(x[i].b() - x[j].b(), 2));
       d = std::pow(d, 0.74) * 1.28;
