@@ -25,9 +25,4 @@ TEST_CASE("Converting between colors work", "[colors]")
   REQUIRE_THAT(rgb_from_hex.r(), WithinAbsMatcher(0.231372, 0.001));
   REQUIRE_THAT(rgb_from_hex.g(), WithinAbsMatcher(0.501960, 0.001));
   REQUIRE_THAT(rgb_from_hex.b(), WithinAbsMatcher(0.949019, 0.001));
-
-  /*   qualpal::RGB rgb_from_hex("#000000"); */
-  /*   REQUIRE_THAT(rgb_from_hex.r(), WithinAbsMatcher(0, 0.001)); */
-  /*   REQUIRE_THAT(rgb_from_hex.g(), WithinAbsMatcher(0, 0.001)); */
-  /*   REQUIRE_THAT(rgb_from_hex.b(), WithinAbsMatcher(0, 0.001)); */
 }
