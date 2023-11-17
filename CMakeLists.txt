@@ -12,7 +12,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
+option(BUILD_R_BINDINGS "Build R bindings" OFF)
+
 add_subdirectory(src)
+
 add_subdirectory(bindings)
 
 add_executable(qualpal src/main.cpp)
@@ -37,7 +40,6 @@ FetchContent_MakeAvailable(Catch2)
 add_executable(tests tests/test.cpp)
 
 target_include_directories(tests PUBLIC tests "${PROJECT_BINARY_DIR}")
-
 target_link_libraries(tests PRIVATE Catch2::Catch2WithMain qualpal_lib)
 
 list(APPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/extras)
