@@ -1,0 +1,7 @@
+.. _api_foo:
+
+Foo
+===
+
+.. doxygenfile:: slope/slope.h
+   :project: libslope

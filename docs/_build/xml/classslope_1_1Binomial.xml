@@ -1,0 +1,115 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.7" xml:lang="en-US">
+  <compounddef id="classslope_1_1Binomial" kind="class" language="C++" prot="public">
+    <compoundname>slope::Binomial</compoundname>
+    <basecompoundref refid="classslope_1_1Objective" prot="public" virt="non-virtual">slope::Objective</basecompoundref>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classslope_1_1Binomial_1a0e439700e99b46ea48a1d3a81427c7a7" prot="private" static="no" mutable="no">
+        <type>double</type>
+        <definition>double slope::Binomial::p_min</definition>
+        <argsstring></argsstring>
+        <name>p_min</name>
+        <qualifiedname>slope::Binomial::p_min</qualifiedname>
+        <initializer>= 1e-5</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/gerd-jln/projects/libslope/src/slope/objectives.h" line="36" column="10" bodyfile="/home/gerd-jln/projects/libslope/src/slope/objectives.h" bodystart="36" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classslope_1_1Binomial_1a776d3454178b27b3cd69ef3b29adb91b" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>double</type>
+        <definition>double slope::Binomial::loss</definition>
+        <argsstring>(const Eigen::VectorXd &amp;eta, const Eigen::MatrixXd &amp;y)</argsstring>
+        <name>loss</name>
+        <qualifiedname>slope::Binomial::loss</qualifiedname>
+        <reimplements refid="classslope_1_1Objective_1a3c72755753f7662ab89f5a8e9e532f3c">loss</reimplements>
+        <param>
+          <type>const Eigen::VectorXd &amp;</type>
+          <declname>eta</declname>
+        </param>
+        <param>
+          <type>const Eigen::MatrixXd &amp;</type>
+          <declname>y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/gerd-jln/projects/libslope/src/slope/objectives.h" line="39" column="10" bodyfile="/home/gerd-jln/projects/libslope/src/slope/objectives.cpp" bodystart="24" bodyend="28"/>
+      </memberdef>
+      <memberdef kind="function" id="classslope_1_1Binomial_1ac4fcf472555ead68621ddcb9bdeacdc8" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void slope::Binomial::updateWeightsAndWorkingResponse</definition>
+        <argsstring>(Eigen::VectorXd &amp;w, Eigen::VectorXd &amp;z, const Eigen::VectorXd &amp;eta, const Eigen::MatrixXd &amp;y)</argsstring>
+        <name>updateWeightsAndWorkingResponse</name>
+        <qualifiedname>slope::Binomial::updateWeightsAndWorkingResponse</qualifiedname>
+        <reimplements refid="classslope_1_1Objective_1a869a1923f5f632ac5ff6fa0485f3e784">updateWeightsAndWorkingResponse</reimplements>
+        <param>
+          <type>Eigen::VectorXd &amp;</type>
+          <declname>w</declname>
+        </param>
+        <param>
+          <type>Eigen::VectorXd &amp;</type>
+          <declname>z</declname>
+        </param>
+        <param>
+          <type>const Eigen::VectorXd &amp;</type>
+          <declname>eta</declname>
+        </param>
+        <param>
+          <type>const Eigen::MatrixXd &amp;</type>
+          <declname>y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/gerd-jln/projects/libslope/src/slope/objectives.h" line="41" column="8" bodyfile="/home/gerd-jln/projects/libslope/src/slope/objectives.cpp" bodystart="31" bodyend="42"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>slope::Binomial</label>
+        <link refid="classslope_1_1Binomial"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>slope::Objective</label>
+        <link refid="classslope_1_1Objective"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>slope::Binomial</label>
+        <link refid="classslope_1_1Binomial"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>slope::Objective</label>
+        <link refid="classslope_1_1Objective"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/gerd-jln/projects/libslope/src/slope/objectives.h" line="33" column="1" bodyfile="/home/gerd-jln/projects/libslope/src/slope/objectives.h" bodystart="34" bodyend="45"/>
+    <listofallmembers>
+      <member refid="classslope_1_1Binomial_1a776d3454178b27b3cd69ef3b29adb91b" prot="public" virt="virtual"><scope>slope::Binomial</scope><name>loss</name></member>
+      <member refid="classslope_1_1Binomial_1a0e439700e99b46ea48a1d3a81427c7a7" prot="private" virt="non-virtual"><scope>slope::Binomial</scope><name>p_min</name></member>
+      <member refid="classslope_1_1Binomial_1ac4fcf472555ead68621ddcb9bdeacdc8" prot="public" virt="virtual"><scope>slope::Binomial</scope><name>updateWeightsAndWorkingResponse</name></member>
+      <member refid="classslope_1_1Objective_1a540df968f310191fa7b73c7edee25e8f" prot="public" virt="virtual"><scope>slope::Binomial</scope><name>~Objective</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

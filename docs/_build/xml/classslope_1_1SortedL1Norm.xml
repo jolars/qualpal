@@ -1,0 +1,192 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.7" xml:lang="en-US">
+  <compounddef id="classslope_1_1SortedL1Norm" kind="class" language="C++" prot="public">
+    <compoundname>slope::SortedL1Norm</compoundname>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classslope_1_1SortedL1Norm_1adfe0589f00d773503dc9abe71eddd296" prot="private" static="no" mutable="no">
+        <type>double</type>
+        <definition>double slope::SortedL1Norm::alpha</definition>
+        <argsstring></argsstring>
+        <name>alpha</name>
+        <qualifiedname>slope::SortedL1Norm::alpha</qualifiedname>
+        <initializer>= 1.0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/gerd-jln/projects/libslope/src/slope/sorted_l1_norm.h" line="12" column="10" bodyfile="/home/gerd-jln/projects/libslope/src/slope/sorted_l1_norm.h" bodystart="12" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classslope_1_1SortedL1Norm_1aad2e8c1ffb446dd64ec99b30de3458ac" prot="public" static="no" mutable="no">
+        <type>const Eigen::ArrayXd</type>
+        <definition>const Eigen::ArrayXd slope::SortedL1Norm::lambda</definition>
+        <argsstring></argsstring>
+        <name>lambda</name>
+        <qualifiedname>slope::SortedL1Norm::lambda</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/gerd-jln/projects/libslope/src/slope/sorted_l1_norm.h" line="15" column="24" bodyfile="/home/gerd-jln/projects/libslope/src/slope/sorted_l1_norm.h" bodystart="15" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classslope_1_1SortedL1Norm_1a9625d7fb4cfbdcb6e80ec3f4b1de2445" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>slope::SortedL1Norm::SortedL1Norm</definition>
+        <argsstring>(const Eigen::ArrayXd &amp;lambda)</argsstring>
+        <name>SortedL1Norm</name>
+        <qualifiedname>slope::SortedL1Norm::SortedL1Norm</qualifiedname>
+        <param>
+          <type>const Eigen::ArrayXd &amp;</type>
+          <declname>lambda</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/gerd-jln/projects/libslope/src/slope/sorted_l1_norm.h" line="17" column="3" bodyfile="/home/gerd-jln/projects/libslope/src/slope/sorted_l1_norm.cpp" bodystart="5" bodyend="8"/>
+      </memberdef>
+      <memberdef kind="function" id="classslope_1_1SortedL1Norm_1a60a590a568acaf91419bbcca16337af5" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double slope::SortedL1Norm::eval</definition>
+        <argsstring>(const Eigen::VectorXd &amp;beta) const</argsstring>
+        <name>eval</name>
+        <qualifiedname>slope::SortedL1Norm::eval</qualifiedname>
+        <param>
+          <type>const Eigen::VectorXd &amp;</type>
+          <declname>beta</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/gerd-jln/projects/libslope/src/slope/sorted_l1_norm.h" line="19" column="10" bodyfile="/home/gerd-jln/projects/libslope/src/slope/sorted_l1_norm.cpp" bodystart="11" bodyend="16"/>
+      </memberdef>
+      <memberdef kind="function" id="classslope_1_1SortedL1Norm_1a3b528b0ec7518ba7c73e9130a01a4474" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>double</type>
+        <definition>double slope::SortedL1Norm::dual</definition>
+        <argsstring>(const T &amp;x, const Eigen::VectorXd &amp;theta) const</argsstring>
+        <name>dual</name>
+        <qualifiedname>slope::SortedL1Norm::dual</qualifiedname>
+        <param>
+          <type>const T &amp;</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>const Eigen::VectorXd &amp;</type>
+          <declname>theta</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/gerd-jln/projects/libslope/src/slope/sorted_l1_norm.h" line="22" column="10" bodyfile="/home/gerd-jln/projects/libslope/src/slope/sorted_l1_norm.h" bodystart="22" bodyend="27"/>
+      </memberdef>
+      <memberdef kind="function" id="classslope_1_1SortedL1Norm_1abc97fa99dc1b7bc87d56dc8b5a3e4029" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>Eigen::VectorXd</type>
+        <definition>Eigen::VectorXd slope::SortedL1Norm::prox</definition>
+        <argsstring>(const Eigen::VectorXd &amp;beta, const double scale) const</argsstring>
+        <name>prox</name>
+        <qualifiedname>slope::SortedL1Norm::prox</qualifiedname>
+        <param>
+          <type>const Eigen::VectorXd &amp;</type>
+          <declname>beta</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>scale</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/gerd-jln/projects/libslope/src/slope/sorted_l1_norm.h" line="29" column="19" bodyfile="/home/gerd-jln/projects/libslope/src/slope/sorted_l1_norm.cpp" bodystart="19" bodyend="65"/>
+      </memberdef>
+      <memberdef kind="function" id="classslope_1_1SortedL1Norm_1ac4adc6561a96d739c8a895f10d84f1c0" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>Eigen::ArrayXd</type>
+        <definition>Eigen::ArrayXd slope::SortedL1Norm::dualNorm</definition>
+        <argsstring>(const Eigen::VectorXd &amp;a) const</argsstring>
+        <name>dualNorm</name>
+        <qualifiedname>slope::SortedL1Norm::dualNorm</qualifiedname>
+        <param>
+          <type>const Eigen::VectorXd &amp;</type>
+          <declname>a</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/gerd-jln/projects/libslope/src/slope/sorted_l1_norm.h" line="31" column="18" bodyfile="/home/gerd-jln/projects/libslope/src/slope/sorted_l1_norm.cpp" bodystart="80" bodyend="85"/>
+      </memberdef>
+      <memberdef kind="function" id="classslope_1_1SortedL1Norm_1a7783872b99244bd31a83913cf855ae3b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void slope::SortedL1Norm::setAlpha</definition>
+        <argsstring>(const double new_alpha)</argsstring>
+        <name>setAlpha</name>
+        <qualifiedname>slope::SortedL1Norm::setAlpha</qualifiedname>
+        <param>
+          <type>const double</type>
+          <declname>new_alpha</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/gerd-jln/projects/libslope/src/slope/sorted_l1_norm.h" line="33" column="8" bodyfile="/home/gerd-jln/projects/libslope/src/slope/sorted_l1_norm.cpp" bodystart="68" bodyend="71"/>
+      </memberdef>
+      <memberdef kind="function" id="classslope_1_1SortedL1Norm_1a4010cf68f8e0688894410b730bc76ff5" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double slope::SortedL1Norm::getAlpha</definition>
+        <argsstring>() const</argsstring>
+        <name>getAlpha</name>
+        <qualifiedname>slope::SortedL1Norm::getAlpha</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/gerd-jln/projects/libslope/src/slope/sorted_l1_norm.h" line="35" column="10" bodyfile="/home/gerd-jln/projects/libslope/src/slope/sorted_l1_norm.cpp" bodystart="74" bodyend="77"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/gerd-jln/projects/libslope/src/slope/sorted_l1_norm.h" line="9" column="1" bodyfile="/home/gerd-jln/projects/libslope/src/slope/sorted_l1_norm.h" bodystart="10" bodyend="36"/>
+    <listofallmembers>
+      <member refid="classslope_1_1SortedL1Norm_1adfe0589f00d773503dc9abe71eddd296" prot="private" virt="non-virtual"><scope>slope::SortedL1Norm</scope><name>alpha</name></member>
+      <member refid="classslope_1_1SortedL1Norm_1a3b528b0ec7518ba7c73e9130a01a4474" prot="public" virt="non-virtual"><scope>slope::SortedL1Norm</scope><name>dual</name></member>
+      <member refid="classslope_1_1SortedL1Norm_1ac4adc6561a96d739c8a895f10d84f1c0" prot="public" virt="non-virtual"><scope>slope::SortedL1Norm</scope><name>dualNorm</name></member>
+      <member refid="classslope_1_1SortedL1Norm_1a60a590a568acaf91419bbcca16337af5" prot="public" virt="non-virtual"><scope>slope::SortedL1Norm</scope><name>eval</name></member>
+      <member refid="classslope_1_1SortedL1Norm_1a4010cf68f8e0688894410b730bc76ff5" prot="public" virt="non-virtual"><scope>slope::SortedL1Norm</scope><name>getAlpha</name></member>
+      <member refid="classslope_1_1SortedL1Norm_1aad2e8c1ffb446dd64ec99b30de3458ac" prot="public" virt="non-virtual"><scope>slope::SortedL1Norm</scope><name>lambda</name></member>
+      <member refid="classslope_1_1SortedL1Norm_1abc97fa99dc1b7bc87d56dc8b5a3e4029" prot="public" virt="non-virtual"><scope>slope::SortedL1Norm</scope><name>prox</name></member>
+      <member refid="classslope_1_1SortedL1Norm_1a7783872b99244bd31a83913cf855ae3b" prot="public" virt="non-virtual"><scope>slope::SortedL1Norm</scope><name>setAlpha</name></member>
+      <member refid="classslope_1_1SortedL1Norm_1a9625d7fb4cfbdcb6e80ec3f4b1de2445" prot="public" virt="non-virtual"><scope>slope::SortedL1Norm</scope><name>SortedL1Norm</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

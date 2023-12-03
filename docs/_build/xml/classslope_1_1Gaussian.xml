@@ -1,0 +1,97 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.7" xml:lang="en-US">
+  <compounddef id="classslope_1_1Gaussian" kind="class" language="C++" prot="public">
+    <compoundname>slope::Gaussian</compoundname>
+    <basecompoundref refid="classslope_1_1Objective" prot="public" virt="non-virtual">slope::Objective</basecompoundref>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classslope_1_1Gaussian_1acc3e5be915233e5dd639140f5b38f315" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>double</type>
+        <definition>double slope::Gaussian::loss</definition>
+        <argsstring>(const Eigen::VectorXd &amp;eta, const Eigen::MatrixXd &amp;y)</argsstring>
+        <name>loss</name>
+        <qualifiedname>slope::Gaussian::loss</qualifiedname>
+        <reimplements refid="classslope_1_1Objective_1a3c72755753f7662ab89f5a8e9e532f3c">loss</reimplements>
+        <param>
+          <type>const Eigen::VectorXd &amp;</type>
+          <declname>eta</declname>
+        </param>
+        <param>
+          <type>const Eigen::MatrixXd &amp;</type>
+          <declname>y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/gerd-jln/projects/libslope/src/slope/objectives.h" line="25" column="10" bodyfile="/home/gerd-jln/projects/libslope/src/slope/objectives.cpp" bodystart="7" bodyend="11"/>
+      </memberdef>
+      <memberdef kind="function" id="classslope_1_1Gaussian_1acad6c2bd13e237fa8476b7d675257725" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void slope::Gaussian::updateWeightsAndWorkingResponse</definition>
+        <argsstring>(Eigen::VectorXd &amp;w, Eigen::VectorXd &amp;z, const Eigen::VectorXd &amp;eta, const Eigen::MatrixXd &amp;y)</argsstring>
+        <name>updateWeightsAndWorkingResponse</name>
+        <qualifiedname>slope::Gaussian::updateWeightsAndWorkingResponse</qualifiedname>
+        <reimplements refid="classslope_1_1Objective_1a869a1923f5f632ac5ff6fa0485f3e784">updateWeightsAndWorkingResponse</reimplements>
+        <param>
+          <type>Eigen::VectorXd &amp;</type>
+          <declname>w</declname>
+        </param>
+        <param>
+          <type>Eigen::VectorXd &amp;</type>
+          <declname>z</declname>
+        </param>
+        <param>
+          <type>const Eigen::VectorXd &amp;</type>
+          <declname>eta</declname>
+        </param>
+        <param>
+          <type>const Eigen::MatrixXd &amp;</type>
+          <declname>y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/gerd-jln/projects/libslope/src/slope/objectives.h" line="27" column="8" bodyfile="/home/gerd-jln/projects/libslope/src/slope/objectives.cpp" bodystart="14" bodyend="21"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>slope::Gaussian</label>
+        <link refid="classslope_1_1Gaussian"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>slope::Objective</label>
+        <link refid="classslope_1_1Objective"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>slope::Gaussian</label>
+        <link refid="classslope_1_1Gaussian"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>slope::Objective</label>
+        <link refid="classslope_1_1Objective"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/gerd-jln/projects/libslope/src/slope/objectives.h" line="22" column="1" bodyfile="/home/gerd-jln/projects/libslope/src/slope/objectives.h" bodystart="23" bodyend="31"/>
+    <listofallmembers>
+      <member refid="classslope_1_1Gaussian_1acc3e5be915233e5dd639140f5b38f315" prot="public" virt="virtual"><scope>slope::Gaussian</scope><name>loss</name></member>
+      <member refid="classslope_1_1Gaussian_1acad6c2bd13e237fa8476b7d675257725" prot="public" virt="virtual"><scope>slope::Gaussian</scope><name>updateWeightsAndWorkingResponse</name></member>
+      <member refid="classslope_1_1Objective_1a540df968f310191fa7b73c7edee25e8f" prot="public" virt="virtual"><scope>slope::Gaussian</scope><name>~Objective</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

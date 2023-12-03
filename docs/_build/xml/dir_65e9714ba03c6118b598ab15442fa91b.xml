@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.7" xml:lang="en-US">
+  <compounddef id="dir_65e9714ba03c6118b598ab15442fa91b" kind="dir">
+    <compoundname>/home/gerd-jln/projects/libslope/src/slope</compoundname>
+    <innerfile refid="cd_8h">cd.h</innerfile>
+    <innerfile refid="clusters_8cpp">clusters.cpp</innerfile>
+    <innerfile refid="clusters_8h">clusters.h</innerfile>
+    <innerfile refid="helpers_8h">helpers.h</innerfile>
+    <innerfile refid="math_8h">math.h</innerfile>
+    <innerfile refid="objectives_8cpp">objectives.cpp</innerfile>
+    <innerfile refid="objectives_8h">objectives.h</innerfile>
+    <innerfile refid="pgd_8h">pgd.h</innerfile>
+    <innerfile refid="qnorm_8cpp">qnorm.cpp</innerfile>
+    <innerfile refid="qnorm_8h">qnorm.h</innerfile>
+    <innerfile refid="regularization__sequence_8cpp">regularization_sequence.cpp</innerfile>
+    <innerfile refid="regularization__sequence_8h">regularization_sequence.h</innerfile>
+    <innerfile refid="results_8h">results.h</innerfile>
+    <innerfile refid="slope_8h">slope.h</innerfile>
+    <innerfile refid="slope__threshold_8cpp">slope_threshold.cpp</innerfile>
+    <innerfile refid="slope__threshold_8h">slope_threshold.h</innerfile>
+    <innerfile refid="sorted__l1__norm_8cpp">sorted_l1_norm.cpp</innerfile>
+    <innerfile refid="sorted__l1__norm_8h">sorted_l1_norm.h</innerfile>
+    <innerfile refid="standardize_8cpp">standardize.cpp</innerfile>
+    <innerfile refid="standardize_8h">standardize.h</innerfile>
+    <innerfile refid="utils_8h">utils.h</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/gerd-jln/projects/libslope/src/slope/"/>
+  </compounddef>
+</doxygen>
