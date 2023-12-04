@@ -1,6 +1,6 @@
-.. _api_slope:
+.. _api_qualpal:
 
-Slope
+Qualpal
 =====
 
 .. doxygenfile:: qualpal/qualpal.h
