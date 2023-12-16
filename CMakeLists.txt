@@ -19,7 +19,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
-set(PROJECT_SRC_DIR ${CMAKE_SOURCE_DIR}/src)
+set(PROJECT_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 add_subdirectory(src)
 
@@ -70,6 +70,7 @@ endif()
 if(BUILD_DOCS)
   find_package(Doxygen REQUIRED)
   set(DOXYGEN_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/docs)
-  doxygen_add_docs(docs ${PROJECT_SOURCE_DIR} docs/ ALL
+  set(DOXYGEN_EXCLUDE_PATTERNS _deps)
+  doxygen_add_docs(docs ${PROJECT_SOURCE_DIR} ALL
                    COMMENT "Generate package documentation")
 endif()
