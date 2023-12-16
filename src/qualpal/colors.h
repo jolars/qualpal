@@ -19,6 +19,7 @@ private:
 
 public:
   RGB(const double r, const double g, const double b);
+  RGB(const std::array<double, 3> rgb);
   RGB(const std::string& hex);
   RGB(const HSL& hsl);
   RGB(const XYZ& xyz);

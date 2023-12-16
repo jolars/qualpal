@@ -1,4 +1,5 @@
 #include "qualpal.h"
+#include "color_grid.h"
 #include "farthest_points.h"
 #include <cassert>
 #include <regex>
@@ -50,5 +51,22 @@ qualpal(const int n, const std::vector<std::string>& hex_colors)
 
   return qualpal(n, rgb_colors);
 }
+
+// std::vector<RGB>
+// qualpal(const int n,
+//         const std::array<double, 2>& h_lim,
+//         const std::array<double, 2>& s_lim,
+//         const std::array<double, 2>& l_lim)
+// {
+//   auto hsl_colors = colorGrid(n, h_lim, s_lim, l_lim);
+//
+//   std::vector<qualpal::RGB> rgb_colors;
+//
+//   for (auto color : hsl_colors) {
+//     rgb_colors.emplace_back(color);
+//   }
+//
+//   return qualpal(n, rgb_colors);
+// }
 
 } // namespace qualpal

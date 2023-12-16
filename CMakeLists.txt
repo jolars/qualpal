@@ -10,11 +10,12 @@ project(
 option(BUILD_DOCS "Build documentation" OFF)
 option(BUILD_R_BINDINGS "Build R bindings" OFF)
 option(BUILD_CLI "Build CLI application" ON)
+option(ENABLE_COVERAGE "Generate coverage report" OFF)
 
 include(FetchContent)
 include(CTest)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
@@ -25,7 +26,8 @@ add_subdirectory(src)
 add_subdirectory(bindings)
 
 if(BUILD_CLI)
-  add_executable(qualpal src/main.cpp)
+  add_executable(qualpal_cli src/main.cpp)
+  set_property(TARGET qualpal_cli PROPERTY OUTPUT_NAME qualpal)
 
   FetchContent_Declare(
     cli11
@@ -34,8 +36,8 @@ if(BUILD_CLI)
 
   FetchContent_MakeAvailable(cli11)
 
-  target_link_libraries(qualpal PUBLIC qualpal_lib CLI11::CLI11)
-  target_include_directories(qualpal PUBLIC "${PROJECT_BINARY_DIR}")
+  target_link_libraries(qualpal_cli PUBLIC qualpal CLI11::CLI11)
+  target_include_directories(qualpal_cli PUBLIC "${PROJECT_BINARY_DIR}")
 endif()
 
 if(BUILD_TESTING)
@@ -49,29 +51,24 @@ if(BUILD_TESTING)
   endif()
 
   add_executable(tests tests/test.cpp)
-  target_link_libraries(tests PRIVATE Catch2::Catch2WithMain qualpal_lib)
+  target_link_libraries(tests PRIVATE Catch2::Catch2WithMain qualpal)
   target_include_directories(tests PUBLIC tests "${PROJECT_BINARY_DIR}")
 
   list(APPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/extras)
   include(Catch)
   catch_discover_tests(tests)
+
+  if(ENABLE_COVERAGE)
+    find_package(codecov)
+    add_coverage(tests)
+    add_coverage(qualpal)
+    coverage_evaluate(tests-gcov)
+  endif()
 endif()
 
 if(BUILD_DOCS)
   find_package(Doxygen REQUIRED)
-  set(DOXYGEN_IN ${CMAKE_SOURCE_DIR}/docs/Doxyfile.in)
-  set(DOXYGEN_OUT ${CMAKE_SOURCE_DIR}/docs/Doxyfile)
-  configure_file(${DOXYGEN_IN} ${DOXYGEN_OUT} @ONLY)
-  add_custom_target(
-    docs ALL
-    COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
-    COMMENT "Generating Doxygen XML"
-    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/docs/
-    VERBATIM)
-  add_custom_target(
-    docs_sphinx ALL
-    COMMAND make html
-    COMMENT "Generating sphinx HTML"
-    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/docs/
-    VERBATIM)
+  set(DOXYGEN_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/docs)
+  doxygen_add_docs(docs ${PROJECT_SOURCE_DIR} docs/ ALL
+                   COMMENT "Generate package documentation")
 endif()

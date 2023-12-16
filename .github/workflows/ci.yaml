@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Install dependencies
-        run: sudo apt-get install -y g++
+        run: sudo apt-get install -y build-essential lcov gcovr
 
       - name: Setup cmake
         uses: jwlawson/actions-setup-cmake@v1.14
@@ -20,7 +20,7 @@ jobs:
           cmake-version: "3.25"
 
       - name: Configure CMake
-        run: cmake -B build -S . -DBUILD_TESTING=ON -DBUILD_DOCS=OFF
+        run: cmake -B build -S . -DBUILD_TESTING=ON -DBUILD_DOCS=OFF -DENABLE_COVERAGE=ON
 
       - name: Build
         run: cmake --build build
@@ -30,6 +30,11 @@ jobs:
 
       - name: Test
         run: ctest --test-dir build --output-on-failure
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4-beta
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
   docs:
     needs: build-and-test
     runs-on: ubuntu-latest
@@ -44,12 +49,9 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install dependencies
-        run: sudo apt-get install -y g++ doxygen
+        run: sudo apt-get install -y build-essential doxygen
 
       - uses: actions/setup-python@v4
-
-      - name: Install python dependencies
-        run: python -m pip install sphinx sphinx-rtd-theme sphinx-sitemap breathe
 
       - name: Setup cmake
         uses: jwlawson/actions-setup-cmake@v1.14
@@ -68,7 +70,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
-          path: "docs/_build/html/"
+          path: "build/docs/html"
 
       - name: Deploy to GitHub Pages
         id: deployment
