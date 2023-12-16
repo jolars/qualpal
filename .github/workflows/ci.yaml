@@ -1,10 +1,6 @@
 name: CI
 on: [push, pull_request]
 
-concurrency:
-  group: "pages"
-  cancel-in-progress: true
-
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
