@@ -39,11 +39,9 @@ main(int argc, char** argv)
     ->check(CLI::IsMember({ "hex", "colorspace" }));
 
   int n = 8;
-
-  app.add_option<int, int>("-n,--number", n, "Number of colors to generate");
-
   std::vector<std::string> values;
 
+  app.add_option<int, int>("-n,--number", n, "Number of colors to generate");
   app.add_option("values", values, "Colors or color space");
 
   CLI11_PARSE(app, argc, argv);
