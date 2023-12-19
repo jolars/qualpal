@@ -8,7 +8,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Install dependencies
-        run: sudo apt-get install -y build-essential lcov gcovr
+        run: sudo apt-get install -y build-essential lcov gcovr doxygen
 
       - name: Setup cmake
         uses: jwlawson/actions-setup-cmake@v1.14
