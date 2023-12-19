@@ -16,7 +16,7 @@ jobs:
           cmake-version: "3.25"
 
       - name: Configure CMake
-        run: cmake -B build -S . -DBUILD_TESTING=ON -DBUILD_DOCS=OFF -DENABLE_COVERAGE=ON
+        run: cmake -B build -S . -DBUILD_TESTING=ON -DBUILD_DOCS=ON -DENABLE_COVERAGE=ON
 
       - name: Build
         run: cmake --build build
