@@ -28,7 +28,7 @@ jobs:
         run: ctest --test-dir build --output-on-failure
 
       - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v4-beta
+        uses: codecov/codecov-action@v4.0.1
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
   docs:
