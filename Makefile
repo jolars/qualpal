@@ -31,6 +31,10 @@ clean:
 install:
 	cmake --install $(BUILD_DIR)
 
+.PHONY: install-r
+install-r:
+	cmake --install $(BUILD_DIR) --component R_BINDINGS
+
 .PHONY: test
 test: 
 	cmake -B $(BUILD_DIR) -S . -DBUILD_DOCS=OFF -DBUILD_TESTING=ON
