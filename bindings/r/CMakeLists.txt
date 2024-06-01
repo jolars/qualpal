@@ -112,5 +112,6 @@ add_custom_command(
   COMMENT "Build the R package.")
 
 install(
-  CODE "execute_process(COMMAND ${R_EXECUTABLE} CMD INSTALL ${R_PKG_NAME}_${R_PKG_VERSION}.tar.gz
-                        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})")
+  CODE "execute_process(COMMAND ${R_EXECUTABLE} CMD INSTALL --dependencies TRUE ${R_PKG_NAME}_${R_PKG_VERSION}.tar.gz
+                        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})"
+  COMPONENT R_BINDINGS)
