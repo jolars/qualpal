@@ -27,3 +27,19 @@ TEST_CASE("Converting between colors work", "[colors]")
   REQUIRE_THAT(rgb_from_hex.g(), WithinAbsMatcher(0.501960, 0.001));
   REQUIRE_THAT(rgb_from_hex.b(), WithinAbsMatcher(0.949019, 0.001));
 }
+
+TEST_CASE("Running qualpal works", "[colors]")
+{
+  using namespace Catch::Matchers;
+
+  std::vector<qualpal::RGB> rgb_colors = {
+    qualpal::RGB(0.23, 0.5, 0.95), qualpal::RGB(0.5, 0.23, 0.95),
+    qualpal::RGB(0.95, 0.23, 0.5), qualpal::RGB(0.23, 0.95, 0.5),
+    qualpal::RGB(0.95, 0.5, 0.23), qualpal::RGB(0.5, 0.95, 0.23),
+  };
+
+  std::vector<qualpal::RGB> pal1 = qualpal::qualpal(4, rgb_colors);
+
+  std::vector<qualpal::RGB> pal2 =
+    qualpal::qualpal(4, { 0, 360 }, { 1, 1 }, { 0, 1 });
+}
