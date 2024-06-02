@@ -156,7 +156,6 @@ qualpal.matrix <- function(n,
   )
 
   RGB <- colorspace
-  # HSL <- RGB_HSL(RGB)
 
   # Simulate color deficiency if required
   if (cvd_severity > 0) {
@@ -166,27 +165,15 @@ qualpal.matrix <- function(n,
   res <- qualpal_cpp(n, RGB[, 1], RGB[, 2], RGB[, 3])
 
   RGB <- cbind(res$r, res$g, res$b)
-
-  # XYZ <- sRGB_XYZ(RGB)
-  #
-  # Lab <- XYZ_Lab(XYZ)
-  #
-  # DIN99d <- XYZ_DIN99d(XYZ)
-  #
-  # col_ind <- farthest_points(DIN99d, n) + 1
-  #
-  # RGB <- RGB[col_ind, ]
-  # HSL <- HSL[col_ind, ]
-  # DIN99d <- DIN99d[col_ind, ]
-  # hex <- grDevices::rgb(RGB)
+  HSL <- cbind(res$h, res$s, res$l)
+  DIN99d <- cbind(res$l99d, res$a99d, res$b99d)
+  hex <- res$hex
 
   dimnames(HSL) <- list(hex, c("Hue", "Saturation", "Lightness"))
   dimnames(DIN99d) <- list(hex, c("L(99d)", "a(99d)", "b(99d)"))
   dimnames(RGB) <- list(hex, c("Red", "Green", "Blue"))
 
-  col_diff <- edist(DIN99d)
-  dimnames(col_diff) <- list(hex, hex)
-  de_DIN99d <- stats::as.dist(col_diff)
+  de_DIN99d <- stats::as.dist(res$de_DIN99d)
 
   structure(
     list(

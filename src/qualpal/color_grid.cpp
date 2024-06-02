@@ -1,40 +1,56 @@
 #include "color_grid.h"
 #include <array>
+#include <cassert>
 #include <cmath>
 
 namespace qualpal {
+
+std::vector<double>
+linspace(const std::array<double, 2>& range, const int n)
+{
+  double min = range[0];
+  double max = range[1];
+
+  assert(min <= max && "min must be less than or equal to max");
+
+  std::vector<double> result;
+  result.reserve(n);
+
+  const double step = (max - min) / static_cast<double>(n - 1);
+
+  for (int i = 0; i < n; i++) {
+    result.emplace_back(min + i * step);
+  }
+
+  return result;
+}
+
 std::vector<HSL>
-colorGrid(int n,
-          const std::array<double, 2>& h_lim,
+colorGrid(const std::array<double, 2>& h_lim,
           const std::array<double, 2>& s_lim,
-          const std::array<double, 2>& l_lim)
+          const std::array<double, 2>& l_lim,
+          const int n)
 {
   std::vector<HSL> colors;
   colors.reserve(n);
 
-  double h_range = h_lim[1] - h_lim[0];
-  double s_range = s_lim[1] - s_lim[0];
-  double l_range = l_lim[1] - l_lim[0];
-  double total_range = h_range + s_range + l_range;
+  int n_i = std::round(std::cbrt(n));
 
-  int n_h = std::round(n * h_range / total_range);
-  int n_s = std::round(n * s_range / total_range);
-  int n_l = n - n_h - n_s;
+  assert(n_i > 0 && "n_h must be larger than zero");
 
-  double h_step = h_range / static_cast<double>(n_h - 1);
-  double s_step = s_range / static_cast<double>(n_s - 1);
-  double l_step = l_range / static_cast<double>(n_l - 1);
+  std::vector<double> h_vec = linspace(h_lim, n_i);
+  std::vector<double> s_vec = linspace(s_lim, n_i);
+  std::vector<double> l_vec = linspace(l_lim, n_i);
 
-  for (int i = 0; i < n_h; i++) {
-    for (int j = 0; j < n_s; j++) {
-      for (int k = 0; k < n_l; k++) {
-        double h = h_lim[0] + h_step * i;
-        double s = s_lim[0] + s_step * j;
-        double l = l_lim[0] + l_step * k;
+  for (const auto& h : h_vec) {
+    for (const auto& s : s_vec) {
+      for (const auto& l : l_vec) {
         colors.emplace_back(h, s, l);
       }
     }
   }
+
+  colors.shrink_to_fit();
 
   return colors;
 }

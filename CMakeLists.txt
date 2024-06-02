@@ -38,6 +38,8 @@ if(BUILD_CLI)
 
   target_link_libraries(qualpal_cli PUBLIC qualpal CLI11::CLI11)
   target_include_directories(qualpal_cli PUBLIC "${PROJECT_BINARY_DIR}")
+
+  install(TARGETS qualpal_cli DESTINATION bin)
 endif()
 
 if(BUILD_TESTING)

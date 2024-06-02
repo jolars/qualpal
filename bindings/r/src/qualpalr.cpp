@@ -1,4 +1,6 @@
 #include "qualpal/colors.h"
+#include "qualpal/distance_matrix.h"
+#include "qualpal/matrix.h"
 #include "qualpal/qualpal.h"
 #include <Rcpp.h>
 
@@ -27,6 +29,7 @@ qualpal_cpp(int n,
   std::vector<double> s_out;
   std::vector<double> l_out;
 
+  std::vector<qualpal::DIN99d> selected_colors_din99d;
   std::vector<double> l99d_out;
   std::vector<double> a99d_out;
   std::vector<double> b99d_out;
@@ -37,6 +40,8 @@ qualpal_cpp(int n,
     qualpal::DIN99d din99d = rgb;
     qualpal::HSL hsl = rgb;
     std::string hex = rgb.hex();
+
+    selected_colors_din99d.emplace_back(din99d);
 
     r_out.emplace_back(rgb.r());
     g_out.emplace_back(rgb.g());
@@ -53,6 +58,16 @@ qualpal_cpp(int n,
     hex_out.emplace_back(hex);
   }
 
+  auto dist_mat = qualpal::distanceMatrix(selected_colors_din99d);
+
+  Rcpp::NumericMatrix de_DIN99d(n, n);
+
+  for (int i = 0; i < n; ++i) {
+    for (int j = 0; j < n; ++j) {
+      de_DIN99d(i, j) = dist_mat(i, j);
+    }
+  }
+
   return Rcpp::List::create(Rcpp::Named("r") = r_out,
                             Rcpp::Named("g") = g_out,
                             Rcpp::Named("b") = b_out,
@@ -62,5 +77,6 @@ qualpal_cpp(int n,
                             Rcpp::Named("l99d") = l99d_out,
                             Rcpp::Named("a99d") = a99d_out,
                             Rcpp::Named("b99d") = b99d_out,
-                            Rcpp::Named("hex") = hex_out);
+                            Rcpp::Named("hex") = hex_out,
+                            Rcpp::Named("de_DIN99d") = de_DIN99d);
 }
