@@ -9,6 +9,16 @@
 
 Bindings are not installed by default when running `cmake --install`, even if they have been built. The reason for this is that you typically want to install them as a user, and not system-wide.
 
+### Command-Line Interface
+
+The command-line interface (CLI) component can be installed by running
+
+```bash
+cmake -B build -S . -DBUILD_CLI=ON
+cmake --build build
+sudo cmake --install build
+```
+
 ### R
 
 To build and install the R bindings, run the following code.
