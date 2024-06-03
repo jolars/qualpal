@@ -9,7 +9,7 @@ project(
 
 option(BUILD_DOCS "Build documentation" OFF)
 option(BUILD_R_BINDINGS "Build R bindings" OFF)
-option(BUILD_CLI "Build CLI application" ON)
+option(BUILD_CLI "Build CLI application" OFF)
 option(ENABLE_COVERAGE "Generate coverage report" OFF)
 
 include(FetchContent)
@@ -39,7 +39,10 @@ if(BUILD_CLI)
   target_link_libraries(qualpal_cli PUBLIC qualpal CLI11::CLI11)
   target_include_directories(qualpal_cli PUBLIC "${PROJECT_BINARY_DIR}")
 
-  install(TARGETS qualpal_cli DESTINATION bin)
+  install(
+    TARGETS qualpal_cli
+    DESTINATION bin
+    COMPONENT CLI)
 endif()
 
 if(BUILD_TESTING)
