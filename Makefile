@@ -5,10 +5,8 @@ all: configure build
 
 .PHONY: configure build build-r build-cli docs release install install-r test clean
 
-configure:
-	cmake -B $(BUILD_DIR) -S . -DCMAKE_BUILD_TYPE=Debug
-
 build:
+	cmake -B $(BUILD_DIR) -S .
 	cmake --build $(BUILD_DIR)
 
 build-r:
