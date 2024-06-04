@@ -12,7 +12,7 @@ set(R_PKG_OUT_DIR ${CMAKE_CURRENT_BINARY_DIR}/${R_PKG_NAME})
 set(CPP_SRC_DIR "${CMAKE_SOURCE_DIR}/src/${CMAKE_PROJECT_NAME}")
 
 # Create folder and copy files that won't change at configuration time
-file(MAKE_DIRECTORY ${R_PKG_OUT_DIR}/R ${R_PKG_OUT_DIR}/src)
+file(MAKE_DIRECTORY ${R_PKG_OUT_DIR}/src)
 file(MAKE_DIRECTORY ${R_PKG_OUT_DIR}/src/${CMAKE_PROJECT_NAME})
 file(COPY ${R_PKG_IN_DIR}/NAMESPACE DESTINATION ${R_PKG_OUT_DIR})
 file(COPY ${R_PKG_IN_DIR}/src/qualpalr.cpp DESTINATION ${R_PKG_OUT_DIR}/src)
@@ -24,7 +24,7 @@ add_custom_target(r_copy ALL COMMENT "Copy source files to build directory")
 file(
   GLOB_RECURSE R_FILES
   RELATIVE ${R_PKG_IN_DIR}
-  CONFIGURE_DEPENDS ${R_PKG_IN_DIR}/R/*.R)
+  ${R_PKG_IN_DIR}/*.R ${R_PKG_IN_DIR}/*.RData)
 
 file(
   GLOB_RECURSE CPP_SRC_HEADERS
@@ -73,11 +73,13 @@ file(
 
 # Copy all files over to the build directory
 foreach(file ${R_FILES})
+  get_filename_component(PARENT_DIR "${file}" DIRECTORY)
+  file(MAKE_DIRECTORY "${R_PKG_OUT_DIR}/${PARENT_DIR}")
   add_custom_command(
     TARGET r_copy
     PRE_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different ${R_PKG_IN_DIR}/${file}
-            ${R_PKG_OUT_DIR}/R)
+            ${R_PKG_OUT_DIR}/${file})
 endforeach()
 
 foreach(file ${CPP_SRC_FILES})
