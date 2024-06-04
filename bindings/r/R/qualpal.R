@@ -157,12 +157,18 @@ qualpal.matrix <- function(n,
 
   RGB <- colorspace
 
-  # Simulate color deficiency if required
-  if (cvd_severity > 0) {
-    RGB <- sRGB_CVD(RGB, cvd = match.arg(cvd), cvd_severity = cvd_severity)
-  }
+  cvd_list <- list(protan = 0, deutan = 0, tritan = 0)
+  cvd_list[[match.arg(cvd)]] <- cvd_severity
 
-  res <- qualpal_cpp(n, RGB[, 1], RGB[, 2], RGB[, 3])
+  res <- qualpal_cpp(
+    n,
+    RGB[, 1],
+    RGB[, 2],
+    RGB[, 3],
+    cvd_list$protan,
+    cvd_list$deutan,
+    cvd_list$tritan
+  )
 
   RGB <- cbind(res$r, res$g, res$b)
   HSL <- cbind(res$h, res$s, res$l)

@@ -1,8 +1,9 @@
 #include "qualpal.h"
 #include "color_grid.h"
+#include "cvd_simulation.h"
 #include "farthest_points.h"
 #include <cassert>
-#include <iostream>
+#include <map>
 #include <regex>
 #include <vector>
 
@@ -17,9 +18,19 @@ isValidHexColor(const std::string& color)
 }
 
 std::vector<RGB>
-qualpal(const int n, const std::vector<RGB>& rgb_colors)
+qualpal(const int n,
+        std::vector<RGB> rgb_colors,
+        const std::map<std::string, double>& cvd)
 {
   int N = rgb_colors.size();
+
+  const std::vector<RGB> rgb_colors_original = rgb_colors;
+
+  for (const auto& [cvd_type, cvd_severity] : cvd) {
+    if (cvd_severity > 0) {
+      rgb_colors = simulate_cvd(rgb_colors, cvd_type, cvd_severity);
+    }
+  }
 
   std::vector<DIN99d> din99d_colors;
   din99d_colors.reserve(N);
@@ -31,17 +42,19 @@ qualpal(const int n, const std::vector<RGB>& rgb_colors)
   auto ind = farthestPoints(n, din99d_colors);
 
   std::vector<RGB> rgb_out;
-  rgb_out.reserve(ind.size());
+  rgb_out.reserve(n);
 
   for (const auto& i : ind) {
-    rgb_out.emplace_back(rgb_colors[i]);
+    rgb_out.emplace_back(rgb_colors_original[i]);
   }
 
   return rgb_out;
 }
 
 std::vector<RGB>
-qualpal(const int n, const std::vector<std::string>& hex_colors)
+qualpal(const int n,
+        const std::vector<std::string>& hex_colors,
+        const std::map<std::string, double>& cvd)
 {
   std::vector<qualpal::RGB> rgb_colors;
 
@@ -50,7 +63,7 @@ qualpal(const int n, const std::vector<std::string>& hex_colors)
     rgb_colors.emplace_back(color);
   }
 
-  return qualpal(n, rgb_colors);
+  return qualpal(n, rgb_colors, cvd);
 }
 
 std::vector<RGB>
@@ -58,7 +71,8 @@ qualpal(const int n,
         const std::array<double, 2>& h_lim,
         const std::array<double, 2>& s_lim,
         const std::array<double, 2>& l_lim,
-        const int n_points)
+        const int n_points,
+        const std::map<std::string, double>& cvd)
 {
   if (n > n_points) {
     throw std::invalid_argument("Number of colors to generate must be lower "
@@ -85,7 +99,7 @@ qualpal(const int n,
     rgb_colors.emplace_back(color);
   }
 
-  return qualpal(n, rgb_colors);
+  return qualpal(n, rgb_colors, cvd);
 }
 
 } // namespace qualpal

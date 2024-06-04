@@ -9,7 +9,10 @@ Rcpp::List
 qualpal_cpp(int n,
             const std::vector<double> r,
             const std::vector<double> g,
-            const std::vector<double> b)
+            const std::vector<double> b,
+            double protan,
+            double deutan,
+            double tritan)
 {
   int N = r.size();
 
@@ -19,7 +22,13 @@ qualpal_cpp(int n,
     rgb_colors.emplace_back(r[i], g[i], b[i]);
   }
 
-  std::vector<qualpal::RGB> selected_colors = qualpal::qualpal(n, rgb_colors);
+  std::map<std::string, double> cvd;
+  cvd["protan"] = protan;
+  cvd["deutan"] = deutan;
+  cvd["tritan"] = tritan;
+
+  std::vector<qualpal::RGB> selected_colors =
+    qualpal::qualpal(n, rgb_colors, cvd);
 
   std::vector<double> r_out;
   std::vector<double> g_out;
