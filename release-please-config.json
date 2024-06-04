@@ -4,10 +4,6 @@
   "packages": {
     ".": {
       "package-name": "qualpal"
-    },
-    "bindings/r": {
-      "package-name": "qualpalr",
-      "changelog-path": "NEWS.md"
     }
   }
 }
