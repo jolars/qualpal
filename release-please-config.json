@@ -1,9 +1,8 @@
 {
-  "release-type": "simple",
-  "bump-minor-pre-major": true,
   "packages": {
     ".": {
-      "package-name": "qualpal"
+      "release-type": "simple",
+      "bump-minor-pre-major": true
     }
   }
 }
