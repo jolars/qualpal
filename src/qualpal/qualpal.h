@@ -1,8 +1,8 @@
 #include "colors.h"
 #include "distance_matrix.h"
 #include "matrix.h"
-#include <vector>
 #include <map>
+#include <vector>
 
 namespace qualpal {
 
@@ -12,7 +12,9 @@ qualpal(const int n,
         const std::map<std::string, double>& cvd = {});
 
 std::vector<RGB>
-qualpal(const int n, const std::vector<std::string>& hex_colors, const std::map<std::string, double>& cvd = {});
+qualpal(const int n,
+        const std::vector<std::string>& hex_colors,
+        const std::map<std::string, double>& cvd = {});
 
 std::vector<RGB>
 qualpal(const int n,
