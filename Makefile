@@ -41,6 +41,9 @@ test:
 	cmake --build $(BUILD_DIR)
 	ctest --test-dir $(BUILD_DIR) --output-on-failure
 
+test-r: build-r
+	cd build/bindings/r/qualpalr && Rscript -e "devtools::test()"
+
 clean:
 	rm -rf $(BUILD_DIR)
 
