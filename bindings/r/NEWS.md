@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.5.0](https://github.com/jolars/qualpal/compare/qualpalr-v0.4.5...qualpalr-v0.5.0) (2024-06-04)
+
+
+### Features
+
+* make R binding work properly ([17f369c](https://github.com/jolars/qualpal/commit/17f369c0737c5f99769c3eac8b840d33e4b8cfad))
+* merge individual color files into a single file ([1e2e74c](https://github.com/jolars/qualpal/commit/1e2e74c9554546e5e5b24ba6bb4405f226216359))
+* setup infrastructure for the package ([14e2800](https://github.com/jolars/qualpal/commit/14e280015cb05420b7093b3ba487e32958ccebfd))
+
+## Changelog
+
 ## qualpalr 0.4.4
 
 #### Minor changes
