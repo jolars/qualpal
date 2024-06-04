@@ -1,4 +1,5 @@
 #include "colors.h"
+#include "math.h"
 #include "matrix.h"
 #include <algorithm>
 #include <cassert>
@@ -253,7 +254,7 @@ HSL::HSL(const RGB& rgb)
   if (C == 0) {
     h_prime = std::nan("");
   } else if (M == r) {
-    h_prime = std::fmod((g - b) / C, 6.0);
+    h_prime = mod((g - b) / C, 6.0);
   } else if (M == g) {
     h_prime = (b - r) / C + 2;
   } else if (M == b) {

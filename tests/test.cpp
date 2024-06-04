@@ -22,11 +22,31 @@ TEST_CASE("Converting between colors work", "[colors]")
   REQUIRE_THAT(lab.a(), WithinAbsMatcher(17.6776, 0.001));
   REQUIRE_THAT(lab.b(), WithinAbsMatcher(-63.8246, 0.001));
 
+  REQUIRE_THAT(hsl.h(), WithinAbsMatcher(217.5, 0.001));
+  REQUIRE_THAT(hsl.s(), WithinAbsMatcher(0.87805, 0.001));
+  REQUIRE_THAT(hsl.l(), WithinAbsMatcher(0.59, 0.001));
+
   qualpal::RGB rgb_from_hex("#3b80f2");
 
   REQUIRE_THAT(rgb_from_hex.r(), WithinAbsMatcher(0.231372, 0.001));
   REQUIRE_THAT(rgb_from_hex.g(), WithinAbsMatcher(0.501960, 0.001));
   REQUIRE_THAT(rgb_from_hex.b(), WithinAbsMatcher(0.949019, 0.001));
+}
+
+TEST_CASE("Check that converted HSL colors are within correct ranges",
+          "[colors]")
+{
+  using namespace Catch::Matchers;
+
+  qualpal::RGB rgb(0.8109190, 0.4385978, 0.4837288);
+  qualpal::HSL hsl(rgb);
+
+  REQUIRE(hsl.h() >= 0);
+  REQUIRE(hsl.h() <= 360);
+  REQUIRE(hsl.s() >= 0);
+  REQUIRE(hsl.s() <= 1);
+  REQUIRE(hsl.l() >= 0);
+  REQUIRE(hsl.l() <= 1);
 }
 
 TEST_CASE("Running qualpal works", "[colors]")
@@ -43,6 +63,17 @@ TEST_CASE("Running qualpal works", "[colors]")
 
   std::vector<qualpal::RGB> pal2 =
     qualpal::qualpal(4, { 0, 360 }, { 1, 1 }, { 0, 1 });
+}
+
+TEST_CASE("Colors returned by qualpal are in legal ranges", "[colors]")
+{
+  using namespace Catch::Matchers;
+
+  // auto res = qualpal(n)
+
+  // REQUIRE_THAT(rgb_from_hex.r(), WithinAbsMatcher(0.231372, 0.001));
+  // REQUIRE_THAT(rgb_from_hex.g(), WithinAbsMatcher(0.501960, 0.001));
+  // REQUIRE_THAT(rgb_from_hex.b(), WithinAbsMatcher(0.949019, 0.001));
 }
 
 TEST_CASE("Matrix-Matrix multiplication", "[FixedMatrix]")
