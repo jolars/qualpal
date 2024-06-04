@@ -46,8 +46,8 @@ qualpal_cpp(int n,
   std::vector<std::string> hex_out;
 
   for (const auto& rgb : selected_colors) {
-    qualpal::DIN99d din99d = rgb;
-    qualpal::HSL hsl = rgb;
+    qualpal::DIN99d din99d(rgb);
+    qualpal::HSL hsl(rgb);
     std::string hex = rgb.hex();
 
     selected_colors_din99d.emplace_back(din99d);
