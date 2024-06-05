@@ -1,4 +1,5 @@
 #include "../src/qualpal/colors.h"
+#include "../src/qualpal/cvd_simulation.h"
 #include "../src/qualpal/matrix.h"
 #include "../src/qualpal/qualpal.h"
 #include <catch2/catch_test_macros.hpp>
@@ -100,4 +101,12 @@ TEST_CASE("Matrix-MatrixTranspose multiplication", "[FixedMatrix]")
   REQUIRE(result(0, 1) == 68);
   REQUIRE(result(1, 0) == 122);
   REQUIRE(result(1, 1) == 167);
+}
+
+TEST_CASE("CVD simulation", "[colors]")
+{
+  std::vector<qualpal::RGB> rgb = { qualpal::RGB(0.8, 0.4, 0.1),
+                                    qualpal::RGB(0.1, 0.1, 0.1) };
+  auto result = qualpal::simulate_cvd(rgb, "protan", 0.5);
+  REQUIRE(result.size() == 2);
 }
