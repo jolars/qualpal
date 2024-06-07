@@ -27,7 +27,7 @@ qualpal(const int n,
   const std::vector<RGB> rgb_colors_original = rgb_colors;
 
   for (const auto& [cvd_type, cvd_severity] : cvd) {
-    if (cvd_severity > 1 || cvd_severity < 0) {
+    if (cvd_severity > 1.0 || cvd_severity < 0.0) {
       throw std::invalid_argument("cvd_severity must be between 0 and 1");
     }
     if (cvd_severity > 0) {
