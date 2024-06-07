@@ -5,6 +5,49 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/matchers/catch_matchers_floating_point.hpp>
 
+TEST_CASE("All coolor conversions are supported", "[colors]")
+{
+  using namespace Catch::Matchers;
+  using namespace qualpal;
+
+  XYZ xyz(0.4, 0.2, 0.65);
+  RGB rgb(0.23, 0.5, 0.95);
+  HSL hsl(190, 0.5, 1.0);
+  Lab lab(0.3, 0.98, 0.25);
+  DIN99d din99d(0.3, 0.98, 0.25);
+
+  rgb = xyz;
+  hsl = xyz;
+  lab = xyz;
+  din99d = xyz;
+
+  REQUIRE_THAT(rgb.r(), WithinAbsMatcher(0.834916, 0.001));
+  REQUIRE_THAT(rgb.g(), WithinAbsMatcher(0.125819, 0.001));
+  REQUIRE_THAT(rgb.b(), WithinAbsMatcher(0.837110, 0.001));
+
+  REQUIRE_THAT(lab.l(), WithinAbsMatcher(51.8372, 0.001));
+  REQUIRE_THAT(lab.a(), WithinAbsMatcher(82.2926, 0.001));
+  REQUIRE_THAT(lab.b(), WithinAbsMatcher(-51.4415, 0.001));
+
+  rgb = hsl;
+  xyz = hsl;
+  lab = hsl;
+  din99d = hsl;
+
+  rgb = lab;
+  xyz = lab;
+  lab = lab;
+  din99d = lab;
+
+  REQUIRE_THAT(rgb.r(), WithinAbsMatcher(0.834916, 0.001));
+  REQUIRE_THAT(rgb.g(), WithinAbsMatcher(0.125819, 0.001));
+  REQUIRE_THAT(rgb.b(), WithinAbsMatcher(0.837110, 0.001));
+
+  REQUIRE_THAT(xyz.x(), WithinAbsMatcher(0.400000, 0.001));
+  REQUIRE_THAT(xyz.y(), WithinAbsMatcher(0.200000, 0.001));
+  REQUIRE_THAT(xyz.z(), WithinAbsMatcher(0.650000, 0.001));
+}
+
 TEST_CASE("Converting between colors work", "[colors]")
 {
   using namespace Catch::Matchers;
