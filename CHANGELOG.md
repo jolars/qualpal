@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.6.0](https://github.com/jolars/qualpal/compare/v0.5.0...v0.6.0) (2024-06-07)
+
+
+### Features
+
+* add conversions between more colors ([92ed947](https://github.com/jolars/qualpal/commit/92ed9479caad315500906b222d4f6a7f87f8b7b5))
+
+
+### Bug Fixes
+
+* use correct type in comparison ([1a2c7c4](https://github.com/jolars/qualpal/commit/1a2c7c401c0f8a7151900baf1febd3caa3df0515))
+
 ## [0.5.0](https://github.com/jolars/qualpal/compare/qualpal-v0.4.5...qualpal-v0.5.0) (2024-06-04)
 
 
