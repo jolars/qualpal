@@ -116,6 +116,28 @@ RGB::RGB(const Lab& lab)
 {
 }
 
+RGB::RGB(const XYZ& xyz)
+{
+  FixedMatrix<double, 3, 3> m = { { 3.2404542, -1.5371385, -0.4985314 },
+                                  { -0.9692660, 1.8760108, 0.0415560 },
+                                  { 0.0556434, -0.2040259, 1.0572252 } };
+  std::array<double, 3> xyz_vec = { xyz.x(), xyz.y(), xyz.z() };
+
+  auto rgb = m * xyz_vec;
+
+  for (auto& val : rgb) {
+    if (val > 0.0031308) {
+      val = 1.055 * std::pow(val, 1 / 2.4) - 0.055;
+    } else {
+      val = 12.92 * val;
+    }
+  }
+
+  r_value = rgb[0];
+  g_value = rgb[1];
+  b_value = rgb[2];
+}
+
 HSL::HSL(const XYZ& xyz)
   : HSL(RGB(xyz))
 {
@@ -178,28 +200,6 @@ XYZ::XYZ(const Lab& lab, const std::array<double, 3>& white_point)
 XYZ::XYZ(const HSL& hsl)
   : XYZ(RGB(hsl))
 {
-}
-
-RGB::RGB(const XYZ& xyz)
-{
-  FixedMatrix<double, 3, 3> m = { { 3.2404542, -1.5371385, -0.4985314 },
-                                  { -0.9692660, 1.8760108, 0.0415560 },
-                                  { 0.0556434, -0.2040259, 1.0572252 } };
-  std::array<double, 3> xyz_vec = { xyz.x(), xyz.y(), xyz.z() };
-
-  auto rgb = m * xyz_vec;
-
-  for (auto& val : rgb) {
-    if (val > 0.0031308) {
-      val = 1.055 * std::pow(val, 1 / 2.4) - 0.055;
-    } else {
-      val = 12.92 * val;
-    }
-  }
-
-  r_value = rgb[0];
-  g_value = rgb[1];
-  b_value = rgb[2];
 }
 
 std::string
