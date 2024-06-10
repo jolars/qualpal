@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.8.0](https://github.com/jolars/qualpal/compare/v0.7.3...v0.8.0) (2024-06-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* switch from grid to Halton sequence
+
+### Features
+
+* switch from grid to Halton sequence ([f1eefc3](https://github.com/jolars/qualpal/commit/f1eefc3dfe7781ec771a97fd354629128a877f8f))
+
 ## [0.7.3](https://github.com/jolars/qualpal/compare/v0.7.2...v0.7.3) (2024-06-10)
 
 
