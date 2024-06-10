@@ -1,7 +1,7 @@
 BUILD_DIR = build
 TEST_DIR = test
 
-all: configure build
+all: build
 
 .PHONY: configure build build-r build-cli docs release install install-r test clean
 
@@ -30,7 +30,7 @@ install-cli: build-cli
 	cmake --install $(BUILD_DIR) --component CLI
 
 test: 
-	cmake -B $(BUILD_DIR) -S . -DBUILD_DOCS=OFF -DBUILD_TESTING=ON
+	cmake -B $(BUILD_DIR) -S . -DBUILD_DOCS=OFF -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Debug
 	cmake --build $(BUILD_DIR)
 	ctest --test-dir $(BUILD_DIR) --output-on-failure
 
