@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.0](https://github.com/jolars/qualpal/compare/v0.6.0...v0.7.0) (2024-06-07)
+
+
+### Features
+
+* allow negative hues to let user pick any hue range ([f6d5f73](https://github.com/jolars/qualpal/commit/f6d5f731e2632e47ba7c0593680bcf471ffc52f5))
+
 ## [0.6.0](https://github.com/jolars/qualpal/compare/v0.5.0...v0.6.0) (2024-06-07)
 
 
