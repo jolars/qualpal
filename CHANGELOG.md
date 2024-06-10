@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.1](https://github.com/jolars/qualpal/compare/v0.7.0...v0.7.1) (2024-06-10)
+
+
+### Bug Fixes
+
+* don't return nan values in rgb to hsl conversion ([284af67](https://github.com/jolars/qualpal/commit/284af6740645420daa4f97b68c75848fa5aca35e))
+
 ## [0.7.0](https://github.com/jolars/qualpal/compare/v0.6.0...v0.7.0) (2024-06-07)
 
 
