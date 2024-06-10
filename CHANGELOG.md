@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.3](https://github.com/jolars/qualpal/compare/v0.7.2...v0.7.3) (2024-06-10)
+
+
+### Bug Fixes
+
+* fix hue adjustment ([4e9eec1](https://github.com/jolars/qualpal/commit/4e9eec1f1242ab8c6f1c4e91af2b491e451e517a))
+
 ## [0.7.2](https://github.com/jolars/qualpal/compare/v0.7.1...v0.7.2) (2024-06-10)
 
 
