@@ -80,7 +80,7 @@ RGB::RGB(const HSL& hsl)
 {
   double c = (1 - std::abs(2 * hsl.l() - 1)) * hsl.s();
   double h_prime = hsl.h() >= 0 ? hsl.h() / 60.0 : (hsl.h() - 360) / 60.0;
-  double x = c * (1 - std::abs(std::fmod(h_prime, 2) - 1));
+  double x = c * (1 - std::abs(mod(h_prime, 2) - 1));
 
   double rgb_prime[3] = { 0, 0, 0 };
 
