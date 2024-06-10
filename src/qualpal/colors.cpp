@@ -82,26 +82,20 @@ RGB::RGB(const HSL& hsl)
   double h_prime = hsl.h() >= 0 ? hsl.h() / 60.0 : (hsl.h() - 360) / 60.0;
   double x = c * (1 - std::abs(mod(h_prime, 2) - 1));
 
-  double rgb_prime[3] = { 0, 0, 0 };
+  std::array<double, 3> rgb_prime = { 0, 0, 0 };
 
   if (h_prime >= 0 && h_prime < 1) {
-    rgb_prime[0] = c;
-    rgb_prime[1] = x;
+    rgb_prime = { c, x, 0 };
   } else if (h_prime >= 1 && h_prime < 2) {
-    rgb_prime[0] = x;
-    rgb_prime[1] = c;
+    rgb_prime = { x, c, 0 };
   } else if (h_prime >= 2 && h_prime < 3) {
-    rgb_prime[1] = c;
-    rgb_prime[2] = x;
+    rgb_prime = { 0, c, x };
   } else if (h_prime >= 3 && h_prime < 4) {
-    rgb_prime[1] = x;
-    rgb_prime[2] = c;
+    rgb_prime = { 0, x, c };
   } else if (h_prime >= 4 && h_prime < 5) {
-    rgb_prime[0] = x;
-    rgb_prime[2] = c;
+    rgb_prime = { x, 0, c };
   } else if (h_prime >= 5 && h_prime < 6) {
-    rgb_prime[0] = c;
-    rgb_prime[2] = x;
+    rgb_prime = { c, 0, x };
   }
 
   double m = hsl.l() - c / 2.0;
