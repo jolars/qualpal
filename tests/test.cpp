@@ -1,3 +1,4 @@
+#include "../src/qualpal/color_grid.h"
 #include "../src/qualpal/colors.h"
 #include "../src/qualpal/cvd_simulation.h"
 #include "../src/qualpal/matrix.h"
@@ -152,4 +153,42 @@ TEST_CASE("CVD simulation", "[colors]")
                                     qualpal::RGB(0.1, 0.1, 0.1) };
   auto result = qualpal::simulate_cvd(rgb, "protan", 0.5);
   REQUIRE(result.size() == 2);
+}
+
+TEST_CASE("Color grid is correctly set up", "[color-grid]")
+{
+  std::vector<qualpal::HSL> result =
+    qualpal::colorGrid({ -200, 120 }, { 0.3, 0.8 }, { 0.4, 0.9 }, 1000);
+
+  for (auto& color : result) {
+    qualpal::HSL hsl = color;
+    REQUIRE(hsl.h() >= 0);
+    REQUIRE(hsl.h() <= 360);
+    REQUIRE((hsl.h() <= 120 || hsl.h() >= 160));
+    REQUIRE(hsl.s() >= 0.3);
+    REQUIRE(hsl.s() <= 0.8);
+    REQUIRE(hsl.l() >= 0.4);
+    REQUIRE(hsl.l() <= 0.9);
+  }
+
+  REQUIRE(result.size() == 1000);
+}
+
+TEST_CASE("Output within ranges for colorspace method", "[colors]")
+{
+  const double eps = 1e-6;
+
+  std::vector<qualpal::RGB> result =
+    qualpal::qualpal(5, { -200, 120 }, { 0.3, 0.8 }, { 0.4, 0.9 });
+
+  for (auto& color : result) {
+    qualpal::HSL hsl = color;
+    REQUIRE(hsl.h() >= 0 - eps);
+    REQUIRE(hsl.h() <= 360 + eps);
+    REQUIRE((hsl.h() <= 120 + eps || hsl.h() >= 160 - eps));
+    REQUIRE(hsl.s() >= 0.3 - eps);
+    REQUIRE(hsl.s() <= 0.8 + eps);
+    REQUIRE(hsl.l() >= 0.4 - eps);
+    REQUIRE(hsl.l() <= 0.9 + eps);
+  }
 }
