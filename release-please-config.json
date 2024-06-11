@@ -1,7 +1,11 @@
 {
+  "release-type": "simple",
   "packages": {
     ".": {
-      "package-name": "qualpal"
+      "package-name": "qualpal",
+      "exclude-paths": [
+        "bindings"
+      ]
     },
     "bindings/r": {
       "package-name": "qualpalr",
