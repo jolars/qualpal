@@ -1,8 +1,11 @@
 {
   "packages": {
     ".": {
-      "release-type": "simple",
-      "bump-minor-pre-major": true
+      "package-name": "qualpal"
+    },
+    "bindings/r": {
+      "package-name": "qualpalr",
+      "changelog-path": "NEWS.md"
     }
   }
 }
