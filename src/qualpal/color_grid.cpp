@@ -17,12 +17,13 @@ public:
 
   std::array<double, Dims> next()
   {
-    ++counter;
     std::array<double, Dims> result;
 
     for (int i = 0; i < Dims; i++) {
       result[i] = halton(counter, primes[i]);
     }
+
+    ++counter;
 
     return result;
   }
@@ -44,7 +45,7 @@ private:
     return result;
   }
 
-  unsigned int counter;
+  unsigned int counter = 0;
   const std::array<int, 25> primes = { 2,  3,  5,  7,  11, 13, 17, 19, 23,
                                        29, 31, 37, 41, 43, 47, 53, 59, 61,
                                        67, 71, 73, 79, 83, 89, 97 };
