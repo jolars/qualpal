@@ -1,16 +1,20 @@
 Package: qualpalr
-Title: What the Package Does (One Line, Title Case)
+Title: Automatic Generation of Qualitative Color Palettes
 Version: @R_PKG_VERSION@
 Date: @R_PKG_DATE@
 Authors@R: 
-    person("Johan", "Larsson", , "johanlarsson@outlook.com", role = c("aut", "cre"),
-           comment = c(ORCID = "0000-0002-4029-5945"))
+    person(
+      "Johan",
+      "Larsson",
+      email = "johanlarsson@outlook.com",
+      role = c("aut", "cre"),
+      comment = c(ORCID = "0000-0002-4029-5945")
+    )
 Description: Automatic generation of maximally distinct qualitative color palettes,
     optionally tailored to color deficiency. A list of colors or a subspace
     of a color space is used as input and then projected to the DIN99d color space,
     where colors that are maximally distinct are chosen algorithmically.
 License: GPL-3
-URL: https://jolars.github.io/qualpal/
 BugReports: https://github.com/jolars/qualpal/issues
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
@@ -19,7 +23,6 @@ VignetteBuilder: knitr
 Depends:
     R (>= 4.0.0)
 Imports:
-    randtoolbox (>= 1.17),
     graphics,
     stats,
     grDevices,
@@ -27,6 +30,7 @@ Imports:
     assertthat,
     Rcpp
 Suggests:
+    randtoolbox (>= 1.17),
     testthat,
     knitr,
     maps,
