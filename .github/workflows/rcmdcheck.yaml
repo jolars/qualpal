@@ -44,8 +44,11 @@ jobs:
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
 
-      - name: Install Rcpp
-        run: Rscript -e "install.packages(c('Rcpp', 'roxygen2', 'assertthat', 'knitr', 'rmarkdown', 'rgl', 'spelling', 'covr', 'testthat', 'maps'))"
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: any::rcmdcheck
+          needs: check
+          working-directory: bindings/r
 
       - name: Configure CMake
         run: cmake -B build -S . -DBUILD_R_BINDINGS=ON
@@ -55,12 +58,6 @@ jobs:
 
       - name: Install C++ bits
         run: sudo cmake --install build
-
-      - uses: r-lib/actions/setup-r-dependencies@v2
-        with:
-          extra-packages: any::rcmdcheck
-          needs: check
-          working-directory: build/bindings/r/qualpalr
 
       - uses: r-lib/actions/check-r-package@v2
         with:
