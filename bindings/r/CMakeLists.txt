@@ -14,7 +14,16 @@ set(CPP_SRC_DIR "${CMAKE_SOURCE_DIR}/src/${CMAKE_PROJECT_NAME}")
 
 # Create folder and copy files that won't change at configuration time
 file(
-    COPY NAMESPACE R src inst vignettes tests cran-comments.md
+    COPY
+        NAMESPACE
+        R
+        src
+        inst
+        vignettes
+        tests
+        cran-comments.md
+        .Rbuildignore
+        NEWS.md
     DESTINATION ${R_PKG_OUT_DIR}
 )
 file(MAKE_DIRECTORY ${R_PKG_OUT_DIR}/src/${CMAKE_PROJECT_NAME})
@@ -25,7 +34,6 @@ configure_file(
     ${R_PKG_OUT_DIR}/DESCRIPTION
     @ONLY
 )
-configure_file(${R_PKG_IN_DIR}/LICENSE.in ${R_PKG_OUT_DIR}/LICENSE @ONLY)
 
 # Copy files to build directory
 add_custom_target(r_copy ALL COMMENT "Copy source files to build directory")
