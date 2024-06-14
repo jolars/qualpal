@@ -31,9 +31,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install dependencies
-        run: sudo apt-get install -y build-essential
-
       - name: Setup cmake
         uses: jwlawson/actions-setup-cmake@v2.0
         with:
@@ -46,6 +43,9 @@ jobs:
           r-version: ${{ matrix.config.r }}
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
+
+      - name: Install Rcpp
+        run: Rscript -e "install.packages('Rcpp')"
 
       - name: Configure CMake
         run: cmake -B build -S . -DBUILD_R_BINDINGS=ON
