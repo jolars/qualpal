@@ -49,7 +49,7 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: any::rcmdcheck
+          extra-packages: any::rcmdcheck any::roxygen2
           needs: check
           working-directory: build/bindings/r/qualpalr
 
