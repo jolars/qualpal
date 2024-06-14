@@ -23,13 +23,32 @@ if(R_EXECUTABLE)
     )
     if(RESULT EQUAL 0)
         string(
-            REGEX REPLACE
-            ".*([0-9]+\\.[0-9]+\\.[0-9]+).*"
-            "\\1"
-            R_VERSION_STRING
+            REGEX MATCH
+            "([0-9]+\\.[0-9]+\\.[0-9]+)"
+            MATCHED_R_VERSION
             ${R_VERSION_STRING}
         )
+        if(MATCHED_R_VERSION)
+            set(R_VERSION_STRING ${MATCHED_R_VERSION})
+        else()
+            message(
+                FATAL_ERROR
+                "Failed to parse R version from: ${R_VERSION_STRING}"
+            )
+        endif()
+    else()
+        message(FATAL_ERROR "Failed to get R version")
     endif()
+
+    # if(RESULT EQUAL 0)
+    #     string(
+    #         REGEX REPLACE
+    #         ".*([0-9]+\\.[0-9]+\\.[0-9]+).*"
+    #         "\\1"
+    #         R_VERSION_STRING
+    #         ${R_VERSION_STRING}
+    #     )
+    # endif()
 
     set(R_HOME
         ${R_BASE_DIR}
