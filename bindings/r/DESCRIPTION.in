@@ -25,7 +25,6 @@ Depends:
 Imports:
     graphics,
     stats,
-    grDevices,
     utils,
     assertthat,
     Rcpp
