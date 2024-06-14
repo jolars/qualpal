@@ -45,7 +45,7 @@ jobs:
           use-public-rspm: true
 
       - name: Install Rcpp
-        run: Rscript -e "install.packages(c('Rcpp', 'roxygen2'))"
+        run: Rscript -e "install.packages(c('Rcpp', 'roxygen2', 'assertthat', 'knitr', 'rmarkdown', 'rgl', 'spelling', 'covr', 'testthat', 'maps'))"
 
       - name: Configure CMake
         run: cmake -B build -S . -DBUILD_R_BINDINGS=ON
