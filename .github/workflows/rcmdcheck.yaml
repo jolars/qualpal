@@ -44,14 +44,14 @@ jobs:
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
 
+      - name: Configure CMake
+        run: cmake -B build/ -S . -DBUILD_R_BINDINGS=ON
+
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: any::rcmdcheck
           needs: check
-          working-directory: bindings/r
-
-      - name: Configure CMake
-        run: cmake -B build -S . -DBUILD_R_BINDINGS=ON
+          working-directory: build/bindings/r/qualpalr
 
       - name: Build
         run: cmake --build build
