@@ -2,14 +2,14 @@
 
 ## qualpalr 0.4.4
 
-#### Minor changes
+### Minor changes
 
 - The dependency on RcppParallel has been dropped. As a result, the
   argument `n_threads` is now deprecated (and has no effect).
 
 ## qualpalr 0.4.3
 
-#### Minor changes
+### Minor changes
 
 - `qualpal()` gains an argument, `n_threads`, for specifying the number
   of threads to use when computing the distance matrix between colors.
@@ -19,41 +19,41 @@
 
 ## qualpalr 0.4.2
 
-#### Major changes
+### Major changes
 
 - Palettes are no longer generated randomly. **qualpalr** previously started
   with a random sample of colors before running the optimization scheme but now
   instead picks a starting set of linearly spaced colors.
 
-#### Minor changes
+### Minor changes
 
 - C++ functions are registered via Rcpp.
 
-#### Bug fixes
+### Bug fixes
 
 - `autopal()` erroneously required `colorspace` to be a string.
 
 ## qualpalr 0.4.1
 
-#### Bug fixes
+### Bug fixes
 
 - Fixed `autopal()` which was broken since the minimum color difference
   returned was always 0 due to a bug in `qualpal()`.
 
-#### Minor changes
+### Minor changes
 
 - Now registers compiled functions.
 
 ## qualpalr 0.4.0
 
-#### Major changes
+### Major changes
 
 - `autopal()` is a new function that tweaks the amount of color vision
   deficiency adaptation to match a target color difference.
 - `qualpal()` argument `colorspace` now also accepts a `matrix` or
   `data.frame` of RGB colors.
 
-#### Minor changes
+### Minor changes
 
 - `qualpal()` sorts palettes in order of increasing color distinctness.
 - `qualpal()` argument `colorblind` has been made defunct.
@@ -63,7 +63,7 @@
 
 ## qualpalr 0.3.1
 
-#### Bug fixes
+### Bug fixes
 
 - Dropped a C++ header that caused the package build to fail
   on some platforms.
@@ -72,7 +72,7 @@
 
 ## qualpalr 0.3.0
 
-#### New features
+### New features
 
 - Improved algorithm for finding distinct colors. (For details
   [see this](https://larssonjohan.com/posts/farthest-points/).)
@@ -85,7 +85,7 @@
   deficiency to adapt to -- `0` for normal vision and `1` for dichromatic vision
   (protanopia, deuteranopia, or tritanopia).
 
-#### Minor improvements
+### Minor improvements
 
 - Distance and color picking algorithms have been rewritten in C++ using Rcpp,
   RcppParallel, and RcppArmadillo.
@@ -95,13 +95,13 @@
   since the function now adapts to less severe versions of color deficiency. Using
   `colorblind` is deprecated and will throw a warning.
 
-#### Bug fixes
+### Bug fixes
 
 - Fixed typos and invalid links in the _Introduction to qualpalr_ vignette.
 
 ## qualpalr 0.2.1
 
-#### New features
+### New features
 
 - Dropped daltonization since it effectively transposed the color
   subspace given by the user. qualpalr now instead only transforms the given color
@@ -109,7 +109,7 @@
   has the side-effect of decreasing the distinctness of color palettes when
   `colorblind` is used, but is more consistent with user input.
 
-#### Bug fixes and minor improvements
+### Bug fixes and minor improvements
 
 - Simulations for tritanopia were dropped since there is no reliable source
   to explain how sRGB ranges should be converted (as there is for deuteranopia
@@ -122,7 +122,7 @@
 
 ## qualpalr 0.2.0
 
-#### New features
+### New features
 
 - Redesigned the method by which qualpal picks colors. Now initializes a point
   cloud of colors, projects it to DIN99d space, and picks points greedily.
@@ -131,7 +131,7 @@
 - The introduction to qualpalr vignette has been expanded with a thorough
   description of how qualpalr picks colors.
 
-#### Bug fixes and minor improvements
+### Bug fixes and minor improvements
 
 - Moved from using `grDevices::convertColor` to formulas from
   [Bruce Lindbloom](http://www.brucelindbloom.com/) for color conversions,
