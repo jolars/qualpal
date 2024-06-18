@@ -36,6 +36,9 @@ install-r: build-r
 install-cli: build-cli
 	cmake --install $(BUILD_DIR) --component CLI
 
+readme: 
+	cd bindings/r && quarto render README.qmd
+
 test: 
 	cmake -B $(BUILD_DIR) -S . -DBUILD_DOCS=OFF -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Debug
 	cmake --build $(BUILD_DIR)
