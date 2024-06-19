@@ -9,7 +9,7 @@
     },
     "bindings/r": {
       "package-name": "qualpalr",
-      "changelog-path": "NEWS.md"
+      "changelog-path": "ChangeLog"
     }
   }
 }

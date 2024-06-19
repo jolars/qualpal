@@ -25,6 +25,7 @@ file(
         .Rbuildignore
         NEWS.md
         README.md
+        ChangeLog
     DESTINATION ${R_PKG_OUT_DIR}
 )
 file(MAKE_DIRECTORY ${R_PKG_OUT_DIR}/src/${CMAKE_PROJECT_NAME})
