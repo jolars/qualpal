@@ -47,6 +47,9 @@ test:
 test-r: build-r
 	cd build/bindings/r/qualpalr && Rscript -e "devtools::test()"
 
+check-r: build-r
+	cd build/bindings/r/qualpalr && Rscript -e "devtools::check()"
+
 clean:
 	rm -rf $(BUILD_DIR)
 
