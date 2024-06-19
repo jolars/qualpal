@@ -4,7 +4,6 @@ include(CMakePrintHelpers)
 
 set(R_PKG_NAME qualpalr)
 set(R_PKG_VERSION ${CMAKE_PROJECT_VERSION})
-file(STRINGS version.txt R_PKG_VERSION)
 string(TIMESTAMP R_PKG_DATE "%Y-%m-%d")
 
 # Copy all R package files to the build directory

@@ -2,14 +2,7 @@
   "release-type": "simple",
   "packages": {
     ".": {
-      "package-name": "qualpal",
-      "exclude-paths": [
-        "bindings"
-      ]
-    },
-    "bindings/r": {
-      "package-name": "qualpalr",
-      "changelog-path": "ChangeLog"
+      "bump-minor-pre-major": true
     }
   }
 }
