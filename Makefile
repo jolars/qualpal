@@ -3,7 +3,7 @@ TEST_DIR = test
 
 all: build
 
-.PHONY: configure build build-r build-cli docs release install install-r test clean
+.PHONY: configure build build-cli docs release install test clean
 
 build:
 	cmake -B $(BUILD_DIR) -S .
@@ -30,25 +30,13 @@ release: clean
 install:
 	cmake --install $(BUILD_DIR)
 
-install-r: build-r
-	cmake --install $(BUILD_DIR) --component R_BINDINGS
-
 install-cli: build-cli
 	cmake --install $(BUILD_DIR) --component CLI
-
-readme: 
-	cd bindings/r && quarto render README.qmd
 
 test: 
 	cmake -B $(BUILD_DIR) -S . -DBUILD_DOCS=OFF -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Debug
 	cmake --build $(BUILD_DIR)
 	ctest --test-dir $(BUILD_DIR) --output-on-failure
-
-test-r: build-r
-	cd build/bindings/r/qualpalr && Rscript -e "devtools::test()"
-
-check-r: build-r
-	cd build/bindings/r/qualpalr && Rscript -e "devtools::check()"
 
 clean:
 	rm -rf $(BUILD_DIR)

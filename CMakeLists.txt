@@ -5,7 +5,6 @@ file(STRINGS "version.txt" project_version)
 project(qualpal LANGUAGES CXX VERSION ${project_version})
 
 option(BUILD_DOCS "Build documentation" OFF)
-option(BUILD_R_BINDINGS "Build R bindings" OFF)
 option(BUILD_CLI "Build CLI application" OFF)
 option(ENABLE_COVERAGE "Generate coverage report" OFF)
 
@@ -19,8 +18,6 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 set(PROJECT_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 add_subdirectory(src)
-
-add_subdirectory(bindings)
 
 if(BUILD_CLI)
     add_executable(qualpal_cli src/main.cpp)
