@@ -1,18 +1,9 @@
 #include "qualpal/qualpal.h"
 #include <CLI/CLI.hpp>
 #include <iostream>
-#include <regex>
 #include <stdexcept>
 #include <string>
 #include <vector>
-
-// Check if the input is a valid HTML hex color representation
-bool
-isValidHexColor(const std::string& color)
-{
-  std::regex color_regex("^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$");
-  return std::regex_match(color, color_regex);
-}
 
 std::array<double, 2>
 splitHslString(const std::string& str)
