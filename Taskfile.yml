@@ -22,7 +22,8 @@ tasks:
 
   build-cli:
     cmds:
-      - cmake --build {{.BUILD_DIR}} -DBUILD_CLI=ON
+      - cmake -B {{.BUILD_DIR}} -S . -DBUILD_CLI=ON
+      - cmake --build {{.BUILD_DIR}}
 
   docs:
     cmds:
