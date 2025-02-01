@@ -21,7 +21,7 @@ int
 main(int argc, char** argv)
 {
   CLI::App app{ "Qualitative color palettes" };
-  // argv = app.ensure_utf8(argv);
+  argv = app.ensure_utf8(argv);
 
   std::string input = "hex";
 
