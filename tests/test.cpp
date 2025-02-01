@@ -192,3 +192,12 @@ TEST_CASE("Output within ranges for colorspace method", "[colors]")
     REQUIRE(hsl.l() <= 0.9 + eps);
   }
 }
+
+TEST_CASE("Character method works as it it supposed to", "[colors]")
+{
+  const double eps = 1e-6;
+  std::vector<qualpal::RGB> result = qualpal::qualpal(2, "tab10");
+
+  REQUIRE(result[0].hex() == "#4e79a7");
+  REQUIRE(result[1].hex() == "#edc948");
+}

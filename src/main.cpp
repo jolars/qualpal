@@ -74,8 +74,6 @@ main(int argc, char** argv)
     hex_out.emplace_back(rgb.hex());
   }
 
-  std::cout << "The generated colors are:" << std::endl;
-
   for (const auto& hex : hex_out) {
     std::cout << hex << std::endl;
   }
