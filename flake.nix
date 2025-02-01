@@ -18,6 +18,7 @@
         devShells.default = pkgs.mkShell {
           packages = with pkgs; [
             bashInteractive
+            cli11
             go-task
             catch2_3
             clang
