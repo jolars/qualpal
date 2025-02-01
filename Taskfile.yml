@@ -1,0 +1,60 @@
+version: "3"
+
+vars:
+  BUILD_DIR: build
+  TEST_DIR: test
+
+tasks:
+  default:
+    deps: [configure, build]
+
+  configure:
+    cmds:
+      - cmake -B {{.BUILD_DIR}} -S . -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+
+  debug:
+    cmds:
+      - cmake -B {{.BUILD_DIR}} -S . -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+
+  build:
+    cmds:
+      - cmake --build {{.BUILD_DIR}}
+
+  build-cli:
+    cmds:
+      - cmake --build {{.BUILD_DIR}} -DBUILD_CLI=ON
+
+  docs:
+    cmds:
+      - cmake -B {{.BUILD_DIR}} -S . -DBUILD_DOCS=ON -DBUILD_TESTING=OFF
+      - cmake --build {{.BUILD_DIR}}
+
+  coverage:
+    cmds:
+      - cmake -B {{.BUILD_DIR}} -S . -DBUILD_DOCS=ON -DBUILD_TESTING=ON -DENABLE_COVERAGE=ON
+      - cmake --build {{.BUILD_DIR}}
+      - ctest --test-dir {{.BUILD_DIR}} --output-on-failure
+
+  release:
+    deps: [clean]
+    cmds:
+      - cmake -B {{.BUILD_DIR}} -S . -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=OFF
+      - task: build
+      - task: install
+
+  clean:
+    cmds:
+      - rm -rf {{.BUILD_DIR}}/*
+
+  install:
+    cmds:
+      - cmake --install {{.BUILD_DIR}}
+
+  install-cli: build-cli
+    cmake --install $(BUILD_DIR) --component CLI
+
+  test:
+    cmds:
+      - cmake -B {{.BUILD_DIR}} -S . -DBUILD_DOCS=OFF -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Debug
+      - cmake --build {{.BUILD_DIR}}
+      - ctest --test-dir {{.BUILD_DIR}} --output-on-failure
