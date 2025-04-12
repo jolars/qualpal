@@ -2,6 +2,7 @@
 #include "color_grid.h"
 #include "cvd_simulation.h"
 #include "farthest_points.h"
+#include "palettes.h"
 #include <cassert>
 #include <map>
 #include <regex>
@@ -63,6 +64,28 @@ qualpal(const int n,
 
   for (auto color : hex_colors) {
     assert(isValidHexColor(color) && "Values are hex colors");
+    rgb_colors.emplace_back(color);
+  }
+
+  return qualpal(n, rgb_colors, cvd);
+}
+
+std::vector<RGB>
+qualpal(const int n,
+        const std::string& palette,
+        const std::map<std::string, double>& cvd)
+{
+  std::vector<qualpal::RGB> rgb_colors;
+
+  std::vector<std::string> hex_colors = getPalette(palette);
+
+  if (n > static_cast<int>(hex_colors.size())) {
+    throw std::invalid_argument("Requested number of colors (" +
+                                std::to_string(n) + ") exceeds palette size (" +
+                                std::to_string(hex_colors.size()) + ")");
+  }
+
+  for (auto color : hex_colors) {
     rgb_colors.emplace_back(color);
   }
 

@@ -6,6 +6,7 @@ add_library(
     qualpal/farthest_points.cpp
     qualpal/color_grid.cpp
     qualpal/cvd_simulation.cpp
+    qualpal/palettes.cpp
 )
 
 target_include_directories(qualpal INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})

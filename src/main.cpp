@@ -26,7 +26,7 @@ main(int argc, char** argv)
   std::string input = "hex";
 
   app.add_option("-i,--input", input, "Type of input")
-    ->check(CLI::IsMember({ "hex", "colorspace" }));
+    ->check(CLI::IsMember({ "hex", "colorspace", "palette" }));
 
   int n = 8;
   std::vector<std::string> values;
@@ -57,6 +57,13 @@ main(int argc, char** argv)
     std::array<double, 2> l_lim = splitHslString(values[2]);
 
     rgb_out = qualpal::qualpal(n, h_lim, s_lim, l_lim);
+  } else if (input == "palette") {
+    if (values.size() != 1) {
+      std::cout << "One value (the palette) is required for the palette input"
+                << std::endl;
+      return 1;
+    }
+    rgb_out = qualpal::qualpal(n, values[0]);
   }
 
   std::vector<std::string> hex_out;
