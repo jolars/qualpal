@@ -1,5 +1,37 @@
 # Changelog
 
+## [0.9.0](https://github.com/jolars/qualpal/compare/v0.8.0...v0.9.0) (2025-04-12)
+
+
+### ⚠ BREAKING CHANGES
+
+* require utf8 in input
+* remove bindings (r)
+* remove n_threads from API
+* revert removal of bindings
+
+### Features
+
+* add convert_colors and organize output ([1047f9a](https://github.com/jolars/qualpal/commit/1047f9ab62d3bd14fa901f062adb7a0f75583c60))
+* add string method to use color palette as base ([a1b6e2e](https://github.com/jolars/qualpal/commit/a1b6e2e78d128869886d3dc9a21978dbdc617432))
+* only return colors when called in cli ([2bbea10](https://github.com/jolars/qualpal/commit/2bbea10416dc1685c8e4cf5e0cc0ee0dce17e800))
+* remove bindings (r) ([571a0b4](https://github.com/jolars/qualpal/commit/571a0b40fa9c546a66b63cfbc7ab3e499859111e))
+* remove n_threads from API ([dd44576](https://github.com/jolars/qualpal/commit/dd4457620d1350822e4464e60f39ae5a4e45b0e8))
+* require utf8 in input ([d90f1c2](https://github.com/jolars/qualpal/commit/d90f1c201ffe57371e3bbb687f39215d12106533))
+* revert removal of bindings ([f4e4905](https://github.com/jolars/qualpal/commit/f4e490544fe978f6325fa0ae6ac8b55ce695ec59))
+* **r:** export convert_colors() function ([07d5d11](https://github.com/jolars/qualpal/commit/07d5d11d330d45f8b2d83c4112691f5564c772da))
+
+
+### Bug Fixes
+
+* initialize counter and increment after loop ([19e9797](https://github.com/jolars/qualpal/commit/19e9797f84556630155b5054111584aa5d6273a4))
+* **r:** fix formatting of documentation, dropping brackets ([1090a04](https://github.com/jolars/qualpal/commit/1090a04d073eada01f3c35b07bfc678f1ee9d3f5))
+
+
+### Reverts
+
+* "docs: remove stuff about bindings from readme" ([8b31493](https://github.com/jolars/qualpal/commit/8b31493cc1a7ff86b037e7628c76c89700ed3559))
+
 ## [0.8.0](https://github.com/jolars/qualpal/compare/v0.7.3...v0.8.0) (2024-06-10)
 
 
