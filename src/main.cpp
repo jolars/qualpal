@@ -35,7 +35,8 @@ main(int argc, char** argv)
   std::vector<std::string> values;
 
   app.add_option<int, int>("-n,--number", n, "Number of colors to generate");
-  app.add_option("values", values, "Colors or color space");
+  app.add_option("values", values, "Input values (depends on input type)")
+    ->required();
 
   CLI11_PARSE(app, argc, argv);
 
