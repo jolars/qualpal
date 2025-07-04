@@ -28,7 +28,10 @@ main(int argc, char** argv)
   app
     .add_option("-i,--input",
                 input,
-                "Input type: hex colors, colorspace ranges, or palette name")
+                "Input type:\n"
+                "  hex        - Hex color values (#ff0000)\n"
+                "  colorspace - HSL ranges (h1:h2 s1:s2 l1:l2)\n"
+                "  palette    - Built-in palette name")
     ->check(CLI::IsMember({ "hex", "colorspace", "palette" }));
 
   int n = 8;
