@@ -25,7 +25,10 @@ main(int argc, char** argv)
 
   std::string input = "hex";
 
-  app.add_option("-i,--input", input, "Type of input")
+  app
+    .add_option("-i,--input",
+                input,
+                "Input type: hex colors, colorspace ranges, or palette name")
     ->check(CLI::IsMember({ "hex", "colorspace", "palette" }));
 
   int n = 8;
