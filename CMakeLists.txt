@@ -51,7 +51,14 @@ if(BUILD_TESTING)
         FetchContent_MakeAvailable(Catch2)
     endif()
 
-    add_executable(tests tests/test.cpp)
+    add_executable(
+        tests
+        tests/colors.cpp
+        tests/cvd.cpp
+        tests/main.cpp
+        tests/math.cpp
+        tests/validation.cpp
+    )
     target_link_libraries(tests PRIVATE Catch2::Catch2WithMain qualpal)
     target_include_directories(tests PUBLIC tests "${PROJECT_BINARY_DIR}")
 
