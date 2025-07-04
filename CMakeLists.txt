@@ -155,7 +155,7 @@ if(BUILD_DOCS)
         docs
         docs/mainpage.md
         docs/algorithm.md
-        include/qualpal
+        include/
         ALL
         COMMENT "Generate package documentation"
     )
