@@ -56,6 +56,38 @@ if(BUILD_CLI)
     target_include_directories(qualpal_cli PUBLIC "${PROJECT_BINARY_DIR}")
 
     install(TARGETS qualpal_cli DESTINATION bin COMPONENT CLI)
+
+    find_program(HELP2MAN_EXECUTABLE help2man)
+    if(HELP2MAN_EXECUTABLE)
+        unset(SOURCE_DATE_EPOCH)
+        message(STATUS "Using SOURCE_DATE_EPOCH: ${SOURCE_DATE_EPOCH}")
+        add_custom_command(
+            OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/qualpal.1
+            COMMAND
+                ${CMAKE_COMMAND} -E env "SOURCE_DATE_EPOCH=${SOURCE_DATE_EPOCH}"
+                ${HELP2MAN_EXECUTABLE}
+                --name="automatic generation of qualitative color palettes"
+                --section=1 --no-info --version-string=${PROJECT_VERSION}
+                --help-option="--help"
+                --include=${CMAKE_CURRENT_SOURCE_DIR}/docs/qualpal.help2man
+                --output=${CMAKE_CURRENT_BINARY_DIR}/qualpal.1
+                $<TARGET_FILE:qualpal_cli>
+            DEPENDS
+                qualpal_cli
+                ${CMAKE_CURRENT_SOURCE_DIR}/docs/qualpal.help2man
+            COMMENT "Generating man page with help2man"
+        )
+
+        add_custom_target(man ALL DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/qualpal.1)
+
+        install(
+            FILES ${CMAKE_CURRENT_BINARY_DIR}/qualpal.1
+            DESTINATION share/man/man1
+            COMPONENT CLI
+        )
+    else()
+        message(WARNING "help2man not found - man page will not be generated")
+    endif()
 endif()
 
 if(BUILD_TESTING)

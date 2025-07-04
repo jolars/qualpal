@@ -31,6 +31,7 @@
             gdb
             lcov
             lldb
+            help2man
           ];
         };
       }
