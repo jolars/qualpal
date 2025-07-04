@@ -41,6 +41,17 @@ main(int argc, char** argv)
   app.add_option("values", values, "Input values (depends on input type)")
     ->required();
 
+  app.footer("Examples:\n"
+             "  Generate 5 colors from hex inputs:\n"
+             "    qualpal -n 5 -i hex \"#ff0000\" \"#00ff00\" \"#0000ff\"\n\n"
+             "  Generate palette from HSL ranges:\n"
+             "    qualpal -n 8 -i colorspace \"0:360\" \"50:100\" \"30:70\"\n\n"
+             "  Generate from built-in palette:\n"
+             "    qualpal -n 6 -i palette \"rainbow\"\n\n"
+             "  Output in different formats:\n"
+             "    qualpal -o rgb \"#ff0000\" \"#00ff00\"\n"
+             "    qualpal -o hsl \"#ff0000\" \"#00ff00\"");
+
   CLI11_PARSE(app, argc, argv);
 
   if (values.empty()) {
