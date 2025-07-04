@@ -20,17 +20,20 @@ set(PROJECT_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 add_subdirectory(src)
 
 if(BUILD_CLI)
+    find_package(CLI11 2.4 QUIET)
+    if(NOT CLI11_FOUND)
+        include(FetchContent)
+        FetchContent_Declare(
+            CLI11
+            GIT_REPOSITORY https://github.com/CLIUtils/CLI11.git
+            GIT_TAG v2.4.2
+            GIT_SHALLOW TRUE
+        )
+        FetchContent_MakeAvailable(CLI11)
+    endif()
+
     add_executable(qualpal_cli src/main.cpp)
     set_property(TARGET qualpal_cli PROPERTY OUTPUT_NAME qualpal)
-
-    FetchContent_Declare(
-        cli11
-        GIT_REPOSITORY https://github.com/CLIUtils/CLI11.git
-        GIT_TAG v2.4.2
-    )
-
-    FetchContent_MakeAvailable(cli11)
-
     target_link_libraries(qualpal_cli PUBLIC qualpal CLI11::CLI11)
     target_include_directories(qualpal_cli PUBLIC "${PROJECT_BINARY_DIR}")
 
@@ -38,7 +41,7 @@ if(BUILD_CLI)
 endif()
 
 if(BUILD_TESTING)
-    find_package(Catch2 3 QUIET)
+    find_package(Catch2 3.6 QUIET)
     if(NOT Catch2_FOUND)
         FetchContent_Declare(
             Catch2
