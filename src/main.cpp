@@ -23,7 +23,8 @@ main(int argc, char** argv)
   CLI::App app{ "qualpal: automatic generation of qualitative color palettes\n"
                 "A tool for creating perceptually distinct color palettes for "
                 "data visualization." };
-  argv = app.ensure_utf8(argv);
+
+  app.require_subcommand(0, 1);
 
   std::string input = "hex";
 
@@ -43,17 +44,18 @@ main(int argc, char** argv)
   app.add_option("values", values, "Input values (depends on input type)")
     ->required();
 
-  app.footer("Examples:\n"
-             "  Generate 5 colors from hex inputs:\n"
-             "    qualpal -n 5 -i hex \"#ff0000\" \"#00ff00\" \"#0000ff\"\n\n"
-             "  Generate palette from HSL ranges:\n"
-             "    qualpal -n 8 -i colorspace \"0:360\" \"50:100\" \"30:70\"\n\n"
-             "  Generate from built-in palette:\n"
-             "    qualpal -n 6 -i palette \"rainbow\"\n\n"
-             "  Output in different formats:\n"
-             "    qualpal -o rgb \"#ff0000\" \"#00ff00\"\n"
-             "    qualpal -o hsl \"#ff0000\" \"#00ff00\"");
+  app.footer(
+    "Examples:\n"
+    "  Generate 5 colors from hex inputs:\n"
+    "    qualpal -n 5 -i hex \"#ff0000\" \"#00ff00\" \"#0000ff\"\n\n"
+    "  Generate palette from HSL ranges:\n"
+    "    qualpal -n 8 -i colorspace \"0:360\" \"0.5:1\" \"0.3:0.7\"\n\n"
+    "  Generate from built-in palette:\n"
+    "    qualpal -n 3 -i palette \"ColorBrewer:Set1\"");
 
+  auto help_cmd = app.add_subcommand("help", "Show detailed help information");
+
+  argv = app.ensure_utf8(argv);
   CLI11_PARSE(app, argc, argv);
 
   if (values.empty()) {
