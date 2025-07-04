@@ -1,4 +1,4 @@
-# qualpal <img src='https://raw.githubusercontent.com/jolars/qualpal/refs/heads/main/docs/images/logo.svg' align="right" height="139" />
+# qualpal <img src='https://raw.githubusercontent.com/jolars/qualpal/refs/heads/main/docs/images/logo.svg' align="right" width="139" />
 
 [![Build Status](https://github.com/user/qualpal/workflows/CI/badge.svg)](https://github.com/user/qualpal/actions)
 [![codecov](https://codecov.io/gh/jolars/qualpal/graph/badge.svg?token=p5JTFa9BUz)](https://codecov.io/gh/jolars/qualpal)
