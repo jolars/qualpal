@@ -20,7 +20,9 @@ splitHslString(const std::string& str)
 int
 main(int argc, char** argv)
 {
-  CLI::App app{ "Qualitative color palettes" };
+  CLI::App app{ "qualpal: automatic generation of qualitative color palettes\n"
+                "A tool for creating perceptually distinct color palettes for "
+                "data visualization." };
   argv = app.ensure_utf8(argv);
 
   std::string input = "hex";
