@@ -66,27 +66,35 @@ main(int argc, char** argv)
 
   std::vector<qualpal::RGB> rgb_out;
 
-  if (input == "hex") {
-    rgb_out = qualpal::qualpal(n, values);
-  } else if (input == "colorspace") {
-    if (values.size() != 3) {
-      std::cout << "Three ranges (for hue, saturation, and lightness) are "
-                   "required for the color space input"
-                << std::endl;
-      return 1;
-    }
-    std::array<double, 2> h_lim = splitHslString(values[0]);
-    std::array<double, 2> s_lim = splitHslString(values[1]);
-    std::array<double, 2> l_lim = splitHslString(values[2]);
+  try {
+    if (input == "hex") {
+      rgb_out = qualpal::qualpal(n, values);
+    } else if (input == "colorspace") {
+      if (values.size() != 3) {
+        std::cerr << "Error: Colorspace input requires exactly 3 ranges (hue, "
+                     "saturation, lightness)"
+                  << std::endl;
+        return 1;
+      }
+      std::array<double, 2> h_lim = splitHslString(values[0]);
+      std::array<double, 2> s_lim = splitHslString(values[1]);
+      std::array<double, 2> l_lim = splitHslString(values[2]);
 
-    rgb_out = qualpal::qualpal(n, h_lim, s_lim, l_lim);
-  } else if (input == "palette") {
-    if (values.size() != 1) {
-      std::cout << "One value (the palette) is required for the palette input"
-                << std::endl;
-      return 1;
+      rgb_out = qualpal::qualpal(n, h_lim, s_lim, l_lim);
+    } else if (input == "palette") {
+      if (values.size() != 1) {
+        std::cerr << "Error: Palette input requires exactly one palette name"
+                  << std::endl;
+        return 1;
+      }
+      rgb_out = qualpal::qualpal(n, values[0]);
     }
-    rgb_out = qualpal::qualpal(n, values[0]);
+  } catch (const std::invalid_argument& e) {
+    std::cerr << "Error: " << e.what() << std::endl;
+    return 1;
+  } catch (const std::exception& e) {
+    std::cerr << "Error: " << e.what() << std::endl;
+    return 1;
   }
 
   std::vector<std::string> hex_out;
