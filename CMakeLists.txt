@@ -54,8 +54,8 @@ if(BUILD_TESTING)
     add_executable(
         tests
         tests/colors.cpp
+        tests/core.cpp
         tests/cvd.cpp
-        tests/main.cpp
         tests/math.cpp
         tests/validation.cpp
     )
