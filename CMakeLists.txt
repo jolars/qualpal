@@ -70,10 +70,39 @@ endif()
 
 if(BUILD_DOCS)
     find_package(Doxygen REQUIRED)
+
+    string(
+        CONCAT
+        AWESOME_CSS_URL
+        "https://github.com/jothepro/"
+        "doxygen-awesome-css/archive/refs/heads/main.zip"
+    )
+
+    FetchContent_Declare(
+        doxygen-awesome-css
+        URL ${AWESOME_CSS_URL}
+        DOWNLOAD_EXTRACT_TIMESTAMP TRUE
+    )
+    FetchContent_MakeAvailable(doxygen-awesome-css)
+    FetchContent_GetProperties(doxygen-awesome-css SOURCE_DIR AWESOME_CSS_DIR)
+
+    # Generate the Doxyfile
+    set(DOXYGEN_IMAGE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/assets")
+    set(DOXYGEN_HTML_EXTRA_STYLESHEET
+        "${AWESOME_CSS_DIR}/doxygen-awesome.css"
+        "${AWESOME_CSS_DIR}/doxygen-awesome-sidebar-only.css"
+    )
+    set(DOXYGEN_DISABLE_INDEX NO)
+    set(DOXYGEN_FULL_SIDEBAR NO)
+    set(DOXYGEN_GENERATE_TREEVIEW YES)
+    set(DOXYGEN_HTML_COLORSTYLE LIGHT)
     set(DOXYGEN_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/docs)
-    set(DOXYGEN_EXCLUDE_PATTERNS _deps)
+    set(DOXYGEN_USE_MATHJAX YES)
+    set(DOXYGEN_SOURCE_BROWSER YES)
+
     doxygen_add_docs(
         docs
+        docs/mainpage.md
         ${PROJECT_SOURCE_DIR}
         ALL
         COMMENT "Generate package documentation"
