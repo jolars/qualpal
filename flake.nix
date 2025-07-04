@@ -24,6 +24,7 @@
             clang
             clang-tools
             cmake
+            gnuplot
             doxygen
             gcc
             ghostscript

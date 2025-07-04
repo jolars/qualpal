@@ -20,7 +20,7 @@ difference estimation than alternatives:
 
 ### Color Space Pipeline
 
-````Input Colors → RGB → XYZ → Lab → DIN99d → Distance Matrix → Farthest Point
+Input Colors → RGB → XYZ → Lab → DIN99d → Distance Matrix → Farthest Point
 Sampling → Output ```
 
 ## Farthest Point Sampling
@@ -30,7 +30,7 @@ pair:
 
 1. **Initialize**: Select the first color arbitrarily
 2. **Iterate**: For each subsequent color, choose the one farthest from all
-previously selected colors
+   previously selected colors
 3. **Distance Metric**: Euclidean distance in DIN99d space
 
 ### Time Complexity
@@ -47,8 +47,11 @@ When CVD parameters are provided:
 2. **Measure**: Compute distances in the simulated color space
 3. **Select**: Apply farthest-point sampling to simulated colors
 4. **Return**: Original (non-simulated) colors corresponding to selected
-indices
+   indices
 
 This ensures the palette remains distinct for users with color vision
 deficiencies.
-````
+
+## Blabla
+
+![Example Image](images/hsl_sampling.png)

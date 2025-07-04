@@ -6,6 +6,7 @@ project(qualpal LANGUAGES CXX VERSION ${project_version})
 
 option(BUILD_DOCS "Build documentation" OFF)
 option(BUILD_CLI "Build CLI application" OFF)
+option(BUILD_VISUALIZATIONS "Build visualization tools" OFF)
 option(ENABLE_COVERAGE "Generate coverage report" OFF)
 
 include(FetchContent)
@@ -75,6 +76,28 @@ if(BUILD_TESTING)
     endif()
 endif()
 
+if(BUILD_VISUALIZATIONS)
+    # Check for gnuplot
+    find_package(Gnuplot REQUIRED)
+
+    # Data generation executable
+    add_executable(generate_data src/visualization/generate_data.cpp)
+    target_link_libraries(generate_data PRIVATE qualpal)
+
+    add_custom_target(
+        plots
+        COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/docs/data
+        COMMAND
+            ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/docs/images
+        COMMAND $<TARGET_FILE:generate_data>
+        COMMAND chmod +x ${CMAKE_SOURCE_DIR}/docs/generate_plots.sh
+        COMMAND ${CMAKE_SOURCE_DIR}/docs/generate_plots.sh
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+        DEPENDS generate_data
+        COMMENT "Generating documentation plots with gnuplot"
+    )
+endif()
+
 if(BUILD_DOCS)
     find_package(Doxygen REQUIRED)
 
@@ -94,7 +117,7 @@ if(BUILD_DOCS)
     FetchContent_GetProperties(doxygen-awesome-css SOURCE_DIR AWESOME_CSS_DIR)
 
     # Generate the Doxyfile
-    set(DOXYGEN_IMAGE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/assets")
+    set(DOXYGEN_IMAGE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/docs/images")
     set(DOXYGEN_HTML_EXTRA_STYLESHEET
         "${AWESOME_CSS_DIR}/doxygen-awesome.css"
         "${AWESOME_CSS_DIR}/doxygen-awesome-sidebar-only.css"
@@ -104,6 +127,7 @@ if(BUILD_DOCS)
     set(DOXYGEN_GENERATE_TREEVIEW YES)
     set(DOXYGEN_HTML_COLORSTYLE LIGHT)
     set(DOXYGEN_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/docs)
+    set(DOXYGEN_PROJECT_LOGO "${CMAKE_CURRENT_SOURCE_DIR}/docs/images/logo.svg")
     set(DOXYGEN_USE_MATHJAX YES)
     set(DOXYGEN_SOURCE_BROWSER YES)
 
