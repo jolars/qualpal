@@ -1,7 +1,5 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/matchers/catch_matchers_floating_point.hpp>
-#include <qualpal/color_grid.h>
-#include <qualpal/cvd_simulation.h>
 #include <qualpal/validation.h>
 
 using namespace qualpal;

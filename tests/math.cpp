@@ -1,10 +1,8 @@
-#include "../src/qualpal/color_grid.h"
-#include "../src/qualpal/cvd_simulation.h"
-#include "../src/qualpal/qualpal.h"
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/matchers/catch_matchers_floating_point.hpp>
+#include <qualpal/matrix.h>
 
-TEST_CASE("Matrix-Matrix multiplication", "[FixedMatrix]")
+TEST_CASE("Matrix-Matrix multiplication", "[math][matrix]")
 {
   qualpal::FixedMatrix<int, 2, 3> A = { { 1, 2, 3 }, { 4, 5, 6 } };
   qualpal::FixedMatrix<int, 3, 2> B = { { 7, 8 }, { 9, 10 }, { 11, 12 } };
@@ -17,7 +15,7 @@ TEST_CASE("Matrix-Matrix multiplication", "[FixedMatrix]")
   REQUIRE(result(1, 1) == 154);
 }
 
-TEST_CASE("Matrix-MatrixTranspose multiplication", "[FixedMatrix]")
+TEST_CASE("Matrix-MatrixTranspose multiplication", "[math][matrix]")
 {
   qualpal::FixedMatrix<int, 2, 3> A = { { 1, 2, 3 }, { 4, 5, 6 } };
   qualpal::FixedMatrix<int, 2, 3> B = { { 7, 8, 9 }, { 10, 11, 12 } };
