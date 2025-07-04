@@ -1,6 +1,6 @@
+#include "../src/qualpal/cvd_simulation.h"
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/matchers/catch_matchers_floating_point.hpp>
-#include <qualpal/cvd_simulation.h>
 
 TEST_CASE("CVD simulation", "[colors]")
 {

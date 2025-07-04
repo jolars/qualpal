@@ -20,6 +20,23 @@ set(PROJECT_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 add_subdirectory(src)
 
+install(
+    DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/qualpal/
+    DESTINATION include/qualpal
+    FILES_MATCHING
+    PATTERN "*.h"
+    PATTERN "qualpal"
+)
+
+target_include_directories(
+    qualpal
+    PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        $<INSTALL_INTERFACE:include>
+)
+
+install(TARGETS qualpal DESTINATION lib)
+
 if(BUILD_CLI)
     find_package(CLI11 2.4 QUIET)
     if(NOT CLI11_FOUND)
@@ -130,12 +147,15 @@ if(BUILD_DOCS)
     set(DOXYGEN_PROJECT_LOGO "${CMAKE_CURRENT_SOURCE_DIR}/docs/images/logo.svg")
     set(DOXYGEN_USE_MATHJAX YES)
     set(DOXYGEN_SOURCE_BROWSER YES)
+    set(DOXYGEN_EXTRACT_ALL NO)
+    set(DOXYGEN_EXTRACT_PRIVATE NO)
+    set(DOXYGEN_EXTRACT_STATIC NO)
 
     doxygen_add_docs(
         docs
         docs/mainpage.md
         docs/algorithm.md
-        ${PROJECT_SOURCE_DIR}
+        include/qualpal
         ALL
         COMMENT "Generate package documentation"
     )

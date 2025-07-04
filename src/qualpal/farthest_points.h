@@ -1,4 +1,4 @@
-#include "colors.h"
+#include <qualpal_bits/colors.h>
 #include <vector>
 
 namespace qualpal {

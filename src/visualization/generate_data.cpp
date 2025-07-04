@@ -1,9 +1,9 @@
+#include "../qualpal/color_grid.h"
 #include <fstream>
 #include <iomanip>
 #include <iostream>
-#include <qualpal/color_grid.h>
-#include <qualpal/colors.h>
-#include <qualpal/qualpal.h>
+#include <qualpal_bits/colors.h>
+#include <qualpal_bits/core.h>
 
 void
 generateHSLData()

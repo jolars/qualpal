@@ -7,9 +7,10 @@
  * Supports multiple input formats and color vision deficiency simulation.
  */
 
-#include "colors.h"
-#include "distance_matrix.h"
+#pragma once
+
 #include <map>
+#include <qualpal_bits/colors.h>
 #include <vector>
 
 /**

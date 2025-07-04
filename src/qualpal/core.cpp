@@ -1,4 +1,3 @@
-#include "qualpal.h"
 #include "color_grid.h"
 #include "cvd_simulation.h"
 #include "farthest_points.h"
@@ -6,6 +5,7 @@
 #include "validation.h"
 #include <cassert>
 #include <map>
+#include <qualpal_bits/core.h>
 #include <stdexcept>
 #include <vector>
 

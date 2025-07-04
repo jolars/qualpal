@@ -1,6 +1,6 @@
+#include "../src/qualpal/matrix.h"
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/matchers/catch_matchers_floating_point.hpp>
-#include <qualpal/matrix.h>
 
 TEST_CASE("Matrix-Matrix multiplication", "[math][matrix]")
 {

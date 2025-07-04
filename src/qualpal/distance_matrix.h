@@ -1,5 +1,5 @@
-#include "colors.h"
 #include "matrix.h"
+#include <qualpal_bits/colors.h>
 #include <vector>
 
 namespace qualpal {
