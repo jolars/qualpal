@@ -1,4 +1,5 @@
 #include "qualpal/qualpal.h"
+#include "qualpal/validation.h"
 #include <CLI/CLI.hpp>
 #include <iostream>
 #include <stdexcept>
@@ -68,6 +69,13 @@ main(int argc, char** argv)
 
   try {
     if (input == "hex") {
+      for (const auto& color : values) {
+        if (!qualpal::isValidHexColor(color)) {
+          std::cerr << "Error: Invalid hex color '" << color
+                    << "'. Expected format: #RRGGBB or #RGB" << std::endl;
+          return 1;
+        }
+      }
       rgb_out = qualpal::qualpal(n, values);
     } else if (input == "colorspace") {
       if (values.size() != 3) {

@@ -6,6 +6,7 @@ add_library(
     qualpal/farthest_points.cpp
     qualpal/color_grid.cpp
     qualpal/cvd_simulation.cpp
+    qualpal/validation.cpp
     qualpal/palettes.cpp
 )
 
