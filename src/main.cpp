@@ -59,7 +59,8 @@ main(int argc, char** argv)
   CLI11_PARSE(app, argc, argv);
 
   if (values.empty()) {
-    std::cout << "No value(s) provided" << std::endl;
+    std::cerr << "Error: No values provided. Use --help for usage information."
+              << std::endl;
     return 1;
   }
 
