@@ -88,6 +88,8 @@ main(int argc, char** argv)
       std::array<double, 2> s_lim = splitHslString(values[1]);
       std::array<double, 2> l_lim = splitHslString(values[2]);
 
+      qualpal::validateHslRanges(h_lim, s_lim, l_lim);
+
       rgb_out = qualpal::qualpal(n, h_lim, s_lim, l_lim);
     } else if (input == "palette") {
       if (values.size() != 1) {
