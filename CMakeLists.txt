@@ -234,3 +234,5 @@ if(BUILD_DOCS)
         COMMENT "Generate package documentation"
     )
 endif()
+
+install(FILES LICENSE DESTINATION ${CMAKE_INSTALL_DOCDIR})
