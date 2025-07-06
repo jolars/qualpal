@@ -14,7 +14,7 @@ namespace qualpal {
 template<typename Metric = metrics::DIN99d>
 std::vector<int>
 farthestPoints(const int n,
-               const std::vector<DIN99d>& colors,
+               const std::vector<colors::DIN99d>& colors,
                const Metric& metric = Metric{})
 {
   Matrix<double> dist_mat = colorDifferenceMatrix(colors, metric);

@@ -2,11 +2,10 @@
 #include <catch2/matchers/catch_matchers_floating_point.hpp>
 #include <qualpal_bits/colors.h>
 
-using namespace qualpal;
-using namespace Catch::Matchers;
-
 TEST_CASE("All color conversions are supported", "[colors]")
 {
+  using namespace Catch::Matchers;
+  using namespace qualpal::colors;
 
   XYZ xyz(0.4, 0.2, 0.65);
   RGB rgb(0.23, 0.5, 0.95);
@@ -49,12 +48,13 @@ TEST_CASE("All color conversions are supported", "[colors]")
 TEST_CASE("Converting between colors work", "[colors]")
 {
   using namespace Catch::Matchers;
+  using namespace qualpal::colors;
 
-  qualpal::RGB rgb(0.23, 0.5, 0.95);
-  qualpal::XYZ xyz(rgb);
-  qualpal::HSL hsl(rgb);
-  qualpal::DIN99d din99d(xyz);
-  qualpal::Lab lab(xyz);
+  RGB rgb(0.23, 0.5, 0.95);
+  XYZ xyz(rgb);
+  HSL hsl(rgb);
+  DIN99d din99d(xyz);
+  Lab lab(xyz);
 
   REQUIRE_THAT(xyz.x(), WithinAbsMatcher(0.254958, 0.001));
   REQUIRE_THAT(xyz.y(), WithinAbsMatcher(0.226503, 0.001));
@@ -68,7 +68,7 @@ TEST_CASE("Converting between colors work", "[colors]")
   REQUIRE_THAT(hsl.s(), WithinAbsMatcher(0.87805, 0.001));
   REQUIRE_THAT(hsl.l(), WithinAbsMatcher(0.59, 0.001));
 
-  qualpal::RGB rgb_from_hex("#3b80f2");
+  RGB rgb_from_hex("#3b80f2");
 
   REQUIRE_THAT(rgb_from_hex.r(), WithinAbsMatcher(0.231372, 0.001));
   REQUIRE_THAT(rgb_from_hex.g(), WithinAbsMatcher(0.501960, 0.001));
@@ -79,9 +79,10 @@ TEST_CASE("Check that converted HSL colors are within correct ranges",
           "[colors]")
 {
   using namespace Catch::Matchers;
+  using namespace qualpal::colors;
 
-  qualpal::RGB rgb(0.8109190, 0.4385978, 0.4837288);
-  qualpal::HSL hsl(rgb);
+  RGB rgb(0.8109190, 0.4385978, 0.4837288);
+  HSL hsl(rgb);
 
   REQUIRE(hsl.h() >= 0);
   REQUIRE(hsl.h() <= 360);
@@ -93,6 +94,9 @@ TEST_CASE("Check that converted HSL colors are within correct ranges",
 
 TEST_CASE("RGB from HSL conversion", "[colors][rgb][hsl]")
 {
+  using namespace Catch::Matchers;
+  using namespace qualpal::colors;
+
   SECTION("Primary colors")
   {
     HSL red_hsl(0.0, 1.0, 0.5);
@@ -122,6 +126,9 @@ TEST_CASE("RGB from HSL conversion", "[colors][rgb][hsl]")
 
 TEST_CASE("XYZ constructor", "[colors][xyz]")
 {
+  using namespace Catch::Matchers;
+  using namespace qualpal::colors;
+
   XYZ xyz(0.5, 0.3, 0.2);
   REQUIRE_THAT(xyz.x(), WithinAbs(0.5, 1e-10));
   REQUIRE_THAT(xyz.y(), WithinAbs(0.3, 1e-10));
@@ -130,6 +137,9 @@ TEST_CASE("XYZ constructor", "[colors][xyz]")
 
 TEST_CASE("Lab constructor", "[colors][lab]")
 {
+  using namespace Catch::Matchers;
+  using namespace qualpal::colors;
+
   Lab lab(50.0, 20.0, -10.0);
   REQUIRE_THAT(lab.l(), WithinAbs(50.0, 1e-10));
   REQUIRE_THAT(lab.a(), WithinAbs(20.0, 1e-10));
@@ -138,6 +148,9 @@ TEST_CASE("Lab constructor", "[colors][lab]")
 
 TEST_CASE("DIN99d constructor", "[colors][din99d]")
 {
+  using namespace Catch::Matchers;
+  using namespace qualpal::colors;
+
   DIN99d din(40.0, 15.0, -5.0);
   REQUIRE_THAT(din.l(), WithinAbs(40.0, 1e-10));
   REQUIRE_THAT(din.a(), WithinAbs(15.0, 1e-10));
@@ -146,6 +159,9 @@ TEST_CASE("DIN99d constructor", "[colors][din99d]")
 
 TEST_CASE("RGB constructor from values", "[colors][rgb]")
 {
+  using namespace Catch::Matchers;
+  using namespace qualpal::colors;
+
   RGB rgb(1.0, 0.5, 0.0);
   REQUIRE_THAT(rgb.r(), WithinAbs(1.0, 1e-10));
   REQUIRE_THAT(rgb.g(), WithinAbs(0.5, 1e-10));
@@ -154,6 +170,9 @@ TEST_CASE("RGB constructor from values", "[colors][rgb]")
 
 TEST_CASE("RGB constructor from hex", "[colors][rgb]")
 {
+  using namespace Catch::Matchers;
+  using namespace qualpal::colors;
+
   SECTION("6-digit hex")
   {
     RGB rgb("#ff8000");
@@ -187,6 +206,9 @@ TEST_CASE("RGB constructor from hex", "[colors][rgb]")
 
 TEST_CASE("RGB hex() output", "[colors][rgb]")
 {
+  using namespace Catch::Matchers;
+  using namespace qualpal::colors;
+
   SECTION("Red color")
   {
     RGB red(1.0, 0.0, 0.0);
@@ -203,6 +225,9 @@ TEST_CASE("RGB hex() output", "[colors][rgb]")
 
 TEST_CASE("HSL constructor", "[colors][hsl]")
 {
+  using namespace Catch::Matchers;
+  using namespace qualpal::colors;
+
   HSL hsl(180.0, 0.5, 0.75);
   REQUIRE_THAT(hsl.h(), WithinAbs(180.0, 1e-10));
   REQUIRE_THAT(hsl.s(), WithinAbs(0.5, 1e-10));
@@ -211,6 +236,9 @@ TEST_CASE("HSL constructor", "[colors][hsl]")
 
 TEST_CASE("HSL from RGB conversion", "[colors][hsl][rgb]")
 {
+  using namespace Catch::Matchers;
+  using namespace qualpal::colors;
+
   SECTION("Red")
   {
     RGB red(1.0, 0.0, 0.0);

@@ -80,7 +80,7 @@ public:
   template<typename ColorType>
   double operator()(const ColorType& c1, const ColorType& c2) const
   {
-    qualpal::DIN99d d1(c1), d2(c2);
+    colors::DIN99d d1(c1), d2(c2);
     double d =
       std::sqrt(std::pow(d1.l() - d2.l(), 2) + std::pow(d1.a() - d2.a(), 2) +
                 std::pow(d1.b() - d2.b(), 2));
@@ -111,7 +111,7 @@ struct CIE76
   template<typename ColorType>
   double operator()(const ColorType& c1, const ColorType& c2) const
   {
-    qualpal::Lab l1(c1), l2(c2);
+    colors::Lab l1(c1), l2(c2);
     return std::sqrt(std::pow(l1.l() - l2.l(), 2) +
                      std::pow(l1.a() - l2.a(), 2) +
                      std::pow(l1.b() - l2.b(), 2));

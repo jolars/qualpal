@@ -65,7 +65,7 @@ main(int argc, char** argv)
     return 1;
   }
 
-  std::vector<qualpal::RGB> rgb_out;
+  std::vector<qualpal::colors::RGB> rgb_out;
 
   try {
     if (input == "hex") {

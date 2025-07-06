@@ -16,6 +16,46 @@
 
 namespace qualpal {
 
+/**
+ * @brief Color representation classes for various color spaces
+ *
+ * This namespace provides classes for representing colors in different color
+ * spaces commonly used in color science and palette generation. All classes
+ * support seamless conversion between color spaces through constructor
+ * overloads.
+ *
+ * **Supported Color Spaces:**
+ * - **RGB**: Standard red-green-blue with values normalized to [0,1]
+ * - **HSL**: Hue-saturation-lightness for intuitive color manipulation
+ * - **XYZ**: CIE 1931 device-independent intermediate color space
+ * - **Lab**: CIE L*a*b* perceptually uniform color space
+ * - **DIN99d**: Optimized perceptually uniform space for color differences
+ *
+ * **Usage Pattern:**
+ * @code{.cpp}
+ * // Create colors in any space
+ * RGB red(1.0, 0.0, 0.0);
+ * HSL orange(30, 1.0, 0.5);
+ *
+ * // Convert between spaces automatically
+ * RGB red_from_hsl(orange);  // Constructor conversion
+ * Lab red_lab(red);          // Chain conversions
+ *
+ * // Use with palette algorithms
+ * std::vector<DIN99d> palette_colors;
+ * auto indices = farthestPoints(5, palette_colors);
+ * @endcode
+ *
+ * All color classes provide:
+ * - Conversion constructors from other color spaces
+ * - Accessor methods for individual components
+ * - Consistent naming (r(), g(), b() for RGB; h(), s(), l() for HSL, etc.)
+ *
+ * @see metrics namespace for color difference calculations
+ * @see farthestPoints() for palette selection algorithms
+ */
+namespace colors {
+
 // forward declarations
 class HSL;
 class XYZ;
@@ -324,4 +364,5 @@ public:
   double b() const { return b_value; }
 };
 
+} // namespace colors
 } // namespace qualpal

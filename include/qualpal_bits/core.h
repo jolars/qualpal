@@ -45,9 +45,9 @@ namespace qualpal {
  * auto palette = qualpal(2, colors);
  * @endcode
  */
-std::vector<RGB>
+std::vector<colors::RGB>
 qualpal(const int n,
-        std::vector<RGB> rgb_colors,
+        std::vector<colors::RGB> rgb_colors,
         const std::map<std::string, double>& cvd = {});
 
 /**
@@ -69,7 +69,7 @@ qualpal(const int n,
  * auto palette = qualpal(2, colors);
  * @endcode
  */
-std::vector<RGB>
+std::vector<colors::RGB>
 qualpal(const int n,
         const std::vector<std::string>& hex_colors,
         const std::map<std::string, double>& cvd = {});
@@ -93,7 +93,7 @@ qualpal(const int n,
  * auto palette = qualpal(5, "ColorBrewer:Set1");
  * @endcode
  */
-std::vector<RGB>
+std::vector<colors::RGB>
 qualpal(const int n,
         const std::string& palette,
         const std::map<std::string, double>& cvd = {});
@@ -114,7 +114,7 @@ qualpal(const int n,
  *
  * @throws std::invalid_argument for invalid ranges or n > n_points
  */
-std::vector<RGB>
+std::vector<colors::RGB>
 qualpal(const int n,
         const std::array<double, 2>& h_lim = { 0, 360 },
         const std::array<double, 2>& s_lim = { 0, 1 },

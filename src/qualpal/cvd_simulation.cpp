@@ -4,8 +4,8 @@
 
 namespace qualpal {
 
-std::vector<RGB>
-simulate_cvd(const std::vector<RGB>& rgb,
+std::vector<colors::RGB>
+simulate_cvd(const std::vector<colors::RGB>& rgb,
              const std::string cvd_type,
              double cvd_severity)
 {
@@ -122,7 +122,7 @@ simulate_cvd(const std::vector<RGB>& rgb,
     cvd_mat_lo +
     (cvd_mat_hi - cvd_mat_lo) * (static_cast<double>(ce) - cvd_severity);
 
-  std::vector<RGB> rgb_out;
+  std::vector<colors::RGB> rgb_out;
   for (auto col : rgb) {
     std::array<double, 3> rgb_vec = { col.r(), col.g(), col.b() };
     std::array<double, 3> rgb_cvd = cvd_mat * rgb_vec;

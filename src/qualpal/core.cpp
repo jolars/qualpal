@@ -11,14 +11,14 @@
 
 namespace qualpal {
 
-std::vector<RGB>
+std::vector<colors::RGB>
 qualpal(const int n,
-        std::vector<RGB> rgb_colors,
+        std::vector<colors::RGB> rgb_colors,
         const std::map<std::string, double>& cvd)
 {
   int N = rgb_colors.size();
 
-  const std::vector<RGB> rgb_colors_original = rgb_colors;
+  const std::vector<colors::RGB> rgb_colors_original = rgb_colors;
 
   for (const auto& [cvd_type, cvd_severity] : cvd) {
     if (cvd_severity > 1.0 || cvd_severity < 0.0) {
@@ -29,7 +29,7 @@ qualpal(const int n,
     }
   }
 
-  std::vector<DIN99d> din99d_colors;
+  std::vector<colors::DIN99d> din99d_colors;
   din99d_colors.reserve(N);
 
   for (const auto& rgb : rgb_colors) {
@@ -38,7 +38,7 @@ qualpal(const int n,
 
   auto ind = farthestPoints(n, din99d_colors);
 
-  std::vector<RGB> rgb_out;
+  std::vector<colors::RGB> rgb_out;
   rgb_out.reserve(n);
 
   for (const auto& i : ind) {
@@ -48,12 +48,12 @@ qualpal(const int n,
   return rgb_out;
 }
 
-std::vector<RGB>
+std::vector<colors::RGB>
 qualpal(const int n,
         const std::vector<std::string>& hex_colors,
         const std::map<std::string, double>& cvd)
 {
-  std::vector<qualpal::RGB> rgb_colors;
+  std::vector<colors::RGB> rgb_colors;
 
   for (auto color : hex_colors) {
     assert(isValidHexColor(color) && "Values are hex colors");
@@ -63,12 +63,12 @@ qualpal(const int n,
   return qualpal(n, rgb_colors, cvd);
 }
 
-std::vector<RGB>
+std::vector<colors::RGB>
 qualpal(const int n,
         const std::string& palette,
         const std::map<std::string, double>& cvd)
 {
-  std::vector<qualpal::RGB> rgb_colors;
+  std::vector<colors::RGB> rgb_colors;
 
   std::vector<std::string> hex_colors = getPalette(palette);
 
@@ -85,7 +85,7 @@ qualpal(const int n,
   return qualpal(n, rgb_colors, cvd);
 }
 
-std::vector<RGB>
+std::vector<colors::RGB>
 qualpal(const int n,
         const std::array<double, 2>& h_lim,
         const std::array<double, 2>& s_lim,
@@ -116,7 +116,7 @@ qualpal(const int n,
 
   auto hsl_colors = colorGrid(h_lim, s_lim, l_lim, n_points);
 
-  std::vector<qualpal::RGB> rgb_colors;
+  std::vector<qualpal::colors::RGB> rgb_colors;
 
   for (auto color : hsl_colors) {
     rgb_colors.emplace_back(color);

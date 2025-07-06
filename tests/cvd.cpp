@@ -4,8 +4,8 @@
 
 TEST_CASE("CVD simulation", "[colors]")
 {
-  std::vector<qualpal::RGB> rgb = { qualpal::RGB(0.8, 0.4, 0.1),
-                                    qualpal::RGB(0.1, 0.1, 0.1) };
+  using namespace qualpal::colors;
+  std::vector<RGB> rgb = { RGB(0.8, 0.4, 0.1), RGB(0.1, 0.1, 0.1) };
   auto result = qualpal::simulate_cvd(rgb, "protan", 0.5);
   REQUIRE(result.size() == 2);
 }

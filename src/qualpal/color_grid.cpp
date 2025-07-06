@@ -58,13 +58,13 @@ scale_to_interval(const double x, const double min, const double max)
   return (max - min) * (x - 1) + max;
 }
 
-std::vector<HSL>
+std::vector<colors::HSL>
 colorGrid(const std::array<double, 2>& h_lim,
           const std::array<double, 2>& s_lim,
           const std::array<double, 2>& l_lim,
           const int n)
 {
-  std::vector<HSL> colors;
+  std::vector<colors::HSL> colors;
   colors.reserve(n);
 
   Halton<3> halton;

@@ -8,6 +8,7 @@
 #include <sstream>
 
 namespace qualpal {
+namespace colors {
 
 inline double
 inverseCompanding(const double v)
@@ -332,4 +333,5 @@ Lab::Lab(const HSL& hsl)
 {
 }
 
+} // namespace colors
 } // namespace qualpal
