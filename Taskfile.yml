@@ -3,6 +3,7 @@ version: "3"
 vars:
   BUILD_DIR: build
   TEST_DIR: test
+  CMAKE_BUILD_FLAGS: --build {{.BUILD_DIR}} -j
 
 tasks:
   default:
@@ -19,18 +20,18 @@ tasks:
   build:
     deps: [configure]
     cmds:
-      - cmake --build {{.BUILD_DIR}}
+      - cmake {{.CMAKE_BUILD_FLAGS}}
 
   build-cli:
     cmds:
       - cmake -B {{.BUILD_DIR}} -S . -DBUILD_CLI=ON
-      - cmake --build {{.BUILD_DIR}}
+      - cmake {{.CMAKE_BUILD_FLAGS}}
 
   plots:
     desc: Generate documentation plots using gnuplot
     cmds:
       - cmake -B {{.BUILD_DIR}} -S . -DBUILD_VISUALIZATIONS=ON -DBUILD_TESTING=OFF -DBUILD_DOCS=OFF
-      - cmake --build {{.BUILD_DIR}}
+      - cmake {{.CMAKE_BUILD_FLAGS}}
       - chmod +x docs/generate_plots.sh
       - cd {{.BUILD_DIR}} && bash "$(pwd)/../docs/generate_plots.sh"
 
@@ -38,12 +39,12 @@ tasks:
     deps: [plots]
     cmds:
       - cmake -B {{.BUILD_DIR}} -S . -DBUILD_DOCS=ON -DBUILD_TESTING=OFF -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
-      - cmake --build {{.BUILD_DIR}}
+      - cmake {{.CMAKE_BUILD_FLAGS}}
 
   coverage:
     cmds:
       - cmake -B {{.BUILD_DIR}} -S . -DBUILD_DOCS=ON -DBUILD_TESTING=ON -DENABLE_COVERAGE=ON
-      - cmake --build {{.BUILD_DIR}}
+      - cmake {{.CMAKE_BUILD_FLAGS}}
       - ctest --test-dir {{.BUILD_DIR}} --output-on-failure
 
   release:
@@ -67,5 +68,5 @@ tasks:
   test:
     cmds:
       - cmake -B {{.BUILD_DIR}} -S . -DBUILD_DOCS=OFF -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Debug
-      - cmake --build {{.BUILD_DIR}}
+      - cmake {{.CMAKE_BUILD_FLAGS}}
       - ctest --test-dir {{.BUILD_DIR}} --output-on-failure
