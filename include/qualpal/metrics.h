@@ -72,13 +72,14 @@ public:
 
   /**
    * @brief Calculate color difference between two colors
-   * @tparam ColorType Any color class that can be converted to colors::DIN99d
+   * @tparam ColorType1 Any color class that can be converted to colors::DIN99d
+   * @tparam ColorType2 Any color class that can be converted to colors::DIN99d
    * @param c1 First color
    * @param c2 Second color
    * @return Color difference value (Delta E in DIN99d space)
    */
-  template<typename ColorType>
-  double operator()(const ColorType& c1, const ColorType& c2) const
+  template<typename ColorType1, typename ColorType2>
+  double operator()(const ColorType1& c1, const ColorType2& c2) const
   {
     colors::DIN99d d1(c1), d2(c2);
     double d =
@@ -103,13 +104,14 @@ struct CIE76
 {
   /**
    * @brief Calculate CIE76 color difference
-   * @tparam ColorType Any color class that can be converted to colors::Lab
+   * @tparam ColorType1 Any color class that can be converted to colors::DIN99d
+   * @tparam ColorType2 Any color class that can be converted to colors::DIN99d
    * @param c1 First color
    * @param c2 Second color
    * @return CIE76 Delta E value
    */
-  template<typename ColorType>
-  double operator()(const ColorType& c1, const ColorType& c2) const
+  template<typename ColorType1, typename ColorType2>
+  double operator()(const ColorType1& c1, const ColorType2& c2) const
   {
     colors::Lab l1(c1), l2(c2);
     return std::sqrt(std::pow(l1.l() - l2.l(), 2) +
