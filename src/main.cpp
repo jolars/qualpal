@@ -1,7 +1,7 @@
 #include "qualpal/validation.h"
 #include <CLI/CLI.hpp>
 #include <iostream>
-#include <qualpal>
+#include <qualpal.h>
 #include <stdexcept>
 #include <string>
 #include <vector>

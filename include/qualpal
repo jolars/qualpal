@@ -1,4 +1,0 @@
-#pragma once
-
-#include <qualpal_bits/colors.h>
-#include <qualpal_bits/core.h>

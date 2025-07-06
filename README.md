@@ -18,7 +18,7 @@ A C++ library for generating qualitative color palettes with maximum perceptual 
 ### Library Usage
 
 ```cpp
-#include <qualpal>
+#include <qualpal.h>
 
 // Generate 5 colors from HSL space
 auto colors = qualpal::qualpal(5, {0, 360}, {0.4, 0.8}, {0.3, 0.7});

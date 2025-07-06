@@ -5,7 +5,7 @@
 #include "validation.h"
 #include <cassert>
 #include <map>
-#include <qualpal_bits/core.h>
+#include <qualpal/core.h>
 #include <stdexcept>
 #include <vector>
 

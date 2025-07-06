@@ -1,5 +1,5 @@
 #include <cmath>
-#include <qualpal_bits/colors.h>
+#include <qualpal/colors.h>
 #include <string>
 #include <vector>
 

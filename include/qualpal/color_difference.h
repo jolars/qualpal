@@ -1,8 +1,8 @@
 #pragma once
 
 #include <cmath>
-#include <qualpal_bits/matrix.h>
-#include <qualpal_bits/metrics.h>
+#include <qualpal/matrix.h>
+#include <qualpal/metrics.h>
 #include <vector>
 
 namespace qualpal {

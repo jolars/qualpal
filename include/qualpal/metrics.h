@@ -10,7 +10,7 @@
 #pragma once
 
 #include <cmath>
-#include <qualpal_bits/colors.h>
+#include <qualpal/colors.h>
 
 namespace qualpal {
 

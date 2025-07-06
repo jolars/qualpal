@@ -10,7 +10,7 @@
 #pragma once
 
 #include <map>
-#include <qualpal_bits/colors.h>
+#include <qualpal/colors.h>
 #include <vector>
 
 /**

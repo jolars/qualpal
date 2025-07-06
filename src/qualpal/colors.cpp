@@ -3,8 +3,8 @@
 #include <cassert>
 #include <cmath>
 #include <iomanip>
-#include <qualpal_bits/colors.h>
-#include <qualpal_bits/matrix.h>
+#include <qualpal/colors.h>
+#include <qualpal/matrix.h>
 #include <sstream>
 
 namespace qualpal {

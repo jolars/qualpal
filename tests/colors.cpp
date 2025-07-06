@@ -1,6 +1,6 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/matchers/catch_matchers_floating_point.hpp>
-#include <qualpal_bits/colors.h>
+#include <qualpal/colors.h>
 
 TEST_CASE("All color conversions are supported", "[colors]")
 {

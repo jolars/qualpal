@@ -1,7 +1,7 @@
 #include "../src/qualpal/color_grid.h"
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/matchers/catch_matchers_floating_point.hpp>
-#include <qualpal>
+#include <qualpal.h>
 
 TEST_CASE("Running qualpal works", "[colors]")
 {

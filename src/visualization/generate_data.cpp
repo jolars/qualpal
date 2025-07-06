@@ -2,8 +2,8 @@
 #include <fstream>
 #include <iomanip>
 #include <iostream>
-#include <qualpal_bits/colors.h>
-#include <qualpal_bits/core.h>
+#include <qualpal/colors.h>
+#include <qualpal/core.h>
 
 void
 generateHSLData()

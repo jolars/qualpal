@@ -4,9 +4,9 @@
 #include <cmath>
 #include <limits>
 #include <numeric>
-#include <qualpal_bits/color_difference.h>
-#include <qualpal_bits/colors.h>
-#include <qualpal_bits/matrix.h>
+#include <qualpal/color_difference.h>
+#include <qualpal/colors.h>
+#include <qualpal/matrix.h>
 #include <vector>
 
 namespace qualpal {
