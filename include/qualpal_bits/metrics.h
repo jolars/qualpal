@@ -13,6 +13,24 @@
 #include <qualpal_bits/colors.h>
 
 namespace qualpal {
+
+/**
+ * @brief Color difference metrics for perceptual color comparison
+ *
+ * This namespace contains various color difference calculation methods that
+ * quantify the perceptual difference between colors. These metrics are used
+ * with algorithms like farthestPoints() to select visually distinct color
+ * palettes.
+ *
+ * All metric classes follow the same interface pattern:
+ * - Callable with operator() taking two color objects
+ * - Template-based to accept any color type that can be converted to the
+ *   required color space
+ * - Return a numeric difference value (higher = more different)
+ *
+ * @see colorDifferenceMatrix() for computing full distance matrices
+ * @see farthestPoints() for palette selection using these metrics
+ */
 namespace metrics {
 
 // Forward declarations
