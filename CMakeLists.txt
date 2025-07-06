@@ -16,6 +16,15 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 add_subdirectory(src)
 
+target_include_directories(
+    qualpal
+    PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        $<INSTALL_INTERFACE:include>
+)
+target_compile_features(qualpal PUBLIC cxx_std_17)
+add_library(qualpal::qualpal ALIAS qualpal)
+
 install(
     DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/qualpal/
     DESTINATION include/qualpal
@@ -39,16 +48,6 @@ install(
     NAMESPACE qualpal::
     DESTINATION lib/cmake/qualpal
 )
-
-target_include_directories(
-    qualpal
-    PUBLIC
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-        $<INSTALL_INTERFACE:include>
-)
-
-target_compile_features(qualpal PUBLIC cxx_std_17)
-add_library(qualpal::qualpal ALIAS qualpal)
 
 if(BUILD_CLI)
     find_package(CLI11 2.4 QUIET)
