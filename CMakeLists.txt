@@ -48,6 +48,7 @@ target_include_directories(
 )
 
 target_compile_features(qualpal PUBLIC cxx_std_17)
+add_library(qualpal::qualpal ALIAS qualpal)
 
 if(BUILD_CLI)
     find_package(CLI11 2.4 QUIET)
