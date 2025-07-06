@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.10.0](https://github.com/jolars/qualpal/compare/v0.9.0...v0.10.0) (2025-07-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* switch to public/private header setup
+
+### Features
+
+* add `colorDifferenceMatrix()` ([577ef46](https://github.com/jolars/qualpal/commit/577ef4605a29f0cae3461748f4f77cf36893bd92))
+* add color difference metrics, and put into namespace ([577ef46](https://github.com/jolars/qualpal/commit/577ef4605a29f0cae3461748f4f77cf36893bd92))
+* **cli:** add help command ([9bd0ec0](https://github.com/jolars/qualpal/commit/9bd0ec0de75ce77a5a60da0a6d0e74919d2dbaef))
+* expose `Matrix` and `FixedMatrix` classes ([577ef46](https://github.com/jolars/qualpal/commit/577ef4605a29f0cae3461748f4f77cf36893bd92))
+* switch to public/private header setup ([ea5047f](https://github.com/jolars/qualpal/commit/ea5047f583bbf434bba10cc7e1d96673b691da76))
+
+
+### Bug Fixes
+
+* **cli:** use `cerr` to propagate exceptions ([15ef5f9](https://github.com/jolars/qualpal/commit/15ef5f9c67046fbb3c77556ff66912b342042dd9))
+* correctly setup include directory ([96b0759](https://github.com/jolars/qualpal/commit/96b07599ab9917b1b6f142c9a22a3e6d1fe35e57))
+* use library umbrealla header in cli ([5f56332](https://github.com/jolars/qualpal/commit/5f56332dcf4ca45f31505a2b0f61315894428162))
+
 ## [0.9.0](https://github.com/jolars/qualpal/compare/v0.8.0...v0.9.0) (2025-04-12)
 
 
