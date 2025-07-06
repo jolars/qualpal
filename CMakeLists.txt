@@ -11,6 +11,7 @@ option(ENABLE_COVERAGE "Generate coverage report" OFF)
 
 include(FetchContent)
 include(CTest)
+include(GNUInstallDirs)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
@@ -40,17 +41,17 @@ install(
 install(
     TARGETS qualpal
     EXPORT qualpal-targets
-    LIBRARY DESTINATION lib
-    ARCHIVE DESTINATION lib
-    RUNTIME DESTINATION bin
-    INCLUDES DESTINATION include
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
 
 install(
     EXPORT qualpal-targets
     FILE qualpal-targets.cmake
     NAMESPACE qualpal::
-    DESTINATION lib/cmake/qualpal
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/qualpal
 )
 
 if(BUILD_CLI)
