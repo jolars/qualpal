@@ -64,7 +64,7 @@ if(BUILD_CLI)
 
     add_executable(qualpal_cli src/main.cpp)
     set_property(TARGET qualpal_cli PROPERTY OUTPUT_NAME qualpal)
-    target_link_libraries(qualpal_cli PRIVATE qualpal CLI11::CLI11)
+    target_link_libraries(qualpal_cli PRIVATE qualpal::qualpal CLI11::CLI11)
     target_include_directories(qualpal_cli PRIVATE "${PROJECT_BINARY_DIR}")
 
     install(TARGETS qualpal_cli DESTINATION bin COMPONENT CLI)
@@ -121,7 +121,7 @@ if(BUILD_TESTING)
         tests/math.cpp
         tests/validation.cpp
     )
-    target_link_libraries(tests PRIVATE Catch2::Catch2WithMain qualpal)
+    target_link_libraries(tests PRIVATE Catch2::Catch2WithMain qualpal::qualpal)
     target_include_directories(
         tests
         PRIVATE
@@ -149,7 +149,7 @@ if(BUILD_VISUALIZATIONS)
 
     # Data generation executable
     add_executable(generate_data src/visualization/generate_data.cpp)
-    target_link_libraries(generate_data PRIVATE qualpal)
+    target_link_libraries(generate_data PRIVATE qualpal::qualpal)
 
     add_custom_target(
         plots
