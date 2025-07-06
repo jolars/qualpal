@@ -110,7 +110,13 @@ if(BUILD_TESTING)
         tests/validation.cpp
     )
     target_link_libraries(tests PRIVATE Catch2::Catch2WithMain qualpal)
-    target_include_directories(tests PUBLIC tests "${PROJECT_BINARY_DIR}")
+    target_include_directories(
+        tests
+        PRIVATE
+            ${CMAKE_CURRENT_SOURCE_DIR}/include
+            tests
+            "${PROJECT_BINARY_DIR}"
+    )
 
     list(APPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/extras)
     include(Catch)
