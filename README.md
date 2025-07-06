@@ -27,9 +27,9 @@ auto colors = qualpal(5, {0, 360}, {0.4, 0.8}, {0.3, 0.7});
 
 // Select 3 colors from existing set
 std::vector<RGB> input = {
-    RGB("#ff0000"),
-    RGB("#00ff00"),
-    RGB("#0000ff")
+    colors::RGB("#ff0000"),
+    colors::RGB("#00ff00"),
+    colors::RGB("#0000ff")
 };
 auto selected = qualpal(2, input);
 
@@ -89,12 +89,12 @@ using namespace qualpal;
 
 int main() {
     // Start with some seed colors
-    std::vector<RGB> colors = {
-        RGB("#e41a1c"), // Red
-        RGB("#377eb8"), // Blue
-        RGB("#4daf4a"), // Green
-        RGB("#984ea3"), // Purple
-        RGB("#ff7f00"), // Orange
+    std::vector<colors::RGB> colors = {
+        colors::RGB("#e41a1c"), // Red
+        colors::RGB("#377eb8"), // Blue
+        colors::RGB("#4daf4a"), // Green
+        colors::RGB("#984ea3"), // Purple
+        colors::RGB("#ff7f00"), // Orange
     };
 
     // Select 3 most distinct colors
