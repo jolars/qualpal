@@ -12,8 +12,6 @@ option(ENABLE_COVERAGE "Generate coverage report" OFF)
 include(FetchContent)
 include(CTest)
 
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 add_subdirectory(src)
@@ -48,6 +46,8 @@ target_include_directories(
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:include>
 )
+
+target_compile_features(qualpal PUBLIC cxx_std_17)
 
 if(BUILD_CLI)
     find_package(CLI11 2.4 QUIET)
