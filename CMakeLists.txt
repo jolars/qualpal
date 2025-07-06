@@ -64,8 +64,8 @@ if(BUILD_CLI)
 
     add_executable(qualpal_cli src/main.cpp)
     set_property(TARGET qualpal_cli PROPERTY OUTPUT_NAME qualpal)
-    target_link_libraries(qualpal_cli PUBLIC qualpal CLI11::CLI11)
-    target_include_directories(qualpal_cli PUBLIC "${PROJECT_BINARY_DIR}")
+    target_link_libraries(qualpal_cli PRIVATE qualpal CLI11::CLI11)
+    target_include_directories(qualpal_cli PRIVATE "${PROJECT_BINARY_DIR}")
 
     install(TARGETS qualpal_cli DESTINATION bin COMPONENT CLI)
 
