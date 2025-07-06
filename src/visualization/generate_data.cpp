@@ -17,7 +17,7 @@ generateHSLData()
 )";
 
   for (const auto& hsl : hsl_colors) {
-    qualpal::RGB rgb(hsl);
+    qualpal::colors::RGB rgb(hsl);
     int r = static_cast<int>(rgb.r() * 255);
     int g = static_cast<int>(rgb.g() * 255);
     int b = static_cast<int>(rgb.b() * 255);
@@ -38,7 +38,7 @@ generateRGBProjection()
   file << "# R G B H S L RGB_HEX\n";
 
   for (const auto& hsl : hsl_colors) {
-    qualpal::RGB rgb(hsl);
+    qualpal::colors::RGB rgb(hsl);
     int r = static_cast<int>(rgb.r() * 255);
     int g = static_cast<int>(rgb.g() * 255);
     int b = static_cast<int>(rgb.b() * 255);
@@ -60,8 +60,8 @@ generateDIN99dProjection()
   file << "# L_din a_din b_din RGB_HEX\n";
 
   for (const auto& hsl : hsl_colors) {
-    qualpal::RGB rgb(hsl);
-    qualpal::DIN99d din(rgb);
+    qualpal::colors::RGB rgb(hsl);
+    qualpal::colors::DIN99d din(rgb);
     int r = static_cast<int>(rgb.r() * 255);
     int g = static_cast<int>(rgb.g() * 255);
     int b = static_cast<int>(rgb.b() * 255);
@@ -78,7 +78,7 @@ generateSelectedColors()
   // Generate the full color space
   auto hsl_colors =
     qualpal::colorGrid({ -200, 120 }, { 0.3, 0.8 }, { 0.4, 0.9 }, 1000);
-  std::vector<qualpal::RGB> rgb_colors;
+  std::vector<qualpal::colors::RGB> rgb_colors;
   for (const auto& hsl : hsl_colors) {
     rgb_colors.emplace_back(hsl);
   }
@@ -94,7 +94,7 @@ generateSelectedColors()
   selected_file << "# L_din a_din b_din RGB_HEX\n";
 
   for (const auto& rgb : rgb_colors) {
-    qualpal::DIN99d din(rgb);
+    qualpal::colors::DIN99d din(rgb);
     bool is_selected = false;
 
     // Check if this color was selected
