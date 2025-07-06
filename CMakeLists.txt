@@ -26,14 +26,28 @@ install(
     PATTERN "qualpal"
 )
 
+install(
+    TARGETS qualpal
+    EXPORT qualpal-targets
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib
+    RUNTIME DESTINATION bin
+    INCLUDES DESTINATION include
+)
+
+install(
+    EXPORT qualpal-targets
+    FILE qualpal-targets.cmake
+    NAMESPACE qualpal::
+    DESTINATION lib/cmake/qualpal
+)
+
 target_include_directories(
     qualpal
     PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:include>
 )
-
-install(TARGETS qualpal DESTINATION lib)
 
 if(BUILD_CLI)
     find_package(CLI11 2.4 QUIET)
