@@ -20,20 +20,22 @@ A C++ library for generating qualitative color palettes with maximum perceptual 
 ```cpp
 #include <qualpal.h>
 
+using namespace qualpal;
+
 // Generate 5 colors from HSL space
-auto colors = qualpal::qualpal(5, {0, 360}, {0.4, 0.8}, {0.3, 0.7});
+auto colors = qualpal(5, {0, 360}, {0.4, 0.8}, {0.3, 0.7});
 
 // Select 3 colors from existing set
-std::vector<qualpal::RGB> input = {
-    qualpal::RGB("#ff0000"),
-    qualpal::RGB("#00ff00"),
-    qualpal::RGB("#0000ff")
+std::vector<RGB> input = {
+    RGB("#ff0000"),
+    RGB("#00ff00"),
+    RGB("#0000ff")
 };
-auto selected = qualpal::qualpal(2, input);
+auto selected = qualpal(2, input);
 
 // Consider color vision deficiency
 std::map<std::string, double> cvd = {{"deuteranomaly", 0.7}};
-auto accessible = qualpal::qualpal(4, input, cvd);
+auto accessible = qualpal(4, input, cvd);
 ```
 
 ### Command Line Usage
@@ -83,18 +85,20 @@ MIT License - see [LICENSE](LICENSE) file.
 #include "qualpal/qualpal.h"
 #include <iostream>
 
+using namespace qualpal;
+
 int main() {
     // Start with some seed colors
-    std::vector<qualpal::RGB> colors = {
-        qualpal::RGB("#e41a1c"), // Red
-        qualpal::RGB("#377eb8"), // Blue
-        qualpal::RGB("#4daf4a"), // Green
-        qualpal::RGB("#984ea3"), // Purple
-        qualpal::RGB("#ff7f00"), // Orange
+    std::vector<RGB> colors = {
+        RGB("#e41a1c"), // Red
+        RGB("#377eb8"), // Blue
+        RGB("#4daf4a"), // Green
+        RGB("#984ea3"), // Purple
+        RGB("#ff7f00"), // Orange
     };
 
     // Select 3 most distinct colors
-    auto palette = qualpal::qualpal(3, colors);
+    auto palette = qualpal(3, colors);
 
     for (const auto& color : palette) {
         std::cout << color.hex() << std::endl;
@@ -109,14 +113,14 @@ int main() {
 ```cpp
 // Simulate deuteranomaly (red-green colorblindness)
 std::map<std::string, double> cvd = {{"deuteranomaly", 1.0}};
-auto accessible_palette = qualpal::qualpal(4, colors, cvd);
+auto accessible_palette = qualpal(4, colors, cvd);
 ```
 
 ### Custom Color Space Sampling
 
 ```cpp
 // Generate warm colors: orange to red hues, high saturation, medium lightness
-auto warm_colors = qualpal::qualpal(
+auto warm_colors = qualpal(
     6,                   // number of colors
     {15, 45},            // hue range (orange to red-orange)
     {0.7, 1.0},          // high saturation
