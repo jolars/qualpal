@@ -24,6 +24,10 @@ target_include_directories(
 )
 target_compile_features(qualpal PUBLIC cxx_std_17)
 add_library(qualpal::qualpal ALIAS qualpal)
+set_target_properties(
+    qualpal
+    PROPERTIES VERSION ${PROJECT_VERSION} SOVERSION ${PROJECT_VERSION_MAJOR}
+)
 
 install(
     DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/qualpal/
