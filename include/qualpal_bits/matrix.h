@@ -1,3 +1,11 @@
+/**
+ * @file
+ * @brief Matrix classes for qualpal
+ *
+ * This file contains dynamic and fixed-size matrix implementations used for
+ * color difference calculations and other linear algebra operations.
+ */
+
 #pragma once
 
 #include <array>
@@ -6,10 +14,19 @@
 
 namespace qualpal {
 
+/**
+ * @brief Dynamic matrix class with runtime-determined dimensions
+ * @tparam T Element type (typically double or float)
+ */
 template<typename T>
 class Matrix
 {
 public:
+  /**
+   * @brief Construct matrix with specified dimensions
+   * @param rows Number of rows
+   * @param cols Number of columns
+   */
   Matrix(int rows, int cols)
     : rows(rows)
     , cols(cols)
@@ -17,6 +34,12 @@ public:
   {
   }
 
+  /**
+   * @brief Construct matrix with specified dimensions and data
+   * @param rows Number of rows
+   * @param cols Number of columns
+   * @param data Vector containing matrix elements in column-major order
+   */
   Matrix(int rows, int cols, const std::vector<T>& data)
     : rows(rows)
     , cols(cols)
@@ -25,10 +48,26 @@ public:
     assert(rows * cols == data.size());
   }
 
+  /**
+   * @brief Access matrix element (mutable)
+   * @param row Row index
+   * @param col Column index
+   * @return Reference to element at (row, col)
+   */
   T& operator()(int row, int col) { return data[col * rows + row]; }
 
+  /**
+   * @brief Access matrix element (const)
+   * @param row Row index
+   * @param col Column index
+   * @return Const reference to element at (row, col)
+   */
   const T& operator()(int row, int col) const { return data[col * rows + row]; }
 
+  /**
+   * @brief Create transpose of this matrix
+   * @return New matrix that is the transpose of this matrix
+   */
   Matrix<T> transpose() const
   {
     Matrix<T> result(cols, rows);
@@ -40,7 +79,10 @@ public:
     return result;
   }
 
+  /** @brief Get number of columns */
   int ncol() const { return cols; }
+
+  /** @brief Get number of rows */
   int nrow() const { return rows; }
 
 private:
@@ -48,12 +90,23 @@ private:
   std::vector<T> data;
 };
 
+/**
+ * @brief Fixed-size matrix class with compile-time dimensions
+ * @tparam T Element type (typically double or float)
+ * @tparam rows Number of rows (compile-time constant)
+ * @tparam cols Number of columns (compile-time constant)
+ */
 template<typename T, int rows, int cols>
 class FixedMatrix
 {
 public:
+  /** @brief Default constructor - elements are uninitialized */
   FixedMatrix() {}
 
+  /**
+   * @brief Construct from nested initializer list
+   * @param list Nested initializer list of matrix elements
+   */
   FixedMatrix(std::initializer_list<std::initializer_list<T>> list)
   {
     auto it = list.begin();
@@ -63,6 +116,10 @@ public:
     }
   }
 
+  /**
+   * @brief Create transpose of this matrix
+   * @return New FixedMatrix that is the transpose of this matrix
+   */
   FixedMatrix<T, cols, rows> t() const
   {
     FixedMatrix<T, cols, rows> result;
@@ -74,11 +131,27 @@ public:
     return result;
   }
 
+  /**
+   * @brief Access matrix element (mutable)
+   * @param row Row index
+   * @param col Column index
+   * @return Reference to element at (row, col)
+   */
   T& operator()(int row, int col) { return data[row * cols + col]; }
 
+  /**
+   * @brief Access matrix element (const)
+   * @param row Row index
+   * @param col Column index
+   * @return Const reference to element at (row, col)
+   */
   const T& operator()(int row, int col) const { return data[row * cols + col]; }
 
-  // Scalar multiplication
+  /**
+   * @brief Scalar multiplication
+   * @param scalar Value to multiply all elements by
+   * @return New matrix with all elements multiplied by scalar
+   */
   FixedMatrix<T, rows, cols> operator*(const T& scalar) const
   {
     FixedMatrix<T, rows, cols> result;
@@ -88,7 +161,11 @@ public:
     return result;
   }
 
-  // Vector multiplication
+  /**
+   * @brief Matrix-vector multiplication
+   * @param vec Vector to multiply with (must have 'cols' elements)
+   * @return Result vector with 'rows' elements
+   */
   std::array<T, rows> operator*(const std::array<T, cols>& vec) const
   {
     std::array<T, rows> result{};
@@ -100,7 +177,12 @@ public:
     return result;
   }
 
-  // Fixed matrix multiplication
+  /**
+   * @brief Matrix-matrix multiplication (FixedMatrix * FixedMatrix)
+   * @tparam other_cols Number of columns in the other matrix
+   * @param other The matrix to multiply with
+   * @return Result matrix with dimensions (rows × other_cols)
+   */
   template<int other_cols>
   FixedMatrix<T, rows, other_cols> operator*(
     const FixedMatrix<T, cols, other_cols>& other) const
@@ -117,7 +199,11 @@ public:
     return result;
   }
 
-  // Dynamic matrix multiplication
+  /**
+   * @brief Matrix-matrix multiplication (FixedMatrix * dynamic Matrix)
+   * @param other Dynamic matrix to multiply with
+   * @return Result as dynamic Matrix
+   */
   Matrix<T> operator*(const Matrix<T>& other) const
   {
     assert(cols == other.nrow());
@@ -132,7 +218,11 @@ public:
     return result;
   }
 
-  // Matrix - matrix addition
+  /**
+   * @brief Matrix addition
+   * @param other Matrix to add (must have same dimensions)
+   * @return New matrix containing element-wise sum
+   */
   FixedMatrix<T, rows, cols> operator+(
     const FixedMatrix<T, rows, cols>& other) const
   {
@@ -143,7 +233,11 @@ public:
     return result;
   }
 
-  // Matrix - matrix subtraction
+  /**
+   * @brief Matrix subtraction
+   * @param other Matrix to subtract (must have same dimensions)
+   * @return New matrix containing element-wise difference
+   */
   FixedMatrix<T, rows, cols> operator-(
     const FixedMatrix<T, rows, cols>& other) const
   {
@@ -154,8 +248,10 @@ public:
     return result;
   }
 
+  /** @brief Fill all elements with specified value */
   void fill(const T& value) { data.fill(value); }
 
+  /** @brief Set all elements to zero */
   void zeros() { data.fill(0); }
 
 private:

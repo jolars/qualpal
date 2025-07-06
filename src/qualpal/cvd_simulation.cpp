@@ -1,6 +1,6 @@
 #include "cvd_simulation.h"
-#include "matrix.h"
 #include <cmath>
+#include <qualpal_bits/matrix.h>
 
 namespace qualpal {
 

@@ -2,8 +2,6 @@ add_library(
     qualpal
     qualpal/core.cpp
     qualpal/colors.cpp
-    qualpal/distance_matrix.cpp
-    qualpal/farthest_points.cpp
     qualpal/color_grid.cpp
     qualpal/cvd_simulation.cpp
     qualpal/validation.cpp

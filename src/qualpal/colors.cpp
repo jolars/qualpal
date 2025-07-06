@@ -1,11 +1,10 @@
-#include "distance_matrix.h"
 #include "math.h"
-#include "matrix.h"
 #include <algorithm>
 #include <cassert>
 #include <cmath>
 #include <iomanip>
 #include <qualpal_bits/colors.h>
+#include <qualpal_bits/matrix.h>
 #include <sstream>
 
 namespace qualpal {
