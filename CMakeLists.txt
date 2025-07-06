@@ -76,7 +76,6 @@ if(BUILD_CLI)
     find_program(HELP2MAN_EXECUTABLE help2man)
     if(HELP2MAN_EXECUTABLE)
         unset(SOURCE_DATE_EPOCH)
-        message(STATUS "Using SOURCE_DATE_EPOCH: ${SOURCE_DATE_EPOCH}")
         add_custom_command(
             OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/qualpal.1
             COMMAND
