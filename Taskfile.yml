@@ -13,9 +13,13 @@ tasks:
     cmds:
       - cmake -B {{.BUILD_DIR}} -S . -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 
-  debug:
+  debug-on:
     cmds:
-      - cmake -B {{.BUILD_DIR}} -S . -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+      - cmake -B {{.BUILD_DIR}} -S . -DCMAKE_BUILD_TYPE=Debug -DDAP_DEBUG=ON
+
+  debug-off:
+    cmds:
+      - cmake -B {{.BUILD_DIR}} -S . -DCMAKE_BUILD_TYPE=Debug -DDAP_DEBUG=OFF
 
   build:
     deps: [configure]

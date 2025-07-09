@@ -7,6 +7,7 @@ project(qualpal LANGUAGES CXX VERSION ${project_version})
 option(BUILD_DOCS "Build documentation" OFF)
 option(BUILD_CLI "Build CLI application" OFF)
 option(BUILD_VISUALIZATIONS "Build visualization tools" OFF)
+option(DAP_DEBUG "Interactive debugging" OFF)
 option(ENABLE_COVERAGE "Generate coverage report" OFF)
 
 include(FetchContent)
@@ -15,6 +16,10 @@ include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+
+if(DAP_DEBUG)
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0 -Wno-cpp")
+endif()
 
 configure_package_config_file(
     "${CMAKE_CURRENT_SOURCE_DIR}/qualpal-config.cmake.in"
