@@ -72,3 +72,31 @@ TEST_CASE("Character method works as it it supposed to", "[colors]")
   REQUIRE_THROWS_AS(qualpal::qualpal(100, "awtools:a_palette"),
                     std::invalid_argument);
 }
+
+TEST_CASE("Separated colors", "[colors]")
+{
+  using namespace qualpal::colors;
+
+  RGB col1("#fe0000");
+  RGB col2("#000000");
+  RGB col3("#aa00ff");
+
+  std::vector<RGB> colors = { col1, col2, col3 };
+  std::vector<RGB> result = qualpal::qualpal(2, colors);
+
+  REQUIRE(result[0].hex() != "#aa00ff");
+  REQUIRE(result[1].hex() != "#aa00ff");
+}
+
+TEST_CASE("Background colors", "[colors][fail]")
+{
+  using namespace qualpal::colors;
+
+  const double eps = 1e-6;
+
+  RGB bg_color("#66c2a5");
+
+  std::vector<RGB> result =
+    qualpal::qualpal(2, "ColorBrewer:Set2", {}, bg_color);
+  REQUIRE(result[0].hex() != "#66c2a5");
+}

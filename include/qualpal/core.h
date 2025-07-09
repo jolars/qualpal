@@ -10,6 +10,7 @@
 #pragma once
 
 #include <map>
+#include <optional>
 #include <qualpal/colors.h>
 #include <vector>
 
@@ -36,6 +37,7 @@ namespace qualpal {
  * @param cvd Color vision deficiency simulation parameters
  *            Map of {"protanomaly"|"deuteranomaly"|"tritanomaly" -> severity
  * [0,1]}
+ * @param bg Background color to include in selection
  * @return Vector of n selected RGB colors
  *
  * @throws std::invalid_argument if cvd severity not in [0,1]
@@ -48,7 +50,8 @@ namespace qualpal {
 std::vector<colors::RGB>
 qualpal(const int n,
         std::vector<colors::RGB> rgb_colors,
-        const std::map<std::string, double>& cvd = {});
+        const std::map<std::string, double>& cvd = {},
+        const std::optional<colors::RGB>& bg = std::nullopt);
 
 /**
  * @brief Generate qualitative color palette from hex color strings
@@ -72,7 +75,8 @@ qualpal(const int n,
 std::vector<colors::RGB>
 qualpal(const int n,
         const std::vector<std::string>& hex_colors,
-        const std::map<std::string, double>& cvd = {});
+        const std::map<std::string, double>& cvd = {},
+        const std::optional<colors::RGB>& bg = std::nullopt);
 
 /**
  * @brief Generate qualitative color palette from named palette
@@ -96,7 +100,8 @@ qualpal(const int n,
 std::vector<colors::RGB>
 qualpal(const int n,
         const std::string& palette,
-        const std::map<std::string, double>& cvd = {});
+        const std::map<std::string, double>& cvd = {},
+        const std::optional<colors::RGB>& bg = std::nullopt);
 
 /**
  * @brief Generate palette from HSL color space sampling
@@ -120,6 +125,7 @@ qualpal(const int n,
         const std::array<double, 2>& s_lim = { 0, 1 },
         const std::array<double, 2>& l_lim = { 0, 1 },
         const int n_points = 100,
-        const std::map<std::string, double>& cvd = {});
+        const std::map<std::string, double>& cvd = {},
+        const std::optional<colors::RGB>& bg = std::nullopt);
 
 } // namespace qualpal

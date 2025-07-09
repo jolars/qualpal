@@ -4,6 +4,7 @@
 #include <cmath>
 #include <limits>
 #include <numeric>
+#include <optional>
 #include <qualpal/color_difference.h>
 #include <qualpal/colors.h>
 #include <qualpal/matrix.h>
@@ -15,7 +16,8 @@ template<typename Metric = metrics::DIN99d>
 std::vector<int>
 farthestPoints(const int n,
                const std::vector<colors::DIN99d>& colors,
-               const Metric& metric = Metric{})
+               const Metric& metric = Metric{},
+               const std::optional<colors::RGB>& bg = std::nullopt)
 {
   Matrix<double> dist_mat = colorDifferenceMatrix(colors, metric);
   const int N = colors.size();
@@ -45,6 +47,10 @@ farthestPoints(const int n,
           min_dist_old = std::min(min_dist_old, dist_mat(r[j], r[i]));
         }
       }
+      if (bg.has_value()) {
+        double bg_dist = metric(colors[r[i]], colors::DIN99d(*bg));
+        min_dist_old = std::min(min_dist_old, bg_dist);
+      }
 
       bool found_better = false;
 
@@ -58,6 +64,11 @@ farthestPoints(const int n,
             double d = dist_mat(r[j], r_c[k]);
             min_dist_k = std::min(min_dist_k, d);
           }
+        }
+
+        if (bg.has_value()) {
+          double bg_dist = metric(colors[r_c[k]], colors::DIN99d(*bg));
+          min_dist_k = std::min(min_dist_k, bg_dist);
         }
 
         if (min_dist_k > min_dist_old) {
