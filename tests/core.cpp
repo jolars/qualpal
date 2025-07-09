@@ -63,7 +63,6 @@ TEST_CASE("Character method works as it it supposed to", "[colors]")
 {
   using namespace qualpal::colors;
 
-  const double eps = 1e-6;
   std::vector<RGB> result = qualpal::qualpal(2, "ColorBrewer:Set2");
 
   REQUIRE(result[0].hex() == "#a6d854");
