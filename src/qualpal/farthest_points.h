@@ -46,6 +46,8 @@ farthestPoints(const int n,
         }
       }
 
+      bool found_better = false;
+
       // Check if any point in the complement set (r_c) has a greater minimum
       // distance to the points currently selected (r).
       for (int k = 0; k < N - n; ++k) {
@@ -61,12 +63,13 @@ farthestPoints(const int n,
         if (min_dist_k > min_dist_old) {
           min_dist_old = min_dist_k;
           ind_new = k;
+          found_better = true;
         }
       }
 
       // If we have found a better point in r_c, swap places with the current
       // point.
-      if (ind_new != i) {
+      if (found_better) {
         std::swap(r[i], r_c[ind_new]);
         set_changed = true;
       }
