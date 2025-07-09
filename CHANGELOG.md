@@ -1,5 +1,36 @@
 # Changelog
 
+## [0.11.0](https://github.com/jolars/qualpal/compare/v0.10.0...v0.11.0) (2025-07-09)
+
+
+### ⚠ BREAKING CHANGES
+
+* put submodules in `qualpal/` not `qualpal_bits/`
+* add extension to main umbrella header
+* wrap color classes in `colors` namespace
+
+### Features
+
+* add `bg` option to consider background color ([ea34955](https://github.com/jolars/qualpal/commit/ea349550b9752e57ccc5030910685913ed7591e5))
+* extend metrics to handle disparate color types ([6b9faa2](https://github.com/jolars/qualpal/commit/6b9faa29527e0c71e7f05f1ad72a885cc3b15f11))
+* wrap color classes in `colors` namespace ([d5bf8ce](https://github.com/jolars/qualpal/commit/d5bf8ce46beb0805c02e010710df0a7ee7c60f99))
+
+
+### Bug Fixes
+
+* correct set update logic in `farthestPoints()` ([98d97b9](https://github.com/jolars/qualpal/commit/98d97b959aef2d240a4cbaad87d46111b3708a85))
+
+
+### Performance Improvements
+
+* improve performance of background distance computations ([09cfcbe](https://github.com/jolars/qualpal/commit/09cfcbe67071d9fda8eb12ce88918667a30840fc))
+
+
+### Code Refactoring
+
+* add extension to main umbrella header ([c89cb71](https://github.com/jolars/qualpal/commit/c89cb71bea5967b849c637bf95909899cc4d5058))
+* put submodules in `qualpal/` not `qualpal_bits/` ([c89cb71](https://github.com/jolars/qualpal/commit/c89cb71bea5967b849c637bf95909899cc4d5058))
+
 ## [0.10.0](https://github.com/jolars/qualpal/compare/v0.9.0...v0.10.0) (2025-07-06)
 
 
