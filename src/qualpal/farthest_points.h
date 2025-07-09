@@ -22,6 +22,16 @@ farthestPoints(const int n,
   Matrix<double> dist_mat = colorDifferenceMatrix(colors, metric);
   const int N = colors.size();
 
+  // Pre-compute background distances if background color is provided
+  std::vector<double> bg_distances;
+  if (bg.has_value()) {
+    bg_distances.reserve(N);
+    colors::DIN99d bg_din99d(*bg);
+    for (const auto& color : colors) {
+      bg_distances.push_back(metric(color, bg_din99d));
+    }
+  }
+
   // Begin with the first n points.
   std::vector<int> r(n);
   std::iota(r.begin(), r.end(), 0);
@@ -48,8 +58,7 @@ farthestPoints(const int n,
         }
       }
       if (bg.has_value()) {
-        double bg_dist = metric(colors[r[i]], colors::DIN99d(*bg));
-        min_dist_old = std::min(min_dist_old, bg_dist);
+        min_dist_old = std::min(min_dist_old, bg_distances[r[i]]);
       }
 
       bool found_better = false;
@@ -67,8 +76,7 @@ farthestPoints(const int n,
         }
 
         if (bg.has_value()) {
-          double bg_dist = metric(colors[r_c[k]], colors::DIN99d(*bg));
-          min_dist_k = std::min(min_dist_k, bg_dist);
+          min_dist_k = std::min(min_dist_k, bg_distances[r_c[k]]);
         }
 
         if (min_dist_k > min_dist_old) {
