@@ -48,7 +48,7 @@ simulate_cvd(const std::vector<colors::RGB>& rgb,
                    { { 0.152, 1.053, -0.205 },
                      { 0.115, 0.786, 0.099 },
                      { -0.004, -0.048, 1.052 } } } };
-  } else if (cvd_type == "deutan") {
+  } else if (cvd_type == "deuter") {
     cvd_mats = { { { { 1, 0, 0 }, { 0, 1, 0 }, { 0, 0, 1 } },
                    { { 0.866, 0.178, -0.044 },
                      { 0.050, 0.939, 0.011 },
