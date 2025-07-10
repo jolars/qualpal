@@ -3,12 +3,31 @@ on: [push, pull_request]
 
 jobs:
   build-and-test:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest, macos-13]
+      fail-fast: false
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install dependencies
-        run: sudo apt-get install -y build-essential lcov gcovr doxygen
+      - name: Install dependencies (Ubuntu)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get install -y \
+            build-essential \
+            catch2
+
+      - name: Install dependencies (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          brew install eigen catch2
+
+      - name: Install dependencies (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          choco install mingw
+          vcpkg install catch2 --triplet x64-mingw-dynamic
 
       - name: Setup cmake
         uses: jwlawson/actions-setup-cmake@v2.0
@@ -16,21 +35,49 @@ jobs:
           cmake-version: "3.25"
 
       - name: Configure CMake
-        run: cmake -B build -S . -DBUILD_CLI=ON -DBUILD_TESTING=ON -DBUILD_DOCS=ON -DENABLE_COVERAGE=ON
+        run: cmake -B build -S . -DBUILD_TESTING=ON ${{ runner.os == 'Windows' && '-G "MinGW Makefiles" -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-mingw-dynamic' || '' }}
 
       - name: Build
         run: cmake --build build
 
       - name: Install
-        run: sudo cmake --install build
+        run: ${{ runner.os == 'Windows' && 'cmake --install build' || 'sudo cmake --install build' }}
 
       - name: Test
+        run: ctest --test-dir build --output-on-failure
+
+  code-coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get install -y \
+            build-essential \
+            lcov \
+            gcovr \
+            catch2
+
+      - name: Setup cmake
+        uses: jwlawson/actions-setup-cmake@v2.0
+        with:
+          cmake-version: "3.25"
+
+      - name: Configure CMake with Coverage
+        run: cmake -B build -S . -DBUILD_TESTING=ON -DENABLE_COVERAGE=ON
+
+      - name: Build with Coverage
+        run: cmake --build build
+
+      - name: Run tests for coverage
         run: ctest --test-dir build --output-on-failure
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5.4.3
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
   docs:
     if: ${{ github.ref == 'refs/heads/main' }}
     needs: build-and-test
