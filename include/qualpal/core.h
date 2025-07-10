@@ -64,6 +64,7 @@ qualpal(const int n,
  * @param n Number of colors to select
  * @param hex_colors Vector of hex color strings (e.g., "#ff0000")
  * @param cvd Color vision deficiency simulation parameters
+ * @param bg Background color to include in selection
  * @param max_memory Maximum memory usage in GB for the color difference matrix
  * @return Vector of n selected RGB colors
  *
@@ -120,6 +121,7 @@ qualpal(const int n,
  * @param l_lim Lightness range [0, 1]
  * @param n_points Number of grid points to sample (default 100)
  * @param cvd Color vision deficiency parameters
+ * @param bg Background color to include in selection
  * @param max_memory Maximum memory usage in GB for the color difference matrix
  * @return Vector of n generated RGB colors
  *
