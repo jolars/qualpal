@@ -15,7 +15,8 @@ std::vector<colors::RGB>
 qualpal(const int n,
         std::vector<colors::RGB> rgb_colors,
         const std::map<std::string, double>& cvd,
-        const std::optional<colors::RGB>& bg)
+        const std::optional<colors::RGB>& bg,
+        const size_t max_memory)
 {
   int N = rgb_colors.size();
 
@@ -37,7 +38,8 @@ qualpal(const int n,
     din99d_colors.emplace_back(rgb);
   }
 
-  auto ind = farthestPoints(n, din99d_colors, metrics::DIN99d{}, bg);
+  auto ind =
+    farthestPoints(n, din99d_colors, metrics::DIN99d{}, bg, max_memory);
 
   std::vector<colors::RGB> rgb_out;
   rgb_out.reserve(n);
@@ -53,7 +55,8 @@ std::vector<colors::RGB>
 qualpal(const int n,
         const std::vector<std::string>& hex_colors,
         const std::map<std::string, double>& cvd,
-        const std::optional<colors::RGB>& bg)
+        const std::optional<colors::RGB>& bg,
+        const size_t max_memory)
 {
   std::vector<colors::RGB> rgb_colors;
 
@@ -62,14 +65,15 @@ qualpal(const int n,
     rgb_colors.emplace_back(color);
   }
 
-  return qualpal(n, rgb_colors, cvd, bg);
+  return qualpal(n, rgb_colors, cvd, bg, max_memory);
 }
 
 std::vector<colors::RGB>
 qualpal(const int n,
         const std::string& palette,
         const std::map<std::string, double>& cvd,
-        const std::optional<colors::RGB>& bg)
+        const std::optional<colors::RGB>& bg,
+        const size_t max_memory)
 {
   std::vector<colors::RGB> rgb_colors;
 
@@ -85,7 +89,7 @@ qualpal(const int n,
     rgb_colors.emplace_back(color);
   }
 
-  return qualpal(n, rgb_colors, cvd, bg);
+  return qualpal(n, rgb_colors, cvd, bg, max_memory);
 }
 
 std::vector<colors::RGB>
@@ -95,7 +99,8 @@ qualpal(const int n,
         const std::array<double, 2>& l_lim,
         const int n_points,
         const std::map<std::string, double>& cvd,
-        const std::optional<colors::RGB>& bg)
+        const std::optional<colors::RGB>& bg,
+        const size_t max_memory)
 {
   if (n > n_points) {
     throw std::invalid_argument("Number of colors to generate must be lower "
@@ -126,7 +131,7 @@ qualpal(const int n,
     rgb_colors.emplace_back(color);
   }
 
-  return qualpal(n, rgb_colors, cvd, bg);
+  return qualpal(n, rgb_colors, cvd, bg, max_memory);
 }
 
 } // namespace qualpal

@@ -17,9 +17,10 @@ std::vector<int>
 farthestPoints(const int n,
                const std::vector<colors::DIN99d>& colors,
                const Metric& metric = Metric{},
-               const std::optional<colors::RGB>& bg = std::nullopt)
+               const std::optional<colors::RGB>& bg = std::nullopt,
+               const size_t max_memory = 1)
 {
-  Matrix<double> dist_mat = colorDifferenceMatrix(colors, metric);
+  Matrix<double> dist_mat = colorDifferenceMatrix(colors, metric, max_memory);
   const int n_colors = colors.size();
 
   // Pre-compute background distances if background color is provided

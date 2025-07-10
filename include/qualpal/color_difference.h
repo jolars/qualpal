@@ -13,6 +13,30 @@
 namespace qualpal {
 
 /**
+ * @brief Estimate memory usage for color difference matrix
+ * @param n Number of colors
+ * @return Estimated memory usage in bytes
+ */
+inline size_t
+estimateMatrixMemory(size_t n)
+{
+  return n * n * sizeof(double);
+}
+
+/**
+ * @brief Check if matrix size is reasonable for available memory
+ * @param n Number of colors
+ * @param max_gb Maximum allowed memory in GB (default: 1GB)
+ * @return true if size is reasonable
+ */
+inline bool
+checkMatrixSize(size_t n, double max_gb = 1.0)
+{
+  double estimated_gb = estimateMatrixMemory(n) / (1024.0 * 1024.0 * 1024.0);
+  return estimated_gb <= max_gb;
+}
+
+/**
  * @brief Generate a color difference matrix
  * @tparam ColorType Any color class (colors::RGB, colors::HSL, colors::XYZ,
  * colors::Lab, colors::DIN99d)
@@ -24,9 +48,19 @@ namespace qualpal {
 template<typename ColorType, typename Metric = metrics::DIN99d>
 Matrix<double>
 colorDifferenceMatrix(const std::vector<ColorType>& colors,
-                      const Metric& metric = Metric{})
+                      const Metric& metric = Metric{},
+                      const size_t max_memory = 1)
 {
   const int N = colors.size();
+
+  if (!checkMatrixSize(N, max_memory)) {
+    throw std::runtime_error(
+      "Color difference matrix would require " +
+      std::to_string(estimateMatrixMemory(N) / (1024.0 * 1024.0 * 1024.0)) +
+      " GB, which exceeds the limit of " + std::to_string(max_memory) +
+      " GB. Reduce the number of colors or increase the memory limit.");
+  }
+
   Matrix<double> result(N, N);
 
 #ifdef _OPENMP

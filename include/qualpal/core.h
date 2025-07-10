@@ -38,6 +38,7 @@ namespace qualpal {
  *            Map of {"protanomaly"|"deuteranomaly"|"tritanomaly" -> severity
  * [0,1]}
  * @param bg Background color to include in selection
+ * @param max_memory Maximum memory usage in GB for the color difference matrix
  * @return Vector of n selected RGB colors
  *
  * @throws std::invalid_argument if cvd severity not in [0,1]
@@ -51,7 +52,8 @@ std::vector<colors::RGB>
 qualpal(const int n,
         std::vector<colors::RGB> rgb_colors,
         const std::map<std::string, double>& cvd = {},
-        const std::optional<colors::RGB>& bg = std::nullopt);
+        const std::optional<colors::RGB>& bg = std::nullopt,
+        const size_t max_memory = 1);
 
 /**
  * @brief Generate qualitative color palette from hex color strings
@@ -62,6 +64,7 @@ qualpal(const int n,
  * @param n Number of colors to select
  * @param hex_colors Vector of hex color strings (e.g., "#ff0000")
  * @param cvd Color vision deficiency simulation parameters
+ * @param max_memory Maximum memory usage in GB for the color difference matrix
  * @return Vector of n selected RGB colors
  *
  * @throws std::invalid_argument if hex colors are invalid or cvd severity not
@@ -76,7 +79,8 @@ std::vector<colors::RGB>
 qualpal(const int n,
         const std::vector<std::string>& hex_colors,
         const std::map<std::string, double>& cvd = {},
-        const std::optional<colors::RGB>& bg = std::nullopt);
+        const std::optional<colors::RGB>& bg = std::nullopt,
+        const size_t max_memory = 1);
 
 /**
  * @brief Generate qualitative color palette from named palette
@@ -101,7 +105,8 @@ std::vector<colors::RGB>
 qualpal(const int n,
         const std::string& palette,
         const std::map<std::string, double>& cvd = {},
-        const std::optional<colors::RGB>& bg = std::nullopt);
+        const std::optional<colors::RGB>& bg = std::nullopt,
+        const size_t max_memory = 1);
 
 /**
  * @brief Generate palette from HSL color space sampling
@@ -115,6 +120,7 @@ qualpal(const int n,
  * @param l_lim Lightness range [0, 1]
  * @param n_points Number of grid points to sample (default 100)
  * @param cvd Color vision deficiency parameters
+ * @param max_memory Maximum memory usage in GB for the color difference matrix
  * @return Vector of n generated RGB colors
  *
  * @throws std::invalid_argument for invalid ranges or n > n_points
@@ -126,6 +132,7 @@ qualpal(const int n,
         const std::array<double, 2>& l_lim = { 0, 1 },
         const int n_points = 100,
         const std::map<std::string, double>& cvd = {},
-        const std::optional<colors::RGB>& bg = std::nullopt);
+        const std::optional<colors::RGB>& bg = std::nullopt,
+        const size_t max_memory = 1);
 
 } // namespace qualpal
