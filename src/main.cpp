@@ -1,3 +1,4 @@
+#include "qualpal/palettes.h"
 #include "qualpal/validation.h"
 #include <CLI/CLI.hpp>
 #include <iostream>
@@ -42,8 +43,7 @@ main(int argc, char** argv)
   std::vector<std::string> values;
 
   app.add_option<int, int>("-n,--number", n, "Number of colors to generate");
-  app.add_option("values", values, "Input values (depends on input type)")
-    ->required();
+  app.add_option("values", values, "Input values (depends on input type)");
 
   app.footer(
     "Examples:\n"
@@ -56,13 +56,142 @@ main(int argc, char** argv)
 
   auto help_cmd = app.add_subcommand("help", "Show detailed help information");
 
+  auto analyze_cmd = app.add_subcommand(
+    "analyze", "Analyze a color palette by computing color difference matrix");
+
+  std::string analyze_input = "hex";
+  std::vector<std::string> analyze_values;
+  double max_memory = 1.0;
+
+  analyze_cmd
+    ->add_option("-i,--input",
+                 analyze_input,
+                 "Input type:\n"
+                 "  hex        - Hex color values (#ff0000)\n"
+                 "  colorspace - HSL ranges (h1:h2 s1:s2 l1:l2)\n"
+                 "  palette    - Built-in palette name")
+    ->check(CLI::IsMember({ "hex", "colorspace", "palette" }));
+
+  analyze_cmd
+    ->add_option(
+      "values", analyze_values, "Input values (depends on input type)")
+    ->required();
+
+  analyze_cmd->add_option(
+    "--max-memory", max_memory, "Maximum memory usage in GB (default: 1.0)");
+
   argv = app.ensure_utf8(argv);
   CLI11_PARSE(app, argc, argv);
 
-  if (values.empty()) {
-    std::cerr << "Error: No values provided. Use --help for usage information."
-              << std::endl;
-    return 1;
+  if (*analyze_cmd) {
+    if (analyze_values.empty()) {
+      std::cerr << "Error: No values provided for analysis. Use --help for "
+                   "usage information."
+                << std::endl;
+      return 1;
+    }
+
+    std::vector<qualpal::colors::RGB> rgb_colors;
+
+    try {
+      if (analyze_input == "hex") {
+        for (const auto& color : analyze_values) {
+          if (!qualpal::isValidHexColor(color)) {
+            std::cerr << "Error: Invalid hex color '" << color
+                      << "'. Expected format: #RRGGBB or #RGB" << std::endl;
+            return 1;
+          }
+          rgb_colors.emplace_back(color);
+        }
+      } else if (analyze_input == "colorspace") {
+        std::cerr << "Error: 'colorspace' input is not supported for analyze."
+                  << std::endl;
+        return 1;
+      } else if (analyze_input == "palette") {
+        if (analyze_values.size() != 1) {
+          std::cerr << "Error: Palette input requires exactly one palette name"
+                    << std::endl;
+          return 1;
+        }
+        auto hex_colors = qualpal::getPalette(analyze_values[0]);
+        for (const auto& hex : hex_colors) {
+          rgb_colors.emplace_back(hex);
+        }
+      }
+    } catch (const std::invalid_argument& e) {
+      std::cerr << "Error: " << e.what() << std::endl;
+      return 1;
+    } catch (const std::exception& e) {
+      std::cerr << "Error: " << e.what() << std::endl;
+      return 1;
+    }
+
+    // Compute and display color difference matrix
+    try {
+      auto matrix = qualpal::colorDifferenceMatrix(
+        rgb_colors, qualpal::metrics::DIN99d{}, max_memory);
+
+      std::cout << "Color Difference Matrix (DIN99d metric):\n";
+      std::cout << "Colors analyzed: " << rgb_colors.size() << "\n";
+
+      // Print color list
+      std::cout << "Colors:\n";
+      std::cout << "   " << std::setw(3) << "Idx" << std::setw(9) << "Hex"
+                << std::setw(9) << "MinDist" << "\n";
+      for (size_t i = 0; i < rgb_colors.size(); ++i) {
+        double min_dist = std::numeric_limits<double>::max();
+        for (size_t j = 0; j < rgb_colors.size(); ++j) {
+          if (i != j) {
+            min_dist = std::min(min_dist, matrix(i, j));
+          }
+        }
+
+        // Extract RGB components for ANSI escape
+        auto rgb = rgb_colors[i];
+        int r = static_cast<int>(rgb.r() * 255);
+        int g = static_cast<int>(rgb.g() * 255);
+        int b = static_cast<int>(rgb.b() * 255);
+
+        // Print color swatch using ANSI escape codes
+        std::cout << "\033[48;2;" << r << ";" << g << ";" << b << "m  \033[0m "
+                  << std::setw(3) << i << "  " << rgb.hex() << std::setw(9)
+                  << std::fixed << std::setprecision(2) << min_dist << "\n";
+      }
+      std::cout << "\n";
+
+      // Print matrix header
+      std::cout << "Color Difference Matrix:\n";
+      std::cout << "    ";
+      for (size_t j = 0; j < rgb_colors.size(); ++j) {
+        std::cout << std::setw(8) << j;
+      }
+      std::cout << "\n";
+
+      // Print matrix rows
+      for (size_t i = 0; i < rgb_colors.size(); ++i) {
+        std::cout << std::setw(3) << i << " ";
+        for (size_t j = 0; j < rgb_colors.size(); ++j) {
+          std::cout << std::setw(8) << std::fixed << std::setprecision(2)
+                    << matrix(i, j);
+        }
+        std::cout << "\n";
+      }
+
+    } catch (const std::runtime_error& e) {
+      std::cerr << "Error: " << e.what() << std::endl;
+      return 1;
+    }
+
+    return 0;
+  }
+
+  if (!*analyze_cmd && !*help_cmd) {
+    if (values.empty()) {
+      std::cerr
+        << "Error: No values provided. Use --help for usage information."
+        << std::endl;
+      return 1;
+    }
   }
 
   std::vector<qualpal::colors::RGB> rgb_out;
