@@ -1,3 +1,4 @@
+#include "qualpal/cvd_simulation.h"
 #include "qualpal/palettes.h"
 #include "qualpal/validation.h"
 #include <CLI/CLI.hpp>
@@ -38,6 +39,17 @@ main(int argc, char** argv)
                 "  colorspace - HSL ranges (h1:h2 s1:s2 l1:l2)\n"
                 "  palette    - Built-in palette name")
     ->check(CLI::IsMember({ "hex", "colorspace", "palette" }));
+
+  double deuter = 0.0;
+  double protan = 0.0;
+  double tritan = 0.0;
+
+  app.add_option(
+    "--deuter", deuter, "Degree of deuter CVD simulation (0.0–1.0)");
+  app.add_option(
+    "--protan", protan, "Degree of protan CVD simulation (0.0–1.0)");
+  app.add_option(
+    "--tritan", tritan, "Degree of tritan CVD simulation (0.0–1.0)");
 
   int n = 8;
   std::vector<std::string> values;
@@ -83,6 +95,10 @@ main(int argc, char** argv)
   argv = app.ensure_utf8(argv);
   CLI11_PARSE(app, argc, argv);
 
+  std::map<std::string, double> cvd = { { "deuter", deuter },
+                                        { "protan", protan },
+                                        { "tritan", tritan } };
+
   if (*analyze_cmd) {
     if (analyze_values.empty()) {
       std::cerr << "Error: No values provided for analysis. Use --help for "
@@ -126,6 +142,17 @@ main(int argc, char** argv)
       return 1;
     }
 
+    auto original_rgb_colors = rgb_colors;
+
+    for (const auto& [cvd_type, cvd_severity] : cvd) {
+      if (cvd_severity > 1.0 || cvd_severity < 0.0) {
+        throw std::invalid_argument("cvd_severity must be between 0 and 1");
+      }
+      if (cvd_severity > 0) {
+        rgb_colors = qualpal::simulate_cvd(rgb_colors, cvd_type, cvd_severity);
+      }
+    }
+
     // Compute and display color difference matrix
     try {
       auto matrix = qualpal::colorDifferenceMatrix(
@@ -147,7 +174,7 @@ main(int argc, char** argv)
         }
 
         // Extract RGB components for ANSI escape
-        auto rgb = rgb_colors[i];
+        auto rgb = original_rgb_colors[i];
         int r = static_cast<int>(rgb.r() * 255);
         int g = static_cast<int>(rgb.g() * 255);
         int b = static_cast<int>(rgb.b() * 255);
@@ -205,7 +232,7 @@ main(int argc, char** argv)
           return 1;
         }
       }
-      rgb_out = qualpal::qualpal(n, values);
+      rgb_out = qualpal::qualpal(n, values, cvd);
     } else if (input == "colorspace") {
       if (values.size() != 3) {
         std::cerr << "Error: Colorspace input requires exactly 3 ranges (hue, "
@@ -219,14 +246,14 @@ main(int argc, char** argv)
 
       qualpal::validateHslRanges(h_lim, s_lim, l_lim);
 
-      rgb_out = qualpal::qualpal(n, h_lim, s_lim, l_lim);
+      rgb_out = qualpal::qualpal(n, h_lim, s_lim, l_lim, 1000, cvd);
     } else if (input == "palette") {
       if (values.size() != 1) {
         std::cerr << "Error: Palette input requires exactly one palette name"
                   << std::endl;
         return 1;
       }
-      rgb_out = qualpal::qualpal(n, values[0]);
+      rgb_out = qualpal::qualpal(n, values[0], cvd);
     }
   } catch (const std::invalid_argument& e) {
     std::cerr << "Error: " << e.what() << std::endl;
