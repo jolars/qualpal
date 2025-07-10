@@ -40,6 +40,13 @@ install(
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/qualpal
 )
 
+find_package(OpenMP)
+
+if(OpenMP_FOUND)
+    message(STATUS "OpenMP found: ${OpenMP_CXX_FLAGS}")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+endif()
+
 add_subdirectory(src)
 
 target_include_directories(
@@ -144,6 +151,7 @@ if(BUILD_TESTING)
 
     add_executable(
         tests
+        tests/benchmarks.cpp
         tests/colors.cpp
         tests/core.cpp
         tests/cvd.cpp

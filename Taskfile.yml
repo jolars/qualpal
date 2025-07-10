@@ -74,3 +74,8 @@ tasks:
       - cmake -B {{.BUILD_DIR}} -S . -DBUILD_DOCS=OFF -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Debug
       - cmake {{.CMAKE_BUILD_FLAGS}}
       - ctest --test-dir {{.BUILD_DIR}} --output-on-failure
+
+  benchmark:
+    deps: [build]
+    cmds:
+      - ./build/tests [!benchmark] --benchmark-samples 20

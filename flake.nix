@@ -32,6 +32,7 @@
             lcov
             lldb
             help2man
+            llvmPackages.openmp
           ];
         };
       }
