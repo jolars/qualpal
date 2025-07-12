@@ -21,6 +21,9 @@ RGB::RGB(const double r, const double g, const double b)
   , g_value(g)
   , b_value(b)
 {
+  assert(r >= 0 && r <= 1 && "Red component must be in [0, 1]");
+  assert(g >= 0 && g <= 1 && "Green component must be in [0, 1]");
+  assert(b >= 0 && b <= 1 && "Blue component must be in [0, 1]");
 }
 
 RGB::RGB(const std::string& hex)
@@ -148,6 +151,9 @@ XYZ::XYZ(const double x, const double y, const double z)
   , y_value(y)
   , z_value(z)
 {
+  assert(x >= 0 && "X component must be non-negative");
+  assert(y >= 0 && "Y component must be non-negative");
+  assert(z >= 0 && "Z component must be non-negative");
 }
 
 XYZ::XYZ(const RGB& rgb)
@@ -215,6 +221,10 @@ DIN99d::DIN99d(const double l, const double a, const double b)
   , a_value(a)
   , b_value(b)
 {
+  assert(l >= 0 && l <= 100 && "Lightness must be in [0, 100]");
+  assert(a >= -128 && a <= 127 && "Green-red component must be in [-128, 127]");
+  assert(b >= -128 && b <= 127 &&
+         "Blue-yellow component must be in [-128, 127]");
 }
 
 DIN99d::DIN99d(const XYZ& xyz)
@@ -262,6 +272,9 @@ HSL::HSL(const double h, const double s, const double l)
   , s_value(s)
   , l_value(l)
 {
+  assert(h >= 0 && h < 360 && "Hue must be in [0, 360)");
+  assert(s >= 0 && s <= 1 && "Saturation must be in [0, 1]");
+  assert(l >= 0 && l <= 1 && "Lightness must be in [0, 1]");
 }
 
 HSL::HSL(const RGB& rgb)
@@ -299,6 +312,10 @@ Lab::Lab(const double l, const double a, const double b)
   , a_value(a)
   , b_value(b)
 {
+  assert(l >= 0 && l <= 100 && "Lightness must be in [0, 100]");
+  assert(a >= -128 && a <= 127 && "Green-red component must be in [-128, 127]");
+  assert(b >= -128 && b <= 127 &&
+         "Blue-yellow component must be in [-128, 127]");
 }
 
 Lab::Lab(const XYZ& xyz, const std::array<double, 3>& white_point)
