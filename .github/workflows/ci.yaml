@@ -69,7 +69,7 @@ jobs:
           cmake-version: "3.25"
 
       - name: Configure CMake with Coverage
-        run: cmake -B build -S . -DBUILD_TESTING=ON -DENABLE_COVERAGE=ON
+        run: cmake -B build -S . -DBUILD_TESTING=ON -DENABLE_COVERAGE=ON -DBUILD_CLI=ON
 
       - name: Build with Coverage
         run: cmake --build build
