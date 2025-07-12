@@ -83,7 +83,7 @@ RGB::RGB(const std::string& hex)
 RGB::RGB(const HSL& hsl)
 {
   double c = (1 - std::abs(2 * hsl.l() - 1)) * hsl.s();
-  double h_prime = hsl.h() >= 0 ? hsl.h() / 60.0 : (hsl.h() - 360) / 60.0;
+  double h_prime = mod(hsl.h(), 360.0) / 60.0;
   double x = c * (1 - std::abs(mod(h_prime, 2) - 1));
 
   std::array<double, 3> rgb_prime = { 0, 0, 0 };
