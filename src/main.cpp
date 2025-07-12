@@ -2,6 +2,7 @@
 #include "qualpal/palettes.h"
 #include "qualpal/validation.h"
 #include <CLI/CLI.hpp>
+#include <algorithm>
 #include <iostream>
 #include <qualpal.h>
 #include <stdexcept>
@@ -144,12 +145,22 @@ main(int argc, char** argv)
 
     auto original_rgb_colors = rgb_colors;
 
-    for (const auto& [cvd_type, cvd_severity] : cvd) {
+    for (const auto& cvd_pair : cvd) {
+      const auto& cvd_type = cvd_pair.first;
+      const auto& cvd_severity = cvd_pair.second;
+
       if (cvd_severity > 1.0 || cvd_severity < 0.0) {
         throw std::invalid_argument("cvd_severity must be between 0 and 1");
       }
+
       if (cvd_severity > 0) {
-        rgb_colors = qualpal::simulateCvd(rgb_colors, cvd_type, cvd_severity);
+        std::transform(
+          rgb_colors.begin(),
+          rgb_colors.end(),
+          rgb_colors.begin(),
+          [&cvd_type, &cvd_severity](const qualpal::colors::RGB& rgb) {
+            return qualpal::simulateCvd(rgb, cvd_type, cvd_severity);
+          });
       }
     }
 

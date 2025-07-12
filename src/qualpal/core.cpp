@@ -3,6 +3,7 @@
 #include "farthest_points.h"
 #include "palettes.h"
 #include "validation.h"
+#include <algorithm>
 #include <cassert>
 #include <map>
 #include <qualpal/core.h>
@@ -22,12 +23,21 @@ qualpal(const int n,
 
   const std::vector<colors::RGB> rgb_colors_original = rgb_colors;
 
-  for (const auto& [cvd_type, cvd_severity] : cvd) {
+  for (const auto& cvd_pair : cvd) {
+    const auto& cvd_type = cvd_pair.first;
+    const auto& cvd_severity = cvd_pair.second;
+
     if (cvd_severity > 1.0 || cvd_severity < 0.0) {
       throw std::invalid_argument("cvd_severity must be between 0 and 1");
     }
+
     if (cvd_severity > 0) {
-      rgb_colors = simulateCvd(rgb_colors, cvd_type, cvd_severity);
+      std::transform(rgb_colors.begin(),
+                     rgb_colors.end(),
+                     rgb_colors.begin(),
+                     [&cvd_type, &cvd_severity](const colors::RGB& rgb) {
+                       return simulateCvd(rgb, cvd_type, cvd_severity);
+                     });
     }
   }
 
