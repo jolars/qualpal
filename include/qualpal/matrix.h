@@ -100,8 +100,11 @@ template<typename T, int rows, int cols>
 class FixedMatrix
 {
 public:
-  /** @brief Default constructor - elements are uninitialized */
-  constexpr FixedMatrix() {}
+  /** @brief Default constructor - elements are zero-initialized */
+  constexpr FixedMatrix()
+    : data{}
+  {
+  }
 
   /**
    * @brief Construct from nested initializer list
@@ -190,7 +193,7 @@ public:
    * @return Result matrix with dimensions (rows × other_cols)
    */
   template<int other_cols>
-  FixedMatrix<T, rows, other_cols> operator*(
+  constexpr FixedMatrix<T, rows, other_cols> operator*(
     const FixedMatrix<T, cols, other_cols>& other) const
   {
     FixedMatrix<T, rows, other_cols> result;
