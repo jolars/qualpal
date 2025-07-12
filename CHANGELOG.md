@@ -1,5 +1,32 @@
 # Changelog
 
+## [0.12.0](https://github.com/jolars/qualpal/compare/v0.11.0...v0.12.0) (2025-07-12)
+
+
+### ⚠ BREAKING CHANGES
+
+* change `deutan` to `deuter` for CVD options
+
+### Features
+
+* change `deutan` to `deuter` for CVD options ([d1e6ab1](https://github.com/jolars/qualpal/commit/d1e6ab18e1bbcf14f901573b3f66bd0833c00141))
+* **cli:** add `deuter`, `tritan`, `protan` for CVD simul ([4568750](https://github.com/jolars/qualpal/commit/4568750da10b2a0ea720424e22fc6311a97a67c1))
+* **cli:** add subcommand to analyze color palette ([ed818e3](https://github.com/jolars/qualpal/commit/ed818e3f42a79598890e97950708a794da52d3ca))
+* make FixedMatrix constructors and members `constexpr` ([42ac95d](https://github.com/jolars/qualpal/commit/42ac95d860251b0010692973be4b6eacd29ef2c4))
+* set a default limit on the color diff matrix size ([9bbd5a1](https://github.com/jolars/qualpal/commit/9bbd5a1d8072bcccae22dabb43597c2b25e927f5))
+
+
+### Bug Fixes
+
+* correctly handle negatives hues in hsl to rgb conversion ([51c5d12](https://github.com/jolars/qualpal/commit/51c5d12e88f08bd80f5a7e30c08c13a486e68326))
+
+
+### Performance Improvements
+
+* parallelize with openmp ([4a3c10b](https://github.com/jolars/qualpal/commit/4a3c10b3dc43a7f1d2db732d99984038950ed670))
+* use `constexpr` cvd matrices in `simulateCvd` ([3bf53a1](https://github.com/jolars/qualpal/commit/3bf53a179f30a784d38019267d4f018d441dae16))
+* use `string_view` in `simulateCvd` ([e3b3ad3](https://github.com/jolars/qualpal/commit/e3b3ad3254bd40c278b6b35f9431c54c4d6d32bb))
+
 ## [0.11.0](https://github.com/jolars/qualpal/compare/v0.10.0...v0.11.0) (2025-07-09)
 
 
