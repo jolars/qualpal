@@ -27,7 +27,7 @@ qualpal(const int n,
       throw std::invalid_argument("cvd_severity must be between 0 and 1");
     }
     if (cvd_severity > 0) {
-      rgb_colors = simulate_cvd(rgb_colors, cvd_type, cvd_severity);
+      rgb_colors = simulateCvd(rgb_colors, cvd_type, cvd_severity);
     }
   }
 

@@ -149,7 +149,7 @@ main(int argc, char** argv)
         throw std::invalid_argument("cvd_severity must be between 0 and 1");
       }
       if (cvd_severity > 0) {
-        rgb_colors = qualpal::simulate_cvd(rgb_colors, cvd_type, cvd_severity);
+        rgb_colors = qualpal::simulateCvd(rgb_colors, cvd_type, cvd_severity);
       }
     }
 
