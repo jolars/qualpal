@@ -156,6 +156,7 @@ if(BUILD_TESTING)
         tests/core.cpp
         tests/cvd.cpp
         tests/math.cpp
+        tests/matrix.cpp
         tests/validation.cpp
     )
     target_link_libraries(tests PRIVATE Catch2::Catch2WithMain qualpal::qualpal)
