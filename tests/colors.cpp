@@ -266,3 +266,73 @@ TEST_CASE("HSL from RGB conversion", "[colors][hsl][rgb]")
     REQUIRE_THAT(hsl.l(), WithinAbs(0.5, 1e-6));
   }
 }
+
+TEST_CASE("RGB conversion", "[colors][rgb]")
+{
+  using namespace Catch::Matchers;
+  using namespace qualpal::colors;
+
+  RGB rgb(0.34, 0.98, 0.01);
+
+  double eps = 1e-4;
+
+  SECTION("To Lab")
+  {
+    Lab lab(rgb);
+    REQUIRE_THAT(lab.l(), WithinAbs(87.1549, eps));
+    REQUIRE_THAT(lab.a(), WithinAbs(-76.0668, eps));
+    REQUIRE_THAT(lab.b(), WithinAbs(82.9309, eps));
+  }
+
+  SECTION("To XYZ")
+  {
+    XYZ xyz(rgb);
+    REQUIRE_THAT(xyz.x(), WithinAbs(0.380693, eps));
+    REQUIRE_THAT(xyz.y(), WithinAbs(0.703226, eps));
+    REQUIRE_THAT(xyz.z(), WithinAbs(0.116406, eps));
+  }
+}
+
+TEST_CASE("XYZ conversion", "[colors][xyz]")
+{
+  using namespace Catch::Matchers;
+  using namespace qualpal::colors;
+
+  XYZ xyz(0.4, 0.5, 0.99);
+
+  double eps = 1e-4;
+
+  SECTION("To Lab")
+  {
+    Lab lab(xyz);
+    REQUIRE_THAT(lab.l(), WithinAbs(76.0693, eps));
+    REQUIRE_THAT(lab.a(), WithinAbs(-22.1559, eps));
+    REQUIRE_THAT(lab.b(), WithinAbs(-35.0158, eps));
+  }
+
+  SECTION("To RGB")
+  {
+    RGB rgb(xyz);
+    REQUIRE_THAT(rgb.r(), WithinAbs(0.20306, eps));
+    REQUIRE_THAT(rgb.g(), WithinAbs(0.792647, eps));
+    REQUIRE_THAT(rgb.b(), WithinAbs(0.985306, eps));
+  }
+}
+
+TEST_CASE("HSL conversion", "[colors][hsl]")
+{
+  using namespace Catch::Matchers;
+  using namespace qualpal::colors;
+
+  HSL hsl(309, 0.2, 0.86);
+
+  double eps = 1e-4;
+
+  SECTION("To RGB")
+  {
+    RGB rgb(hsl);
+    REQUIRE_THAT(rgb.r(), WithinAbs(0.888, eps));
+    REQUIRE_THAT(rgb.g(), WithinAbs(0.832, eps));
+    REQUIRE_THAT(rgb.b(), WithinAbs(0.8796, eps));
+  }
+}
