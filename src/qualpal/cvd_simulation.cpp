@@ -108,7 +108,7 @@ constexpr std::array<FixedMatrix<double, 3, 3>, 11> TRITAN_MATRICES = {
 
 colors::RGB
 simulateCvd(const colors::RGB& rgb,
-            const std::string cvd_type,
+            const std::string_view cvd_type,
             double cvd_severity)
 {
   cvd_severity *= 10;
