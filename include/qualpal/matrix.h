@@ -101,18 +101,21 @@ class FixedMatrix
 {
 public:
   /** @brief Default constructor - elements are uninitialized */
-  FixedMatrix() {}
+  constexpr FixedMatrix() {}
 
   /**
    * @brief Construct from nested initializer list
    * @param list Nested initializer list of matrix elements
    */
-  FixedMatrix(std::initializer_list<std::initializer_list<T>> list)
+  constexpr FixedMatrix(std::initializer_list<std::initializer_list<T>> list)
+    : data{}
   {
     auto it = list.begin();
-    for (int i = 0; i < rows; ++i) {
-      std::copy(it->begin(), it->end(), data.begin() + i * cols);
-      ++it;
+    for (int i = 0; i < rows && it != list.end(); ++i, ++it) {
+      auto col_it = it->begin();
+      for (int j = 0; j < cols && col_it != it->end(); ++j, ++col_it) {
+        data[i * cols + j] = *col_it;
+      }
     }
   }
 
@@ -120,7 +123,7 @@ public:
    * @brief Create transpose of this matrix
    * @return New FixedMatrix that is the transpose of this matrix
    */
-  FixedMatrix<T, cols, rows> t() const
+  constexpr FixedMatrix<T, cols, rows> t() const
   {
     FixedMatrix<T, cols, rows> result;
     for (int i = 0; i < rows; ++i) {
@@ -137,7 +140,7 @@ public:
    * @param col Column index
    * @return Reference to element at (row, col)
    */
-  T& operator()(int row, int col) { return data[row * cols + col]; }
+  constexpr T& operator()(int row, int col) { return data[row * cols + col]; }
 
   /**
    * @brief Access matrix element (const)
@@ -145,14 +148,17 @@ public:
    * @param col Column index
    * @return Const reference to element at (row, col)
    */
-  const T& operator()(int row, int col) const { return data[row * cols + col]; }
+  constexpr const T& operator()(int row, int col) const
+  {
+    return data[row * cols + col];
+  }
 
   /**
    * @brief Scalar multiplication
    * @param scalar Value to multiply all elements by
    * @return New matrix with all elements multiplied by scalar
    */
-  FixedMatrix<T, rows, cols> operator*(const T& scalar) const
+  constexpr FixedMatrix<T, rows, cols> operator*(const T& scalar) const
   {
     FixedMatrix<T, rows, cols> result;
     for (int i = 0; i < rows * cols; ++i) {
@@ -166,7 +172,7 @@ public:
    * @param vec Vector to multiply with (must have 'cols' elements)
    * @return Result vector with 'rows' elements
    */
-  std::array<T, rows> operator*(const std::array<T, cols>& vec) const
+  constexpr std::array<T, rows> operator*(const std::array<T, cols>& vec) const
   {
     std::array<T, rows> result{};
     for (int i = 0; i < rows; ++i) {
@@ -204,7 +210,7 @@ public:
    * @param other Dynamic matrix to multiply with
    * @return Result as dynamic Matrix
    */
-  Matrix<T> operator*(const Matrix<T>& other) const
+  constexpr Matrix<T> operator*(const Matrix<T>& other) const
   {
     assert(cols == other.nrow());
     Matrix<T> result(rows, other.ncol());
@@ -223,7 +229,7 @@ public:
    * @param other Matrix to add (must have same dimensions)
    * @return New matrix containing element-wise sum
    */
-  FixedMatrix<T, rows, cols> operator+(
+  constexpr FixedMatrix<T, rows, cols> operator+(
     const FixedMatrix<T, rows, cols>& other) const
   {
     FixedMatrix<T, rows, cols> result;
@@ -238,7 +244,7 @@ public:
    * @param other Matrix to subtract (must have same dimensions)
    * @return New matrix containing element-wise difference
    */
-  FixedMatrix<T, rows, cols> operator-(
+  constexpr FixedMatrix<T, rows, cols> operator-(
     const FixedMatrix<T, rows, cols>& other) const
   {
     FixedMatrix<T, rows, cols> result;
@@ -249,10 +255,10 @@ public:
   }
 
   /** @brief Fill all elements with specified value */
-  void fill(const T& value) { data.fill(value); }
+  constexpr void fill(const T& value) { data.fill(value); }
 
   /** @brief Set all elements to zero */
-  void zeros() { data.fill(0); }
+  constexpr void zeros() { data.fill(0); }
 
 private:
   std::array<T, rows * cols> data;
