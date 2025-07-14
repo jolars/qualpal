@@ -108,7 +108,7 @@ TEST_CASE("Adapting to color vision deficiency", "[cvd][fail]")
   const double eps = 1e-6;
 
   auto cvd = std::map<std::string, double>{
-    { "deuter", 1.0 },
+    { "deutan", 1.0 },
     { "protan", 1.0 },
     { "tritan", 1.0 },
   };

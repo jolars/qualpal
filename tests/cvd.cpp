@@ -14,16 +14,16 @@ TEST_CASE("CVD simulation basic functionality", "[cvd]")
   SECTION("Identity transformation with severity 0")
   {
     RGB result_protan = simulateCvd(input_color, "protan", 0.0);
-    RGB result_deuter = simulateCvd(input_color, "deuter", 0.0);
+    RGB result_deutan = simulateCvd(input_color, "deutan", 0.0);
     RGB result_tritan = simulateCvd(input_color, "tritan", 0.0);
 
     REQUIRE_THAT(result_protan.r(), WithinRel(input_color.r(), 1e-10));
     REQUIRE_THAT(result_protan.g(), WithinRel(input_color.g(), 1e-10));
     REQUIRE_THAT(result_protan.b(), WithinRel(input_color.b(), 1e-10));
 
-    REQUIRE_THAT(result_deuter.r(), WithinRel(input_color.r(), 1e-10));
-    REQUIRE_THAT(result_deuter.g(), WithinRel(input_color.g(), 1e-10));
-    REQUIRE_THAT(result_deuter.b(), WithinRel(input_color.b(), 1e-10));
+    REQUIRE_THAT(result_deutan.r(), WithinRel(input_color.r(), 1e-10));
+    REQUIRE_THAT(result_deutan.g(), WithinRel(input_color.g(), 1e-10));
+    REQUIRE_THAT(result_deutan.b(), WithinRel(input_color.b(), 1e-10));
 
     REQUIRE_THAT(result_tritan.r(), WithinRel(input_color.r(), 1e-10));
     REQUIRE_THAT(result_tritan.g(), WithinRel(input_color.g(), 1e-10));
@@ -33,12 +33,12 @@ TEST_CASE("CVD simulation basic functionality", "[cvd]")
   SECTION("Maximum severity transformation")
   {
     RGB result_protan = simulateCvd(input_color, "protan", 1.0);
-    RGB result_deuter = simulateCvd(input_color, "deuter", 1.0);
+    RGB result_deutan = simulateCvd(input_color, "deutan", 1.0);
     RGB result_tritan = simulateCvd(input_color, "tritan", 1.0);
 
     // Results should be different from input for non-zero severity
     REQUIRE(result_protan.r() != input_color.r());
-    REQUIRE(result_deuter.r() != input_color.r());
+    REQUIRE(result_deutan.r() != input_color.r());
     REQUIRE(result_tritan.r() != input_color.r());
   }
 
@@ -74,7 +74,7 @@ TEST_CASE("CVD simulation edge cases", "[cvd]")
   {
     RGB white(1.0, 1.0, 1.0);
     RGB result_protan = simulateCvd(white, "protan", 1);
-    RGB result_deuter = simulateCvd(white, "deuter", 1);
+    RGB result_deutan = simulateCvd(white, "deutan", 1);
     RGB result_tritan = simulateCvd(white, "tritan", 1);
 
     // All results should be valid RGB values
@@ -82,9 +82,9 @@ TEST_CASE("CVD simulation edge cases", "[cvd]")
     REQUIRE(result_protan.g() >= 0.0);
     REQUIRE(result_protan.b() >= 0.0);
 
-    REQUIRE(result_deuter.r() >= 0.0);
-    REQUIRE(result_deuter.g() >= 0.0);
-    REQUIRE(result_deuter.b() >= 0.0);
+    REQUIRE(result_deutan.r() >= 0.0);
+    REQUIRE(result_deutan.g() >= 0.0);
+    REQUIRE(result_deutan.b() >= 0.0);
 
     REQUIRE(result_tritan.r() >= 0.0);
     REQUIRE(result_tritan.g() >= 0.0);
@@ -96,12 +96,12 @@ TEST_CASE("CVD simulation edge cases", "[cvd]")
     RGB color(0.6, 0.4, 0.2);
 
     // Test very small severity
-    RGB result_tiny = simulateCvd(color, "deuter", 0.01);
+    RGB result_tiny = simulateCvd(color, "deutan", 0.01);
     REQUIRE_THAT(result_tiny.r(), WithinRel(color.r(), 0.1));
 
     // Test severity close to 1.0
-    RGB result_near_max = simulateCvd(color, "deuter", 0.99);
-    RGB result_max = simulateCvd(color, "deuter", 1.0);
+    RGB result_near_max = simulateCvd(color, "deutan", 0.99);
+    RGB result_max = simulateCvd(color, "deutan", 1.0);
     REQUIRE_THAT(result_near_max.r(), WithinRel(result_max.r(), 0.1));
   }
 }
@@ -116,12 +116,12 @@ TEST_CASE("CVD simulation type validation", "[cvd]")
   SECTION("Valid CVD types produce different results")
   {
     RGB protan_result = simulateCvd(test_color, "protan", 0.7);
-    RGB deuter_result = simulateCvd(test_color, "deuter", 0.7);
+    RGB deutan_result = simulateCvd(test_color, "deutan", 0.7);
     RGB tritan_result = simulateCvd(test_color, "tritan", 0.7);
 
     // Different CVD types should produce different results
-    REQUIRE(protan_result.r() != deuter_result.r());
-    REQUIRE(deuter_result.r() != tritan_result.r());
+    REQUIRE(protan_result.r() != deutan_result.r());
+    REQUIRE(deutan_result.r() != tritan_result.r());
     REQUIRE(protan_result.r() != tritan_result.r());
   }
 }

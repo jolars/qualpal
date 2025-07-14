@@ -151,10 +151,10 @@ TEST_CASE("CLI colorspace input functionality", "[cli][colorspace]")
 
 TEST_CASE("CLI CVD simulation functionality", "[cli][cvd]")
 {
-  SECTION("deuteranomaly simulation")
+  SECTION("deutananomaly simulation")
   {
     auto [exit_code, output] =
-      run_cli("--deuter 0.5 -n 2 -i hex \"#ff0000\" \"#00ff00\"");
+      run_cli("--deutan 0.5 -n 2 -i hex \"#ff0000\" \"#00ff00\"");
 
     REQUIRE(exit_code == 0);
     REQUIRE(count_hex_colors(output) == 2);
@@ -180,7 +180,7 @@ TEST_CASE("CLI CVD simulation functionality", "[cli][cvd]")
 
   SECTION("multiple CVD simulations combined")
   {
-    auto [exit_code, output] = run_cli("--deuter 0.3 --protan 0.2 -n 2 -i hex "
+    auto [exit_code, output] = run_cli("--deutan 0.3 --protan 0.2 -n 2 -i hex "
                                        "\"#ff0000\" \"#00ff00\" \"#0000ff\"");
 
     REQUIRE(exit_code == 0);
@@ -190,7 +190,7 @@ TEST_CASE("CLI CVD simulation functionality", "[cli][cvd]")
   SECTION("zero CVD simulation")
   {
     auto [exit_code, output] =
-      run_cli("--deuter 0.0 -n 2 -i hex \"#ff0000\" \"#00ff00\"");
+      run_cli("--deutan 0.0 -n 2 -i hex \"#ff0000\" \"#00ff00\"");
 
     REQUIRE(exit_code == 0);
     REQUIRE(count_hex_colors(output) == 2);
@@ -199,7 +199,7 @@ TEST_CASE("CLI CVD simulation functionality", "[cli][cvd]")
   SECTION("maximum CVD simulation")
   {
     auto [exit_code, output] =
-      run_cli("--deuter 1.0 -n 2 -i hex \"#ff0000\" \"#00ff00\"");
+      run_cli("--deutan 1.0 -n 2 -i hex \"#ff0000\" \"#00ff00\"");
 
     REQUIRE(exit_code == 0);
     REQUIRE(count_hex_colors(output) == 2);
@@ -232,7 +232,7 @@ TEST_CASE("CLI analyze command functionality", "[cli][analyze]")
   SECTION("analyze with CVD simulation")
   {
     auto [exit_code, output] =
-      run_cli("analyze --deuter 0.5 -i hex \"#ff0000\" \"#00ff00\"");
+      run_cli("analyze --deutan 0.5 -i hex \"#ff0000\" \"#00ff00\"");
 
     REQUIRE(exit_code == 0);
     REQUIRE(output.find("Color Difference Matrix") != std::string::npos);
@@ -280,7 +280,7 @@ TEST_CASE("CLI error handling - input validation", "[cli][error][validation]")
   SECTION("invalid CVD severity values")
   {
     auto [exit_code, output] =
-      run_cli("--deuter 1.5 -n 2 -i hex \"#ff0000\" \"#00ff00\"");
+      run_cli("--deutan 1.5 -n 2 -i hex \"#ff0000\" \"#00ff00\"");
 
     REQUIRE(exit_code != 0);
     REQUIRE(output.find("Error") != std::string::npos);

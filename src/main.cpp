@@ -41,12 +41,12 @@ main(int argc, char** argv)
                 "  palette    - Built-in palette name")
     ->check(CLI::IsMember({ "hex", "colorspace", "palette" }));
 
-  double deuter = 0.0;
+  double deutan = 0.0;
   double protan = 0.0;
   double tritan = 0.0;
 
   app.add_option(
-    "--deuter", deuter, "Degree of deuter CVD simulation (0.0–1.0)");
+    "--deutan", deutan, "Degree of deutan CVD simulation (0.0–1.0)");
   app.add_option(
     "--protan", protan, "Degree of protan CVD simulation (0.0–1.0)");
   app.add_option(
@@ -96,7 +96,7 @@ main(int argc, char** argv)
   argv = app.ensure_utf8(argv);
   CLI11_PARSE(app, argc, argv);
 
-  std::map<std::string, double> cvd = { { "deuter", deuter },
+  std::map<std::string, double> cvd = { { "deutan", deutan },
                                         { "protan", protan },
                                         { "tritan", tritan } };
 

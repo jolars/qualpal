@@ -35,7 +35,7 @@ namespace qualpal {
  * @param n Number of colors to select
  * @param rgb_colors Input RGB colors to choose from
  * @param cvd Color vision deficiency simulation parameters
- *            Map of {"protanomaly"|"deuteranomaly"|"tritanomaly" -> severity
+ *            Map of {"protanomaly"|"deutananomaly"|"tritanomaly" -> severity
  * [0,1]}
  * @param bg Background color to include in selection
  * @param max_memory Maximum memory usage in GB for the color difference matrix
