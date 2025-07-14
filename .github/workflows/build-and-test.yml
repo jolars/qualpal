@@ -53,38 +53,6 @@ jobs:
       - name: Test
         run: ctest --test-dir build --output-on-failure
 
-  code-coverage:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Install dependencies
-        run: |
-          sudo apt-get install -y \
-            build-essential \
-            lcov \
-            gcovr \
-            catch2
-
-      - name: Setup cmake
-        uses: jwlawson/actions-setup-cmake@v2.0
-        with:
-          cmake-version: "3.25"
-
-      - name: Configure CMake with Coverage
-        run: cmake -B build -S . -DBUILD_TESTING=ON -DENABLE_COVERAGE=ON -DBUILD_CLI=ON
-
-      - name: Build with Coverage
-        run: cmake --build build
-
-      - name: Run tests for coverage
-        run: ctest --test-dir build --output-on-failure
-
-      - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v5.4.3
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-
   docs:
     if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
