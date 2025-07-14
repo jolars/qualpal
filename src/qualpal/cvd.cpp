@@ -1,4 +1,4 @@
-#include "cvd_simulation.h"
+#include "cvd.h"
 #include <algorithm>
 #include <cmath>
 #include <qualpal/matrix.h>

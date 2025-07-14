@@ -1,5 +1,5 @@
 #include "color_grid.h"
-#include "cvd_simulation.h"
+#include "cvd.h"
 #include "farthest_points.h"
 #include "palettes.h"
 #include "validation.h"

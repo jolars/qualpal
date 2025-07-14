@@ -1,4 +1,4 @@
-#include "qualpal/cvd_simulation.h"
+#include "qualpal/cvd.h"
 #include "qualpal/palettes.h"
 #include "qualpal/validation.h"
 #include <CLI/CLI.hpp>

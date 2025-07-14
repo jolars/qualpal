@@ -3,7 +3,7 @@ add_library(
     qualpal/core.cpp
     qualpal/colors.cpp
     qualpal/color_grid.cpp
-    qualpal/cvd_simulation.cpp
+    qualpal/cvd.cpp
     qualpal/validation.cpp
     qualpal/palettes.cpp
 )
