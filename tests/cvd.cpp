@@ -111,7 +111,7 @@ TEST_CASE("CVD simulation type validation", "[cvd]")
   using namespace qualpal;
   using namespace qualpal::colors;
 
-  RGB test_color(0.5, 0.5, 0.5);
+  RGB test_color(0.9, 0.8, 0.2);
 
   SECTION("Valid CVD types produce different results")
   {
