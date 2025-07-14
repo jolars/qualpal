@@ -1,6 +1,6 @@
 # qualpal <img src='https://raw.githubusercontent.com/jolars/qualpal/refs/heads/main/docs/images/logo.svg' align="right" width="139" />
 
-[![Build Status](https://github.com/jolars/qualpal/actions/workflows/ci.yaml/badge.svg)](https://github.com/jolars/qualpal/actions/workflows/ci.yaml)
+[![Build Status](https://github.com/jolars/qualpal/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/jolars/qualpal/actions/workflows/build-and-test.yml)
 [![codecov](https://codecov.io/gh/jolars/qualpal/graph/badge.svg?token=p5JTFa9BUz)](https://codecov.io/gh/jolars/qualpal)
 
 A C++ library for generating qualitative color palettes with maximum perceptual distinctiveness, particularly useful for data visualization.

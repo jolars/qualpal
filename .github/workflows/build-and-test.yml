@@ -1,9 +1,12 @@
-name: CI
-on: [push, pull_request]
+name: Build-and-test
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+on:
+  workflow_dispatch:
+  workflow_call:
+  pull_request:
+  push:
+    branches:
+      - main
 
 jobs:
   build-and-test:
@@ -84,7 +87,6 @@ jobs:
 
   docs:
     if: ${{ github.ref == 'refs/heads/main' }}
-    needs: build-and-test
     runs-on: ubuntu-latest
     permissions:
       pages: write
@@ -111,28 +113,3 @@ jobs:
 
       - name: Build
         run: cmake --build build
-
-      - name: Setup pages
-        uses: actions/configure-pages@v5
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: "build/docs/html"
-
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
-  release:
-    if: ${{ github.ref == 'refs/heads/main' }}
-    permissions:
-      contents: write
-      pull-requests: write
-    needs:
-      - docs
-      - build-and-test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: googleapis/release-please-action@v4
-        with:
-          config-file: release-please-config.json
