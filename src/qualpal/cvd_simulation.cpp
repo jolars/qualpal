@@ -1,4 +1,5 @@
 #include "cvd_simulation.h"
+#include <algorithm>
 #include <cmath>
 #include <iostream>
 #include <qualpal/matrix.h>
@@ -144,16 +145,9 @@ simulateCvd(const colors::RGB& rgb,
   std::array<double, 3> rgb_vec = { rgb.r(), rgb.g(), rgb.b() };
   std::array<double, 3> rgb_cvd = cvd_mat * rgb_vec;
 
-  // Debug: Print values that are outside [0,1] range
-  if (rgb_cvd[0] < 0.0 || rgb_cvd[0] > 1.0 || rgb_cvd[1] < 0.0 ||
-      rgb_cvd[1] > 1.0 || rgb_cvd[2] < 0.0 || rgb_cvd[2] > 1.0) {
-    std::cout << "CVD " << cvd_type << " severity " << cvd_severity / 10.0
-              << ": input(" << rgb.r() << "," << rgb.g() << "," << rgb.b()
-              << ") -> output(" << rgb_cvd[0] << "," << rgb_cvd[1] << ","
-              << rgb_cvd[2] << ")\n";
-  }
-
-  return { rgb_cvd[0], rgb_cvd[1], rgb_cvd[2] };
+  return { std::clamp(rgb_cvd[0], 0.0, 1.0),
+           std::clamp(rgb_cvd[1], 0.0, 1.0),
+           std::clamp(rgb_cvd[2], 0.0, 1.0) };
 }
 
 } // namespace qualpal
