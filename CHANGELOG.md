@@ -1,5 +1,30 @@
 # Changelog
 
+## [1.0.0](https://github.com/jolars/qualpal/compare/v0.12.0...v1.0.0) (2025-07-14)
+
+### ⚠ BREAKING CHANGES
+
+* change from "deuter" to "deutan"
+
+### Features
+
+* also simulate CVD for background color ([954dbfe](https://github.com/jolars/qualpal/commit/954dbfe9f804a2efd70244872c0eac36b06b92e8))
+* change from "deuter" to "deutan" ([16d7c64](https://github.com/jolars/qualpal/commit/16d7c64cf9e676bb894f58ba6852a1081fa94377))
+
+### Bug Fixes
+
+* clamp return values from CVD simulation ([fc04fd1](https://github.com/jolars/qualpal/commit/fc04fd1ae82811b85e2b795c206210165400814a))
+* correctly interpolate matrices ([2b3ab23](https://github.com/jolars/qualpal/commit/2b3ab236b1c2aaaf50f088a489fb28e9b118f694))
+
+### Performance Improvements
+
+* pass colors by const ref ([09e1965](https://github.com/jolars/qualpal/commit/09e196533ef0dbc5f6cbfe84a45794f9b1605228))
+* set execution policy to `par` for `transform` ([71f745e](https://github.com/jolars/qualpal/commit/71f745eb06a638665c65c39e09a741fc0c681365))
+
+### Reverts
+
+* "feat!: change `deutan` to `deuter` for CVD options" ([45510c5](https://github.com/jolars/qualpal/commit/45510c5e4759d00c787d9d5daa65b16e4ed550e3))
+
 ## [0.12.0](https://github.com/jolars/qualpal/compare/v0.11.0...v0.12.0) (2025-07-12)
 
 
