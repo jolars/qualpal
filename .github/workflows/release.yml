@@ -42,4 +42,4 @@ jobs:
             conventional-changelog-conventionalcommits
             semantic-release-replace-plugin
         env:
-          GITHUB_TOKEN: ${{ secrets.RELEASE_PLEASE_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
