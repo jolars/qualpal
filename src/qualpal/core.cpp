@@ -19,7 +19,7 @@ qualpal(const int n,
         const std::optional<colors::RGB>& bg,
         const size_t max_memory)
 {
-  int N = rgb_colors.size();
+  int n_colors = rgb_colors.size();
 
   const std::vector<colors::RGB> rgb_colors_original = rgb_colors;
   std::optional<colors::RGB> bg_mod = bg;
@@ -46,7 +46,7 @@ qualpal(const int n,
   }
 
   std::vector<colors::DIN99d> din99d_colors;
-  din99d_colors.reserve(N);
+  din99d_colors.reserve(n_colors);
 
   for (const auto& rgb : rgb_colors) {
     din99d_colors.emplace_back(rgb);
