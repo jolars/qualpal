@@ -22,6 +22,7 @@ qualpal(const int n,
   int N = rgb_colors.size();
 
   const std::vector<colors::RGB> rgb_colors_original = rgb_colors;
+  std::optional<colors::RGB> bg_mod = bg;
 
   for (const auto& cvd_pair : cvd) {
     const auto& cvd_type = cvd_pair.first;
@@ -38,6 +39,9 @@ qualpal(const int n,
                      [&cvd_type, &cvd_severity](const colors::RGB& rgb) {
                        return simulateCvd(rgb, cvd_type, cvd_severity);
                      });
+      if (bg_mod.has_value()) {
+        bg_mod = simulateCvd(*bg_mod, cvd_type, cvd_severity);
+      }
     }
   }
 
@@ -49,7 +53,7 @@ qualpal(const int n,
   }
 
   auto ind =
-    farthestPoints(n, din99d_colors, metrics::DIN99d{}, bg, max_memory);
+    farthestPoints(n, din99d_colors, metrics::DIN99d{}, bg_mod, max_memory);
 
   std::vector<colors::RGB> rgb_out;
   rgb_out.reserve(n);
