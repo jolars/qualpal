@@ -5,6 +5,7 @@
 #include "validation.h"
 #include <algorithm>
 #include <cassert>
+#include <execution>
 #include <map>
 #include <qualpal/core.h>
 #include <stdexcept>
@@ -14,14 +15,14 @@ namespace qualpal {
 
 std::vector<colors::RGB>
 qualpal(const int n,
-        std::vector<colors::RGB> rgb_colors,
+        const std::vector<colors::RGB>& rgb_colors,
         const std::map<std::string, double>& cvd,
         const std::optional<colors::RGB>& bg,
         const size_t max_memory)
 {
   int n_colors = rgb_colors.size();
 
-  const std::vector<colors::RGB> rgb_colors_original = rgb_colors;
+  std::vector<colors::RGB> rgb_colors_mod = rgb_colors;
   std::optional<colors::RGB> bg_mod = bg;
 
   for (const auto& cvd_pair : cvd) {
@@ -33,9 +34,9 @@ qualpal(const int n,
     }
 
     if (cvd_severity > 0) {
-      std::transform(rgb_colors.begin(),
-                     rgb_colors.end(),
-                     rgb_colors.begin(),
+      std::transform(rgb_colors_mod.begin(),
+                     rgb_colors_mod.end(),
+                     rgb_colors_mod.begin(),
                      [&cvd_type, &cvd_severity](const colors::RGB& rgb) {
                        return simulateCvd(rgb, cvd_type, cvd_severity);
                      });
@@ -48,7 +49,7 @@ qualpal(const int n,
   std::vector<colors::DIN99d> din99d_colors;
   din99d_colors.reserve(n_colors);
 
-  for (const auto& rgb : rgb_colors) {
+  for (const auto& rgb : rgb_colors_mod) {
     din99d_colors.emplace_back(rgb);
   }
 
@@ -59,7 +60,7 @@ qualpal(const int n,
   rgb_out.reserve(n);
 
   for (const auto& i : ind) {
-    rgb_out.emplace_back(rgb_colors_original[i]);
+    rgb_out.emplace_back(rgb_colors[i]);
   }
 
   return rgb_out;

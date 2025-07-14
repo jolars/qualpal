@@ -50,7 +50,7 @@ namespace qualpal {
  */
 std::vector<colors::RGB>
 qualpal(const int n,
-        std::vector<colors::RGB> rgb_colors,
+        const std::vector<colors::RGB>& rgb_colors,
         const std::map<std::string, double>& cvd = {},
         const std::optional<colors::RGB>& bg = std::nullopt,
         const size_t max_memory = 1);
