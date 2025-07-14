@@ -52,6 +52,30 @@ TEST_CASE("CVD simulation basic functionality", "[cvd]")
     REQUIRE(((result_half.r() >= std::min(result_zero.r(), result_full.r())) &&
              (result_half.r() <= std::max(result_zero.r(), result_full.r()))));
   }
+
+  SECTION("Comparison with manually computed values")
+  {
+    using namespace Catch::Matchers;
+    RGB rgb(0.2, 0.3, 0.9);
+
+    RGB protan_result = simulateCvd(rgb, "protan", 1);
+
+    REQUIRE_THAT(protan_result.r(), WithinAbs(0.16185, 1e-4));
+    REQUIRE_THAT(protan_result.g(), WithinAbs(0.34807, 1e-4));
+    REQUIRE_THAT(protan_result.b(), WithinAbs(0.93158, 1e-4));
+
+    RGB deutan_result = simulateCvd(rgb, "deutan", 0.66);
+
+    REQUIRE_THAT(deutan_result.r(), WithinAbs(0.14263, 1e-4));
+    REQUIRE_THAT(deutan_result.g(), WithinAbs(0.3031189, 1e-4));
+    REQUIRE_THAT(deutan_result.b(), WithinAbs(0.88819, 1e-4));
+
+    RGB tritan_result = simulateCvd(rgb, "tritan", 0.09);
+
+    REQUIRE_THAT(tritan_result.r(), WithinAbs(0.1962403, 1e-4));
+    REQUIRE_THAT(tritan_result.g(), WithinAbs(0.3058181, 1e-4));
+    REQUIRE_THAT(tritan_result.b(), WithinAbs(0.8650857, 1e-4));
+  }
 }
 
 TEST_CASE("CVD simulation edge cases", "[cvd]")
