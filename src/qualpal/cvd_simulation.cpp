@@ -140,7 +140,7 @@ simulateCvd(const colors::RGB& rgb,
   // interpolate cvd matrix
   FixedMatrix<double, 3, 3> cvd_mat =
     cvd_mat_lo +
-    (cvd_mat_hi - cvd_mat_lo) * (static_cast<double>(ce) - cvd_severity);
+    (cvd_mat_hi - cvd_mat_lo) * (cvd_severity - static_cast<double>(fl));
 
   std::array<double, 3> rgb_vec = { rgb.r(), rgb.g(), rgb.b() };
   std::array<double, 3> rgb_cvd = cvd_mat * rgb_vec;
