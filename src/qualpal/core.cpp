@@ -34,7 +34,8 @@ qualpal(const int n,
     }
 
     if (cvd_severity > 0) {
-      std::transform(rgb_colors_mod.begin(),
+      std::transform(std::execution::par,
+                     rgb_colors_mod.begin(),
                      rgb_colors_mod.end(),
                      rgb_colors_mod.begin(),
                      [&cvd_type, &cvd_severity](const colors::RGB& rgb) {
