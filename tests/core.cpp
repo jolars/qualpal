@@ -100,3 +100,19 @@ TEST_CASE("Background colors", "[colors][fail]")
     qualpal::qualpal(2, "ColorBrewer:Set2", {}, bg_color);
   REQUIRE(result[0].hex() != "#66c2a5");
 }
+
+TEST_CASE("Adapting to color vision deficiency", "[cvd][fail]")
+{
+  using namespace qualpal;
+
+  const double eps = 1e-6;
+
+  auto cvd = std::map<std::string, double>{
+    { "deuter", 1.0 },
+    { "protan", 1.0 },
+    { "tritan", 1.0 },
+  };
+
+  std::vector<colors::RGB> result =
+    qualpal::qualpal(2, "ColorBrewer:Set2", cvd);
+}

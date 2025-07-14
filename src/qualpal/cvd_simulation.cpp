@@ -41,7 +41,7 @@ constexpr std::array<FixedMatrix<double, 3, 3>, 11> PROTAN_MATRICES = {
       { -0.003882, -0.048116, 1.051998 } } }
 };
 
-constexpr std::array<FixedMatrix<double, 3, 3>, 11> DEUTER_MATRICES = {
+constexpr std::array<FixedMatrix<double, 3, 3>, 11> DEUTAN_MATRICES = {
   { { { 1.000000, 0.000000, -0.000000 },
       { 0.000000, 1.000000, 0.000000 },
       { -0.000000, -0.000000, 1.000000 } },
@@ -127,8 +127,8 @@ simulateCvd(const colors::RGB& rgb,
 
   if (cvd_type == "protan") {
     cvd_mats = &PROTAN_MATRICES;
-  } else if (cvd_type == "deuter") {
-    cvd_mats = &DEUTER_MATRICES;
+  } else if (cvd_type == "deutan") {
+    cvd_mats = &DEUTAN_MATRICES;
   } else if (cvd_type == "tritan") {
     cvd_mats = &TRITAN_MATRICES;
   };

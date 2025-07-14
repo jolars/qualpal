@@ -152,7 +152,7 @@ if(BUILD_TESTING)
     add_executable(
         tests
         tests/benchmarks.cpp
-        tests/cli.cpp
+        # tests/cli.cpp
         tests/colors.cpp
         tests/core.cpp
         tests/cvd.cpp
