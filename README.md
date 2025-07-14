@@ -34,7 +34,7 @@ std::vector<RGB> input = {
 auto selected = qualpal(2, input);
 
 // Consider color vision deficiency
-std::map<std::string, double> cvd = {{"deuteranomaly", 0.7}};
+std::map<std::string, double> cvd = {{"deutan", 0.7}};
 auto accessible = qualpal(4, input, cvd);
 ```
 
@@ -112,7 +112,7 @@ int main() {
 
 ```cpp
 // Simulate deuteranomaly (red-green colorblindness)
-std::map<std::string, double> cvd = {{"deuteranomaly", 1.0}};
+std::map<std::string, double> cvd = {{"deutan", 1.0}};
 auto accessible_palette = qualpal(4, colors, cvd);
 ```
 
