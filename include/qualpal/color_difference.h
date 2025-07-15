@@ -44,27 +44,28 @@ colorDifferenceMatrix(const std::vector<ColorType>& colors,
 {
   using namespace detail;
 
-  const int N = colors.size();
+  const int n_colors = colors.size();
 
-  if (!checkMatrixSize(N, max_memory)) {
+  if (!checkMatrixSize(n_colors, max_memory)) {
     throw std::runtime_error(
       "Color difference matrix would require " +
-      std::to_string(estimateMatrixMemory(N) / (1024.0 * 1024.0 * 1024.0)) +
+      std::to_string(estimateMatrixMemory(n_colors) /
+                     (1024.0 * 1024.0 * 1024.0)) +
       " GB, which exceeds the limit of " + std::to_string(max_memory) +
       " GB. Reduce the number of colors or increase the memory limit.");
   }
 
-  Matrix<double> result(N, N);
+  Matrix<double> result(n_colors, n_colors);
 
 #ifdef _OPENMP
 #pragma omp parallel for num_threads(Threads::get())
 #endif
-  for (int i = 0; i < N; ++i) {
+  for (int i = 0; i < n_colors; ++i) {
     result(i, i) = 0.0;
 #ifdef _OPENMP
 #pragma omp simd
 #endif
-    for (int j = i + 1; j < N; ++j) {
+    for (int j = i + 1; j < n_colors; ++j) {
       double d = metric(colors[i], colors[j]);
       result(i, j) = d;
       result(j, i) = d;
