@@ -50,6 +50,11 @@ main(int argc, char** argv)
     n_colors,
     "Number of candidate points for colorspace search (default: 1000)");
 
+  double max_memory = 1.0;
+
+  app.add_option(
+    "--max-memory", max_memory, "Maximum memory usage in GB (default: 1.0)");
+
   double deutan = 0.0;
   double protan = 0.0;
   double tritan = 0.0;
@@ -83,7 +88,6 @@ main(int argc, char** argv)
 
   std::string analyze_input = "hex";
   std::vector<std::string> analyze_values;
-  double max_memory = 1.0;
 
   analyze_cmd
     ->add_option("-i,--input",
@@ -97,9 +101,6 @@ main(int argc, char** argv)
     ->add_option(
       "values", analyze_values, "Input values (depends on input type)")
     ->required();
-
-  analyze_cmd->add_option(
-    "--max-memory", max_memory, "Maximum memory usage in GB (default: 1.0)");
 
   argv = app.ensure_utf8(argv);
   CLI11_PARSE(app, argc, argv);

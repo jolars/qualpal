@@ -241,7 +241,7 @@ TEST_CASE("CLI analyze command functionality", "[cli][analyze]")
   SECTION("analyze with memory limit")
   {
     auto [exit_code, output] =
-      run_cli("analyze --max-memory 0.5 -i hex \"#ff0000\" \"#00ff00\"");
+      run_cli("--max-memory 0.5 analyze -i hex \"#ff0000\" \"#00ff00\"");
 
     REQUIRE(exit_code == 0);
     REQUIRE(output.find("Color Difference Matrix") != std::string::npos);
