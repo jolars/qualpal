@@ -35,6 +35,16 @@ public:
   }
 
   /**
+   * @brief Default constructor creates an empty matrix (0x0)
+   */
+  Matrix()
+    : rows(0)
+    , cols(0)
+    , data()
+  {
+  }
+
+  /**
    * @brief Construct matrix with specified dimensions and data
    * @param rows Number of rows
    * @param cols Number of columns
