@@ -3,6 +3,8 @@ add_library(
     qualpal/core.cpp
     qualpal/colors.cpp
     qualpal/color_grid.cpp
+    qualpal/color_difference.cpp
+    qualpal/farthest_points.cpp
     qualpal/cvd.cpp
     qualpal/validation.cpp
     qualpal/palettes.cpp

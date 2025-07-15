@@ -12,6 +12,7 @@
 #include <map>
 #include <optional>
 #include <qualpal/colors.h>
+#include <qualpal/metrics.h>
 #include <vector>
 
 /**
@@ -38,6 +39,7 @@ namespace qualpal {
  *            Map of {"protanomaly"|"deutananomaly"|"tritanomaly" -> severity
  * [0,1]}
  * @param bg Background color to include in selection
+ * @param metric Color difference metric to use
  * @param max_memory Maximum memory usage in GB for the color difference matrix
  * @return Vector of n selected RGB colors
  *
@@ -53,6 +55,7 @@ qualpal(const int n,
         const std::vector<colors::RGB>& rgb_colors,
         const std::map<std::string, double>& cvd = {},
         const std::optional<colors::RGB>& bg = std::nullopt,
+        const metrics::MetricType& metric = metrics::MetricType::DIN99d,
         const size_t max_memory = 1);
 
 /**
@@ -65,6 +68,7 @@ qualpal(const int n,
  * @param hex_colors Vector of hex color strings (e.g., "#ff0000")
  * @param cvd Color vision deficiency simulation parameters
  * @param bg Background color to include in selection
+ * @param metric Color difference metric to use
  * @param max_memory Maximum memory usage in GB for the color difference matrix
  * @return Vector of n selected RGB colors
  *
@@ -81,6 +85,7 @@ qualpal(const int n,
         const std::vector<std::string>& hex_colors,
         const std::map<std::string, double>& cvd = {},
         const std::optional<colors::RGB>& bg = std::nullopt,
+        const metrics::MetricType& metric = metrics::MetricType::DIN99d,
         const size_t max_memory = 1);
 
 /**
@@ -93,6 +98,7 @@ qualpal(const int n,
  * @param palette Name of the built-in palette to use, of the form
  *   "Package:Palette"
  * @param cvd Color vision deficiency simulation parameters
+ * @param metric Color difference metric to use
  * @param bg Background color to include in selection
  * @param max_memory Maximum memory usage in GB for the color difference matrix
  * @return Vector of n selected RGB colors
@@ -109,6 +115,7 @@ qualpal(const int n,
         const std::string& palette,
         const std::map<std::string, double>& cvd = {},
         const std::optional<colors::RGB>& bg = std::nullopt,
+        const metrics::MetricType& metric = metrics::MetricType::DIN99d,
         const size_t max_memory = 1);
 
 /**
@@ -124,6 +131,7 @@ qualpal(const int n,
  * @param n_points Number of grid points to sample (default 100)
  * @param cvd Color vision deficiency parameters
  * @param bg Background color to include in selection
+ * @param metric Color difference metric to use
  * @param max_memory Maximum memory usage in GB for the color difference matrix
  * @return Vector of n generated RGB colors
  *
@@ -137,6 +145,7 @@ qualpal(const int n,
         const int n_points = 100,
         const std::map<std::string, double>& cvd = {},
         const std::optional<colors::RGB>& bg = std::nullopt,
+        const metrics::MetricType& metric = metrics::MetricType::DIN99d,
         const size_t max_memory = 1);
 
 } // namespace qualpal

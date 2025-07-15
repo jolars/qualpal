@@ -74,6 +74,19 @@ class Lab;
 class DIN99d;
 
 /**
+ * @brief Supported color difference metrics for palette generation.
+ *
+ * Use this enum to select which color difference formula to use
+ * in qualpal algorithms and CLI.
+ */
+enum class MetricType
+{
+  DIN99d,   ///< DIN99d color difference
+  CIE76,    ///< CIE76 (Delta E 1976) color difference
+  CIEDE2000 ///< CIEDE2000 (Delta E 2000) color difference
+};
+
+/**
  * @brief DIN99d color difference with optional power transformation
  *
  * Calculates Euclidean distance in DIN99d color space, with optional

@@ -75,4 +75,19 @@ colorDifferenceMatrix(const std::vector<ColorType>& colors,
   return result;
 }
 
+/**
+ * @brief Generate a color difference matrix for Lab colors with runtime metric
+ * selection.
+ *
+ * @param colors Vector of Lab colors to compare.
+ * @param metric_type Color difference metric to use.
+ * @param max_memory Maximum memory (in GB) allowed for the matrix.
+ * @return Symmetric matrix of pairwise color differences.
+ * @see metrics::MetricType
+ */
+Matrix<double>
+colorDifferenceMatrix(const std::vector<colors::Lab>& colors,
+                      const metrics::MetricType& metric_type,
+                      const size_t max_memory = 1);
+
 } // namespace qualpal

@@ -242,7 +242,7 @@ if(BUILD_DOCS)
     set(DOXYGEN_EXTRACT_ALL NO)
     set(DOXYGEN_EXTRACT_PRIVATE NO)
     set(DOXYGEN_EXTRACT_STATIC NO)
-    set(DOXYGEN_EXCLUDE_SYMBOLS qualpal::metrics::detail)
+    set(DOXYGEN_EXCLUDE_SYMBOLS qualpal::metrics::detail qualpal::detail)
 
     doxygen_add_docs(
         docs
