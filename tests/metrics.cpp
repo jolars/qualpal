@@ -72,3 +72,21 @@ TEST_CASE("DIN99d metric", "[metrics][din99d]")
     REQUIRE_THAT(diff1, WithinAbs(diff2, 1e-5));
   }
 }
+
+TEST_CASE("CIE76 metric", "[metrics][cie76]")
+{
+  using namespace qualpal;
+  using namespace qualpal::colors;
+  using namespace Catch::Matchers;
+
+  Lab c1(10, 2, 1);
+  Lab c2(60, 3, 2);
+
+  metrics::CIE76 met;
+
+  SECTION("Known values")
+  {
+    double diff = met(c1, c2);
+    REQUIRE_THAT(diff, WithinAbs(50.019996, 1e-5));
+  }
+}
