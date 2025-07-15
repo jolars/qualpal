@@ -24,22 +24,25 @@ farthestPoints(const int n,
     switch (metric_type) {
       case metrics::MetricType::DIN99d: {
         auto metric = metrics::DIN99d{};
+        colors::DIN99d din99d_bg(*bg);
         for (const auto& color : colors) {
-          bg_distances.push_back(metric(color, *bg));
+          bg_distances.push_back(metric(color, din99d_bg));
         }
         break;
       }
       case metrics::MetricType::CIEDE2000: {
         auto metric = metrics::CIEDE2000{};
+        colors::Lab lab_bg(*bg);
         for (const auto& color : colors) {
-          bg_distances.push_back(metric(color, *bg));
+          bg_distances.push_back(metric(color, lab_bg));
         }
         break;
       }
       case metrics::MetricType::CIE76: {
         auto metric = metrics::CIE76{};
+        colors::Lab lab_bg(*bg);
         for (const auto& color : colors) {
-          bg_distances.push_back(metric(color, *bg));
+          bg_distances.push_back(metric(color, lab_bg));
         }
         break;
       }
