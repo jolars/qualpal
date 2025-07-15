@@ -22,14 +22,21 @@ colorDifferenceMatrix(const std::vector<colors::XYZ>& colors,
     case metrics::MetricType::CIEDE2000: {
       std::vector<colors::Lab> lab_colors;
       lab_colors.reserve(colors.size());
+      for (const auto& col : colors) {
+        lab_colors.emplace_back(col);
+      }
       return colorDifferenceMatrix(
         lab_colors, metrics::CIEDE2000{}, max_memory);
     }
     case metrics::MetricType::CIE76: {
       std::vector<colors::Lab> lab_colors;
       lab_colors.reserve(colors.size());
+      for (const auto& col : colors) {
+        lab_colors.emplace_back(col);
+      }
       return colorDifferenceMatrix(lab_colors, metrics::CIE76{}, max_memory);
     }
   }
+  throw std::invalid_argument("Unsupported metric type");
 }
 } // namespace qualpal
