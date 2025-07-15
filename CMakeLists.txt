@@ -153,6 +153,7 @@ if(BUILD_TESTING)
         tests
         tests/benchmarks.cpp
         # tests/cli.cpp
+        tests/metrics.cpp
         tests/colors.cpp
         tests/core.cpp
         tests/cvd.cpp
@@ -241,6 +242,7 @@ if(BUILD_DOCS)
     set(DOXYGEN_EXTRACT_ALL NO)
     set(DOXYGEN_EXTRACT_PRIVATE NO)
     set(DOXYGEN_EXTRACT_STATIC NO)
+    set(DOXYGEN_EXCLUDE_SYMBOLS qualpal::metrics::detail)
 
     doxygen_add_docs(
         docs
