@@ -1,3 +1,4 @@
+#include "qualpal/metrics.h"
 #include <qualpal/color_difference.h>
 #include <qualpal/matrix.h>
 
@@ -19,8 +20,8 @@ colorDifferenceMatrix(const std::vector<colors::Lab>& colors,
     }
     case metrics::MetricType::CIEDE2000:
       return colorDifferenceMatrix(colors, metrics::CIEDE2000{}, max_memory);
-    default:
-      throw std::invalid_argument("Unknown metric type");
+    case metrics::MetricType::CIE76:
+      return colorDifferenceMatrix(colors, metrics::CIE76{}, max_memory);
   }
 }
 } // namespace qualpal
