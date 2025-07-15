@@ -263,12 +263,17 @@ public:
                                (std::pow(C_hat_prime, 7) + std::pow(25.0, 7)));
 
     double R_T = -R_C * sind(2 * delta_theta);
+    double out = std::sqrt(square(delta_L_prime / (K_L * S_L)) +
+                           square(delta_C_prime / (K_C * S_C)) +
+                           square(delta_H_prime / (K_H * S_H)) +
+                           R_T * (delta_C_prime / (K_C * S_C)) *
+                             (delta_H_prime / (K_H * S_H)));
 
-    return std::sqrt(square(delta_L_prime / (K_L * S_L)) +
-                     square(delta_C_prime / (K_C * S_C)) +
-                     square(delta_H_prime / (K_H * S_H)) +
-                     R_T * (delta_C_prime / (K_C * S_C)) *
-                       (delta_H_prime / (K_H * S_H)));
+    assert(out >= 0 && "CIEDE2000 color difference must be non-negative");
+    assert(std::isfinite(out) &&
+           "CIEDE2000 color difference must not be finite");
+
+    return out;
   }
 };
 } // namespace metrics
