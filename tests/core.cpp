@@ -116,3 +116,16 @@ TEST_CASE("Adapting to color vision deficiency", "[cvd][fail]")
   std::vector<colors::RGB> result =
     qualpal::qualpal(2, "ColorBrewer:Set2", cvd);
 }
+
+TEST_CASE("Using different metrics", "[metrics][fail]")
+{
+  using namespace qualpal;
+
+  const double eps = 1e-6;
+
+  REQUIRE_NOTHROW(qualpal::qualpal(
+    2, "ColorBrewer:Set2", {}, std::nullopt, metrics::MetricType::CIE76));
+
+  REQUIRE_NOTHROW(qualpal::qualpal(
+    2, "ColorBrewer:Set2", {}, std::nullopt, metrics::MetricType::CIEDE2000));
+}
