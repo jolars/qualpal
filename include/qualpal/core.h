@@ -93,6 +93,8 @@ qualpal(const int n,
  * @param palette Name of the built-in palette to use, of the form
  *   "Package:Palette"
  * @param cvd Color vision deficiency simulation parameters
+ * @param bg Background color to include in selection
+ * @param max_memory Maximum memory usage in GB for the color difference matrix
  * @return Vector of n selected RGB colors
  *
  * @throws std::invalid_argument if palette name unknown, n exceeds palette

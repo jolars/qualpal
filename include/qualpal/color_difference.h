@@ -34,6 +34,7 @@ checkMatrixSize(size_t n, double max_gb = 1.0)
  * @tparam Metric Color difference metric (defaults to metrics::DIN99d)
  * @param colors Vector of colors to compare
  * @param metric Color difference metric to use
+ * @param max_memory Maximum memory (in GB) allowed for the matrix
  * @return Symmetric matrix of pairwise color differences
  */
 template<typename ColorType, typename Metric = metrics::DIN99d>
