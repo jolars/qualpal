@@ -232,17 +232,17 @@ if(BUILD_DOCS)
         "${AWESOME_CSS_DIR}/doxygen-awesome-sidebar-only.css"
     )
     set(DOXYGEN_DISABLE_INDEX NO)
+    set(DOXYGEN_EXCLUDE_SYMBOLS qualpal::metrics::detail qualpal::detail)
+    set(DOXYGEN_EXTRACT_ALL NO)
+    set(DOXYGEN_EXTRACT_PRIVATE NO)
+    set(DOXYGEN_EXTRACT_STATIC NO)
     set(DOXYGEN_FULL_SIDEBAR NO)
     set(DOXYGEN_GENERATE_TREEVIEW YES)
     set(DOXYGEN_HTML_COLORSTYLE LIGHT)
     set(DOXYGEN_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/docs)
     set(DOXYGEN_PROJECT_LOGO "${CMAKE_CURRENT_SOURCE_DIR}/docs/images/logo.svg")
-    set(DOXYGEN_USE_MATHJAX YES)
     set(DOXYGEN_SOURCE_BROWSER YES)
-    set(DOXYGEN_EXTRACT_ALL NO)
-    set(DOXYGEN_EXTRACT_PRIVATE NO)
-    set(DOXYGEN_EXTRACT_STATIC NO)
-    set(DOXYGEN_EXCLUDE_SYMBOLS qualpal::metrics::detail qualpal::detail)
+    set(DOXYGEN_USE_MATHJAX YES)
 
     doxygen_add_docs(
         docs
