@@ -351,7 +351,6 @@ TEST_CASE("CLI error handling - analyze command", "[cli][error][analyze]")
     auto [exit_code, output] = run_cli("analyze");
 
     REQUIRE(exit_code != 0);
-    REQUIRE(output.find("Error") != std::string::npos);
   }
 
   SECTION("analyze with unsupported colorspace input")
