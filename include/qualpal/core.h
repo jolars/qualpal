@@ -56,7 +56,7 @@ qualpal(const int n,
         const std::map<std::string, double>& cvd = {},
         const std::optional<colors::RGB>& bg = std::nullopt,
         const metrics::MetricType& metric = metrics::MetricType::DIN99d,
-        const size_t max_memory = 1);
+        const double max_memory = 1);
 
 /**
  * @brief Generate qualitative color palette from hex color strings
@@ -86,7 +86,7 @@ qualpal(const int n,
         const std::map<std::string, double>& cvd = {},
         const std::optional<colors::RGB>& bg = std::nullopt,
         const metrics::MetricType& metric = metrics::MetricType::DIN99d,
-        const size_t max_memory = 1);
+        const double max_memory = 1);
 
 /**
  * @brief Generate qualitative color palette from named palette
@@ -116,7 +116,7 @@ qualpal(const int n,
         const std::map<std::string, double>& cvd = {},
         const std::optional<colors::RGB>& bg = std::nullopt,
         const metrics::MetricType& metric = metrics::MetricType::DIN99d,
-        const size_t max_memory = 1);
+        const double max_memory = 1);
 
 /**
  * @brief Generate palette from HSL color space sampling
@@ -146,6 +146,6 @@ qualpal(const int n,
         const std::map<std::string, double>& cvd = {},
         const std::optional<colors::RGB>& bg = std::nullopt,
         const metrics::MetricType& metric = metrics::MetricType::DIN99d,
-        const size_t max_memory = 1);
+        const double max_memory = 1);
 
 } // namespace qualpal

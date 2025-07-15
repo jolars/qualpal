@@ -14,6 +14,6 @@ farthestPoints(const int n,
                const std::vector<colors::Lab>& colors,
                const metrics::MetricType& metric_type,
                const std::optional<colors::RGB>& bg = std::nullopt,
-               const size_t max_memory = 1);
+               const double max_memory = 1);
 
 } // namespace qualpal

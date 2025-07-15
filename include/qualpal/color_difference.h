@@ -41,7 +41,7 @@ template<typename ColorType, typename Metric = metrics::DIN99d>
 Matrix<double>
 colorDifferenceMatrix(const std::vector<ColorType>& colors,
                       const Metric& metric = Metric{},
-                      const size_t max_memory = 1)
+                      const double max_memory = 1)
 {
   using namespace detail;
 
@@ -88,6 +88,6 @@ colorDifferenceMatrix(const std::vector<ColorType>& colors,
 Matrix<double>
 colorDifferenceMatrix(const std::vector<colors::Lab>& colors,
                       const metrics::MetricType& metric_type,
-                      const size_t max_memory = 1);
+                      const double max_memory = 1);
 
 } // namespace qualpal

@@ -17,7 +17,7 @@ qualpal(const int n,
         const std::map<std::string, double>& cvd,
         const std::optional<colors::RGB>& bg,
         const metrics::MetricType& metric,
-        const size_t max_memory)
+        const double max_memory)
 {
   int n_colors = rgb_colors.size();
 
@@ -65,7 +65,7 @@ qualpal(const int n,
         const std::map<std::string, double>& cvd,
         const std::optional<colors::RGB>& bg,
         const metrics::MetricType& metric,
-        const size_t max_memory)
+        const double max_memory)
 {
   std::vector<colors::RGB> rgb_colors;
 
@@ -83,7 +83,7 @@ qualpal(const int n,
         const std::map<std::string, double>& cvd,
         const std::optional<colors::RGB>& bg,
         const metrics::MetricType& metric,
-        const size_t max_memory)
+        const double max_memory)
 {
   std::vector<colors::RGB> rgb_colors;
 
@@ -111,7 +111,7 @@ qualpal(const int n,
         const std::map<std::string, double>& cvd,
         const std::optional<colors::RGB>& bg,
         const metrics::MetricType& metric,
-        const size_t max_memory)
+        const double max_memory)
 {
   if (n > n_points) {
     throw std::invalid_argument("Number of colors to generate must be lower "

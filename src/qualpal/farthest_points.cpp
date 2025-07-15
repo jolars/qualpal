@@ -10,7 +10,7 @@ farthestPoints(const int n,
                const std::vector<colors::Lab>& colors,
                const metrics::MetricType& metric_type,
                const std::optional<colors::RGB>& bg,
-               const size_t max_memory)
+               const double max_memory)
 {
   Matrix<double> dist_mat =
     colorDifferenceMatrix(colors, metric_type, max_memory);

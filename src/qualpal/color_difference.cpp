@@ -6,7 +6,7 @@ namespace qualpal {
 Matrix<double>
 colorDifferenceMatrix(const std::vector<colors::Lab>& colors,
                       const metrics::MetricType& metric_type,
-                      const std::size_t max_memory)
+                      const double max_memory)
 {
   switch (metric_type) {
     case metrics::MetricType::DIN99d: {
