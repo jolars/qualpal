@@ -82,9 +82,7 @@ public:
   double operator()(const ColorType1& c1, const ColorType2& c2) const
   {
     colors::DIN99d d1(c1), d2(c2);
-    double d =
-      std::sqrt(std::pow(d1.l() - d2.l(), 2) + std::pow(d1.a() - d2.a(), 2) +
-                std::pow(d1.b() - d2.b(), 2));
+    double d = std::hypot(d1.l() - d2.l(), d1.a() - d2.a(), d1.b() - d2.b());
 
     if (use_power_transform) {
       return std::pow(d, power) * scale;
@@ -114,9 +112,7 @@ struct CIE76
   double operator()(const ColorType1& c1, const ColorType2& c2) const
   {
     colors::Lab l1(c1), l2(c2);
-    return std::sqrt(std::pow(l1.l() - l2.l(), 2) +
-                     std::pow(l1.a() - l2.a(), 2) +
-                     std::pow(l1.b() - l2.b(), 2));
+    return std::hypot(l1.l() - l2.l(), l1.a() - l2.a(), l1.b() - l2.b());
   }
 };
 
