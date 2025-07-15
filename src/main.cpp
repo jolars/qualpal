@@ -90,7 +90,6 @@ main(int argc, char** argv)
                  analyze_input,
                  "Input type:\n"
                  "  hex        - Hex color values (#ff0000)\n"
-                 "  colorspace - HSL ranges (h1:h2 s1:s2 l1:l2)\n"
                  "  palette    - Built-in palette name")
     ->check(CLI::IsMember({ "hex", "colorspace", "palette" }));
 
