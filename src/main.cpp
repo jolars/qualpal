@@ -31,8 +31,6 @@ main(int argc, char** argv)
   app.require_subcommand(0, 1);
 
   std::string input = "hex";
-  std::string background = "";
-  int n_colors = 1000;
 
   app
     .add_option("-i,--input",
@@ -43,8 +41,13 @@ main(int argc, char** argv)
                 "  palette    - Built-in palette name")
     ->check(CLI::IsMember({ "hex", "colorspace", "palette" }));
 
+  std::string background = "";
+
   app.add_option(
     "-b,--background", background, "Background color in hex (e.g. #ffffff)");
+
+  int n_colors = 1000;
+
   app.add_option(
     "-p,--points",
     n_colors,
