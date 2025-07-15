@@ -342,8 +342,8 @@ TEST_CASE("Lab conversion", "[colors][lab]")
   using namespace Catch::Matchers;
   using namespace qualpal::colors;
 
-  Lab lab1(91, -86, 23);
-  Lab lab2(1, 2, 5);
+  Lab lab1(23, 12, 17);
+  Lab lab2(50, -60, 10);
   Lab lab3(20, -23, 12);
 
   double eps = 1e-4;
@@ -351,14 +351,14 @@ TEST_CASE("Lab conversion", "[colors][lab]")
   SECTION("To XYZ")
   {
     XYZ xyz1(lab1);
-    REQUIRE_THAT(xyz1.x(), WithinAbs(0.401644, eps));
-    REQUIRE_THAT(xyz1.y(), WithinAbs(0.784833, eps));
-    REQUIRE_THAT(xyz1.z(), WithinAbs(0.573124, eps));
+    REQUIRE_THAT(xyz1.x(), WithinAbs(0.044422, eps));
+    REQUIRE_THAT(xyz1.y(), WithinAbs(0.038003, eps));
+    REQUIRE_THAT(xyz1.z(), WithinAbs(0.017261, eps));
 
     XYZ xyz2(lab2);
-    REQUIRE_THAT(xyz2.x(), WithinAbs(0.001540, eps));
-    REQUIRE_THAT(xyz2.y(), WithinAbs(0.001107, eps));
-    REQUIRE_THAT(xyz2.z(), WithinAbs(-0.002290, eps));
+    REQUIRE_THAT(xyz2.x(), WithinAbs(0.086016, eps));
+    REQUIRE_THAT(xyz2.y(), WithinAbs(0.184187, eps));
+    REQUIRE_THAT(xyz2.z(), WithinAbs(0.152186, eps));
   }
 
   SECTION("To RGB")

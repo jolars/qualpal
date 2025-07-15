@@ -407,15 +407,15 @@ TEST_CASE("CLI metrics", "[cli][metrics]")
   SECTION("Other metrics work")
   {
     auto [exit_code, output] = run_cli(
-      "-n 2 -i colorspace  -m ciede2000 \"0:360\" \"0.5:1\" \"0.3:0.7\"");
+      "-n 2 -i colorspace -m ciede2000 \"0:360\" \"0.5:1\" \"0.3:0.7\"");
     REQUIRE(exit_code == 0);
     REQUIRE(count_hex_colors(output) == 2);
   }
 
   SECTION("invalid metric triggers error")
   {
-    auto [exit_code, output] = run_cli("-n 2 -i palette "
-                                       "ColorBrewer:Set1\" -m invalid_metric");
+    auto [exit_code, output] =
+      run_cli("-n 2  -m \"invalid_metric\" -i palette \"ColorBrewer:Set1\"");
     REQUIRE(exit_code != 0);
   }
 }
