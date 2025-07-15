@@ -42,7 +42,7 @@ jobs:
           cmake-version: "3.25"
 
       - name: Configure CMake
-        run: cmake -B build -S . -DBUILD_TESTING=ON ${{ runner.os == 'Windows' && '-G "MinGW Makefiles" -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-mingw-dynamic' || '' }}
+        run: cmake -B build -S . -DBUILD_CLI=ON -DBUILD_TESTING=ON ${{ runner.os == 'Windows' && '-G "MinGW Makefiles" -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-mingw-dynamic' || '' }}
 
       - name: Build
         run: cmake --build build
@@ -72,7 +72,7 @@ jobs:
           cmake-version: "3.25"
 
       - name: Configure CMake
-        run: cmake -B build -S . -DBUILD_DOCS=ON -DBUILD_TESTING=OFF
+        run: cmake -B build -S . -DBUILD_DOCS=ON -DBUILD_TESTING=OFF -DBUILD_CLI=ON
 
       - name: Build
         run: cmake --build build
