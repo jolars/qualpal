@@ -16,7 +16,8 @@ colorDifferenceMatrix(const std::vector<colors::Lab>& colors,
       for (const auto& col : colors) {
         din99d_colors.emplace_back(col);
       }
-      return colorDifferenceMatrix(colors, metrics::DIN99d{}, max_memory);
+      return colorDifferenceMatrix(
+        din99d_colors, metrics::DIN99d{}, max_memory);
     }
     case metrics::MetricType::CIEDE2000:
       return colorDifferenceMatrix(colors, metrics::CIEDE2000{}, max_memory);
