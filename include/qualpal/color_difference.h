@@ -47,6 +47,11 @@ colorDifferenceMatrix(const std::vector<ColorType>& colors,
 
   const int n_colors = colors.size();
 
+  if (n_colors < 1) {
+    throw std::invalid_argument("At least one color is required to compute "
+                                "a color difference matrix.");
+  }
+
   if (!checkMatrixSize(n_colors, max_memory)) {
     throw std::runtime_error(
       "Color difference matrix would require " +
