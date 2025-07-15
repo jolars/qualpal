@@ -11,30 +11,21 @@
 #endif
 
 namespace qualpal {
+namespace detail {
 
-/**
- * @brief Estimate memory usage for color difference matrix
- * @param n Number of colors
- * @return Estimated memory usage in bytes
- */
 inline size_t
 estimateMatrixMemory(size_t n)
 {
   return n * n * sizeof(double);
 }
 
-/**
- * @brief Check if matrix size is reasonable for available memory
- * @param n Number of colors
- * @param max_gb Maximum allowed memory in GB (default: 1GB)
- * @return true if size is reasonable
- */
 inline bool
 checkMatrixSize(size_t n, double max_gb = 1.0)
 {
   double estimated_gb = estimateMatrixMemory(n) / (1024.0 * 1024.0 * 1024.0);
   return estimated_gb <= max_gb;
 }
+} // namespace detail
 
 /**
  * @brief Generate a color difference matrix
@@ -51,6 +42,8 @@ colorDifferenceMatrix(const std::vector<ColorType>& colors,
                       const Metric& metric = Metric{},
                       const size_t max_memory = 1)
 {
+  using namespace detail;
+
   const int N = colors.size();
 
   if (!checkMatrixSize(N, max_memory)) {
