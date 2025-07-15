@@ -384,3 +384,21 @@ TEST_CASE("CLI background color option", "[cli][background]")
     REQUIRE(output.find("background") != std::string::npos);
   }
 }
+
+TEST_CASE("CLI points option for colorspace", "[cli][points]")
+{
+  SECTION("custom number of points is accepted")
+  {
+    auto [exit_code, output] =
+      run_cli("-n 2 -i colorspace \"0:360\" \"0.5:1\" \"0.3:0.7\" -p 50");
+    REQUIRE(exit_code == 0);
+    REQUIRE(count_hex_colors(output) == 2);
+  }
+  SECTION("invalid points value triggers error")
+  {
+    auto [exit_code, output] =
+      run_cli("-n 2 -i colorspace \"0:360\" \"0.5:1\" \"0.3:0.7\" -p -10");
+    REQUIRE(exit_code != 0);
+    REQUIRE(output.find("Error") != std::string::npos);
+  }
+}

@@ -32,6 +32,7 @@ main(int argc, char** argv)
 
   std::string input = "hex";
   std::string background = "";
+  int n_colors = 1000;
 
   app
     .add_option("-i,--input",
@@ -44,6 +45,10 @@ main(int argc, char** argv)
 
   app.add_option(
     "-b,--background", background, "Background color in hex (e.g. #ffffff)");
+  app.add_option(
+    "-p,--points",
+    n_colors,
+    "Number of candidate points for colorspace search (default: 1000)");
 
   double deutan = 0.0;
   double protan = 0.0;
@@ -270,7 +275,7 @@ main(int argc, char** argv)
 
       qualpal::validateHslRanges(h_lim, s_lim, l_lim);
 
-      rgb_out = qualpal::qualpal(n, h_lim, s_lim, l_lim, 1000, cvd, bg_opt);
+      rgb_out = qualpal::qualpal(n, h_lim, s_lim, l_lim, n_colors, cvd, bg_opt);
     } else if (input == "palette") {
       if (values.size() != 1) {
         std::cerr << "Error: Palette input requires exactly one palette name"
