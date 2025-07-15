@@ -53,6 +53,17 @@ main(int argc, char** argv)
     n_colors,
     "Number of candidate points for colorspace search (default: 1000)");
 
+  std::string metric_str = "din99d";
+
+  app
+    .add_option("-m,--metric",
+                metric_str,
+                "Color difference metric to use:\n"
+                "  din99d      - Perceptual color difference (default)\n"
+                "  ciede2000   - CIEDE2000 color difference\n"
+                "  cie76       - CIE76 color difference")
+    ->check(CLI::IsMember({ "din99d", "ciede2000", "cie76" }));
+
   double max_memory = 1.0;
 
   app.add_option(
@@ -107,6 +118,17 @@ main(int argc, char** argv)
 
   argv = app.ensure_utf8(argv);
   CLI11_PARSE(app, argc, argv);
+
+  qualpal::metrics::MetricType metric;
+  if (metric_str == "din99d") {
+    metric = qualpal::metrics::MetricType::DIN99d;
+  } else if (metric_str == "ciede2000") {
+    metric = qualpal::metrics::MetricType::CIEDE2000;
+  } else if (metric_str == "cie76") {
+    metric = qualpal::metrics::MetricType::CIE76;
+  } else {
+    throw std::invalid_argument("Unknown metric: " + metric_str);
+  }
 
   std::map<std::string, double> cvd = { { "deutan", deutan },
                                         { "protan", protan },
@@ -264,7 +286,7 @@ main(int argc, char** argv)
           return 1;
         }
       }
-      rgb_out = qualpal::qualpal(n, values, cvd, bg_opt);
+      rgb_out = qualpal::qualpal(n, values, cvd, bg_opt, metric);
     } else if (input == "colorspace") {
       if (values.size() != 3) {
         std::cerr << "Error: Colorspace input requires exactly 3 ranges (hue, "
@@ -278,14 +300,15 @@ main(int argc, char** argv)
 
       qualpal::validateHslRanges(h_lim, s_lim, l_lim);
 
-      rgb_out = qualpal::qualpal(n, h_lim, s_lim, l_lim, n_colors, cvd, bg_opt);
+      rgb_out =
+        qualpal::qualpal(n, h_lim, s_lim, l_lim, n_colors, cvd, bg_opt, metric);
     } else if (input == "palette") {
       if (values.size() != 1) {
         std::cerr << "Error: Palette input requires exactly one palette name"
                   << std::endl;
         return 1;
       }
-      rgb_out = qualpal::qualpal(n, values[0], cvd, bg_opt);
+      rgb_out = qualpal::qualpal(n, values[0], cvd, bg_opt, metric);
     }
   } catch (const std::invalid_argument& e) {
     std::cerr << "Error: " << e.what() << std::endl;
