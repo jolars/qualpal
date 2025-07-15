@@ -364,3 +364,23 @@ TEST_CASE("CLI error handling - analyze command", "[cli][error][analyze]")
     REQUIRE(output.find("not supported for analyze") != std::string::npos);
   }
 }
+
+TEST_CASE("CLI background color option", "[cli][background]")
+{
+  SECTION("background color is accepted and does not error")
+  {
+    auto [exit_code, output] =
+      run_cli("-n 2 -i hex \"#ff0000\" \"#00ff00\" -b \"#222222\"");
+    REQUIRE(exit_code == 0);
+    REQUIRE(count_hex_colors(output) == 2);
+  }
+
+  SECTION("invalid background color triggers error")
+  {
+    auto [exit_code, output] =
+      run_cli("-n 2 -i hex \"#ff0000\" \"#00ff00\" -b \"notacolor\"");
+    REQUIRE(exit_code != 0);
+    REQUIRE(output.find("Error") != std::string::npos);
+    REQUIRE(output.find("background") != std::string::npos);
+  }
+}

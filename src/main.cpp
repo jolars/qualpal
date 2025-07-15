@@ -31,6 +31,7 @@ main(int argc, char** argv)
   app.require_subcommand(0, 1);
 
   std::string input = "hex";
+  std::string background = "";
 
   app
     .add_option("-i,--input",
@@ -40,6 +41,9 @@ main(int argc, char** argv)
                 "  colorspace - HSL ranges (h1:h2 s1:s2 l1:l2)\n"
                 "  palette    - Built-in palette name")
     ->check(CLI::IsMember({ "hex", "colorspace", "palette" }));
+
+  app.add_option(
+    "-b,--background", background, "Background color in hex (e.g. #ffffff)");
 
   double deutan = 0.0;
   double protan = 0.0;
@@ -233,6 +237,15 @@ main(int argc, char** argv)
   }
 
   std::vector<qualpal::colors::RGB> rgb_out;
+  std::optional<qualpal::colors::RGB> bg_opt = std::nullopt;
+  if (!background.empty()) {
+    if (!qualpal::isValidHexColor(background)) {
+      std::cerr << "Error: Invalid background color '" << background
+                << "'. Expected format: #RRGGBB or #RGB" << std::endl;
+      return 1;
+    }
+    bg_opt = qualpal::colors::RGB(background);
+  }
 
   try {
     if (input == "hex") {
@@ -243,7 +256,7 @@ main(int argc, char** argv)
           return 1;
         }
       }
-      rgb_out = qualpal::qualpal(n, values, cvd);
+      rgb_out = qualpal::qualpal(n, values, cvd, bg_opt);
     } else if (input == "colorspace") {
       if (values.size() != 3) {
         std::cerr << "Error: Colorspace input requires exactly 3 ranges (hue, "
@@ -257,14 +270,14 @@ main(int argc, char** argv)
 
       qualpal::validateHslRanges(h_lim, s_lim, l_lim);
 
-      rgb_out = qualpal::qualpal(n, h_lim, s_lim, l_lim, 1000, cvd);
+      rgb_out = qualpal::qualpal(n, h_lim, s_lim, l_lim, 1000, cvd, bg_opt);
     } else if (input == "palette") {
       if (values.size() != 1) {
         std::cerr << "Error: Palette input requires exactly one palette name"
                   << std::endl;
         return 1;
       }
-      rgb_out = qualpal::qualpal(n, values[0], cvd);
+      rgb_out = qualpal::qualpal(n, values[0], cvd, bg_opt);
     }
   } catch (const std::invalid_argument& e) {
     std::cerr << "Error: " << e.what() << std::endl;
