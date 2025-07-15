@@ -40,14 +40,14 @@ qualpal(const int n,
     }
   }
 
-  std::vector<colors::Lab> lab_colors;
-  lab_colors.reserve(n_colors);
+  std::vector<colors::XYZ> xyz_colors;
+  xyz_colors.reserve(n_colors);
 
   for (const auto& rgb : rgb_colors_mod) {
-    lab_colors.emplace_back(rgb);
+    xyz_colors.emplace_back(rgb);
   }
 
-  auto ind = farthestPoints(n, lab_colors, metric, bg_mod, max_memory);
+  auto ind = farthestPoints(n, xyz_colors, metric, bg_mod, max_memory);
 
   std::vector<colors::RGB> rgb_out;
   rgb_out.reserve(n);

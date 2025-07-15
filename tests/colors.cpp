@@ -336,3 +336,36 @@ TEST_CASE("HSL conversion", "[colors][hsl]")
     REQUIRE_THAT(rgb.b(), WithinAbs(0.8796, eps));
   }
 }
+
+TEST_CASE("Lab conversion", "[colors][lab]")
+{
+  using namespace Catch::Matchers;
+  using namespace qualpal::colors;
+
+  Lab lab1(91, -86, 23);
+  Lab lab2(1, 2, 5);
+  Lab lab3(20, -23, 12);
+
+  double eps = 1e-4;
+
+  SECTION("To XYZ")
+  {
+    XYZ xyz1(lab1);
+    REQUIRE_THAT(xyz1.x(), WithinAbs(0.401644, eps));
+    REQUIRE_THAT(xyz1.y(), WithinAbs(0.784833, eps));
+    REQUIRE_THAT(xyz1.z(), WithinAbs(0.573124, eps));
+
+    XYZ xyz2(lab2);
+    REQUIRE_THAT(xyz2.x(), WithinAbs(0.001540, eps));
+    REQUIRE_THAT(xyz2.y(), WithinAbs(0.001107, eps));
+    REQUIRE_THAT(xyz2.z(), WithinAbs(-0.002290, eps));
+  }
+
+  SECTION("To RGB")
+  {
+    RGB rgb(lab3);
+    REQUIRE_THAT(rgb.r(), WithinAbs(0.031398, eps));
+    REQUIRE_THAT(rgb.g(), WithinAbs(0.220247, eps));
+    REQUIRE_THAT(rgb.b(), WithinAbs(0.117406, eps));
+  }
+}

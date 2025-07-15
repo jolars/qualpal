@@ -5,7 +5,7 @@
 namespace qualpal {
 
 Matrix<double>
-colorDifferenceMatrix(const std::vector<colors::Lab>& colors,
+colorDifferenceMatrix(const std::vector<colors::XYZ>& colors,
                       const metrics::MetricType& metric_type,
                       const double max_memory)
 {
@@ -19,10 +19,17 @@ colorDifferenceMatrix(const std::vector<colors::Lab>& colors,
       return colorDifferenceMatrix(
         din99d_colors, metrics::DIN99d{}, max_memory);
     }
-    case metrics::MetricType::CIEDE2000:
-      return colorDifferenceMatrix(colors, metrics::CIEDE2000{}, max_memory);
-    case metrics::MetricType::CIE76:
-      return colorDifferenceMatrix(colors, metrics::CIE76{}, max_memory);
+    case metrics::MetricType::CIEDE2000: {
+      std::vector<colors::Lab> lab_colors;
+      lab_colors.reserve(colors.size());
+      return colorDifferenceMatrix(
+        lab_colors, metrics::CIEDE2000{}, max_memory);
+    }
+    case metrics::MetricType::CIE76: {
+      std::vector<colors::Lab> lab_colors;
+      lab_colors.reserve(colors.size());
+      return colorDifferenceMatrix(lab_colors, metrics::CIE76{}, max_memory);
+    }
   }
 }
 } // namespace qualpal
