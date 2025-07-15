@@ -9,6 +9,7 @@ option(BUILD_CLI "Build CLI application" OFF)
 option(BUILD_VISUALIZATIONS "Build visualization tools" OFF)
 option(DAP_DEBUG "Interactive debugging" OFF)
 option(ENABLE_COVERAGE "Generate coverage report" OFF)
+option(ENABLE_CLI_TESTS "Enable CLI tests" ON)
 
 include(FetchContent)
 include(CTest)
@@ -149,10 +150,13 @@ if(BUILD_TESTING)
         FetchContent_MakeAvailable(Catch2)
     endif()
 
-    add_executable(
-        tests
+    set(ADD_CLI_TESTS OFF)
+    if(ENABLE_CLI_TESTS AND NOT WIN32)
+        set(ADD_CLI_TESTS ON)
+    endif()
+
+    set(TEST_SOURCES
         tests/benchmarks.cpp
-        tests/cli.cpp
         tests/metrics.cpp
         tests/colors.cpp
         tests/core.cpp
@@ -161,6 +165,11 @@ if(BUILD_TESTING)
         tests/matrix.cpp
         tests/validation.cpp
     )
+    if(ADD_CLI_TESTS)
+        list(APPEND TEST_SOURCES tests/cli.cpp)
+    endif()
+
+    add_executable(tests ${TEST_SOURCES})
     target_link_libraries(tests PRIVATE Catch2::Catch2WithMain qualpal::qualpal)
     target_include_directories(
         tests
