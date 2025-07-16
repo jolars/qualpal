@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.0](https://github.com/jolars/qualpal/compare/v2.0.0...v2.1.0) (2025-07-16)
+
+### Features
+
+* add additional palettes ([cfd145a](https://github.com/jolars/qualpal/commit/cfd145ae467e086ce6c3f0fa8ad6f1116383eeeb))
+* **cli:** add subcommand to list available palettes ([70c5741](https://github.com/jolars/qualpal/commit/70c574100e651f0dc13cc524f70c3ea45a2ee21f))
+
 ## [2.0.0](https://github.com/jolars/qualpal/compare/v1.0.0...v2.0.0) (2025-07-16)
 
 ### ⚠ BREAKING CHANGES
