@@ -139,12 +139,12 @@ int main() {
 
 ### Color Vision Deficiency Consideration
 
-Simulate deuteranomaly (red-green colorblindness)
+Simulate deuteranomaly (red-green colorblindness) of severity 0.8.
 
 ```cpp
 Qualpal qp;
 qp.setInputRGB(colors)
-  .setCvd({{"deutan", 1.0}});
+  .setCvd({{"deutan", 0.8}});
 auto accessible_palette = qp.generate(4);
 ```
 
@@ -156,4 +156,38 @@ Generate warm colors: orange to red hues, high saturation, medium lightness
 Qualpal qp;
 qp.setInputColorspace({15, 45}, {0.7, 1.0}, {0.4, 0.7});
 auto warm_colors = qp.generate(6);
+```
+
+### Cater to Background Colors
+
+When visualizing categorical data, consider a background color to ensure contrast.
+
+```cpp
+auto pal = Qualpal{}
+  .setInputRGB({
+    colors::RGB("#f0f0f0"), // Light color (which we want to avoid)
+    colors::RGB("#e41a1c"), // Red
+    colors::RGB("#377eb8"), // Blue
+    colors::RGB("#4daf4a"), // Green
+  })
+  .setBackgroundColor(colors::RGB("#ffffff"))
+  .generate(3);
+
+```
+
+### Improve Existing Palettes
+
+Qualpal can take an existing color palette and improve it by selecting a subset
+of the most distinct colors from it, as well as ordering the result.
+
+Here we design a CVD friendly version of the `"ColorBrewer:Set2"` palette
+for a black background, selecting 3 colors.
+
+```cpp
+auto pal = Qualpal{}
+  .setInputPalette("ColorBrewer:Set2")
+  .setBackgroundColor(colors::RGB("#000000"))
+  .setCvd({{"tritan", 0.2}, {"deutan", 0.5}})
+  .generate(3);
+
 ```
