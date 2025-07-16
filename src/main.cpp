@@ -100,6 +100,9 @@ main(int argc, char** argv)
   auto analyze_cmd = app.add_subcommand(
     "analyze", "Analyze a color palette by computing color difference matrix");
 
+  auto list_cmd =
+    app.add_subcommand("list-palettes", "List all available built-in palettes");
+
   std::string analyze_input = "hex";
   std::vector<std::string> analyze_values;
 
@@ -135,6 +138,18 @@ main(int argc, char** argv)
                                         { "tritan", tritan } };
 
   qualpal::Qualpal qp;
+
+  if (*list_cmd) {
+    auto palettes = qualpal::listAvailablePalettes();
+    std::cout << "Available palettes:\n";
+    for (const auto& pkg_pair : palettes) {
+      std::cout << "  " << pkg_pair.first << ":\n";
+      for (const auto& pal : pkg_pair.second) {
+        std::cout << "    " << pal << "\n";
+      }
+    }
+    return 0;
+  }
 
   if (*analyze_cmd) {
     if (analyze_values.empty()) {

@@ -419,3 +419,12 @@ TEST_CASE("CLI metrics", "[cli][metrics]")
     REQUIRE(exit_code != 0);
   }
 }
+
+TEST_CASE("CLI list-palettes subcommand", "[cli][palettes][list]")
+{
+  auto [exit_code, output] = run_cli("list-palettes");
+  REQUIRE(exit_code == 0);
+  REQUIRE(output.find("Available palettes:") != std::string::npos);
+  REQUIRE(output.find(":") !=
+          std::string::npos); // Should list at least one package:palette
+}
