@@ -264,10 +264,10 @@ DIN99d::DIN99d(const XYZ& xyz)
   double f = 1.14 * (b * std::cos(u) - a * std::sin(u));
   double g = std::sqrt(e * e + f * f);
 
-  double c99d = 22.5 * std::log(1.0 + 0.06 * g);
+  double c99d = 22.5 * std::log1p(0.06 * g);
   double h99d = std::atan2(f, e) + 50 * M_PI / 180.0;
 
-  l_value = 325.22 * std::log(1.0 + 0.0036 * l);
+  l_value = 325.22 * std::log1p(0.0036 * l);
   a_value = c99d * std::cos(h99d);
   b_value = c99d * std::sin(h99d);
 
