@@ -274,7 +274,7 @@ TEST_CASE("CLI error handling - input validation", "[cli][error][validation]")
 
     REQUIRE(exit_code != 0);
     REQUIRE(output.find("Error") != std::string::npos);
-    REQUIRE(output.find("exceeds palette size") != std::string::npos);
+    REQUIRE(output.find("exceeds input size") != std::string::npos);
   }
 
   SECTION("invalid CVD severity values")

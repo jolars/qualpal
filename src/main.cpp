@@ -134,6 +134,8 @@ main(int argc, char** argv)
                                         { "protan", protan },
                                         { "tritan", tritan } };
 
+  qualpal::Qualpal qp;
+
   if (*analyze_cmd) {
     if (analyze_values.empty()) {
       std::cerr << "Error: No values provided for analysis. Use --help for "
@@ -267,17 +269,23 @@ main(int argc, char** argv)
   }
 
   std::vector<qualpal::colors::RGB> rgb_out;
-  std::optional<qualpal::colors::RGB> bg_opt = std::nullopt;
-  if (!background.empty()) {
-    if (!qualpal::isValidHexColor(background)) {
-      std::cerr << "Error: Invalid background color '" << background
-                << "'. Expected format: #RRGGBB or #RGB" << std::endl;
-      return 1;
-    }
-    bg_opt = qualpal::colors::RGB(background);
-  }
 
   try {
+    if (!background.empty()) {
+      if (!qualpal::isValidHexColor(background)) {
+        std::cerr << "Error: Invalid background color '" << background
+                  << "'. Expected format: #RRGGBB or #RGB" << std::endl;
+        return 1;
+      }
+      auto bg = qualpal::colors::RGB(background);
+      qp.setBackground(bg);
+    }
+
+    qp.setCvd(cvd);
+    qp.setMetric(metric);
+    qp.setMemoryLimit(max_memory);
+    qp.setColorspaceSize(n_colors);
+
     if (input == "hex") {
       for (const auto& color : values) {
         if (!qualpal::isValidHexColor(color)) {
@@ -286,7 +294,7 @@ main(int argc, char** argv)
           return 1;
         }
       }
-      rgb_out = qualpal::qualpal(n, values, cvd, bg_opt, metric);
+      qp.setInputHex(values);
     } else if (input == "colorspace") {
       if (values.size() != 3) {
         std::cerr << "Error: Colorspace input requires exactly 3 ranges (hue, "
@@ -298,18 +306,16 @@ main(int argc, char** argv)
       std::array<double, 2> s_lim = splitHslString(values[1]);
       std::array<double, 2> l_lim = splitHslString(values[2]);
 
-      qualpal::validateHslRanges(h_lim, s_lim, l_lim);
-
-      rgb_out =
-        qualpal::qualpal(n, h_lim, s_lim, l_lim, n_colors, cvd, bg_opt, metric);
+      qp.setInputColorspace(h_lim, s_lim, l_lim);
     } else if (input == "palette") {
       if (values.size() != 1) {
         std::cerr << "Error: Palette input requires exactly one palette name"
                   << std::endl;
         return 1;
       }
-      rgb_out = qualpal::qualpal(n, values[0], cvd, bg_opt, metric);
+      qp.setInputPalette(values[0]);
     }
+    rgb_out = qp.generate(n);
   } catch (const std::invalid_argument& e) {
     std::cerr << "Error: " << e.what() << std::endl;
     return 1;

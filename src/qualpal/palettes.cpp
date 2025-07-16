@@ -5,8 +5,8 @@
 
 namespace qualpal {
 
-std::vector<std::string>
-getPalette(const std::string& palette)
+void
+validatePalette(const std::string& palette)
 {
   std::string delimiter = ":";
   size_t pos = palette.find(delimiter);
@@ -23,10 +23,21 @@ getPalette(const std::string& palette)
     throw std::invalid_argument("Package '" + pkg + "' not found");
   }
 
-  if (color_palettes[pkg].find(pal) == color_palettes[pkg].end()) {
+  if (color_palettes.at(pkg).find(pal) == color_palettes[pkg].end()) {
     throw std::invalid_argument("Palette '" + pal + "' not found in package '" +
                                 pkg + "'");
   }
+}
+
+std::vector<std::string>
+getPalette(const std::string& palette)
+{
+  validatePalette(palette);
+
+  std::string delimiter = ":";
+  size_t pos = palette.find(delimiter);
+  std::string pkg = palette.substr(0, pos);
+  std::string pal = palette.substr(pos + delimiter.length());
 
   return color_palettes[pkg][pal];
 }

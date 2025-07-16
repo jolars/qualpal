@@ -3,7 +3,7 @@
 #include <iomanip>
 #include <iostream>
 #include <qualpal/colors.h>
-#include <qualpal/core.h>
+#include <qualpal/qualpal.h>
 
 void
 generateHSLData()
@@ -84,7 +84,7 @@ generateSelectedColors()
   }
 
   // Select 5 colors using qualpal
-  auto selected = qualpal::qualpal(5, rgb_colors);
+  auto selected = qualpal::Qualpal{}.setInputRGB(rgb_colors).generate(5);
 
   // Write all points
   std::ofstream all_file("data/all_colors.dat");
