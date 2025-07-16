@@ -249,11 +249,15 @@ DIN99d::DIN99d(const double l, const double a, const double b)
 
 DIN99d::DIN99d(const XYZ& xyz, const std::array<double, 3>& white_point)
 {
-  double new_x = 1.12 * xyz.x() - 0.12 * xyz.z();
+  double x_prime = 1.12 * xyz.x() - 0.12 * xyz.z();
+  double xw_prime = 1.12 * white_point[0] - 0.12 * white_point[2];
 
-  XYZ xyz_prime(new_x, xyz.y(), xyz.z());
+  XYZ xyz_prime(x_prime, xyz.y(), xyz.z());
+  std::array<double, 3> white_prime = { xw_prime,
+                                        white_point[1],
+                                        white_point[2] };
 
-  Lab lab(xyz_prime, white_point);
+  Lab lab(xyz_prime, white_prime);
 
   double l = lab.l();
   double a = lab.a();
