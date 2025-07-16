@@ -78,10 +78,6 @@ RGB::RGB(const std::string& hex)
   r_value = red / 255.0;
   g_value = green / 255.0;
   b_value = blue / 255.0;
-
-  assert(r_value >= 0 && r_value <= 1 && "Red component must be in [0, 1]");
-  assert(g_value >= 0 && g_value <= 1 && "Green component must be in [0, 1]");
-  assert(b_value >= 0 && b_value <= 1 && "Blue component must be in [0, 1]");
 }
 
 RGB::RGB(const HSL& hsl)
@@ -108,13 +104,9 @@ RGB::RGB(const HSL& hsl)
 
   double m = hsl.l() - c / 2.0;
 
-  r_value = rgb_prime[0] + m;
-  g_value = rgb_prime[1] + m;
-  b_value = rgb_prime[2] + m;
-
-  assert(r_value >= 0 && r_value <= 1 && "Red component must be in [0, 1]");
-  assert(g_value >= 0 && g_value <= 1 && "Green component must be in [0, 1]");
-  assert(b_value >= 0 && b_value <= 1 && "Blue component must be in [0, 1]");
+  r_value = std::clamp(rgb_prime[0] + m, 0.0, 1.0);
+  g_value = std::clamp(rgb_prime[1] + m, 0.0, 1.0);
+  b_value = std::clamp(rgb_prime[2] + m, 0.0, 1.0);
 }
 
 RGB::RGB(const Lab& lab)
@@ -139,13 +131,9 @@ RGB::RGB(const XYZ& xyz)
     }
   }
 
-  r_value = rgb[0];
-  g_value = rgb[1];
-  b_value = rgb[2];
-
-  assert(r_value >= 0 && r_value <= 1 && "Red component must be in [0, 1]");
-  assert(g_value >= 0 && g_value <= 1 && "Green component must be in [0, 1]");
-  assert(b_value >= 0 && b_value <= 1 && "Blue component must be in [0, 1]");
+  r_value = std::clamp(rgb[0], 0.0, 1.0);
+  g_value = std::clamp(rgb[1], 0.0, 1.0);
+  b_value = std::clamp(rgb[2], 0.0, 1.0);
 }
 
 HSL::HSL(const XYZ& xyz)
@@ -209,13 +197,9 @@ XYZ::XYZ(const Lab& lab, const std::array<double, 3>& white_point)
   double zr =
     std::pow(fz, 3) > epsilon ? std::pow(fz, 3) : (116.0 * fz - 16.0) / kappa;
 
-  x_value = xr * white_point[0];
-  y_value = yr * white_point[1];
-  z_value = zr * white_point[2];
-
-  assert(x_value >= 0 && "X component must be non-negative");
-  assert(y_value >= 0 && "Y component must be non-negative");
-  assert(z_value >= 0 && "Z component must be non-negative");
+  x_value = std::max(xr * white_point[0], 0.0);
+  y_value = std::max(yr * white_point[1], 0.0);
+  z_value = std::max(zr * white_point[2], 0.0);
 }
 
 XYZ::XYZ(const HSL& hsl)
@@ -275,11 +259,9 @@ DIN99d::DIN99d(const XYZ& xyz, const std::array<double, 3>& white_point)
   a_value = c99d * std::cos(h99d);
   b_value = c99d * std::sin(h99d);
 
-  assert(l_value >= 0 && l_value <= 100 && "Lightness must be in [0, 100]");
-  assert(a_value >= -128 && a_value <= 127 &&
-         "Green-red component must be in [-128, 127]");
-  assert(b_value >= -128 && b_value <= 127 &&
-         "Blue-yellow component must be in [-128, 127]");
+  l_value = std::clamp(l_value, 0.0, 100.0);
+  a_value = std::clamp(a_value, -128.0, 127.0);
+  b_value = std::clamp(b_value, -128.0, 127.0);
 }
 
 DIN99d::DIN99d(const RGB& rgb)
@@ -336,9 +318,9 @@ HSL::HSL(const RGB& rgb)
   this->s_value =
     (l_value == 1 || l_value == 0) ? 0 : c / (1.0 - std::abs(2 * v - c - 1));
 
-  assert(h_value >= 0 && h_value < 360 && "Hue must be in [0, 360)");
-  assert(s_value >= 0 && s_value <= 1 && "Saturation must be in [0, 1]");
-  assert(l_value >= 0 && l_value <= 1 && "Lightness must be in [0, 1]");
+  h_value = std::clamp(h_value, 0.0, 360.0);
+  s_value = std::clamp(s_value, 0.0, 1.0);
+  l_value = std::clamp(l_value, 0.0, 1.0);
 }
 
 Lab::Lab(const double l, const double a, const double b)
@@ -370,15 +352,9 @@ Lab::Lab(const XYZ& xyz, const std::array<double, 3>& white_point)
   double fy = yr > epsilon ? std::cbrt(yr) : (kappa * yr + 16.0) / 116.0;
   double fz = zr > epsilon ? std::cbrt(zr) : (kappa * zr + 16.0) / 116.0;
 
-  l_value = 116.0 * fy - 16.0;
-  a_value = 500.0 * (fx - fy);
-  b_value = 200.0 * (fy - fz);
-
-  assert(l_value >= 0 && l_value <= 100 && "Lightness must be in [0, 100]");
-  assert(a_value >= -128 && a_value <= 127 &&
-         "Green-red component must be in [-128, 127]");
-  assert(b_value >= -128 && b_value <= 127 &&
-         "Blue-yellow component must be in [-128, 127]");
+  l_value = std::clamp(116.0 * fy - 16.0, 0.0, 100.0);
+  a_value = std::clamp(500.0 * (fx - fy), -128.0, 127.0);
+  b_value = std::clamp(200.0 * (fy - fz), -128.0, 127.0);
 };
 
 Lab::Lab(const RGB& rgb)
