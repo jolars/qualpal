@@ -1,4 +1,4 @@
-# Algorithm Documentation
+# Algorithm Details
 
 ## Overview
 
