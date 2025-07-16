@@ -42,4 +42,20 @@ getPalette(const std::string& palette)
   return color_palettes[pkg][pal];
 }
 
+std::map<std::string, std::vector<std::string>>
+listAvailablePalettes()
+{
+  std::map<std::string, std::vector<std::string>> result;
+  for (const auto& pkg_pair : color_palettes) {
+    const auto& pkg = pkg_pair.first;
+    const auto& palettes = pkg_pair.second;
+    std::vector<std::string> pal_names;
+    for (const auto& pal_pair : palettes) {
+      pal_names.push_back(pal_pair.first);
+    }
+    result[pkg] = pal_names;
+  }
+  return result;
+}
+
 } // namespace qualpal
