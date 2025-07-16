@@ -68,7 +68,6 @@ install(
     DESTINATION include/qualpal
     FILES_MATCHING
     PATTERN "*.h"
-    PATTERN "qualpal"
 )
 
 install(
