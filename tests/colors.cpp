@@ -317,6 +317,26 @@ TEST_CASE("XYZ conversion", "[colors][xyz]")
     REQUIRE_THAT(rgb.g(), WithinAbs(0.792647, eps));
     REQUIRE_THAT(rgb.b(), WithinAbs(0.985306, eps));
   }
+
+  // From Cui et al 2002
+  std::array<double, 3> ref_white = { 0.9481, 1, 1.0733 };
+  XYZ xyz_sample1(0.0496, 0.0372, 0.1959);
+  XYZ xyz_sample2(0.046651, 0.0381, 0.177848);
+
+  SECTION("To DIN99d")
+  {
+    DIN99d din99d1(xyz_sample1, ref_white);
+
+    REQUIRE_THAT(din99d1.l(), WithinAbs(25.572, eps));
+    REQUIRE_THAT(din99d1.a(), WithinAbs(-0.9627, eps));
+    REQUIRE_THAT(din99d1.b(), WithinAbs(-30.8731, eps));
+
+    DIN99d din99d2(xyz_sample2, ref_white);
+
+    REQUIRE_THAT(din99d2.l(), WithinAbs(25.9071, eps));
+    REQUIRE_THAT(din99d2.a(), WithinAbs(-3.5163, eps));
+    REQUIRE_THAT(din99d2.b(), WithinAbs(-29.1561, eps));
+  }
 }
 
 TEST_CASE("HSL conversion", "[colors][hsl]")
