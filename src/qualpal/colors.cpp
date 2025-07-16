@@ -262,7 +262,7 @@ DIN99d::DIN99d(const XYZ& xyz)
   double u = 50 * M_PI / 180.0;
   double e = a * std::cos(u) + b * std::sin(u);
   double f = 1.14 * (b * std::cos(u) - a * std::sin(u));
-  double g = std::sqrt(e * e + f * f);
+  double g = std::hypot(e, f);
 
   double c99d = 22.5 * std::log1p(0.06 * g);
   double h99d = std::atan2(f, e) + 50 * M_PI / 180.0;
