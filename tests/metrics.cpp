@@ -71,6 +71,17 @@ TEST_CASE("DIN99d metric", "[metrics][din99d]")
     double diff2 = met(c2, c1);
     REQUIRE_THAT(diff1, WithinAbs(diff2, 1e-5));
   }
+
+  SECTION("Cui et al 2002 values")
+  {
+    DIN99d s1(25.5720, -0.9627, -30.8731);
+    DIN99d s2(25.9071, -3.5163, -29.1561);
+
+    metrics::DIN99d met2{ false };
+
+    double diff = met2(s1, s2);
+    REQUIRE_THAT(diff, WithinAbs(3.0953, 1e-4));
+  }
 }
 
 TEST_CASE("CIE76 metric", "[metrics][cie76]")
