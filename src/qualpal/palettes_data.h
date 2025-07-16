@@ -5,7 +5,7 @@
 namespace qualpal {
 
 inline std::map<std::string, std::map<std::string, std::vector<std::string>>>
-  color_palettes = {
+  COLOR_PALETTES = {
     { "ColorBrewer",
       { { "BrBG",
           { "#543005",
