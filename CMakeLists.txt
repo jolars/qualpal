@@ -252,6 +252,7 @@ if(BUILD_DOCS)
     set(DOXYGEN_PROJECT_LOGO "${CMAKE_CURRENT_SOURCE_DIR}/docs/images/logo.svg")
     set(DOXYGEN_SOURCE_BROWSER YES)
     set(DOXYGEN_USE_MATHJAX YES)
+    set(DOXYGEN_WARN_AS_ERROR YES)
 
     doxygen_add_docs(
         docs
