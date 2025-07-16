@@ -98,10 +98,6 @@ find_package(qualpal REQUIRED)
 target_link_libraries(your_target qualpal::qualpal)
 ```
 
-## Algorithm
-
-qualpal uses the DIN99d color space to measure perceptual color differences and employs a farthest-point sampling algorithm to maximize the minimum distance between selected colors.
-
 ## License
 
 MIT License - see [LICENSE](LICENSE) file.
