@@ -2,8 +2,10 @@
 qualpal - automatic generation of qualitative color palettes
 
 [DESCRIPTION]
-qualpal uses a farthest-point sampling algorithm in the DIN99d color space to
-generate maximally distinct color palettes for data visualization.
+qualpal generated qualitative color palettes for visualization
+of categorical data. It is designed to create palettes that are
+maximally distinct and optionally adjusted for color
+vision deficiencies.
 
 The tool supports three input modes:
 .IP \(bu 2
@@ -14,8 +16,8 @@ HSL colorspace ranges for sampling from color regions
 Built-in palette names for standard color schemes
 
 [ALGORITHM]
-Uses farthest-point sampling in the perceptually uniform DIN99d color space
-to maximize visual distinction between selected colors.
+Uses a farthest-point sampling algorithm on colo difference matrices to
+generate maximally distinct color palettes for data visualization.
 
 [SEE ALSO]
 Project homepage: https://github.com/jolars/qualpal
