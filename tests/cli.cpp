@@ -146,6 +146,14 @@ TEST_CASE("CLI colorspace input functionality", "[cli][colorspace]")
     REQUIRE(exit_code == 0);
     REQUIRE(count_hex_colors(output) == 2);
   }
+
+  SECTION("erroneous HSL colorspace format")
+  {
+    auto [exit_code, output] =
+      run_cli("-n 3 -i colorspace \"0,360\" \"0.5:1\" \"0.3:0.7\"");
+
+    REQUIRE(exit_code != 0);
+  }
 }
 
 TEST_CASE("CLI CVD simulation functionality", "[cli][cvd]")
@@ -195,6 +203,14 @@ TEST_CASE("CLI CVD simulation functionality", "[cli][cvd]")
     REQUIRE(count_hex_colors(output) == 2);
   }
 
+  SECTION("wrong CVD input")
+  {
+    auto [exit_code, output] =
+      run_cli("--deutan 1.2 -n 2 -i hex \"#ff0000\" \"#00ff00\"");
+
+    REQUIRE(exit_code != 0);
+  }
+
   SECTION("maximum CVD simulation")
   {
     auto [exit_code, output] =
@@ -216,6 +232,14 @@ TEST_CASE("CLI analyze command functionality", "[cli][analyze]")
     REQUIRE(output.find("Color Difference Matrix") != std::string::npos);
     REQUIRE(output.find("Colors analyzed: 3") != std::string::npos);
     REQUIRE(output.find("MinDist") != std::string::npos);
+  }
+
+  SECTION("erroneous hex input")
+  {
+    auto [exit_code, output] =
+      run_cli("analyze -i hex \"ff0000\" \"#00ff00\" \"#0000ff\"");
+
+    REQUIRE(exit_code != 0);
   }
 
   SECTION("analyze palette input")
@@ -244,6 +268,23 @@ TEST_CASE("CLI analyze command functionality", "[cli][analyze]")
 
     REQUIRE(exit_code == 0);
     REQUIRE(output.find("Color Difference Matrix") != std::string::npos);
+  }
+
+  SECTION("analyze error handling")
+  {
+    SECTION("no input provided")
+    {
+      auto [exit_code, output] = run_cli("analyze");
+      REQUIRE(exit_code != 0);
+    }
+
+    SECTION("unsupported colorspace input")
+    {
+      auto [exit_code, output] =
+        run_cli("analyze -i colorspace \"0:360\" \"0.5:1\" \"0.3:0.7\"");
+      REQUIRE(exit_code != 0);
+      REQUIRE(output.find("Error") != std::string::npos);
+    }
   }
 }
 
@@ -407,6 +448,14 @@ TEST_CASE("CLI metrics", "[cli][metrics]")
   {
     auto [exit_code, output] = run_cli(
       "-n 2 -i colorspace -m ciede2000 \"0:360\" \"0.5:1\" \"0.3:0.7\"");
+    REQUIRE(exit_code == 0);
+    REQUIRE(count_hex_colors(output) == 2);
+  }
+
+  SECTION("CIE76 metric work")
+  {
+    auto [exit_code, output] =
+      run_cli("-n 2 -i colorspace -m cie76 \"-50:100\" \"0.5:1\" \"0.3:0.7\"");
     REQUIRE(exit_code == 0);
     REQUIRE(count_hex_colors(output) == 2);
   }
