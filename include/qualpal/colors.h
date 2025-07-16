@@ -299,8 +299,10 @@ public:
   /**
    * @brief Construct DIN99d from XYZ color
    * @param xyz XYZ color to convert from
+   * @param white_point Reference white point (default: D65)
    */
-  DIN99d(const XYZ& xyz);
+  DIN99d(const XYZ& xyz,
+         const std::array<double, 3>& white_point = { 0.95047, 1, 1.08883 });
 
   /** @brief Get lightness component */
   double l() const { return l_value; }

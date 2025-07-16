@@ -247,13 +247,13 @@ DIN99d::DIN99d(const double l, const double a, const double b)
          "Blue-yellow component must be in [-128, 127]");
 }
 
-DIN99d::DIN99d(const XYZ& xyz)
+DIN99d::DIN99d(const XYZ& xyz, const std::array<double, 3>& white_point)
 {
   double new_x = 1.12 * xyz.x() - 0.12 * xyz.z();
 
   XYZ xyz_prime(new_x, xyz.y(), xyz.z());
 
-  Lab lab(xyz_prime, { 0.95047, 1.0, 1.08883 });
+  Lab lab(xyz_prime, white_point);
 
   double l = lab.l();
   double a = lab.a();
@@ -354,8 +354,9 @@ Lab::Lab(const XYZ& xyz, const std::array<double, 3>& white_point)
   double y = xyz.y();
   double z = xyz.z();
 
-  double epsilon = 216.0 / 24389.0;
-  double kappa = 24389.0 / 27.0;
+  // Actual CIE standard values
+  double epsilon = 0.008856;
+  double kappa = 903.3;
 
   double xr = x / white_point[0];
   double yr = y / white_point[1];
