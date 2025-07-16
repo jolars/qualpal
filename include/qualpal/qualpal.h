@@ -1,6 +1,6 @@
 /**
  * @file
- * @brief Qualpal builder API for generating qualitative color palettes
+ * @brief Qualpal API for generating qualitative color palettes
  *
  * This file defines the Qualpal class, which provides a builder-style interface
  * for configuring and generating maximally distinct color palettes using
