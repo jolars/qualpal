@@ -1,5 +1,43 @@
 # Changelog
 
+## [2.0.0](https://github.com/jolars/qualpal/compare/v1.0.0...v2.0.0) (2025-07-16)
+
+### ⚠ BREAKING CHANGES
+
+* change main interface to builder pattern
+* use XYZ colors in color diff matrix
+* allow choosing metric for `qualpal()`
+* hide internal functions behind detail namespace
+
+### Features
+
+* add reference white to XYZ-Din99d conversion ([b95ea7d](https://github.com/jolars/qualpal/commit/b95ea7d3857f289e8958c4580a91b4debbb6a345))
+* allow choosing metric for `qualpal()` ([0e9c6e6](https://github.com/jolars/qualpal/commit/0e9c6e6d4ca8a39655d72ad7e3558f55964f8a13))
+* change main interface to builder pattern ([80c7251](https://github.com/jolars/qualpal/commit/80c72517125f4764f5c9e261a6ba79eebbaa1930))
+* **cli:** add `--background`, `-b` to consider bg color ([c7e498e](https://github.com/jolars/qualpal/commit/c7e498e02dcf38367425a3f14122cafccfef89f2))
+* **cli:** add `-m,--metric` to choose metric type ([d2f19a7](https://github.com/jolars/qualpal/commit/d2f19a7636d30e7a03b7e9f49d098af9e9afb65b))
+* **cli:** add `-p`, `--points` arguments ([1fa8d3f](https://github.com/jolars/qualpal/commit/1fa8d3f58c8a92ef67a4c9cb25e1bd883bf13332))
+* **cli:** make `max_memory` a base argument ([5588f76](https://github.com/jolars/qualpal/commit/5588f7604e5e0a865566ff79e050702605a75492))
+* **matrix:** add empty constutor for `Matrix` ([7ca7750](https://github.com/jolars/qualpal/commit/7ca775059104587af834dfe73258e8052819f2ba))
+* **metrics:** add CIEDE2000 metric ([4924bed](https://github.com/jolars/qualpal/commit/4924bedce190b220af20e6fb6bdf501801b426ff))
+* use XYZ colors in color diff matrix ([a8c53f5](https://github.com/jolars/qualpal/commit/a8c53f5e9ddc86d2ad4dbb460e9eb97d9d4b4f85))
+
+### Bug Fixes
+
+* adjust white point in xyz to din99d conversion ([572ef72](https://github.com/jolars/qualpal/commit/572ef728e29fc40eec60701fb30b88ed4fed7ce0))
+* correctly consider CIE76 ([c172417](https://github.com/jolars/qualpal/commit/c1724170841a96757a339e5e51e733b684445cb5))
+* create color vectors to color difference matrix ([71dd8ad](https://github.com/jolars/qualpal/commit/71dd8adc19042cf432de9f8e1a1b8e450f8ce8ac))
+* make `max_memory` double ([3cc48da](https://github.com/jolars/qualpal/commit/3cc48da293bf6c93d7233a4cf253ce41d068de16))
+* use `din99d_colors` in din99d distance computation ([ee101ca](https://github.com/jolars/qualpal/commit/ee101cad246032bab2c66a113c181747441343b7))
+
+### Performance Improvements
+
+* precompute background color when computing distances ([3c50dc6](https://github.com/jolars/qualpal/commit/3c50dc6d7fd571595e5b5040de40d38cfe5afeb9))
+
+### Code Refactoring
+
+* hide internal functions behind detail namespace ([87f7837](https://github.com/jolars/qualpal/commit/87f7837d7561984f1b1ec24cfa78dc0d037b7a86))
+
 ## [1.0.0](https://github.com/jolars/qualpal/compare/v0.12.0...v1.0.0) (2025-07-14)
 
 ### ⚠ BREAKING CHANGES
