@@ -3,14 +3,14 @@
 qualpal is a C++ library for automatically generating qualitative color palettes,
 maximizing perceptual distinctiveness and supporting color vision deficiency simulation.
 
-## Features
+**Features**
 
 - Perceptually uniform color selection (DIN99d color space)
 - Color vision deficiency simulation for accessible palettes
 - Flexible builder-style API
 - Fast algorithms for large color spaces
 
-## Example
+**Example**
 
 ```cpp
 #include <qualpal.h>
