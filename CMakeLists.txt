@@ -158,6 +158,7 @@ if(BUILD_TESTING)
         tests/benchmarks.cpp
         tests/metrics.cpp
         tests/colors.cpp
+        tests/color_difference.cpp
         tests/core.cpp
         tests/cvd.cpp
         tests/math.cpp
