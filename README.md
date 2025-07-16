@@ -17,6 +17,29 @@ difference metrics.
 - **Builder-style C++ API** for flexible palette configuration
 - **Fast algorithms** for large color spaces
 
+## Motivation
+
+When visualizing categorical data, it is often necessary to select a set of
+distinct colors that are easily distinguishable from each other. This is
+especially important for accessibility, as many people have color vision
+deficiencies (CVD) that make it difficult to distinguish certain colors.
+qualpal aims to provide a simple and effective way to generate such color
+palettes, ensuring that the selected colors are not only distinct from each
+other, but also accessible to people with CVD.
+
+The problem with almost all standard color palettes is that they are optimized
+for a specific number of colors. This is of course a problem by
+design, since a good 10-color palette has to be designed with the assumption
+that it will be used as a whole, not that it will be used in parts. But it
+means that if you want to select a subset of colors from a palette, you will
+not get the best possible result.
+
+They are also often created by a human designer, which means that they
+may not be optimized for perceptual distinctiveness. qualpal, on the other hand,
+uses state-of-the art color difference metrics and a farthest-point sampling
+algorithm to select colors that are (approximately) maximally distinct from each other, while
+also considering color vision deficiencies.
+
 ## Quick Start
 
 ### Library Usage
