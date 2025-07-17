@@ -90,6 +90,9 @@ qualpal -n 3 --colorize always "#ff0000" "#00ff00" "#0000ff"
 qualpal -n 5 --output-delim space | xargs qualpal analyze --input hex
 ```
 
+You can read more about the command line interface by calling `qualpal --help` or
+by reading the man page at `man qualpal`.
+
 ## Installation
 
 ### From Source
