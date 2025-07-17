@@ -11,6 +11,8 @@
 
 #if defined(_WIN32)
 #include <io.h>
+#include <windows.h>
+#undef RGB
 #define ISATTY _isatty
 #define FILENO _fileno
 #else
