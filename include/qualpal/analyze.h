@@ -62,8 +62,7 @@ using PaletteAnalysisMap = std::map<std::string, PaletteAnalysis>;
 PaletteAnalysisMap
 analyzePalette(const std::vector<colors::RGB>& colors,
                const metrics::MetricType& metric = metrics::MetricType::DIN99d,
-               const std::map<std::string, double>& cvd = { { "normal", 0.0 },
-                                                            { "deutan", 1.0 },
+               const std::map<std::string, double>& cvd = { { "deutan", 1.0 },
                                                             { "protan", 1.0 },
                                                             { "tritan", 1.0 } },
                const std::optional<colors::RGB>& bg = std::nullopt,

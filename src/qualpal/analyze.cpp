@@ -12,11 +12,11 @@ analyzePalette(const std::vector<colors::RGB>& colors,
                double max_memory)
 {
   PaletteAnalysisMap result;
-  std::vector<std::string> cvd_types = {
-    "normal", "deutan", "protan", "tritan"
-  };
 
-  for (const auto& [cvd_type, severity] : cvd) {
+  auto cvd_types = cvd;
+  cvd_types["normal"] = 0.0; // Ensure normal vision is included
+
+  for (const auto& [cvd_type, severity] : cvd_types) {
     std::vector<colors::RGB> simulated_colors = colors;
     std::optional<colors::RGB> simulated_bg = bg;
 
