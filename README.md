@@ -76,22 +76,49 @@ qualpal -n 5 -i colorspace "0:360" "0.4:0.8" "0.3:0.7"
 # Select from hex colors
 qualpal -n 3 "#ff0000" "#00ff00" "#0000ff" "#ffff00"
 
-# Output in different formats
-qualpal -o rgb "#ff0000" "#00ff00"
+# Generate 5 colors from color space (newline-delimited, default)
+qualpal -n 5 -i colorspace "0:360" "0.4:0.8" "0.3:0.7"
+
+# Select from hex colors (space-delimited output)
+qualpal -n 3 --output-delim space "#ff0000" "#00ff00" "#0000ff"
+
+# Output comma-delimited palette
+qualpal -n 4 --output-delim comma "#ff0000" "#00ff00" "#0000ff" "#ffff00"
+
+# Colorize output (auto-detects terminal by default)
+qualpal -n 3 --colorize always "#ff0000" "#00ff00" "#0000ff"
+
+# Pipe palette to analyze subcommand
+qualpal -n 5 --output-delim space | xargs qualpal analyze --input hex
 ```
 
 ## Installation
 
 ### From Source
 
+To build and install qualpal from source, you need to have CMake and a C++17
+compatible C++ compiler installed. If you want the algorithm to be
+parallelized, you also need to have support for OpenMP.
+
+To build, clone the repository and run the following commands:
+
 ```bash
-git clone https://github.com/user/qualpal.git
+git clone https://github.com/jolars/qualpal.git
 cd qualpal
-task build
-task install
+cmake -B build -S .
+cmake --build build --config Release
+```
+
+Then you can install it to your system:
+
+```bash
+cmake --install build
 ```
 
 ### CMake Integration
+
+qualpal can be easily integrated into your CMake projects. After building and
+installing the library, you can find it using CMake's `find_package` command.
 
 ```cmake
 find_package(qualpal REQUIRED)
