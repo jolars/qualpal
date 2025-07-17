@@ -253,11 +253,15 @@ if(BUILD_DOCS)
     set(DOXYGEN_SOURCE_BROWSER YES)
     set(DOXYGEN_USE_MATHJAX YES)
     set(DOXYGEN_WARN_AS_ERROR YES)
+    set(DOXYGEN_HAVE_DOT YES)
+    set(DOXYGEN_DOT_IMAGE_FORMAT svg)
 
     doxygen_add_docs(
         docs
         docs/mainpage.md
         docs/algorithm.md
+        docs/colors.md
+        docs/getting_started.md
         include/
         ALL
         COMMENT "Generate package documentation"
