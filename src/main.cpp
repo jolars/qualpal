@@ -31,6 +31,7 @@ main(int argc, char** argv)
   app.require_subcommand(0, 1);
 
   std::string input = "hex";
+  std::string output_delim = "newline";
 
   app
     .add_option("-i,--input",
@@ -40,6 +41,11 @@ main(int argc, char** argv)
                 "  colorspace - HSL ranges (h1:h2 s1:s2 l1:l2)\n"
                 "  palette    - Built-in palette name")
     ->check(CLI::IsMember({ "hex", "colorspace", "palette" }));
+  app
+    .add_option("--output-delim",
+                output_delim,
+                "Delimiter for output: newline (default), space, comma")
+    ->check(CLI::IsMember({ "newline", "space", "comma" }));
 
   std::string background = "";
 
@@ -345,9 +351,24 @@ main(int argc, char** argv)
     hex_out.emplace_back(rgb.hex());
   }
 
-  for (const auto& hex : hex_out) {
-    std::cout << hex << std::endl;
+  std::string delim;
+
+  if (output_delim == "space") {
+    delim = " ";
+  } else if (output_delim == "comma") {
+    delim = ",";
+  } else {
+    delim = "\n";
   }
+
+  for (size_t i = 0; i < hex_out.size(); ++i) {
+    std::cout << hex_out[i];
+    if (i + 1 < hex_out.size())
+      std::cout << delim;
+  }
+
+  if (delim != "\n")
+    std::cout << std::endl;
 
   return 0;
 }

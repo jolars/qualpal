@@ -476,3 +476,58 @@ TEST_CASE("CLI list-palettes subcommand", "[cli][palettes][list]")
   REQUIRE(output.find(":") !=
           std::string::npos); // Should list at least one package:palette
 }
+
+TEST_CASE("CLI output delimiter option", "[cli][output-delimiter]")
+{
+  SECTION("default is newline-delimited")
+  {
+    auto [exit_code, output] =
+      run_cli("-n 3 -i hex \"#ff0000\" \"#00ff00\" \"#0000ff\"");
+    REQUIRE(exit_code == 0);
+    // Should have 3 lines with hex codes
+    int lines = 0;
+    std::istringstream iss(output);
+    std::string line;
+    while (std::getline(iss, line)) {
+      if (!line.empty() && line[0] == '#')
+        ++lines;
+    }
+    REQUIRE(lines == 3);
+  }
+
+  SECTION("space-delimited output")
+  {
+    auto [exit_code, output] = run_cli("-n 3 --output-delim space -i hex "
+                                       "\"#ff0000\" \"#00ff00\" \"#0000ff\"");
+    REQUIRE(exit_code == 0);
+    // Should be a single line with 3 hex codes separated by spaces
+    std::istringstream iss(output);
+    std::string line;
+    std::getline(iss, line);
+    std::istringstream lss(line);
+    int count = 0;
+    std::string token;
+    while (lss >> token) {
+      REQUIRE(token[0] == '#');
+      ++count;
+    }
+    REQUIRE(count == 3);
+  }
+
+  SECTION("comma-delimited output")
+  {
+    auto [exit_code, output] = run_cli("-n 3 --output-delim comma -i hex "
+                                       "\"#ff0000\" \"#00ff00\" \"#0000ff\"");
+    REQUIRE(exit_code == 0);
+    // Should be a single line with 3 hex codes separated by commas
+    std::istringstream iss(output);
+    std::string line;
+    std::getline(iss, line);
+    size_t pos1 = line.find(',');
+    size_t pos2 = line.find(',', pos1 + 1);
+    REQUIRE(pos1 != std::string::npos);
+    REQUIRE(pos2 != std::string::npos);
+    // Should have exactly 2 commas for 3 colors
+    REQUIRE(line.find(',', pos2 + 1) == std::string::npos);
+  }
+}
