@@ -2,6 +2,7 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/matchers/catch_matchers_string.hpp>
 #include <cstdlib>
+#include <fstream>
 #include <memory>
 #include <sstream>
 #include <string>
@@ -529,5 +530,44 @@ TEST_CASE("CLI output delimiter option", "[cli][output-delimiter]")
     REQUIRE(pos2 != std::string::npos);
     // Should have exactly 2 commas for 3 colors
     REQUIRE(line.find(',', pos2 + 1) == std::string::npos);
+  }
+}
+
+TEST_CASE("CLI colorize option", "[cli][colorize]")
+{
+  SECTION("colorize never disables ANSI codes")
+  {
+    auto [exit_code, output] =
+      run_cli("-n 1 --colorize never -i hex \"#ff0000\"");
+    REQUIRE(exit_code == 0);
+    // Should not contain ANSI escape codes
+    REQUIRE(output.find("\033[48;2;") == std::string::npos);
+    REQUIRE(output.find("#ff0000") != std::string::npos);
+  }
+
+  SECTION("colorize always enables ANSI codes")
+  {
+    auto [exit_code, output] =
+      run_cli("-n 1 --colorize always -i hex \"#ff0000\"");
+    REQUIRE(exit_code == 0);
+    // Should contain ANSI escape codes
+    REQUIRE(output.find("\033[48;2;") != std::string::npos);
+    REQUIRE(output.find("#ff0000") != std::string::npos);
+  }
+
+  SECTION("colorize auto disables ANSI codes when piped")
+  {
+    // Simulate piping by redirecting output to a file
+    int ret = std::system("./qualpal -n 1 --colorize auto -i hex \"#ff0000\" > "
+                          "tmp_colorize_test.txt");
+    REQUIRE(ret == 0);
+    std::ifstream infile("tmp_colorize_test.txt");
+    std::string file_output((std::istreambuf_iterator<char>(infile)),
+                            std::istreambuf_iterator<char>());
+    infile.close();
+    std::remove("tmp_colorize_test.txt");
+    // Should not contain ANSI escape codes
+    REQUIRE(file_output.find("\033[48;2;") == std::string::npos);
+    REQUIRE(file_output.find("#ff0000") != std::string::npos);
   }
 }

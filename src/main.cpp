@@ -9,6 +9,22 @@
 #include <string>
 #include <vector>
 
+#if defined(_WIN32)
+#include <io.h>
+#define ISATTY _isatty
+#define FILENO _fileno
+#else
+#include <unistd.h>
+#define ISATTY isatty
+#define FILENO fileno
+#endif
+
+bool
+is_stdout_tty()
+{
+  return ISATTY(FILENO(stdout));
+}
+
 std::array<double, 2>
 splitHslString(const std::string& str)
 {
@@ -21,6 +37,20 @@ splitHslString(const std::string& str)
   return { first, second };
 }
 
+#if defined(_WIN32)
+#include <windows.h>
+void
+enable_ansi_escape()
+{
+  HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+  DWORD dwMode = 0;
+  if (hOut != INVALID_HANDLE_VALUE && GetConsoleMode(hOut, &dwMode)) {
+    dwMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+    SetConsoleMode(hOut, dwMode);
+  }
+}
+#endif
+
 int
 main(int argc, char** argv)
 {
@@ -32,6 +62,7 @@ main(int argc, char** argv)
 
   std::string input = "hex";
   std::string output_delim = "newline";
+  std::string colorize = "auto";
 
   app
     .add_option("-i,--input",
@@ -41,11 +72,18 @@ main(int argc, char** argv)
                 "  colorspace - HSL ranges (h1:h2 s1:s2 l1:l2)\n"
                 "  palette    - Built-in palette name")
     ->check(CLI::IsMember({ "hex", "colorspace", "palette" }));
+
   app
     .add_option("--output-delim",
                 output_delim,
                 "Delimiter for output: newline (default), space, comma")
     ->check(CLI::IsMember({ "newline", "space", "comma" }));
+
+  app
+    .add_option("--colorize",
+                colorize,
+                "Colorize hex output: auto (default), always, never")
+    ->check(CLI::IsMember({ "auto", "always", "never" }));
 
   std::string background = "";
 
@@ -127,6 +165,12 @@ main(int argc, char** argv)
 
   argv = app.ensure_utf8(argv);
   CLI11_PARSE(app, argc, argv);
+
+#if defined(_WIN32)
+  if (use_color) {
+    enable_ansi_escape();
+  }
+#endif
 
   qualpal::metrics::MetricType metric;
   if (metric_str == "din99d") {
@@ -351,8 +395,14 @@ main(int argc, char** argv)
     hex_out.emplace_back(rgb.hex());
   }
 
-  std::string delim;
+  bool use_color = false;
+  if (colorize == "always") {
+    use_color = true;
+  } else if (colorize == "auto") {
+    use_color = isatty(fileno(stdout));
+  }
 
+  std::string delim;
   if (output_delim == "space") {
     delim = " ";
   } else if (output_delim == "comma") {
@@ -362,11 +412,24 @@ main(int argc, char** argv)
   }
 
   for (size_t i = 0; i < hex_out.size(); ++i) {
-    std::cout << hex_out[i];
+    if (use_color) {
+      // Parse hex to RGB for colorizing
+      const std::string& hex = hex_out[i];
+      int r = std::stoi(hex.substr(1, 2), nullptr, 16);
+      int g = std::stoi(hex.substr(3, 2), nullptr, 16);
+      int b = std::stoi(hex.substr(5, 2), nullptr, 16);
+      // Compute luminance for contrast
+      double lum = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+      int fg = (lum > 128) ? 0 : 255; // black text on bright, white on dark
+      std::cout << "\033[48;2;" << r << ";" << g << ";" << b << "m"
+                << "\033[38;2;" << fg << ";" << fg << ";" << fg << "m" << hex
+                << "\033[0m";
+    } else {
+      std::cout << hex_out[i];
+    }
     if (i + 1 < hex_out.size())
       std::cout << delim;
   }
-
   if (delim != "\n")
     std::cout << std::endl;
 
