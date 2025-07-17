@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.2.0](https://github.com/jolars/qualpal/compare/v2.1.0...v2.2.0) (2025-07-17)
+
+### Features
+
+* add new function `analyzePalette` ([15c9059](https://github.com/jolars/qualpal/commit/15c90590988c8a0a7c2ff670bf0824e415cd3fd3))
+* **cli:** add `--colorize` option to colorize output colors ([bd93424](https://github.com/jolars/qualpal/commit/bd934247c0a90b6e140b4b6d86ebf854edb13292))
+* **cli:** add `--output-delim` option ([7177008](https://github.com/jolars/qualpal/commit/71770085376349b3b6b640cbddd5fa233a807192))
+
+### Bug Fixes
+
+* **cli:** move `use_color` down ([b3627bd](https://github.com/jolars/qualpal/commit/b3627bdb36b4df4201580cfff25820495b8baef2))
+* **cli:** move undefine for RGB ([178d504](https://github.com/jolars/qualpal/commit/178d504c30cd8482bc3a381b92f7654502be5e4c))
+* **cli:** undefine RGB on windows machines ([cec457c](https://github.com/jolars/qualpal/commit/cec457cb8e7c5c32c4326b539c64ae5ddc084b7a))
+
 ## [2.1.0](https://github.com/jolars/qualpal/compare/v2.0.0...v2.1.0) (2025-07-16)
 
 ### Features
