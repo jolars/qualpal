@@ -1,4 +1,4 @@
-# Algorithm Details
+# The Algorithm {#algorithm}
 
 ## Overview
 
