@@ -258,9 +258,9 @@ if(BUILD_DOCS)
 
     doxygen_add_docs(
         docs
-        docs/mainpage.md
         docs/algorithm.md
         docs/colors.md
+        docs/mainpage.md
         docs/getting_started.md
         include/
         ALL
