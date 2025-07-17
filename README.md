@@ -125,10 +125,6 @@ find_package(qualpal REQUIRED)
 target_link_libraries(your_target qualpal::qualpal)
 ```
 
-## License
-
-MIT License - see [LICENSE](LICENSE) file.
-
 ## Usage Examples
 
 ### Basic Color Selection
@@ -254,3 +250,7 @@ fix: correct color contrast calculation
 This project follows [Semantic Versioning](https://semver.org/).
 Expect breaking changes in major releases, new features
 in minor releases, and bug fixes in patch releases.
+
+## License
+
+MIT License - see [LICENSE](LICENSE) file.
