@@ -1,5 +1,6 @@
 add_library(
     qualpal
+    qualpal/analyze.cpp
     qualpal/color_difference.cpp
     qualpal/color_grid.cpp
     qualpal/colors.cpp

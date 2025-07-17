@@ -6,8 +6,9 @@ namespace qualpal {
 
 PaletteAnalysisMap
 analyzePalette(const std::vector<colors::RGB>& colors,
-               metrics::MetricType metric,
-               double severity,
+               const metrics::MetricType& metric,
+               const std::map<std::string, double>& cvd,
+               const std::optional<colors::RGB>& bg,
                double max_memory)
 {
   PaletteAnalysisMap result;
@@ -15,16 +16,20 @@ analyzePalette(const std::vector<colors::RGB>& colors,
     "normal", "deutan", "protan", "tritan"
   };
 
-  for (const auto& cvd_type : cvd_types) {
+  for (const auto& [cvd_type, severity] : cvd) {
     std::vector<colors::RGB> simulated_colors = colors;
+    std::optional<colors::RGB> simulated_bg = bg;
 
     if (cvd_type != "normal" && severity > 0.0) {
       for (auto& rgb : simulated_colors) {
         rgb = simulateCvd(rgb, cvd_type, severity);
       }
+      if (simulated_bg.has_value()) {
+        simulated_bg = simulateCvd(*simulated_bg, cvd_type, severity);
+      }
     }
 
-    std::vector<colors::Lab> xyz_colors;
+    std::vector<colors::XYZ> xyz_colors;
     xyz_colors.reserve(simulated_colors.size());
 
     for (const auto& rgb : simulated_colors) {
@@ -48,8 +53,32 @@ analyzePalette(const std::vector<colors::RGB>& colors,
       min_distances.push_back(min_dist);
     }
 
-    result[cvd_type] = PaletteAnalysis{ diff_matrix, min_distances };
+    double bg_min_distance = std::numeric_limits<double>::quiet_NaN();
+    if (simulated_bg.has_value()) {
+      colors::XYZ bg_xyz(*simulated_bg);
+      double min_dist = std::numeric_limits<double>::max();
+      for (const auto& col : xyz_colors) {
+        double d = 0.0;
+        switch (metric) {
+          case metrics::MetricType::DIN99d:
+            d = metrics::DIN99d{}(col, bg_xyz);
+            break;
+          case metrics::MetricType::CIEDE2000:
+            d = metrics::CIEDE2000{}(col, bg_xyz);
+            break;
+          case metrics::MetricType::CIE76:
+            d = metrics::CIE76{}(col, bg_xyz);
+            break;
+        }
+        min_dist = std::min(min_dist, d);
+      }
+      bg_min_distance = min_dist;
+    }
+
+    result[cvd_type] =
+      PaletteAnalysis{ diff_matrix, min_distances, bg_min_distance };
   }
+
   return result;
 }
 

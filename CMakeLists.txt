@@ -155,6 +155,7 @@ if(BUILD_TESTING)
     endif()
 
     set(TEST_SOURCES
+        tests/analyze.cpp
         tests/benchmarks.cpp
         tests/metrics.cpp
         tests/colors.cpp
