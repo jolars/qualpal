@@ -167,12 +167,6 @@ main(int argc, char** argv)
   argv = app.ensure_utf8(argv);
   CLI11_PARSE(app, argc, argv);
 
-#if defined(_WIN32)
-  if (use_color) {
-    enable_ansi_escape();
-  }
-#endif
-
   qualpal::metrics::MetricType metric;
   if (metric_str == "din99d") {
     metric = qualpal::metrics::MetricType::DIN99d;
@@ -402,6 +396,12 @@ main(int argc, char** argv)
   } else if (colorize == "auto") {
     use_color = isatty(fileno(stdout));
   }
+
+#if defined(_WIN32)
+  if (use_color) {
+    enable_ansi_escape();
+  }
+#endif
 
   std::string delim;
   if (output_delim == "space") {
