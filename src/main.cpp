@@ -11,8 +11,6 @@
 
 #if defined(_WIN32)
 #include <io.h>
-#include <windows.h>
-#undef RGB
 #define ISATTY _isatty
 #define FILENO _fileno
 #else
@@ -41,6 +39,7 @@ splitHslString(const std::string& str)
 
 #if defined(_WIN32)
 #include <windows.h>
+#undef RGB
 void
 enable_ansi_escape()
 {
