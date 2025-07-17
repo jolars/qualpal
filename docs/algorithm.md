@@ -83,11 +83,11 @@ computed distance matrix.
 
 For the running example, the algorithm would select the following colors.
 
-![Selected colors](images/selected_colors.png)
+![Selected colors in DIN99d space](images/selected_colors.png)
 
 You can see the computed color palette in the following image.
 
-![Projections](images/palette_strip.png)
+![Final color palette](images/palette_strip.png)
 
 As far as the complexity of the algorithm is concerned, it is
 
