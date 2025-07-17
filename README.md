@@ -51,19 +51,17 @@ using namespace qualpal;
 
 // Generate 5 colors from HSL colorspace
 Qualpal qp;
-qp.setInputColorspace({0, 360}, {0.4, 0.8}, {0.3, 0.7});
+qp.setInputColorspace({ 0, 360 }, { 0.4, 0.8 }, { 0.3, 0.7 });
 auto colorspace_pal = qp.generate(5);
 
 // Select 2 colors from given RGB values
-qp.setInputRGB({
-  colors::RGB("#ff0000"),
-  colors::RGB("#00ff00"),
-  colors::RGB("#0000ff")
-});
+qp.setInputRGB({ colors::RGB("#ff0000"),
+                 colors::RGB("#00ff00"),
+                 colors::RGB("#0000ff") });
 auto rgb_pal = qp.generate(2);
 
 // Consider color vision deficiency (CVD) when generating colors
-qp.setInputPalette("ColorBrewer:Set2").setCvd({{"deutan", 0.7}});
+qp.setInputPalette("ColorBrewer:Set2").setCvd({ { "deutan", 0.7 } });
 auto cvd_pal = qp.generate(4);
 ```
 
@@ -130,11 +128,14 @@ target_link_libraries(your_target qualpal::qualpal)
 ### Basic Color Selection
 
 ```cpp
-#include <qualpal.h>
 #include <iostream>
+#include <qualpal.h>
+
 using namespace qualpal;
 
-int main() {
+int
+main()
+{
   // Start with some seed colors
   Qualpal qp;
   qp.setInputRGB({
@@ -162,8 +163,7 @@ Simulate deuteranomaly (red-green colorblindness) of severity 0.8.
 
 ```cpp
 Qualpal qp;
-qp.setInputRGB(colors)
-  .setCvd({{"deutan", 0.8}});
+qp.setInputRGB(colors).setCvd({ { "deutan", 0.8 } });
 auto accessible_palette = qp.generate(4);
 ```
 
@@ -173,7 +173,7 @@ Generate warm colors: orange to red hues, high saturation, medium lightness
 
 ```cpp
 Qualpal qp;
-qp.setInputColorspace({15, 45}, {0.7, 1.0}, {0.4, 0.7});
+qp.setInputColorspace({ 15, 45 }, { 0.7, 1.0 }, { 0.4, 0.7 });
 auto warm_colors = qp.generate(6);
 ```
 
@@ -183,15 +183,14 @@ When visualizing categorical data, consider a background color to ensure contras
 
 ```cpp
 auto pal = Qualpal{}
-  .setInputRGB({
-    colors::RGB("#f0f0f0"), // Light color (which we want to avoid)
-    colors::RGB("#e41a1c"), // Red
-    colors::RGB("#377eb8"), // Blue
-    colors::RGB("#4daf4a"), // Green
-  })
-  .setBackgroundColor(colors::RGB("#ffffff"))
-  .generate(3);
-
+             .setInputRGB({
+               colors::RGB("#f0f0f0"), // Light color (which we want to avoid)
+               colors::RGB("#e41a1c"), // Red
+               colors::RGB("#377eb8"), // Blue
+               colors::RGB("#4daf4a"), // Green
+             })
+             .setBackgroundColor(colors::RGB("#ffffff"))
+             .generate(3);
 ```
 
 ### Improve Existing Palettes
@@ -204,11 +203,10 @@ for a black background, selecting 3 colors.
 
 ```cpp
 auto pal = Qualpal{}
-  .setInputPalette("ColorBrewer:Set2")
-  .setBackgroundColor(colors::RGB("#000000"))
-  .setCvd({{"tritan", 0.2}, {"deutan", 0.5}})
-  .generate(3);
-
+             .setInputPalette("ColorBrewer:Set2")
+             .setBackgroundColor(colors::RGB("#000000"))
+             .setCvd({ { "tritan", 0.2 }, { "deutan", 0.5 } })
+             .generate(3);
 ```
 
 ## Contributing
