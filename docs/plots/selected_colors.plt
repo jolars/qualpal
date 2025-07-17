@@ -6,7 +6,6 @@ set view 60, 30
 set xlabel "L99d" rotate parallel
 set ylabel "a99d" rotate parallel
 set zlabel "b99d" rotate parallel
-set title "Selected Colors in DIN99d Space"
 unset key
 
 # Plot all colors (faded) and selected colors (highlighted)

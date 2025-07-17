@@ -2,7 +2,7 @@
 set terminal pngcairo enhanced size 1500,500
 set output 'images/color_space_progression.png'
 
-set multiplot layout 1,3 title "Color Space Progression"
+set multiplot layout 1,3
 
 # RGB Space
 set view 70, 30
