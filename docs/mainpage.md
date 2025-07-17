@@ -18,8 +18,8 @@ using namespace qualpal;
 
 // Generate 5 distinct colors from HSL space
 Qualpal qp;
-qp.setInputColorspace({0, 360}, {0.4, 0.8}, {0.3, 0.7});
+qp.setInputColorspace({ 0, 360 }, { 0.4, 0.8 }, { 0.3, 0.7 });
 auto palette = qp.generate(5);
 ```
 
-See [Algorithm Documentation](algorithm.md) for details.
+See [Algorithm Documentation](#algorithm) for details.
