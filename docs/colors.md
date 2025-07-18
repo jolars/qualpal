@@ -1,4 +1,4 @@
-# Colors
+# Colors {#colors}
 
 The main functionality of qualpal is to generate qualitative color palettes.
 But, in order to do so, it needs to express colors in a variety of different

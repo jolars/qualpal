@@ -10,16 +10,26 @@ maximizing perceptual distinctiveness and supporting color vision deficiency sim
 - Flexible builder-style API
 - Fast algorithms for large color spaces
 
-**Example**
+**CLI Interface**
 
-```cpp
-#include <qualpal.h>
-using namespace qualpal;
+qualpal also provides a command-line interface (CLI) for
+generating color palettes from the terminal. This allows users
+to quickly generate color palettes without the need for a full
+C++ application. Read more about the CLI in
+[the CLI documentation](#cli).
 
-// Generate 5 distinct colors from HSL space
-Qualpal qp;
-qp.setInputColorspace({ 0, 360 }, { 0.4, 0.8 }, { 0.3, 0.7 });
-auto palette = qp.generate(5);
-```
+**R Package**
 
-See [Algorithm Documentation](#algorithm) for details.
+The qualpal library is also packaged for R as
+[qualpalr](https://cran.r-project.org/package=qualpalr),
+which provides a similar API for generating color palettes
+from R. This allows users to easily integrate qualpal into their R workflows,
+especially for data visualization tasks.
+
+**Next Steps**
+
+- [Get started with the library](#getting-started)
+- [Browse the extensive list of examples](#examples)
+- [Learn about the algorithm](#algorithm)
+- [Explore the color spaces](#colors)
+- [Read the API documentation](https://jolars.github.io/qualpal/namespaces.html)
