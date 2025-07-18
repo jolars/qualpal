@@ -16,6 +16,13 @@ inverseCompanding(const double v)
   return v <= 0.04045 ? v / 12.92 : std::pow((v + 0.055) / 1.055, 2.4);
 }
 
+RGB::RGB()
+  : r_value(0.0)
+  , g_value(0.0)
+  , b_value(0.0)
+{
+}
+
 RGB::RGB(const double r, const double g, const double b)
   : r_value(r)
   , g_value(g)
@@ -141,6 +148,13 @@ RGB::RGB(const LCHab& lch)
 {
 }
 
+HSL::HSL()
+  : h_value(0.0)
+  , s_value(0.0)
+  , l_value(0.0)
+{
+}
+
 HSL::HSL(const XYZ& xyz)
   : HSL(RGB(xyz))
 {
@@ -153,6 +167,13 @@ HSL::HSL(const Lab& lab)
 
 HSL::HSL(const LCHab& lch)
   : HSL(Lab(lch))
+{
+}
+
+XYZ::XYZ()
+  : x_value(0.0)
+  , y_value(0.0)
+  , z_value(0.0)
 {
 }
 
@@ -233,6 +254,13 @@ RGB::hex() const
   ss << std::setw(2) << static_cast<int>(this->b() * 255);
 
   return ss.str();
+}
+
+DIN99d::DIN99d()
+  : l_value(0.0)
+  , a_value(0.0)
+  , b_value(0.0)
+{
 }
 
 DIN99d::DIN99d(const double l, const double a, const double b)
@@ -338,6 +366,13 @@ HSL::HSL(const RGB& rgb)
   l_value = std::clamp(l_value, 0.0, 1.0);
 }
 
+Lab::Lab()
+  : l_value(0.0)
+  , a_value(0.0)
+  , b_value(0.0)
+{
+}
+
 Lab::Lab(const double l, const double a, const double b)
   : l_value(l)
   , a_value(a)
@@ -386,6 +421,13 @@ Lab::Lab(const LCHab& lch)
   : l_value(lch.l())
   , a_value(lch.c() * std::cos(lch.h() * M_PI / 180.0))
   , b_value(lch.c() * std::sin(lch.h() * M_PI / 180.0))
+{
+}
+
+LCHab::LCHab()
+  : l_value(0.0)
+  , c_value(0.0)
+  , h_value(0.0)
 {
 }
 

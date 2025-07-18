@@ -89,6 +89,11 @@ private:
 
 public:
   /**
+   * @brief Default constructor initializes RGB to black (0,0,0)
+   */
+  RGB();
+
+  /**
    * @brief Construct RGB from normalized values
    * @param r Red component [0,1]
    * @param g Green component [0,1]
@@ -177,6 +182,11 @@ private:
 
 public:
   /**
+   * @brief Default constructor initializes HSL to black (0,0,0)
+   */
+  HSL();
+
+  /**
    * @brief Construct HSL from component values
    * @param h Hue in degrees [0,360)
    * @param s Saturation [0,1]
@@ -230,6 +240,11 @@ private:
   double z_value;
 
 public:
+  /**
+   * @brief Default constructor initializes XYZ to (0,0,0)
+   */
+  XYZ();
+
   /**
    * @brief Construct XYZ from component values
    * @param x X component (roughly red-like)
@@ -292,6 +307,11 @@ private:
 
 public:
   /**
+   * @brief Default constructor initializes DIN99d to black (0,0,0)
+   */
+  DIN99d();
+
+  /**
    * @brief Construct DIN99d from component values
    * @param l Lightness component
    * @param a Green-red component
@@ -352,6 +372,11 @@ private:
 
 public:
   /**
+   * @brief Default constructor initializes Lab to black (0,0,0)
+   */
+  Lab();
+
+  /**
    * @brief Construct Lab from component values
    * @param l Lightness [0,100]
    * @param a Green-red axis [-128,127]
@@ -411,6 +436,11 @@ private:
   double h_value;
 
 public:
+  /**
+   * @brief Default constructor initializes LCHab to black (0,0,0)
+   */
+  LCHab();
+
   /**
    * @brief Construct LCHab from component values
    * @param l Lightness [0,100]

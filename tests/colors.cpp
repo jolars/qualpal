@@ -8,11 +8,11 @@ TEST_CASE("All color conversions are supported", "[colors]")
   using namespace qualpal::colors;
 
   XYZ xyz(0.4, 0.2, 0.65);
-  RGB rgb(0.23, 0.5, 0.95);
-  HSL hsl(190, 0.5, 1.0);
-  Lab lab(0.3, 0.98, 0.25);
-  DIN99d din99d(0.3, 0.98, 0.25);
-  LCHab lchab(0.3, 0.98, 0.25);
+  RGB rgb;
+  HSL hsl;
+  Lab lab;
+  DIN99d din99d;
+  LCHab lchab;
 
   rgb = xyz;
   hsl = xyz;
