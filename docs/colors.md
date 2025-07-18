@@ -8,6 +8,7 @@ several different color spaces, including:
 
 - RGB
 - HSL
+- LCHab (HCL)
 - Lab
 - XYZ
 - DIN99d
@@ -23,6 +24,8 @@ Lab -> XYZ;
 XYZ -> RGB;
 XYZ -> Lab;
 XYZ -> DIN99d;
+Lab -> LCHab;
+LCHab -> Lab;
 }
 @enddot
 

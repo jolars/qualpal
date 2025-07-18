@@ -136,6 +136,11 @@ RGB::RGB(const XYZ& xyz)
   b_value = std::clamp(rgb[2], 0.0, 1.0);
 }
 
+RGB::RGB(const LCHab& lch)
+  : RGB(Lab(lch))
+{
+}
+
 HSL::HSL(const XYZ& xyz)
   : HSL(RGB(xyz))
 {
@@ -143,6 +148,11 @@ HSL::HSL(const XYZ& xyz)
 
 HSL::HSL(const Lab& lab)
   : HSL(XYZ(lab))
+{
+}
+
+HSL::HSL(const LCHab& lch)
+  : HSL(Lab(lch))
 {
 }
 
@@ -204,6 +214,11 @@ XYZ::XYZ(const Lab& lab, const std::array<double, 3>& white_point)
 
 XYZ::XYZ(const HSL& hsl)
   : XYZ(RGB(hsl))
+{
+}
+
+XYZ::XYZ(const LCHab& lch, const std::array<double, 3>& white_point)
+  : XYZ(Lab(lch), white_point)
 {
 }
 
@@ -364,6 +379,48 @@ Lab::Lab(const RGB& rgb)
 
 Lab::Lab(const HSL& hsl)
   : Lab(XYZ(hsl))
+{
+}
+
+Lab::Lab(const LCHab& lch)
+  : l_value(lch.l())
+  , a_value(lch.c() * std::cos(lch.h() * M_PI / 180.0))
+  , b_value(lch.c() * std::sin(lch.h() * M_PI / 180.0))
+{
+}
+
+LCHab::LCHab(const double l, const double c, const double h)
+  : l_value(l)
+  , c_value(c)
+  , h_value(h)
+{
+  assert(l >= 0 && l <= 100 && "Lightness must be in [0, 100]");
+  assert(c >= 0 && "Chroma must be non-negative");
+  assert(h >= 0 && h < 360 && "Hue must be in [0, 360)");
+}
+
+LCHab::LCHab(const Lab& lab)
+{
+  l_value = lab.l();
+  c_value = std::hypot(lab.a(), lab.b());
+
+  double angle = std::atan2(lab.b(), lab.a()) * 180.0 / M_PI;
+
+  h_value = angle >= 0 ? angle : angle + 360.0;
+}
+
+LCHab::LCHab(const RGB& rgb)
+  : LCHab(Lab(rgb))
+{
+}
+
+LCHab::LCHab(const HSL& hsl)
+  : LCHab(Lab(hsl))
+{
+}
+
+LCHab::LCHab(const XYZ& xyz, const std::array<double, 3>& white_point)
+  : LCHab(Lab(xyz, white_point))
 {
 }
 

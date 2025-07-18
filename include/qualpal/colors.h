@@ -61,6 +61,7 @@ class HSL;
 class XYZ;
 class Lab;
 class DIN99d;
+class LCHab;
 
 /**
  * @brief RGB color representation with values in [0,1] range
@@ -132,6 +133,12 @@ public:
   RGB(const Lab& lab);
 
   /**
+   * @brief Construct RGB from LCHab color
+   * @param lch LCHab color to convert from
+   */
+  RGB(const LCHab& lch);
+
+  /**
    * @brief Convert RGB to hexadecimal string
    * @return Hex color string in format "#rrggbb"
    *
@@ -195,6 +202,12 @@ public:
    */
   HSL(const Lab& lab);
 
+  /**
+   * @brief Construct HSL from LCHab color
+   * @param lch LCHab color to convert from
+   */
+  HSL(const LCHab& lch);
+
   /** @brief Get hue in degrees [0,360) */
   double h() const { return h_value; }
   /** @brief Get saturation [0,1] */
@@ -244,6 +257,14 @@ public:
    * @param hsl HSL color to convert from
    */
   XYZ(const HSL& hsl);
+
+  /**
+   * @brief Construct XYZ from LCHab color
+   * @param lch LCHab color to convert from
+   * @param white_point Reference white point (default: D65)
+   */
+  XYZ(const LCHab& lch,
+      const std::array<double, 3>& white_point = { 0.95047, 1, 1.08883 });
 
   /** @brief Get X component */
   double x() const { return x_value; }
@@ -358,12 +379,77 @@ public:
   Lab(const XYZ& xyz,
       const std::array<double, 3>& white_point = { 0.95047, 1, 1.08883 });
 
+  /**
+   * @brief Construct Lab from LCHab color
+   * @param lch LCHab color to convert from
+   */
+  Lab(const LCHab& lch);
+
   /** @brief Get lightness [0,100] */
   double l() const { return l_value; }
   /** @brief Get green-red component */
   double a() const { return a_value; }
   /** @brief Get blue-yellow component */
   double b() const { return b_value; }
+};
+
+/**
+ * @brief LCHab color space representation (CIE L*C*h)
+ *
+ * A cylindrical representation of Lab color space:
+ * - L: lightness [0,100]
+ * - C: chroma [0,∞)
+ * - H: hue in degrees [0,360)
+ *
+ * Provides a more intuitive way to represent colors in Lab space.
+ */
+class LCHab
+{
+private:
+  double l_value;
+  double c_value;
+  double h_value;
+
+public:
+  /**
+   * @brief Construct LCHab from component values
+   * @param l Lightness [0,100]
+   * @param c Chroma [0,∞)
+   * @param h Hue in degrees [0,360)
+   */
+  LCHab(const double l, const double c, const double h);
+
+  /**
+   * @brief Construct LCHab from Lab color
+   * @param lab Lab color to convert from
+   */
+  LCHab(const Lab& lab);
+
+  /** @brief Construct LCHab from RGB color
+   * @param rgb RGB color to convert from
+   */
+  LCHab(const RGB& rgb);
+
+  /**
+   * @brief Construct LCHab from HSL color
+   * @param hsl HSL color to convert from
+   */
+  LCHab(const HSL& hsl);
+
+  /**
+   * @brief Construct LCHab from XYZ color
+   * @param xyz XYZ color to convert from
+   * @param white_point Reference white point (default: D65)
+   */
+  LCHab(const XYZ& xyz,
+        const std::array<double, 3>& white_point = { 0.95047, 1, 1.08883 });
+
+  /** @brief Get lightness [0,100] */
+  double l() const { return l_value; }
+  /** @brief Get chroma [0,∞) */
+  double c() const { return c_value; }
+  /** @brief Get hue in degrees [0,360) */
+  double h() const { return h_value; }
 };
 
 } // namespace colors

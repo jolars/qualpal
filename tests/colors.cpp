@@ -12,11 +12,13 @@ TEST_CASE("All color conversions are supported", "[colors]")
   HSL hsl(190, 0.5, 1.0);
   Lab lab(0.3, 0.98, 0.25);
   DIN99d din99d(0.3, 0.98, 0.25);
+  LCHab lchab(0.3, 0.98, 0.25);
 
   rgb = xyz;
   hsl = xyz;
   lab = xyz;
   din99d = xyz;
+  lchab = xyz;
 
   REQUIRE_THAT(rgb.r(), WithinAbsMatcher(0.834916, 0.001));
   REQUIRE_THAT(rgb.g(), WithinAbsMatcher(0.125819, 0.001));
@@ -30,11 +32,13 @@ TEST_CASE("All color conversions are supported", "[colors]")
   xyz = hsl;
   lab = hsl;
   din99d = hsl;
+  lchab = hsl;
 
   rgb = lab;
   xyz = lab;
   lab = lab;
   din99d = lab;
+  lchab = lab;
 
   REQUIRE_THAT(rgb.r(), WithinAbsMatcher(0.834916, 0.001));
   REQUIRE_THAT(rgb.g(), WithinAbsMatcher(0.125819, 0.001));
@@ -155,6 +159,17 @@ TEST_CASE("DIN99d constructor", "[colors][din99d]")
   REQUIRE_THAT(din.l(), WithinAbs(40.0, 1e-10));
   REQUIRE_THAT(din.a(), WithinAbs(15.0, 1e-10));
   REQUIRE_THAT(din.b(), WithinAbs(-5.0, 1e-10));
+}
+
+TEST_CASE("LCHab constructor", "[colors][lchab]")
+{
+  using namespace Catch::Matchers;
+  using namespace qualpal::colors;
+
+  LCHab lch(60.0, 30.0, 120.0);
+  REQUIRE_THAT(lch.l(), WithinAbs(60.0, 1e-10));
+  REQUIRE_THAT(lch.c(), WithinAbs(30.0, 1e-10));
+  REQUIRE_THAT(lch.h(), WithinAbs(120.0, 1e-10));
 }
 
 TEST_CASE("RGB constructor from values", "[colors][rgb]")
@@ -365,6 +380,7 @@ TEST_CASE("Lab conversion", "[colors][lab]")
   Lab lab1(23, 12, 17);
   Lab lab2(50, -60, 10);
   Lab lab3(20, -23, 12);
+  Lab lab4(49, -8, 9);
 
   double eps = 1e-4;
 
@@ -387,5 +403,47 @@ TEST_CASE("Lab conversion", "[colors][lab]")
     REQUIRE_THAT(rgb.r(), WithinAbs(0.031398, eps));
     REQUIRE_THAT(rgb.g(), WithinAbs(0.220247, eps));
     REQUIRE_THAT(rgb.b(), WithinAbs(0.117406, eps));
+  }
+
+  SECTION("To HSL")
+  {
+    LCHab lch(lab4);
+    REQUIRE_THAT(lch.l(), WithinAbs(49, eps));
+    REQUIRE_THAT(lch.c(), WithinAbs(12.0416, eps));
+    REQUIRE_THAT(lch.h(), WithinAbs(131.6335, eps));
+  }
+}
+
+TEST_CASE("LCHab conversion", "[colors][lchab]")
+{
+  using namespace Catch::Matchers;
+  using namespace qualpal::colors;
+
+  LCHab lch1(23, 12, 17);
+
+  double eps = 1e-4;
+
+  SECTION("To XYZ")
+  {
+    XYZ xyz1(lch1);
+    REQUIRE_THAT(xyz1.x(), WithinAbs(0.044035, eps));
+    REQUIRE_THAT(xyz1.y(), WithinAbs(0.038003, eps));
+    REQUIRE_THAT(xyz1.z(), WithinAbs(0.035234, eps));
+  }
+
+  SECTION("To RGB")
+  {
+    RGB rgb(lch1);
+    REQUIRE_THAT(rgb.r(), WithinAbs(0.286457, eps));
+    REQUIRE_THAT(rgb.g(), WithinAbs(0.190010, eps));
+    REQUIRE_THAT(rgb.b(), WithinAbs(0.196245, eps));
+  }
+
+  SECTION("To Lab")
+  {
+    Lab lab(lch1);
+    REQUIRE_THAT(lab.l(), WithinAbs(23, eps));
+    REQUIRE_THAT(lab.a(), WithinAbs(11.4757, eps));
+    REQUIRE_THAT(lab.b(), WithinAbs(3.5085, eps));
   }
 }
