@@ -261,6 +261,7 @@ if(BUILD_DOCS)
         docs
         docs/algorithm.md
         docs/colors.md
+        docs/examples.md
         docs/mainpage.md
         docs/getting_started.md
         include/
