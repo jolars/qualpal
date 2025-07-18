@@ -11,6 +11,7 @@ jobs:
     name: Paper Draft
     permissions:
       actions: write
+      contents: write
 
     steps:
       - name: Checkout
