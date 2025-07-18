@@ -110,6 +110,12 @@ cmake -B build -S .
 cmake --build build --config Release
 ```
 
+If you want to include the CLI interface, make sure to pass the `-DBUILD_CLI=ON` option to CMake:
+
+```bash
+cmake -B build -S . -DBUILD_CLI=ON
+```
+
 Then you can install it to your system:
 
 ```bash
