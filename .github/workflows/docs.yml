@@ -2,9 +2,10 @@ name: Docs
 
 on:
   workflow_dispatch:
-  release:
+  workflow_run:
+    workflows: ["Release"]
     types:
-      - published
+      - completed
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
