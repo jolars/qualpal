@@ -141,3 +141,10 @@ XYZ to Lab, and can be set explicitly if needed.
 XYZ xyz(0.4124564, 0.2126729, 0.0193339);
 Lab lab(xyz, std::array<double, 3>{ 0.95047, 1.0, 1.08883 });
 ```
+
+## Acknowledgements
+
+[Bruce Lindbloom's webpage](http://www.brucelindbloom.com/) has
+been a great resource for developing the color classes in qualpal,
+and incredibly helpful in debugging color conversions and
+ensuring that the color spaces are implemented correctly.
