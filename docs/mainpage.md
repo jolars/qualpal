@@ -15,8 +15,14 @@ maximizing perceptual distinctiveness and supporting color vision deficiency sim
 qualpal also provides a command-line interface (CLI) for
 generating color palettes from the terminal. This allows users
 to quickly generate color palettes without the need for a full
-C++ application. Read more about the CLI in
-[the CLI documentation](#cli).
+C++ application. Here's a quick example of how to use the CLI:
+
+```bash
+qualpal -n 5 -i colorspace "0:360" "0.4:0.8" "0.3:0.7"
+```
+
+You can find examples of how to use the CLI
+in the [examples](#examples-cli) section.
 
 **R Package**
 
