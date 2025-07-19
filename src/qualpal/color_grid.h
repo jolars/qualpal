@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <array>
 #include <qualpal/colors.h>
 #include <vector>
@@ -53,7 +54,8 @@ private:
 inline double
 scaleToInterval(const double x, const double min, const double max)
 {
-  return (max - min) * (x - 1) + max;
+  double x_scaled = (max - min) * (x - 1) + max;
+  return std::clamp(x_scaled, min, max);
 }
 
 template<typename ColorType>
