@@ -80,4 +80,46 @@ colorGrid(const std::array<double, 2>& angle_lim,
   return colors;
 }
 
+// HSL: (hue, saturation, lightness)
+template<>
+inline std::vector<colors::HSL>
+colorGrid(const std::array<double, 2>& hue_lim,
+          const std::array<double, 2>& sat_lim,
+          const std::array<double, 2>& light_lim,
+          int n_points)
+{
+  std::vector<colors::HSL> colors;
+  colors.reserve(n_points);
+  Halton<3> halton;
+  for (int i = 0; i < n_points; ++i) {
+    auto vals = halton.next();
+    double h = scaleToInterval(vals[0], hue_lim[0], hue_lim[1]);
+    double s = scaleToInterval(vals[1], sat_lim[0], sat_lim[1]);
+    double l = scaleToInterval(vals[2], light_lim[0], light_lim[1]);
+    colors.emplace_back(h < 0 ? h + 360 : h, s, l);
+  }
+  return colors;
+}
+
+// LCHab: (lightness, chroma, hue)
+template<>
+inline std::vector<colors::LCHab>
+colorGrid(const std::array<double, 2>& hue_lim,
+          const std::array<double, 2>& chroma_lim,
+          const std::array<double, 2>& light_lim,
+          int n_points)
+{
+  std::vector<colors::LCHab> colors;
+  colors.reserve(n_points);
+  Halton<3> halton;
+  for (int i = 0; i < n_points; ++i) {
+    auto vals = halton.next();
+    double h = scaleToInterval(vals[0], hue_lim[0], hue_lim[1]);
+    double c = scaleToInterval(vals[1], chroma_lim[0], chroma_lim[1]);
+    double l = scaleToInterval(vals[2], light_lim[0], light_lim[1]);
+    colors.emplace_back(l, c, h < 0 ? h + 360 : h);
+  }
+  return colors;
+}
+
 } // namespace qualpal
