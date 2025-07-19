@@ -44,28 +44,44 @@ Qualpal::setInputPalette(const std::string& palette)
 
 Qualpal&
 Qualpal::setInputColorspace(const std::array<double, 2>& h_lim,
-                            const std::array<double, 2>& s_lim,
-                            const std::array<double, 2>& l_lim)
+                            const std::array<double, 2>& s_or_c_lim,
+                            const std::array<double, 2>& l_lim,
+                            ColorspaceType space)
 {
-  if (h_lim[0] < -360 || h_lim[1] > 360) {
-    throw std::invalid_argument("Hue must be between -360 and 360");
-  }
+  if (space == ColorspaceType::HSL) {
+    if (h_lim[0] < -360 || h_lim[1] > 360) {
+      throw std::invalid_argument("Hue must be between -360 and 360");
+    }
 
-  if (h_lim[1] - h_lim[0] > 360) {
-    throw std::invalid_argument("Hue range must be less than 360");
-  }
+    if (h_lim[1] - h_lim[0] > 360) {
+      throw std::invalid_argument("Hue range must be less than 360");
+    }
 
-  if (s_lim[0] < 0 || s_lim[1] > 1) {
-    throw std::invalid_argument("Saturation must be between 0 and 1");
-  }
+    if (s_or_c_lim[0] < 0 || s_or_c_lim[1] > 1) {
+      throw std::invalid_argument("Saturation/chroma must be between 0 and 1");
+    }
 
-  if (l_lim[0] < 0 || l_lim[1] > 1) {
-    throw std::invalid_argument("Lightness must be between 0 and 1");
+    if (l_lim[0] < 0 || l_lim[1] > 1) {
+      throw std::invalid_argument("Lightness must be between 0 and 1");
+    }
+  } else if (space == ColorspaceType::LCHab) {
+    if (h_lim[0] < 0 || h_lim[1] > 360) {
+      throw std::invalid_argument("Hue must be between 0 and 360");
+    }
+
+    if (s_or_c_lim[0] < 0) {
+      throw std::invalid_argument("Chroma must be non-negative");
+    }
+
+    if (l_lim[0] < 0 || l_lim[1] > 100) {
+      throw std::invalid_argument("Lightness must be between 0 and 100");
+    }
   }
 
   this->h_lim = h_lim;
-  this->s_lim = s_lim;
+  this->s_or_c_lim = s_or_c_lim;
   this->l_lim = l_lim;
+  this->colorspace_input = space;
   this->mode = Mode::COLORSPACE;
   return *this;
 }
@@ -134,9 +150,16 @@ Qualpal::generate(int n)
     case Mode::COLORSPACE:
       rgb_colors.clear();
       rgb_colors.reserve(n_points);
-      for (const auto& hsl :
-           colorGrid<colors::HSL>(h_lim, s_lim, l_lim, n_points)) {
-        rgb_colors.emplace_back(hsl);
+      if (colorspace_input == ColorspaceType::HSL) {
+        for (const auto& hsl :
+             colorGrid<colors::HSL>(h_lim, s_or_c_lim, l_lim, n_points)) {
+          rgb_colors.emplace_back(hsl);
+        }
+      } else if (colorspace_input == ColorspaceType::LCHab) {
+        for (const auto& hsl :
+             colorGrid<colors::LCHab>(h_lim, s_or_c_lim, l_lim, n_points)) {
+          rgb_colors.emplace_back(hsl);
+        }
       }
       break;
     default:

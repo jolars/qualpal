@@ -164,6 +164,7 @@ if(BUILD_TESTING)
         tests/cvd.cpp
         tests/math.cpp
         tests/matrix.cpp
+        tests/utils.cpp
         tests/validation.cpp
     )
     if(ADD_CLI_TESTS)
