@@ -53,7 +53,7 @@ private:
 
 // Scale x from [0, 1] to [min, max]
 double
-scale_to_interval(const double x, const double min, const double max)
+scaleToInterval(const double x, const double min, const double max)
 {
   return (max - min) * (x - 1) + max;
 }
@@ -72,9 +72,9 @@ colorGrid(const std::array<double, 2>& h_lim,
   for (int i = 0; i < n; i++) {
     const std::array<double, 3> hsl = halton.next();
 
-    double h = scale_to_interval(hsl[0], h_lim[0], h_lim[1]);
-    double s = scale_to_interval(hsl[1], s_lim[0], s_lim[1]);
-    double l = scale_to_interval(hsl[2], l_lim[0], l_lim[1]);
+    double h = scaleToInterval(hsl[0], h_lim[0], h_lim[1]);
+    double s = scaleToInterval(hsl[1], s_lim[0], s_lim[1]);
+    double l = scaleToInterval(hsl[2], l_lim[0], l_lim[1]);
 
     // We allow negative hues to wrap around the color wheel, but here we
     // need to make sure that the hue is in the range [0, 360)
