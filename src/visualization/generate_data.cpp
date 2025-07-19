@@ -9,8 +9,8 @@ void
 generateHSLData()
 {
   // Generate HSL color grid similar to qualpal algorithm
-  auto hsl_colors =
-    qualpal::colorGrid({ -200, 120 }, { 0.3, 0.8 }, { 0.4, 0.9 }, 1000);
+  auto hsl_colors = qualpal::colorGrid<qualpal::colors::HSL>(
+    { -200, 120 }, { 0.3, 0.8 }, { 0.4, 0.9 }, 1000);
 
   std::ofstream file("data/hsl_points.dat");
   file << R"(# H S L RGB_HEX
@@ -31,8 +31,8 @@ generateHSLData()
 void
 generateRGBProjection()
 {
-  auto hsl_colors =
-    qualpal::colorGrid({ -200, 120 }, { 0.3, 0.8 }, { 0.4, 0.9 }, 500);
+  auto hsl_colors = qualpal::colorGrid<qualpal::colors::HSL>(
+    { -200, 120 }, { 0.3, 0.8 }, { 0.4, 0.9 }, 500);
 
   std::ofstream file("data/rgb_points.dat");
   file << "# R G B H S L RGB_HEX\n";
@@ -53,8 +53,8 @@ generateRGBProjection()
 void
 generateDIN99dProjection()
 {
-  auto hsl_colors =
-    qualpal::colorGrid({ -200, 120 }, { 0.3, 0.8 }, { 0.4, 0.9 }, 500);
+  auto hsl_colors = qualpal::colorGrid<qualpal::colors::HSL>(
+    { -200, 120 }, { 0.3, 0.8 }, { 0.4, 0.9 }, 500);
 
   std::ofstream file("data/din99d_points.dat");
   file << "# L_din a_din b_din RGB_HEX\n";
@@ -76,8 +76,8 @@ void
 generateSelectedColors()
 {
   // Generate the full color space
-  auto hsl_colors =
-    qualpal::colorGrid({ -200, 120 }, { 0.3, 0.8 }, { 0.4, 0.9 }, 1000);
+  auto hsl_colors = qualpal::colorGrid<qualpal::colors::HSL>(
+    { -200, 120 }, { 0.3, 0.8 }, { 0.4, 0.9 }, 1000);
   std::vector<qualpal::colors::RGB> rgb_colors;
   for (const auto& hsl : hsl_colors) {
     rgb_colors.emplace_back(hsl);

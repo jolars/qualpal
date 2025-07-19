@@ -16,7 +16,7 @@ TEST_CASE("Color difference matrices", "[colordiff]")
 
   int n_points = 20;
 
-  auto colors = colorGrid(h_lim, s_lim, l_lim, n_points);
+  auto colors = colorGrid<HSL>(h_lim, s_lim, l_lim, n_points);
 
   REQUIRE_NOTHROW(
     qualpal::colorDifferenceMatrix(colors, qualpal::metrics::DIN99d{}));

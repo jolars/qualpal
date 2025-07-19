@@ -27,7 +27,7 @@ TEST_CASE("Color grid is correctly set up", "[color-grid]")
   using namespace qualpal::colors;
 
   std::vector<HSL> result =
-    qualpal::colorGrid({ -200, 120 }, { 0.3, 0.8 }, { 0.4, 0.9 }, 1000);
+    qualpal::colorGrid<HSL>({ -200, 120 }, { 0.3, 0.8 }, { 0.4, 0.9 }, 1000);
 
   for (auto& color : result) {
     HSL hsl = color;

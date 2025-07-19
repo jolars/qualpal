@@ -13,7 +13,8 @@ TEST_CASE("Parallelization", "[!benchmark]")
 
   int n_points = 101;
 
-  auto hsl_colors = qualpal::colorGrid(h_lim, s_lim, l_lim, n_points);
+  auto hsl_colors =
+    qualpal::colorGrid<qualpal::colors::HSL>(h_lim, s_lim, l_lim, n_points);
 
   std::vector<qualpal::colors::RGB> rgb_colors;
 
@@ -41,7 +42,8 @@ TEST_CASE("Color Difference Metrics", "[!benchmark]")
 
   int n_points = 1000;
 
-  auto hsl_colors = qualpal::colorGrid(h_lim, s_lim, l_lim, n_points);
+  auto hsl_colors =
+    qualpal::colorGrid<qualpal::colors::HSL>(h_lim, s_lim, l_lim, n_points);
 
   std::vector<qualpal::colors::Lab> lab_colors;
   std::vector<qualpal::colors::DIN99d> din99d_colors;

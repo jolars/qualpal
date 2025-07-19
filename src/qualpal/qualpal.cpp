@@ -134,7 +134,8 @@ Qualpal::generate(int n)
     case Mode::COLORSPACE:
       rgb_colors.clear();
       rgb_colors.reserve(n_points);
-      for (const auto& hsl : colorGrid(h_lim, s_lim, l_lim, n_points)) {
+      for (const auto& hsl :
+           colorGrid<colors::HSL>(h_lim, s_lim, l_lim, n_points)) {
         rgb_colors.emplace_back(hsl);
       }
       break;
