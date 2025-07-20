@@ -35,7 +35,8 @@ with the desired number of colors:
 std::vector<colors::RGB> pal = qp.generate(5);
 ```
 
-To specify the input color space using RGB, you can provide a list of RGB colors. For example:
+To specify the input color space using RGB, you can provide a list of RGB
+colors. For example:
 
 ```cpp
 qp.setInputRGB({ colors::RGB("#ff0000"),
