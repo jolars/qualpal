@@ -144,6 +144,24 @@ public:
   RGB(const LCHab& lch);
 
   /**
+   * @brief Equality operator for RGB colors
+   * @param other Other RGB color to compare with
+   * @return true if both RGB colors are equal, false otherwise
+   */
+  bool operator==(const RGB& other) const
+  {
+    return (r_value == other.r_value) && (g_value == other.g_value) &&
+           (b_value == other.b_value);
+  }
+
+  /**
+   * @brief Inequality operator for RGB colors
+   * @param other Other RGB color to compare with
+   * @return true if RGB colors are not equal, false otherwise
+   */
+  bool operator!=(const RGB& other) const { return !(*this == other); }
+
+  /**
    * @brief Convert RGB to hexadecimal string
    * @return Hex color string in format "#rrggbb"
    *
@@ -218,6 +236,24 @@ public:
    */
   HSL(const LCHab& lch);
 
+  /**
+   * @brief Equality operator for HSL colors
+   * @param other Other HSL color to compare with
+   * @return true if both HSL colors are equal, false otherwise
+   */
+  bool operator==(const HSL& other) const
+  {
+    return (h_value == other.h_value) && (s_value == other.s_value) &&
+           (l_value == other.l_value);
+  }
+
+  /**
+   * @brief Inequality operator for HSL colors
+   * @param other Other HSL color to compare with
+   * @return true if HSL colors are not equal, false otherwise
+   */
+  bool operator!=(const HSL& other) const { return !(*this == other); }
+
   /** @brief Get hue in degrees [0,360) */
   double h() const { return h_value; }
   /** @brief Get saturation [0,1] */
@@ -280,6 +316,24 @@ public:
    */
   XYZ(const LCHab& lch,
       const std::array<double, 3>& white_point = { 0.95047, 1, 1.08883 });
+
+  /**
+   * @brief equality operator for XYZ colors
+   * @param other Other XYZ color to compare with
+   * @return true if both XYZ colors are equal, false otherwise
+   */
+  bool operator==(const XYZ& other) const
+  {
+    return (x_value == other.x_value) && (y_value == other.y_value) &&
+           (z_value == other.z_value);
+  }
+
+  /**
+   * @brief inequality operator for XYZ colors
+   * @param other Other XYZ color to compare with
+   * @return true if XYZ colors are not equal, false otherwise
+   */
+  bool operator!=(const XYZ& other) const { return !(*this == other); }
 
   /** @brief Get X component */
   double x() const { return x_value; }
@@ -344,6 +398,24 @@ public:
    */
   DIN99d(const XYZ& xyz,
          const std::array<double, 3>& white_point = { 0.95047, 1, 1.08883 });
+
+  /**
+   * @brief equality operator for DIN99d colors
+   * @param other Other DIN99d color to compare with
+   * @return true if both DIN99d colors are equal, false otherwise
+   */
+  bool operator==(const DIN99d& other) const
+  {
+    return (l_value == other.l_value) && (a_value == other.a_value) &&
+           (b_value == other.b_value);
+  }
+
+  /**
+   * @brief inequality operator for DIN99d colors
+   * @param other Other DIN99d color to compare with
+   * @return true if DIN99d colors are not equal, false otherwise
+   */
+  bool operator!=(const DIN99d& other) const { return !(*this == other); }
 
   /** @brief Get lightness component */
   double l() const { return l_value; }
@@ -410,6 +482,17 @@ public:
    */
   Lab(const LCHab& lch);
 
+  /**
+   * @brief Equality operator for Lab colors
+   * @param other Other Lab color to compare with
+   * @return true if both Lab colors are equal, false otherwise
+   */
+  bool operator==(const Lab& other) const
+  {
+    return (l_value == other.l_value) && (a_value == other.a_value) &&
+           (b_value == other.b_value);
+  }
+
   /** @brief Get lightness [0,100] */
   double l() const { return l_value; }
   /** @brief Get green-red component */
@@ -473,6 +556,24 @@ public:
    */
   LCHab(const XYZ& xyz,
         const std::array<double, 3>& white_point = { 0.95047, 1, 1.08883 });
+
+  /**
+   * @brief equality operator for LCHab colors
+   * @param other Other LCHab color to compare with
+   * @return true if both LCHab colors are equal, false otherwise
+   */
+  bool operator==(const LCHab& other) const
+  {
+    return (l_value == other.l_value) && (c_value == other.c_value) &&
+           (h_value == other.h_value);
+  }
+
+  /**
+   * @brief inequality operator for LCHab colors
+   * @param other Other LCHab color to compare with
+   * @return true if LCHab colors are not equal, false otherwise
+   */
+  bool operator!=(const LCHab& other) const { return !(*this == other); }
 
   /** @brief Get lightness [0,100] */
   double l() const { return l_value; }
