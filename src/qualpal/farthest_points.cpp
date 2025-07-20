@@ -7,47 +7,20 @@ namespace qualpal {
 
 std::vector<int>
 farthestPoints(const int n,
-               const std::vector<colors::XYZ>& colors,
+               const std::vector<colors::XYZ>& colors_in,
                const metrics::MetricType& metric_type,
                const std::optional<colors::RGB>& bg,
                const double max_memory)
 {
+  std::vector<colors::XYZ> colors = colors_in;
+  if (bg.has_value()) {
+    colors.emplace_back(*bg);
+  }
+
   Matrix<double> dist_mat =
     colorDifferenceMatrix(colors, metric_type, max_memory);
 
-  const int n_colors = colors.size();
-
-  // Pre-compute background distances if background color is provided
-  std::vector<double> bg_distances;
-  if (bg.has_value()) {
-    bg_distances.reserve(n_colors);
-    switch (metric_type) {
-      case metrics::MetricType::DIN99d: {
-        auto metric = metrics::DIN99d{};
-        colors::DIN99d din99d_bg(*bg);
-        for (const auto& color : colors) {
-          bg_distances.push_back(metric(color, din99d_bg));
-        }
-        break;
-      }
-      case metrics::MetricType::CIEDE2000: {
-        auto metric = metrics::CIEDE2000{};
-        colors::Lab lab_bg(*bg);
-        for (const auto& color : colors) {
-          bg_distances.push_back(metric(color, lab_bg));
-        }
-        break;
-      }
-      case metrics::MetricType::CIE76: {
-        auto metric = metrics::CIE76{};
-        colors::Lab lab_bg(*bg);
-        for (const auto& color : colors) {
-          bg_distances.push_back(metric(color, lab_bg));
-        }
-        break;
-      }
-    }
-  }
+  const int n_colors = bg.has_value() ? colors.size() - 1 : colors.size();
 
   // Begin with the first n points.
   std::vector<int> r(n);
@@ -75,7 +48,7 @@ farthestPoints(const int n,
         }
       }
       if (bg.has_value()) {
-        min_dist_old = std::min(min_dist_old, bg_distances[r[i]]);
+        min_dist_old = std::min(min_dist_old, dist_mat(r[i], n_colors));
       }
 
       bool found_better = false;
@@ -93,7 +66,7 @@ farthestPoints(const int n,
         }
 
         if (bg.has_value()) {
-          min_dist_k = std::min(min_dist_k, bg_distances[r_c[k]]);
+          min_dist_k = std::min(min_dist_k, dist_mat(r_c[k], n_colors));
         }
 
         if (min_dist_k > min_dist_old) {
