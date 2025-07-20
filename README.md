@@ -218,6 +218,27 @@ auto pal = Qualpal{}
              .generate(3);
 ```
 
+### Palette Extension Example
+
+You can extend an existing palette by adding more distinct colors to it:
+
+```cpp
+std::vector<colors::RGB> fixed = {
+  colors::RGB("#e41a1c"), // Red
+  colors::RGB("#377eb8"), // Blue
+};
+
+std::vector<colors::RGB> input = {
+  colors::RGB("#4daf4a"), // Green
+  colors::RGB("#984ea3"), // Purple
+  colors::RGB("#ff7f00"), // Orange
+  colors::RGB("#ffff33"), // Yellow
+};
+
+// Extend to 6 colors, keeping the first two fixed
+auto ext_pal = Qualpal{}.setInputRGB(input).extend(fixed, 4);
+```
+
 ## Contributing
 
 Contributions are welcome! Please see the [CONTRIBUTING](CONTRIBUTING.md) file
