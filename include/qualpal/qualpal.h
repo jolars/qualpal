@@ -150,7 +150,21 @@ public:
    */
   std::vector<colors::RGB> generate(int n);
 
+  /**
+   * @brief Extend an existing palette by adding n new colors.
+   * @param palette Existing palette (RGB colors) to keep fixed.
+   * @param n Size of the new palette to generate, which includes
+   * the existing palette.
+   * @return Vector of palette + n new RGB colors.
+   */
+  std::vector<colors::RGB> extend(const std::vector<colors::RGB>& palette,
+                                  int n);
+
 private:
+  std::vector<colors::RGB> selectColors(
+    int n,
+    const std::vector<colors::RGB>& fixed_palette = {});
+
   std::vector<colors::RGB> rgb_colors;
 
   std::vector<std::string> hex_colors;

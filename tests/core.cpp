@@ -142,3 +142,94 @@ TEST_CASE("Using different metrics", "[metrics][fail]")
   REQUIRE_NOTHROW(qp.setMetric(metrics::MetricType::CIE76).generate(2));
   REQUIRE_NOTHROW(qp.setMetric(metrics::MetricType::CIEDE2000).generate(2));
 }
+
+TEST_CASE("Qualpal::extend preserves fixed palette and adds distinct colors",
+          "[qualpal][extend]")
+{
+  using namespace qualpal;
+
+  Qualpal qp;
+  std::vector<colors::RGB> input = {
+    colors::RGB("#ff0000"), colors::RGB("#00ff00"), colors::RGB("#0000ff"),
+    colors::RGB("#ffff00"), colors::RGB("#00ffff"), colors::RGB("#ff00ff"),
+    colors::RGB("#ffffff"), colors::RGB("#000000")
+  };
+  qp.setInputRGB(input);
+
+  // Fixed palette: first 3 colors
+  std::vector<colors::RGB> fixed = { colors::RGB("#ff0000"),
+                                     colors::RGB("#00ff00"),
+                                     colors::RGB("#0000ff") };
+
+  // Extend to 5 colors
+  auto extended = qp.extend(fixed, 5);
+
+  REQUIRE(extended.size() == 5);
+  REQUIRE(extended[0] == fixed[0]);
+  REQUIRE(extended[1] == fixed[1]);
+  REQUIRE(extended[2] == fixed[2]);
+
+  // The remaining colors should be from input but not in fixed
+  std::vector<colors::RGB> remaining;
+  for (const auto& c : input) {
+    if (std::find(fixed.begin(), fixed.end(), c) == fixed.end())
+      remaining.push_back(c);
+  }
+
+  REQUIRE(std::find(remaining.begin(), remaining.end(), extended[3]) !=
+          remaining.end());
+  REQUIRE(std::find(remaining.begin(), remaining.end(), extended[4]) !=
+          remaining.end());
+  REQUIRE(extended[3] != extended[4]);
+
+  SECTION("extend: palette is extended with new distinct colors")
+  {
+    qualpal::Qualpal qp;
+    std::vector<qualpal::colors::RGB> input = {
+      qualpal::colors::RGB("#ff0000"), qualpal::colors::RGB("#00ff00"),
+      qualpal::colors::RGB("#0000ff"), qualpal::colors::RGB("#ffff00"),
+      qualpal::colors::RGB("#00ffff"), qualpal::colors::RGB("#ff00ff"),
+    };
+    qp.setInputRGB(input);
+
+    std::vector<qualpal::colors::RGB> fixed = {
+      qualpal::colors::RGB("#ff0000"),
+      qualpal::colors::RGB("#00ff00"),
+    };
+
+    auto extended = qp.extend(fixed, 4);
+
+    REQUIRE(extended.size() == 4);
+    REQUIRE(extended[0] == fixed[0]);
+    REQUIRE(extended[1] == fixed[1]);
+    // The remaining colors should be from input but not in fixed
+    std::vector<qualpal::colors::RGB> remaining;
+    for (const auto& c : input) {
+      if (std::find(fixed.begin(), fixed.end(), c) == fixed.end())
+        remaining.push_back(c);
+    }
+    REQUIRE(std::find(remaining.begin(), remaining.end(), extended[2]) !=
+            remaining.end());
+    REQUIRE(std::find(remaining.begin(), remaining.end(), extended[3]) !=
+            remaining.end());
+    REQUIRE(extended[2] != extended[3]);
+  }
+
+  SECTION("extend: throws if n < fixed.size()")
+  {
+    qualpal::Qualpal qp;
+    std::vector<qualpal::colors::RGB> input = {
+      qualpal::colors::RGB("#ff0000"),
+      qualpal::colors::RGB("#00ff00"),
+      qualpal::colors::RGB("#0000ff"),
+    };
+    qp.setInputRGB(input);
+
+    std::vector<qualpal::colors::RGB> fixed = {
+      qualpal::colors::RGB("#ff0000"),
+      qualpal::colors::RGB("#00ff00"),
+    };
+
+    REQUIRE_THROWS_AS(qp.extend(fixed, 1), std::invalid_argument);
+  }
+}

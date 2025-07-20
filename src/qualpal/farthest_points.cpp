@@ -10,9 +10,13 @@ farthestPoints(const int n,
                const std::vector<colors::XYZ>& colors_in,
                const metrics::MetricType& metric_type,
                const std::optional<colors::RGB>& bg,
+               const std::vector<colors::XYZ>& fixed_points,
                const double max_memory)
 {
-  std::vector<colors::XYZ> colors = colors_in;
+  std::vector<colors::XYZ> colors;
+  colors.reserve(fixed_points.size() + colors_in.size());
+  colors.insert(colors.end(), fixed_points.begin(), fixed_points.end());
+  colors.insert(colors.end(), colors_in.begin(), colors_in.end());
   if (bg.has_value()) {
     colors.emplace_back(*bg);
   }
@@ -20,14 +24,23 @@ farthestPoints(const int n,
   Matrix<double> dist_mat =
     colorDifferenceMatrix(colors, metric_type, max_memory);
 
-  const int n_colors = bg.has_value() ? colors.size() - 1 : colors.size();
+  std::vector<int> fixed_points_indices(fixed_points.size());
 
-  // Begin with the first n points.
+  const int n_fixed = fixed_points.size();
+  const int n_candidates = colors_in.size();
+  const int n_colors = n_fixed + n_candidates;
+
+  if (n - n_fixed > n_candidates) {
+    throw std::invalid_argument(
+      "Requested number of new colors exceeds candidate pool.");
+  }
+
+  // Begin with the fixed points, then fill up to n with new points.
   std::vector<int> r(n);
   std::iota(r.begin(), r.end(), 0);
 
-  // Store the complement to r.
-  std::vector<int> r_c(n_colors - n);
+  // Store the complement to r (excluding fixed points).
+  std::vector<int> r_c(n_candidates - n);
   std::iota(r_c.begin(), r_c.end(), n);
 
   bool set_changed = true;
@@ -35,7 +48,7 @@ farthestPoints(const int n,
   while (set_changed) {
     set_changed = false;
 
-    for (int i = 0; i < n; ++i) {
+    for (int i = n_fixed; i < n; ++i) {
       int ind_new = i;
 
       double min_dist_old = std::numeric_limits<double>::max();
@@ -87,23 +100,32 @@ farthestPoints(const int n,
 
   // Arrange the colors in the palette according to how distinct they are from
   // one another.
-  std::sort(r.begin(), r.end(), [&dist_mat, &r](int a, int b) {
-    double min_dist_a = std::numeric_limits<double>::max();
-    double min_dist_b = std::numeric_limits<double>::max();
+  std::sort(
+    r.begin() + n_fixed, r.end(), [&dist_mat, &r, n_fixed](int a, int b) {
+      double min_dist_a = std::numeric_limits<double>::max();
+      double min_dist_b = std::numeric_limits<double>::max();
 
-    for (size_t i = 0; i < r.size(); ++i) {
-      if (r[i] != a) {
-        min_dist_a = std::min(min_dist_a, dist_mat(r[i], a));
+      for (size_t i = 0; i < r.size(); ++i) {
+        if (static_cast<int>(i) >= n_fixed) {
+          if (r[i] != a) {
+            min_dist_a = std::min(min_dist_a, dist_mat(r[i], a));
+          }
+          if (r[i] != b) {
+            min_dist_b = std::min(min_dist_b, dist_mat(r[i], b));
+          }
+        }
       }
-      if (r[i] != b) {
-        min_dist_b = std::min(min_dist_b, dist_mat(r[i], b));
-      }
-    }
 
-    return min_dist_a > min_dist_b;
-  });
+      return min_dist_a > min_dist_b;
+    });
 
-  return r;
+  // Return only indices for new colors (exclude fixed points)
+  std::vector<int> result;
+  for (int i = n_fixed; i < n; ++i) {
+    result.push_back(r[i] - n_fixed);
+  }
+
+  return result;
 }
 
 } // namespace qualpal
