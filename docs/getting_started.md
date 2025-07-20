@@ -91,6 +91,33 @@ ensure that the selected colors are distinct from the background color,
 you need to explicitly set it. This also makes it easy to use qualpal
 for generating color palettes with a dark background, for instance:
 
+## Palette Extension
+
+You can extend an existing palette by keeping some colors fixed and adding more
+distinct colors from a candidate set. For example:
+
+```cpp
+#include <qualpal.h>
+using namespace qualpal;
+
+std::vector<colors::RGB> fixed = {
+  colors::RGB("#e41a1c"), // Red
+  colors::RGB("#377eb8"), // Blue
+};
+
+std::vector<colors::RGB> input = {
+  colors::RGB("#4daf4a"), // Green
+  colors::RGB("#984ea3"), // Purple
+  colors::RGB("#ff7f00"), // Orange
+  colors::RGB("#ffff33"), // Yellow
+};
+
+auto ext_pal = Qualpal{}.setInputRGB(input).extend(fixed, 4);
+```
+
+`ext_pal` now contains the fixed colors plus two more distinct colors from
+input.
+
 ## References
 
 - Machado, Gustavo. M., Oliveira, Manuel. M., & Fernandes, Leandro. A. (2009).
