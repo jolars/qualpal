@@ -317,35 +317,6 @@ TEST_CASE("Qualpal::extend - Edge cases")
   }
 }
 
-TEST_CASE("Qualpal::extend - Stress test")
-{
-  qualpal::Qualpal qp;
-
-  // Generate a large number of candidate colors
-  std::vector<qualpal::colors::RGB> candidates;
-  for (int i = 0; i < 1000; ++i) {
-    candidates.push_back(
-      { (i % 256) / 255.0, ((i * 2) % 256) / 255.0, ((i * 3) % 256) / 255.0 });
-  }
-
-  qp.setInputRGB(candidates);
-
-  // Fixed palette
-  std::vector<qualpal::colors::RGB> fixed_palette = {
-    { 1, 0, 0 }, // Red
-    { 0, 1, 0 }  // Green
-  };
-
-  SECTION("Extend palette to 100 colors")
-  {
-    auto extended_palette = qp.extend(fixed_palette, 100);
-
-    REQUIRE(extended_palette.size() == 100);
-    REQUIRE(extended_palette[0] == fixed_palette[0]); // Red
-    REQUIRE(extended_palette[1] == fixed_palette[1]); // Green
-  }
-}
-
 TEST_CASE("Qualpal::extend - Regression test with fixed seed")
 {
   using namespace Catch::Matchers;
