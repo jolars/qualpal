@@ -33,6 +33,7 @@
             lldb
             help2man
             llvmPackages.openmp
+            valgrind
             graphviz
           ];
         };
