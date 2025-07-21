@@ -4,7 +4,6 @@
 #include "palettes.h"
 #include "palettes_data.h"
 #include "validation.h"
-#include <algorithm>
 #include <cassert>
 #include <qualpal/colors.h>
 #include <qualpal/qualpal.h>
