@@ -1,3 +1,11 @@
+/** @file
+ * @brief Functions for generating color difference matrices.
+ *
+ * This file provides functions to compute pairwise color differences between
+ * a set of colors using various color difference metrics. It supports parallel
+ * computation and memory management.
+ */
+
 #pragma once
 
 #include <cmath>
