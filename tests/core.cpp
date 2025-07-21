@@ -126,6 +126,26 @@ TEST_CASE("Adapting to color vision deficiency", "[cvd]")
                                       .setInputPalette("ColorBrewer:Set2")
                                       .setCvd(cvd)
                                       .generate(2);
+
+  SECTION("Erroneous CVD type")
+  {
+    std::map<std::string, double> invalid_cvd = { { "invalid", 1.0 } };
+    REQUIRE_THROWS_AS(qualpal::Qualpal{}
+                        .setInputPalette("ColorBrewer:Set2")
+                        .setCvd(invalid_cvd)
+                        .generate(2),
+                      std::invalid_argument);
+  }
+
+  SECTION("CVD severity out of range")
+  {
+    std::map<std::string, double> invalid_cvd = { { "deutan", 1.5 } };
+    REQUIRE_THROWS_AS(qualpal::Qualpal{}
+                        .setInputPalette("ColorBrewer:Set2")
+                        .setCvd(invalid_cvd)
+                        .generate(2),
+                      std::invalid_argument);
+  }
 }
 
 TEST_CASE("Using different metrics", "[metrics][fail]")
