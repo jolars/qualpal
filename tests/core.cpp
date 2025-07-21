@@ -94,7 +94,7 @@ TEST_CASE("Separated colors", "[colors]")
   REQUIRE(result[1].hex() != "#aa00ff");
 }
 
-TEST_CASE("Background colors", "[colors][fail]")
+TEST_CASE("Background colors", "[colors]")
 {
   using namespace qualpal::colors;
 
@@ -110,7 +110,7 @@ TEST_CASE("Background colors", "[colors][fail]")
   REQUIRE(result[0].hex() != "#66c2a5");
 }
 
-TEST_CASE("Adapting to color vision deficiency", "[cvd][fail]")
+TEST_CASE("Adapting to color vision deficiency", "[cvd]")
 {
   using namespace qualpal;
 
