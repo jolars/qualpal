@@ -1,5 +1,21 @@
 # Changelog
 
+## [2.3.0](https://github.com/jolars/qualpal/compare/v2.2.0...v2.3.0) (2025-07-21)
+
+### Features
+
+* **colors:** add default constructors for all colors ([9aa605b](https://github.com/jolars/qualpal/commit/9aa605b3c1a96e353da41136251c249de8637f39))
+* **colors:** add equality and inequality operators ([8f8988c](https://github.com/jolars/qualpal/commit/8f8988ce18f6b7104d7fbe6bc3790d04981df771))
+* **colors:** add LCHab color space ([572cb11](https://github.com/jolars/qualpal/commit/572cb114c34ef4364274d28f50294ddcd807a1c0))
+* **core:** add `extend()` to `Qualpal` ([3f31208](https://github.com/jolars/qualpal/commit/3f31208feb00f095dc103de9558d966062b12d98))
+* support using LCHab as colorspace input ([78ed8a8](https://github.com/jolars/qualpal/commit/78ed8a8112a7dcf10aef6e855ef74fdc78589f3a))
+
+### Bug Fixes
+
+* clamp values in `scaleToInterval()` ([29c837f](https://github.com/jolars/qualpal/commit/29c837f9d177187a7840649b5ab5d3761220c249))
+* size `r_c` to be `n_candidates` long ([5c7d636](https://github.com/jolars/qualpal/commit/5c7d6367c877abf860906a10097e8efa5ab7bd02))
+* use template instantiation to correctly grid in LCHab ([f3aab33](https://github.com/jolars/qualpal/commit/f3aab33846007318f56a5cfb0849fbd93f33dbe2))
+
 ## [2.2.0](https://github.com/jolars/qualpal/compare/v2.1.0...v2.2.0) (2025-07-17)
 
 ### Features
