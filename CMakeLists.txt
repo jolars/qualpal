@@ -10,6 +10,7 @@ option(BUILD_VISUALIZATIONS "Build visualization tools" OFF)
 option(DAP_DEBUG "Interactive debugging" OFF)
 option(ENABLE_COVERAGE "Generate coverage report" OFF)
 option(ENABLE_CLI_TESTS "Enable CLI tests" ON)
+option(ENABLE_SANITIZER "Enable address/undefined sanitizers" OFF)
 
 include(FetchContent)
 include(CTest)
@@ -20,6 +21,13 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 if(DAP_DEBUG)
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0 -Wno-cpp")
+endif()
+
+if(ENABLE_SANITIZER)
+    set(SANITIZER_FLAGS
+        "-fsanitize=address,undefined -fno-omit-frame-pointer -g"
+    )
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${SANITIZER_FLAGS}")
 endif()
 
 configure_package_config_file(
