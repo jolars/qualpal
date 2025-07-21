@@ -40,7 +40,7 @@ farthestPoints(const int n,
   std::iota(r.begin(), r.end(), 0);
 
   // Store the complement to r (excluding fixed points).
-  std::vector<int> r_c(n_candidates - n);
+  std::vector<int> r_c(n_candidates);
   std::iota(r_c.begin(), r_c.end(), n);
 
   bool set_changed = true;
