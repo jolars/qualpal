@@ -128,7 +128,7 @@ Qualpal::setMemoryLimit(double gb)
 }
 
 Qualpal&
-Qualpal::setColorspaceSize(int n_points)
+Qualpal::setColorspaceSize(std::size_t n_points)
 {
   if (n_points <= 0) {
     throw std::invalid_argument("Number of points must be greater than 0");
@@ -138,7 +138,8 @@ Qualpal::setColorspaceSize(int n_points)
 }
 
 std::vector<colors::RGB>
-Qualpal::selectColors(int n, const std::vector<colors::RGB>& fixed_palette)
+Qualpal::selectColors(std::size_t n,
+                      const std::vector<colors::RGB>& fixed_palette)
 {
   switch (mode) {
     case Mode::RGB:
@@ -180,20 +181,20 @@ Qualpal::selectColors(int n, const std::vector<colors::RGB>& fixed_palette)
     throw std::runtime_error("No input colors provided.");
   }
 
-  int n_fixed = fixed_palette.size();
+  std::size_t n_fixed = fixed_palette.size();
 
   if (n < n_fixed) {
     throw std::invalid_argument(
       "Requested palette size is less than the size of the existing palette.");
   }
 
-  int n_new = n - n_fixed;
+  std::size_t n_new = n - n_fixed;
 
   if (n_new < 0) {
     throw std::invalid_argument("Number of new colors to add is negative.");
   }
 
-  if (static_cast<int>(rgb_colors_in.size()) < n_new) {
+  if (rgb_colors_in.size() < n_new) {
     throw std::invalid_argument(
       "Requested number of colors exceeds input size");
   }
@@ -241,13 +242,13 @@ Qualpal::selectColors(int n, const std::vector<colors::RGB>& fixed_palette)
 }
 
 std::vector<colors::RGB>
-Qualpal::generate(int n)
+Qualpal::generate(std::size_t n)
 {
   return selectColors(n);
 }
 
 std::vector<colors::RGB>
-Qualpal::extend(const std::vector<colors::RGB>& palette, int n)
+Qualpal::extend(const std::vector<colors::RGB>& palette, std::size_t n)
 {
   return selectColors(n, palette);
 }

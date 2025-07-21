@@ -91,7 +91,7 @@ main(int argc, char** argv)
   app.add_option(
     "-b,--background", background, "Background color in hex (e.g. #ffffff)");
 
-  int n_colors = 1000;
+  std::size_t n_colors = 1000;
 
   app.add_option(
     "-p,--points",
@@ -125,10 +125,11 @@ main(int argc, char** argv)
   app.add_option(
     "--tritan", tritan, "Degree of tritan CVD simulation (0.0–1.0)");
 
-  int n = 8;
+  std::size_t n = 8;
   std::vector<std::string> values;
 
-  app.add_option<int, int>("-n,--number", n, "Number of colors to generate");
+  app.add_option<std::size_t, std::size_t>(
+    "-n,--number", n, "Number of colors to generate");
   app.add_option("values", values, "Input values (depends on input type)");
 
   app.footer(
