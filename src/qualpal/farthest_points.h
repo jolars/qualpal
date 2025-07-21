@@ -1,7 +1,6 @@
 #pragma once
 
 #include <cmath>
-#include <optional>
 #include <qualpal/color_difference.h>
 #include <qualpal/colors.h>
 #include <qualpal/matrix.h>
