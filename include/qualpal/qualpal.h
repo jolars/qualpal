@@ -165,7 +165,7 @@ private:
     int n,
     const std::vector<colors::RGB>& fixed_palette = {});
 
-  std::vector<colors::RGB> rgb_colors;
+  std::vector<colors::RGB> rgb_colors_in;
 
   std::vector<std::string> hex_colors;
 

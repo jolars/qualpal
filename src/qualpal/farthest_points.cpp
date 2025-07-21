@@ -10,13 +10,10 @@ farthestPoints(const int n,
                const std::vector<colors::XYZ>& colors_in,
                const metrics::MetricType& metric_type,
                const std::optional<colors::RGB>& bg,
-               const std::vector<colors::XYZ>& fixed_points,
+               const int n_fixed,
                const double max_memory)
 {
-  std::vector<colors::XYZ> colors;
-  colors.reserve(fixed_points.size() + colors_in.size());
-  colors.insert(colors.end(), fixed_points.begin(), fixed_points.end());
-  colors.insert(colors.end(), colors_in.begin(), colors_in.end());
+  std::vector<colors::XYZ> colors = colors_in;
   if (bg.has_value()) {
     colors.emplace_back(*bg);
   }
@@ -24,11 +21,8 @@ farthestPoints(const int n,
   Matrix<double> dist_mat =
     colorDifferenceMatrix(colors, metric_type, max_memory);
 
-  std::vector<int> fixed_points_indices(fixed_points.size());
-
-  const int n_fixed = fixed_points.size();
-  const int n_candidates = colors_in.size();
-  const int n_colors = n_fixed + n_candidates;
+  const int n_candidates = colors_in.size() - n_fixed;
+  const int n_colors = colors.size();
 
   if (n - n_fixed > n_candidates) {
     throw std::invalid_argument(
@@ -40,7 +34,7 @@ farthestPoints(const int n,
   std::iota(r.begin(), r.end(), 0);
 
   // Store the complement to r (excluding fixed points).
-  std::vector<int> r_c(n_candidates);
+  std::vector<int> r_c(colors_in.size() - n);
   std::iota(r_c.begin(), r_c.end(), n);
 
   bool set_changed = true;
@@ -62,16 +56,15 @@ farthestPoints(const int n,
         }
       }
       if (bg.has_value()) {
-        min_dist_old = std::min(min_dist_old, dist_mat(r[i], n_colors));
+        min_dist_old = std::min(min_dist_old, dist_mat(r[i], n_colors - 1));
       }
 
       bool found_better = false;
 
       // Check if any point in the complement set (r_c) has a greater minimum
       // distance to the points currently selected (r).
-      for (int k = 0; k < n_colors - n; ++k) {
-        assert(r_c[k] >= 0 && r_c[k] < n_colors &&
-               "Index out of bounds in r_c[k]");
+      for (int k = 0; k < r_c.size(); ++k) {
+        assert(r_c[k] >= 0 && "Index out of bounds in r_c[k]");
         double min_dist_k = std::numeric_limits<double>::max();
 
         for (int j = 0; j < n; ++j) {
@@ -82,7 +75,7 @@ farthestPoints(const int n,
         }
 
         if (bg.has_value()) {
-          min_dist_k = std::min(min_dist_k, dist_mat(r_c[k], n_colors));
+          min_dist_k = std::min(min_dist_k, dist_mat(r_c[k], n_colors - 1));
         }
 
         if (min_dist_k > min_dist_old) {
@@ -104,7 +97,6 @@ farthestPoints(const int n,
   for (int i = n_fixed; i < n; ++i) {
     assert(r[i] >= n_fixed &&
            "Non-candidate index found in candidate selection!");
-    assert(r[i] < n_colors);
   }
 
   // Arrange the colors in the palette according to how distinct they are from
@@ -128,15 +120,7 @@ farthestPoints(const int n,
       return min_dist_a > min_dist_b;
     });
 
-  // Return only indices for new colors (exclude fixed points)
-  std::vector<int> result;
-  for (int i = n_fixed; i < n; ++i) {
-    result.push_back(r[i] - n_fixed);
-    assert(result.back() >= 0 &&
-           "Negative index found in farthest points selection!");
-  }
-
-  return result;
+  return r;
 }
 
 } // namespace qualpal

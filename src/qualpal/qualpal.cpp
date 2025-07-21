@@ -4,6 +4,7 @@
 #include "palettes.h"
 #include "palettes_data.h"
 #include "validation.h"
+#include <algorithm>
 #include <cassert>
 #include <qualpal/colors.h>
 #include <qualpal/qualpal.h>
@@ -14,7 +15,7 @@ namespace qualpal {
 Qualpal&
 Qualpal::setInputRGB(const std::vector<colors::RGB>& colors)
 {
-  this->rgb_colors = colors;
+  this->rgb_colors_in = colors;
   this->mode = Mode::RGB;
   return *this;
 }
@@ -134,31 +135,31 @@ Qualpal::selectColors(int n, const std::vector<colors::RGB>& fixed_palette)
     case Mode::RGB:
       break;
     case Mode::HEX:
-      rgb_colors.clear();
-      rgb_colors.reserve(n_points);
+      rgb_colors_in.clear();
+      rgb_colors_in.reserve(n_points);
       for (const auto& hex : hex_colors) {
-        rgb_colors.emplace_back(hex);
+        rgb_colors_in.emplace_back(hex);
       }
       break;
     case Mode::PALETTE:
-      rgb_colors.clear();
-      rgb_colors.reserve(n_points);
+      rgb_colors_in.clear();
+      rgb_colors_in.reserve(n_points);
       for (const auto& hex : getPalette(palette)) {
-        rgb_colors.emplace_back(hex);
+        rgb_colors_in.emplace_back(hex);
       }
       break;
     case Mode::COLORSPACE:
-      rgb_colors.clear();
-      rgb_colors.reserve(n_points);
+      rgb_colors_in.clear();
+      rgb_colors_in.reserve(n_points);
       if (colorspace_input == ColorspaceType::HSL) {
         for (const auto& hsl :
              colorGrid<colors::HSL>(h_lim, s_or_c_lim, l_lim, n_points)) {
-          rgb_colors.emplace_back(hsl);
+          rgb_colors_in.emplace_back(hsl);
         }
       } else if (colorspace_input == ColorspaceType::LCHab) {
         for (const auto& hsl :
              colorGrid<colors::LCHab>(h_lim, s_or_c_lim, l_lim, n_points)) {
-          rgb_colors.emplace_back(hsl);
+          rgb_colors_in.emplace_back(hsl);
         }
       }
       break;
@@ -166,7 +167,7 @@ Qualpal::selectColors(int n, const std::vector<colors::RGB>& fixed_palette)
       throw std::runtime_error("No input source configured.");
   }
 
-  if (rgb_colors.empty()) {
+  if (rgb_colors_in.empty()) {
     throw std::runtime_error("No input colors provided.");
   }
 
@@ -183,14 +184,20 @@ Qualpal::selectColors(int n, const std::vector<colors::RGB>& fixed_palette)
     throw std::invalid_argument("Number of new colors to add is negative.");
   }
 
-  if (static_cast<int>(rgb_colors.size()) < n_new) {
+  if (static_cast<int>(rgb_colors_in.size()) < n_new) {
     throw std::invalid_argument(
       "Requested number of colors exceeds input size");
   }
 
+  std::vector<colors::RGB> rgb_colors;
+  rgb_colors.reserve(fixed_palette.size() + rgb_colors_in.size());
+  rgb_colors.insert(
+    rgb_colors.end(), fixed_palette.begin(), fixed_palette.end());
+  rgb_colors.insert(
+    rgb_colors.end(), rgb_colors_in.begin(), rgb_colors_in.end());
+
   // Simulate CVD if needed
   std::vector<colors::RGB> rgb_colors_mod = rgb_colors;
-  std::vector<colors::RGB> fixed_mod = fixed_palette;
   std::optional<colors::RGB> bg_mod = bg;
 
   for (const auto& [cvd_type, cvd_severity] : cvd) {
@@ -201,9 +208,6 @@ Qualpal::selectColors(int n, const std::vector<colors::RGB>& fixed_palette)
       for (auto& rgb : rgb_colors_mod) {
         rgb = simulateCvd(rgb, cvd_type, cvd_severity);
       }
-      for (auto& rgb : fixed_mod) {
-        rgb = simulateCvd(rgb, cvd_type, cvd_severity);
-      }
       if (bg_mod.has_value()) {
         bg_mod = simulateCvd(*bg_mod, cvd_type, cvd_severity);
       }
@@ -211,23 +215,18 @@ Qualpal::selectColors(int n, const std::vector<colors::RGB>& fixed_palette)
   }
 
   std::vector<colors::XYZ> xyz_colors;
+  xyz_colors.reserve(rgb_colors_mod.size());
   for (const auto& c : rgb_colors_mod) {
     xyz_colors.emplace_back(c);
   }
 
-  std::vector<colors::XYZ> xyz_fixed;
-  for (const auto& c : fixed_mod) {
-    xyz_fixed.emplace_back(c);
-  }
-
   // Select new colors
-  auto ind =
-    farthestPoints(n, xyz_colors, metric, bg_mod, xyz_fixed, max_memory);
+  auto ind = farthestPoints(n, xyz_colors, metric, bg_mod, n_fixed, max_memory);
 
   // Output: fixed_palette + selected new colors
-  std::vector<colors::RGB> result = fixed_palette;
+  std::vector<colors::RGB> result;
   for (const auto& i : ind) {
-    result.push_back(rgb_colors[i]);
+    result.emplace_back(rgb_colors[i]);
   }
 
   return result;
