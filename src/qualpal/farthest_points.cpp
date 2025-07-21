@@ -98,6 +98,12 @@ farthestPoints(const int n,
     }
   }
 
+  for (int i = n_fixed; i < n; ++i) {
+    assert(r[i] >= n_fixed &&
+           "Non-candidate index found in candidate selection!");
+    assert(r[i] < n_colors);
+  }
+
   // Arrange the colors in the palette according to how distinct they are from
   // one another.
   std::sort(
@@ -123,6 +129,8 @@ farthestPoints(const int n,
   std::vector<int> result;
   for (int i = n_fixed; i < n; ++i) {
     result.push_back(r[i] - n_fixed);
+    assert(result.back() >= 0 &&
+           "Negative index found in farthest points selection!");
   }
 
   return result;
