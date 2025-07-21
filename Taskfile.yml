@@ -79,3 +79,10 @@ tasks:
     deps: [build]
     cmds:
       - ./build/tests [!benchmark] --benchmark-samples 20
+
+  valgrind:
+    desc: Run tests under Valgrind for memory checking
+    cmds:
+      - cmake -B {{.BUILD_DIR}} -S . -DBUILD_TESTING=ON
+      - cmake {{.CMAKE_BUILD_FLAGS}}
+      - valgrind --leak-check=full --error-exitcode=1 ./{{.BUILD_DIR}}/tests
