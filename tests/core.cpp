@@ -148,39 +148,42 @@ TEST_CASE("Qualpal::extend preserves fixed palette and adds distinct colors",
 {
   using namespace qualpal;
 
-  Qualpal qp;
-  std::vector<colors::RGB> input = {
-    colors::RGB("#ff0000"), colors::RGB("#00ff00"), colors::RGB("#0000ff"),
-    colors::RGB("#ffff00"), colors::RGB("#00ffff"), colors::RGB("#ff00ff"),
-    colors::RGB("#ffffff"), colors::RGB("#000000")
-  };
-  qp.setInputRGB(input);
+  SECTION("Extend to five colors")
+  {
+    Qualpal qp;
+    std::vector<colors::RGB> input = {
+      colors::RGB("#ff0000"), colors::RGB("#00ff00"), colors::RGB("#0000ff"),
+      colors::RGB("#ffff00"), colors::RGB("#00ffff"), colors::RGB("#ff00ff"),
+      colors::RGB("#ffffff"), colors::RGB("#000000")
+    };
+    qp.setInputRGB(input);
 
-  // Fixed palette: first 3 colors
-  std::vector<colors::RGB> fixed = { colors::RGB("#ff0000"),
-                                     colors::RGB("#00ff00"),
-                                     colors::RGB("#0000ff") };
+    // Fixed palette: first 3 colors
+    std::vector<colors::RGB> fixed = { colors::RGB("#ff0000"),
+                                       colors::RGB("#00ff00"),
+                                       colors::RGB("#0000ff") };
 
-  // Extend to 5 colors
-  auto extended = qp.extend(fixed, 5);
+    // Extend to 5 colors
+    auto extended = qp.extend(fixed, 5);
 
-  REQUIRE(extended.size() == 5);
-  REQUIRE(extended[0] == fixed[0]);
-  REQUIRE(extended[1] == fixed[1]);
-  REQUIRE(extended[2] == fixed[2]);
+    REQUIRE(extended.size() == 5);
+    REQUIRE(extended[0] == fixed[0]);
+    REQUIRE(extended[1] == fixed[1]);
+    REQUIRE(extended[2] == fixed[2]);
 
-  // The remaining colors should be from input but not in fixed
-  std::vector<colors::RGB> remaining;
-  for (const auto& c : input) {
-    if (std::find(fixed.begin(), fixed.end(), c) == fixed.end())
-      remaining.push_back(c);
+    // The remaining colors should be from input but not in fixed
+    std::vector<colors::RGB> remaining;
+    for (const auto& c : input) {
+      if (std::find(fixed.begin(), fixed.end(), c) == fixed.end())
+        remaining.push_back(c);
+    }
+
+    REQUIRE(std::find(remaining.begin(), remaining.end(), extended[3]) !=
+            remaining.end());
+    REQUIRE(std::find(remaining.begin(), remaining.end(), extended[4]) !=
+            remaining.end());
+    REQUIRE(extended[3] != extended[4]);
   }
-
-  REQUIRE(std::find(remaining.begin(), remaining.end(), extended[3]) !=
-          remaining.end());
-  REQUIRE(std::find(remaining.begin(), remaining.end(), extended[4]) !=
-          remaining.end());
-  REQUIRE(extended[3] != extended[4]);
 
   SECTION("extend: palette is extended with new distinct colors")
   {
