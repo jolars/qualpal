@@ -348,16 +348,12 @@ TEST_CASE("Qualpal::extend - Stress test")
 
 TEST_CASE("Qualpal::extend - Regression test with fixed seed")
 {
+  using namespace Catch::Matchers;
+
   qualpal::Qualpal qp;
 
   // Input candidate colors
-  std::vector<qualpal::colors::RGB> candidates = {
-    { 0, 0, 1 }, // Blue
-    { 1, 1, 0 }, // Yellow
-    { 0, 1, 1 }  // Cyan
-  };
-
-  qp.setInputRGB(candidates);
+  qp.setInputColorspace({ 0, 360 }, { 0.3, 0.8 }, { 0.4, 0.9 });
 
   // Fixed palette
   std::vector<qualpal::colors::RGB> fixed_palette = {
@@ -372,5 +368,9 @@ TEST_CASE("Qualpal::extend - Regression test with fixed seed")
     REQUIRE(extended_palette.size() == 4);
     REQUIRE(extended_palette[0] == fixed_palette[0]); // Red
     REQUIRE(extended_palette[1] == fixed_palette[1]); // Green
+
+    REQUIRE_THAT(extended_palette[2].r(), WithinAbs(0.21502551440329215, 1e-5));
+    REQUIRE_THAT(extended_palette[2].g(), WithinAbs(0.22243096707818927, 1e-5));
+    REQUIRE_THAT(extended_palette[2].b(), WithinAbs(0.68897448559670793, 1e-5));
   }
 }
