@@ -189,16 +189,21 @@ Qualpal::selectColors(int n, const std::vector<colors::RGB>& fixed_palette)
       "Requested number of colors exceeds input size");
   }
 
+  bool has_bg = bg.has_value();
+
   std::vector<colors::RGB> rgb_colors;
-  rgb_colors.reserve(fixed_palette.size() + rgb_colors_in.size());
+  rgb_colors.reserve(fixed_palette.size() + rgb_colors_in.size() +
+                     (has_bg ? 1 : 0));
   rgb_colors.insert(
     rgb_colors.end(), fixed_palette.begin(), fixed_palette.end());
   rgb_colors.insert(
     rgb_colors.end(), rgb_colors_in.begin(), rgb_colors_in.end());
+  if (has_bg) {
+    rgb_colors.push_back(*bg);
+  }
 
   // Simulate CVD if needed
   std::vector<colors::RGB> rgb_colors_mod = rgb_colors;
-  std::optional<colors::RGB> bg_mod = bg;
 
   for (const auto& [cvd_type, cvd_severity] : cvd) {
     if (cvd_severity > 1.0 || cvd_severity < 0.0) {
@@ -207,9 +212,6 @@ Qualpal::selectColors(int n, const std::vector<colors::RGB>& fixed_palette)
     if (cvd_severity > 0) {
       for (auto& rgb : rgb_colors_mod) {
         rgb = simulateCvd(rgb, cvd_type, cvd_severity);
-      }
-      if (bg_mod.has_value()) {
-        bg_mod = simulateCvd(*bg_mod, cvd_type, cvd_severity);
       }
     }
   }
@@ -221,7 +223,7 @@ Qualpal::selectColors(int n, const std::vector<colors::RGB>& fixed_palette)
   }
 
   // Select new colors
-  auto ind = farthestPoints(n, xyz_colors, metric, bg_mod, n_fixed, max_memory);
+  auto ind = farthestPoints(n, xyz_colors, metric, has_bg, n_fixed, max_memory);
 
   // Output: fixed_palette + selected new colors
   std::vector<colors::RGB> result;

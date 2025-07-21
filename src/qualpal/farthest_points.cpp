@@ -7,21 +7,16 @@ namespace qualpal {
 
 std::vector<int>
 farthestPoints(const int n,
-               const std::vector<colors::XYZ>& colors_in,
+               const std::vector<colors::XYZ>& colors,
                const metrics::MetricType& metric_type,
-               const std::optional<colors::RGB>& bg,
+               const bool has_bg,
                const int n_fixed,
                const double max_memory)
 {
-  std::vector<colors::XYZ> colors = colors_in;
-  if (bg.has_value()) {
-    colors.emplace_back(*bg);
-  }
-
   Matrix<double> dist_mat =
     colorDifferenceMatrix(colors, metric_type, max_memory);
 
-  const int n_candidates = colors_in.size() - n_fixed;
+  const int n_candidates = colors.size() - n_fixed - (has_bg ? 1 : 0);
   const int n_colors = colors.size();
 
   if (n - n_fixed > n_candidates) {
@@ -34,7 +29,7 @@ farthestPoints(const int n,
   std::iota(r.begin(), r.end(), 0);
 
   // Store the complement to r (excluding fixed points).
-  std::vector<int> r_c(colors_in.size() - n);
+  std::vector<int> r_c(colors.size() - n);
   std::iota(r_c.begin(), r_c.end(), n);
 
   bool set_changed = true;
@@ -55,7 +50,8 @@ farthestPoints(const int n,
           min_dist_old = std::min(min_dist_old, dist_mat(r[j], r[i]));
         }
       }
-      if (bg.has_value()) {
+
+      if (has_bg) {
         min_dist_old = std::min(min_dist_old, dist_mat(r[i], n_colors - 1));
       }
 
@@ -74,7 +70,7 @@ farthestPoints(const int n,
           }
         }
 
-        if (bg.has_value()) {
+        if (has_bg) {
           min_dist_k = std::min(min_dist_k, dist_mat(r_c[k], n_colors - 1));
         }
 
