@@ -36,7 +36,6 @@ TEST_CASE("All color conversions are supported", "[colors]")
 
   rgb = lab;
   xyz = lab;
-  lab = lab;
   din99d = lab;
   lchab = lab;
 
