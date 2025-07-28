@@ -188,11 +188,11 @@ Qualpal::selectColors(std::size_t n,
       "Requested palette size is less than the size of the existing palette.");
   }
 
-  std::size_t n_new = n - n_fixed;
-
-  if (n_new < 0) {
+  if (n < n_fixed) {
     throw std::invalid_argument("Number of new colors to add is negative.");
   }
+
+  std::size_t n_new = n - n_fixed;
 
   if (rgb_colors_in.size() < n_new) {
     throw std::invalid_argument(

@@ -45,7 +45,7 @@ farthestPoints(const std::size_t n,
       // Find the distance between the current point and the others in the
       // currently selected set (r).
       for (std::size_t j = 0; j < n; ++j) {
-        assert(r[j] >= 0 && r[j] < n_colors && "Index out of bounds in r[j]");
+        assert(r[j] < n_colors && "Index out of bounds in r[j]");
         if (j != i) {
           min_dist_old = std::min(min_dist_old, dist_mat(r[j], r[i]));
         }
@@ -60,7 +60,6 @@ farthestPoints(const std::size_t n,
       // Check if any point in the complement set (r_c) has a greater minimum
       // distance to the points currently selected (r).
       for (std::size_t k = 0; k < r_c.size(); ++k) {
-        assert(r_c[k] >= 0 && "Index out of bounds in r_c[k]");
         double min_dist_k = std::numeric_limits<double>::max();
 
         for (std::size_t j = 0; j < n; ++j) {

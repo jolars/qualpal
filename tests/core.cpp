@@ -98,8 +98,6 @@ TEST_CASE("Background colors", "[colors]")
 {
   using namespace qualpal::colors;
 
-  const double eps = 1e-6;
-
   RGB bg_color("#66c2a5");
 
   std::vector<RGB> result = qualpal::Qualpal{}
@@ -113,8 +111,6 @@ TEST_CASE("Background colors", "[colors]")
 TEST_CASE("Adapting to color vision deficiency", "[cvd]")
 {
   using namespace qualpal;
-
-  const double eps = 1e-6;
 
   auto cvd = std::map<std::string, double>{
     { "deutan", 1.0 },
@@ -151,8 +147,6 @@ TEST_CASE("Adapting to color vision deficiency", "[cvd]")
 TEST_CASE("Using different metrics", "[metrics][fail]")
 {
   using namespace qualpal;
-
-  const double eps = 1e-6;
 
   auto qp =
     qualpal::Qualpal{}
