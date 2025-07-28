@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.4.0](https://github.com/jolars/qualpal/compare/v2.3.0...v2.4.0) (2025-07-28)
+
+### Features
+
+* use `std::size_t` in place of `int` where appropriate ([d22ed8b](https://github.com/jolars/qualpal/commit/d22ed8be4dfee0552e5427217be7bba4d0deb203))
+
+### Bug Fixes
+
+* correct some diagnostic warnings ([fe3254c](https://github.com/jolars/qualpal/commit/fe3254c8f8fe4dc1e9d42caf35e9b419b342b193))
+
+### Performance Improvements
+
+* avoid copy in `farthestPoints()` ([3c853f6](https://github.com/jolars/qualpal/commit/3c853f6ffc6484df76370080a72bb13fa5514648))
+
 ## [2.3.0](https://github.com/jolars/qualpal/compare/v2.2.0...v2.3.0) (2025-07-21)
 
 ### Features
