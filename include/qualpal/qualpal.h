@@ -92,14 +92,15 @@ public:
   /**
    * @brief Set input colors by sampling HSL colorspace.
    * @param h_lim Hue range in degrees [-360, 360].
-   * @param s_lim Saturation range [0, 1].
-   * @param l_lim Lightness range [0, 1].
+   * @param s_or_c_lim Saturation or Chroma (depending on `ColorspaceType`)
+   * range [0, 1] or >= 0.
+   * @param l_lim Lightness range [0, 1] or [0, 100].
    * @param space Colorspace type
    * @return Reference to this object for chaining.
    * @throws std::invalid_argument for invalid ranges.
    */
   Qualpal& setInputColorspace(const std::array<double, 2>& h_lim,
-                              const std::array<double, 2>& s_lim,
+                              const std::array<double, 2>& s_or_c_lim,
                               const std::array<double, 2>& l_lim,
                               ColorspaceType space = ColorspaceType::HSL);
 
