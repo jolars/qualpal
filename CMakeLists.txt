@@ -7,6 +7,7 @@ project(qualpal LANGUAGES CXX VERSION ${project_version})
 option(BUILD_DOCS "Build documentation" OFF)
 option(BUILD_CLI "Build CLI application" OFF)
 option(BUILD_VISUALIZATIONS "Build visualization tools" OFF)
+option(BUILD_WASM "Build WebAssembly bindings" OFF)
 option(DAP_DEBUG "Interactive debugging" OFF)
 option(ENABLE_COVERAGE "Generate coverage report" OFF)
 option(ENABLE_CLI_TESTS "Enable CLI tests" ON)
@@ -280,6 +281,61 @@ if(BUILD_DOCS)
         include/
         ALL
         COMMENT "Generate package documentation"
+    )
+endif()
+
+if(BUILD_WASM)
+    # Check if we're using Emscripten
+    if(NOT EMSCRIPTEN)
+        message(
+            FATAL_ERROR
+            "BUILD_WASM requires Emscripten toolchain. Use: emcmake cmake ..."
+        )
+    endif()
+
+    # WebAssembly bindings executable
+    add_executable(qualpal_wasm src/wasm/bindings.cpp)
+    target_link_libraries(qualpal_wasm PRIVATE qualpal::qualpal)
+
+    target_link_options(
+        qualpal_wasm
+        PRIVATE
+            -O3
+            -flto
+            -sWASM=1
+            -sEXPORT_ES6=1
+            -sMODULARIZE=1
+            -sEXPORT_NAME=createQualpalModule
+            -sALLOW_MEMORY_GROWTH=1
+            -sDISABLE_EXCEPTION_CATCHING=0
+            --bind
+    )
+
+    # Set output name and location
+    set_target_properties(
+        qualpal_wasm
+        PROPERTIES
+            OUTPUT_NAME "qualpal"
+            SUFFIX ".mjs"
+            RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/wasm"
+    )
+
+    # Copy WASM files to web public directory for development
+    add_custom_command(
+        TARGET qualpal_wasm
+        POST_BUILD
+        COMMAND
+            ${CMAKE_COMMAND} -E make_directory
+            "${CMAKE_CURRENT_SOURCE_DIR}/web/src"
+        COMMAND
+            ${CMAKE_COMMAND} -E copy_if_different
+            "${CMAKE_BINARY_DIR}/wasm/qualpal.mjs"
+            "${CMAKE_CURRENT_SOURCE_DIR}/web/src/qualpal.mjs"
+        COMMAND
+            ${CMAKE_COMMAND} -E copy_if_different
+            "${CMAKE_BINARY_DIR}/wasm/qualpal.wasm"
+            "${CMAKE_CURRENT_SOURCE_DIR}/web/src/qualpal.wasm"
+        COMMENT "Copying WASM files to web/src for development"
     )
 endif()
 

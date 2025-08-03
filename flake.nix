@@ -35,6 +35,11 @@
             llvmPackages.openmp
             valgrind
             graphviz
+            emscripten
+            emscriptenStdenv
+            nodejs
+            tailwindcss
+            prettierd
           ];
         };
       }

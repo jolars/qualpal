@@ -31,6 +31,29 @@ tasks:
       - cmake -B {{.BUILD_DIR}} -S . -DBUILD_CLI=ON
       - cmake {{.CMAKE_BUILD_FLAGS}}
 
+  build:wasm:
+    desc: Build WebAssembly version
+    sources:
+      - src/**/*.cpp
+      - include/**/*.h
+      - web/**/*
+      - CMakeLists.txt
+    generates:
+      - "{{.BUILD_DIR}}/wasm/qualpal.mjs"
+      - "{{.BUILD_DIR}}/wasm/qualpal.wasm"
+    preconditions:
+      - sh: command -v emcc
+        msg: "Emscripten not found. Please install and source emsdk_env.sh"
+    cmds:
+      - echo "Building WebAssembly version..."
+      - rm -rf {{.BUILD_DIR}}/wasm
+      - mkdir -p ~/.emscripten_cache
+      - mkdir -p {{.BUILD_DIR}}/wasm
+      - export EM_CACHE=~/.emscripten_cache && emcmake cmake -B {{.BUILD_DIR}} -S . -DBUILD_WASM=ON -DCMAKE_BUILD_TYPE=Release
+      - export EM_CACHE=~/.emscripten_cache && emmake make -C {{.BUILD_DIR}} qualpal_wasm
+      - cp {{.BUILD_DIR}}/qualpal_wasm.* web/static/ 2>/dev/null || cp {{.BUILD_DIR}}/qualpal_wasm.* web/public/ 2>/dev/null || echo "Copy WASM files to web directory manually"
+      - echo "✓ WebAssembly build complete! Files in {{.BUILD_DIR}}/wasm/ and copied to web/"
+
   plots:
     desc: Generate documentation plots using gnuplot
     cmds:
@@ -86,3 +109,64 @@ tasks:
       - cmake -B {{.BUILD_DIR}} -S . -DBUILD_TESTING=ON
       - cmake {{.CMAKE_BUILD_FLAGS}}
       - valgrind --leak-check=full --error-exitcode=1 ./{{.BUILD_DIR}}/tests
+
+  dev:
+    desc: Start Svelte development server
+    dir: web
+    cmds:
+      - npm run dev
+
+  dev:full:
+    desc: Build WASM and start Svelte dev server with auto-rebuild
+    deps: [build:wasm]
+    cmds:
+      - echo "Starting full development mode..."
+      - echo "WASM built, starting Svelte dev server"
+      - echo "Open http://localhost:5173 in your browser"
+      - |
+        cd web && \
+        (npm run dev &) && \
+        echo $! > dev-server.pid && \
+        trap 'kill $(cat dev-server.pid) 2>/dev/null || true; rm -f dev-server.pid' EXIT && \
+        while true; do
+          inotifywait -r -e modify ../src ../include 2>/dev/null && \
+          echo "C++ changes detected, rebuilding WASM..." && \
+          task build:wasm && \
+          echo "WASM rebuild complete! Svelte will hot-reload."
+        done
+
+  setup:web:
+    desc: Initialize Svelte project (run once)
+    dir: web
+    cmds:
+      - npm create svelte@latest . --template skeleton --types typescript --eslint --prettier
+      - npm install
+      - echo "✓ Svelte project initialized! Run 'task dev' to start development"
+
+  build:web:
+    desc: Build Svelte app for production
+    deps: [build:wasm]
+    dir: web
+    cmds:
+      - npm run build
+      - echo "✓ Web app built! Files in web/dist/"
+
+  preview:web:
+    desc: Preview production build locally
+    deps: [build:web]
+    dir: web
+    cmds:
+      - npm run preview
+
+  clean:web:
+    desc: Clean web build artifacts
+    dir: web
+    cmds:
+      - rm -rf dist node_modules/.vite
+      - echo "Web build artifacts cleaned"
+
+  clean:all:
+    desc: Clean all build artifacts
+    deps: [clean, clean:wasm, clean:web]
+    cmds:
+      - echo "All build artifacts cleaned"

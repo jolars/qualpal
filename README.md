@@ -116,6 +116,21 @@ If you want to include the CLI interface, make sure to pass the `-DBUILD_CLI=ON`
 cmake -B build -S . -DBUILD_CLI=ON
 ```
 
+### WebAssembly Build
+
+To build the WebAssembly version for web applications:
+
+```bash
+# Install Emscripten first (if not already installed)
+git clone https://github.com/emscripten-core/emsdk.git
+cd emsdk && ./emsdk install latest && ./emsdk activate latest
+source ./emsdk_env.sh && cd ..
+
+# Build WebAssembly version
+chmod +x scripts/build-wasm.sh
+./scripts/build-wasm.sh
+```
+
 Then you can install it to your system:
 
 ```bash
