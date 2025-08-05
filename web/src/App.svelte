@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { onMount } from "svelte";
   import HueWheel from "./HueWheel.svelte";
   import LightnessSlider from "./LightnessSlider.svelte";
@@ -29,7 +29,7 @@
   };
 
   // Debounce timer
-  let debounceTimer;
+  let debounceTimer: ReturnType<typeof setTimeout>;
 
   // Initialize the module
   onMount(async () => {
@@ -73,15 +73,15 @@
       }
 
       qp.setInputColorspace(
-        parseFloat(normalizedHueMin),
-        parseFloat(normalizedHueMax),
-        parseFloat(params.satMin),
-        parseFloat(params.satMax),
-        parseFloat(params.lightMin),
-        parseFloat(params.lightMax),
+        normalizedHueMin,
+        normalizedHueMax,
+        params.satMin,
+        params.satMax,
+        params.lightMin,
+        params.lightMax,
       );
 
-      const newPalette = qp.generate(parseInt(params.numColors));
+      const newPalette = qp.generate(params.numColors);
       palette = newPalette;
       console.log("Generated palette:", newPalette);
     } catch (error) {
@@ -93,26 +93,10 @@
   }
 
   // Copy single color to clipboard
-  async function copyColor(hex) {
+  async function copyColor(hex: string) {
     try {
       await navigator.clipboard.writeText(hex);
       showToast(`Copied ${hex}`);
-    } catch (error) {
-      console.error("Failed to copy to clipboard:", error);
-      showToast("Failed to copy");
-    }
-  }
-
-  // Copy all colors to clipboard
-  async function copyAllColors() {
-    if (palette.length === 0) return;
-
-    const hexColors = palette.map((color) => color.hex);
-    const text = hexColors.join("\n");
-
-    try {
-      await navigator.clipboard.writeText(text);
-      showToast(`Copied ${hexColors.length} colors`);
     } catch (error) {
       console.error("Failed to copy to clipboard:", error);
       showToast("Failed to copy");
@@ -150,7 +134,7 @@
   }
 
   // Show toast notification
-  function showToast(message) {
+  function showToast(message: string) {
     toast.message = message;
     toast.show = true;
     setTimeout(() => {
@@ -189,13 +173,17 @@
           <div class="space-y-6">
             <!-- Number of Colors -->
             <div class="form-group">
-              <label class="block text-sm font-medium text-gray-700 mb-2">
+              <label
+                for="numColors"
+                class="block text-sm font-medium text-gray-700 mb-2"
+              >
                 Number of Colors
                 <span class="text-blue-600 font-semibold"
                   >{params.numColors}</span
                 >
               </label>
               <input
+                id="numColors"
                 type="range"
                 min="2"
                 max="12"
@@ -274,13 +262,16 @@
             <div
               class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"
             >
-              {#each palette as color, index}
+              {#each palette as color}
                 <div class="group">
-                  <div
-                    class="aspect-square rounded-lg cursor-pointer border-2 border-gray-200 hover:border-gray-400 transition-all duration-200 hover:shadow-md relative overflow-hidden"
+                  <button
+                    class="aspect-square rounded-lg cursor-pointer border-2 border-gray-200 hover:border-gray-400 transition-all duration-200 hover:shadow-md relative overflow-hidden w-full"
                     style="background-color: {color.hex}"
                     on:click={() => copyColor(color.hex)}
+                    on:keydown={(e) =>
+                      e.key === "Enter" && copyColor(color.hex)}
                     title="Click to copy {color.hex}"
+                    aria-label="Copy color {color.hex}"
                   >
                     <div
                       class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-200 flex items-center justify-center"
@@ -291,7 +282,7 @@
                         Copy
                       </span>
                     </div>
-                  </div>
+                  </button>
                   <div class="mt-2 text-center">
                     <div class="text-sm font-mono text-gray-700">
                       {color.hex}

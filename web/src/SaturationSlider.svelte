@@ -80,7 +80,7 @@
       stroke="#333"
       stroke-width="2"
       style="cursor: pointer;"
-      on:pointerdown={(event) => {
+      on:pointerdown={() => {
         const moveHandler = (ev: PointerEvent) => handleDrag("min", ev);
         const upHandler = () => {
           window.removeEventListener("pointermove", moveHandler);
@@ -98,7 +98,7 @@
       stroke="#333"
       stroke-width="2"
       style="cursor: pointer;"
-      on:pointerdown={(event) => {
+      on:pointerdown={() => {
         const moveHandler = (ev: PointerEvent) => handleDrag("max", ev);
         const upHandler = () => {
           window.removeEventListener("pointermove", moveHandler);
