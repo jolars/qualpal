@@ -22,8 +22,11 @@ bibliography: paper.bib
 
 `qualpal` is a C++ library for generating qualitative color palettes with
 maximum perceptual distinctiveness, designed for scientific data visualization
-and accessibility. It supports flexible palette configuration via a
-builder-style API, multiple input formats (RGB, hex, HSL, built-in palettes),
+and accessibility. It supports flexible palette generation via multiple input
+formats (RGB, HSL and LCHab (HCL) colorspaces, built-in palettes) and can adapt
+palettes to color vision deficiencies (CVD) of the full dichromacy spectrum
+(protanopia, deuteranopia, tritanopia) with any choice of severity. The
+
 color vision deficiency simulation, and perceptual color difference metrics.
 The library uses fast algorithms and perceptually uniform color spaces (DIN99d,
 CIEDE2000) to select colors that are maximally distinct, ensuring accessibility
