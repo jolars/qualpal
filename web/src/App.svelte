@@ -23,6 +23,11 @@
     lightMax: 0.7,
     useBackground: false,
     backgroundColor: "#ffffff",
+    cvd: {
+      protan: 0,
+      deutan: 0,
+      tritan: 0,
+    },
   };
 
   // Toast notification
@@ -97,6 +102,15 @@
         if (bgColor) {
           qp.setBackground(bgColor.r / 255, bgColor.g / 255, bgColor.b / 255);
         }
+      }
+
+      // Set CVD if any slider > 0
+      const { protan, deutan, tritan } = params.cvd;
+      if (
+        (protan > 0 || deutan > 0 || tritan > 0) &&
+        qualpalModule?.Qualpal.prototype.setCvd
+      ) {
+        qp.setCvd({ protan, deutan, tritan });
       }
 
       const newPalette = qp.generate(params.numColors);
@@ -324,6 +338,63 @@
             </div>
           </div>
         {/if}
+
+        <!-- CVD Settings -->
+        <div class="bg-gray-50 p-4 rounded-lg">
+          <h3 class="font-medium text-gray-900 mb-3">
+            Color Vision Deficiency
+          </h3>
+          <div class="space-y-3">
+            <div class="max-w-xs w-full">
+              <label class="text-sm block mb-1">Protanopia</label>
+              <div class="flex items-center gap-2">
+                <input
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.01"
+                  bind:value={params.cvd.protan}
+                  on:input={debouncedGenerate}
+                  class="flex-1 w-full"
+                />
+                <span class="text-xs w-8 text-right">{params.cvd.protan}</span>
+              </div>
+            </div>
+            <div class="max-w-xs w-full">
+              <label class="text-sm block mb-1">Deuteranopia</label>
+              <div class="flex items-center gap-2">
+                <input
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.01"
+                  bind:value={params.cvd.deutan}
+                  on:input={debouncedGenerate}
+                  class="flex-1 w-full"
+                />
+                <span class="text-xs w-8 text-right">{params.cvd.deutan}</span>
+              </div>
+            </div>
+            <div class="max-w-xs w-full">
+              <label class="text-sm block mb-1">Tritanopia</label>
+              <div class="flex items-center gap-2">
+                <input
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.01"
+                  bind:value={params.cvd.tritan}
+                  on:input={debouncedGenerate}
+                  class="flex-1 w-full"
+                />
+                <span class="text-xs w-8 text-right">{params.cvd.tritan}</span>
+              </div>
+            </div>
+            <p class="text-xs text-gray-500 mt-2">
+              Adapt palette to users with color vision deficiency.
+            </p>
+          </div>
+        </div>
       </div>
     </aside>
 
