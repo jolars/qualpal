@@ -4,6 +4,7 @@
   import LightnessSlider from "./LightnessSlider.svelte";
   import createQualpalModule from "./qualpal.mjs";
   import SaturationSlider from "./SaturationSlider.svelte";
+  import Examples from "./Examples.svelte";
 
   // State
   let moduleLoaded = false;
@@ -143,7 +144,7 @@
   }
 </script>
 
-<div class="min-h-screen bg-gray-100">
+<div class="bg-gray-100">
   <!-- Header -->
   <header class="bg-white shadow-sm border-b">
     <div class="max-w-7xl mx-auto px-4 py-4">
@@ -156,9 +157,11 @@
     </div>
   </header>
 
-  <div class="flex max-w-7xl mx-auto">
+  <div class="bg-gray-100 flex flex-col md:flex-row min-h-screen">
     <!-- Sidebar -->
-    <aside class="w-80 bg-white shadow-sm min-h-screen p-6 border-r">
+    <aside
+      class="w-full md:w-64 bg-gray-100 p-4 border-b md:border-b-0 md:border-r"
+    >
       <div class="sticky top-6">
         <h2 class="text-lg font-semibold text-gray-900 mb-4">Parameters</h2>
 
@@ -247,7 +250,7 @@
     </aside>
 
     <!-- Main Content -->
-    <main class="flex-1 p-6">
+    <main class="flex-1 p-4">
       {#if moduleLoaded && palette.length > 0}
         <div class="space-y-6">
           <!-- Palette Display -->
@@ -259,9 +262,7 @@
               <span class="text-sm text-gray-500">{palette.length} colors</span>
             </div>
 
-            <div
-              class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"
-            >
+            <div class="grid grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-4">
               {#each palette as color}
                 <div class="group">
                   <button
@@ -293,9 +294,14 @@
             </div>
           </div>
 
+          <!-- Examples Section -->
+          <Examples {palette} />
+
           <!-- JSON Output -->
           <div class="bg-white rounded-lg shadow-sm border p-6">
-            <h3 class="text-lg font-semibold text-gray-900 mb-4">Output</h3>
+            <h3 class="text-xl text-left font-semibold text-gray-900 mb-4">
+              Output
+            </h3>
             <div class="mb-4 border-b flex gap-2">
               {#each ["JSON", "R", "Python", "CSS"] as tab}
                 <button
