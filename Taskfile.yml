@@ -33,14 +33,6 @@ tasks:
 
   build:wasm:
     desc: Build WebAssembly version
-    sources:
-      - src/**/*.cpp
-      - include/**/*.h
-      - web/**/*
-      - CMakeLists.txt
-    generates:
-      - "{{.BUILD_DIR}}/wasm/qualpal.mjs"
-      - "{{.BUILD_DIR}}/wasm/qualpal.wasm"
     preconditions:
       - sh: command -v emcc
         msg: "Emscripten not found. Please install and source emsdk_env.sh"

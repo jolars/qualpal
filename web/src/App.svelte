@@ -5,12 +5,14 @@
   import createQualpalModule from "./qualpal.mjs";
   import SaturationSlider from "./SaturationSlider.svelte";
   import Examples from "./Examples.svelte";
+  import PaletteAnalysis from "./PaletteAnalysis.svelte";
 
   // State
   let moduleLoaded = false;
   let qualpalModule = null;
   let loading = false;
   let palette = [];
+  let analysis = null;
 
   // Parameters
   let params = {
@@ -116,6 +118,21 @@
       const newPalette = qp.generate(params.numColors);
       palette = newPalette;
       console.log("Generated palette:", newPalette);
+
+      // Analyze palette
+      try {
+        const result = await qualpalModule.analyzePalette(
+          newPalette.map((c) => hexToRgb(c.hex)),
+          params.cvd,
+          params.useBackground ? hexToRgb(params.backgroundColor) : null,
+          1000000,
+        );
+        console.log("Palette analysis result:", result);
+        analysis = result;
+      } catch (e) {
+        console.error("Error analyzing palette:", e);
+        analysis = null;
+      }
     } catch (error) {
       console.error("Error generating palette:", error);
       showToast("Error generating palette");
@@ -500,6 +517,11 @@
                 class="text-sm font-mono text-gray-700 overflow-x-auto">{outputText}</pre>
             </div>
           </div>
+
+          <PaletteAnalysis
+            matrix={analysis?.normal?.differenceMatrix ?? []}
+            labels={palette.map((c) => c.hex)}
+          />
         </div>
       {:else if moduleLoaded}
         <div class="bg-white rounded-lg shadow-sm border p-12 text-center">

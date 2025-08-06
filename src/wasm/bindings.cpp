@@ -6,20 +6,19 @@
 #include <vector>
 
 using namespace emscripten;
-using namespace qualpal;
 
 // Wrapper class to make the API more JavaScript-friendly
 class QualpalJS
 {
 private:
-  Qualpal qp;
+  qualpal::Qualpal qp;
 
 public:
   QualpalJS() = default;
 
   void setInputRGB(const val& colors_array)
   {
-    std::vector<colors::RGB> rgb_colors;
+    std::vector<qualpal::colors::RGB> rgb_colors;
     int length = colors_array["length"].as<int>();
 
     for (int i = 0; i < length; ++i) {
@@ -74,7 +73,7 @@ public:
 
   void setBackground(double r, double g, double b)
   {
-    qp.setBackground(colors::RGB(r, g, b));
+    qp.setBackground(qualpal::colors::RGB(r, g, b));
   }
 
   val generate(int n)
@@ -95,6 +94,78 @@ public:
   }
 };
 
+// Wrapper function that uses only JavaScript-compatible types
+val
+analyzePaletteWrapper(const val& colors_array,
+                      const val& cvd_obj,
+                      const val& bg_obj,
+                      double max_memory)
+{
+  // Convert colors array
+  std::vector<qualpal::colors::RGB> rgb_colors;
+  int length = colors_array["length"].as<int>();
+  for (int i = 0; i < length; ++i) {
+    val color = colors_array[i];
+    double r = color["r"].as<double>();
+    double g = color["g"].as<double>();
+    double b = color["b"].as<double>();
+    rgb_colors.emplace_back(r, g, b);
+  }
+
+  // Convert cvd object to map
+  std::map<std::string, double> cvd_params;
+  if (!cvd_obj.isNull() && !cvd_obj.isUndefined()) {
+    val keys = val::global("Object").call<val>("keys", cvd_obj);
+    int keys_length = keys["length"].as<int>();
+    for (int i = 0; i < keys_length; ++i) {
+      std::string key = keys[i].as<std::string>();
+      double value = cvd_obj[key].as<double>();
+      cvd_params[key] = value;
+    }
+  }
+
+  // Convert background color to optional
+  std::optional<qualpal::colors::RGB> bg;
+  if (!bg_obj.isNull() && !bg_obj.isUndefined()) {
+    double r = bg_obj["r"].as<double>();
+    double g = bg_obj["g"].as<double>();
+    double b = bg_obj["b"].as<double>();
+    bg = qualpal::colors::RGB(r, g, b);
+  }
+
+  // Call the actual analyze function
+  auto result = qualpal::analyzePalette(rgb_colors,
+                                        qualpal::metrics::MetricType::DIN99d,
+                                        cvd_params,
+                                        bg,
+                                        max_memory);
+
+  // Convert result to JavaScript object
+  val js_result = val::object();
+  for (const auto& [cvd_type, analysis] : result) {
+    val analysis_obj = val::object();
+    // Convert difference_matrix to JS array of arrays
+    val matrix = val::array();
+    for (size_t i = 0; i < analysis.difference_matrix.nrow(); ++i) {
+      val row = val::array();
+      for (size_t j = 0; j < analysis.difference_matrix.ncol(); ++j) {
+        row.set(j, analysis.difference_matrix(i, j));
+      }
+      matrix.set(i, row);
+    }
+    analysis_obj.set("differenceMatrix", matrix);
+    // Min distances
+    val min_distances = val::array();
+    for (size_t i = 0; i < analysis.min_distances.size(); ++i) {
+      min_distances.set(i, analysis.min_distances[i]);
+    }
+    analysis_obj.set("minDistances", min_distances);
+    analysis_obj.set("bgMinDistance", analysis.bg_min_distance);
+    js_result.set(cvd_type, analysis_obj);
+  }
+  return js_result;
+}
+
 EMSCRIPTEN_BINDINGS(qualpal)
 {
   class_<QualpalJS>("Qualpal")
@@ -106,4 +177,8 @@ EMSCRIPTEN_BINDINGS(qualpal)
     .function("setCvd", &QualpalJS::setCvd)
     .function("setBackground", &QualpalJS::setBackground)
     .function("generate", &QualpalJS::generate);
+
+  // Free function binding
+  // function("analyzePalette", &analyzePalette);
+  function("analyzePalette", &analyzePaletteWrapper);
 }
