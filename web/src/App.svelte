@@ -21,6 +21,8 @@
     satMax: 0.8,
     lightMin: 0.3,
     lightMax: 0.7,
+    useBackground: false,
+    backgroundColor: "#ffffff",
   };
 
   // Toast notification
@@ -54,6 +56,14 @@
     }, 300);
   }
 
+  function isDarkColor(hex: string): boolean {
+    const c = hex.replace("#", "");
+    const r = parseInt(c.substring(0, 2), 16);
+    const g = parseInt(c.substring(2, 4), 16);
+    const b = parseInt(c.substring(4, 6), 16);
+    return 0.299 * r + 0.587 * g + 0.114 * b < 128;
+  }
+
   // Generate palette
   async function generatePalette() {
     if (!qualpalModule) return;
@@ -81,6 +91,13 @@
         params.lightMin,
         params.lightMax,
       );
+
+      if (params.useBackground) {
+        const bgColor = hexToRgb(params.backgroundColor);
+        if (bgColor) {
+          qp.setBackground(bgColor.r / 255, bgColor.g / 255, bgColor.b / 255);
+        }
+      }
 
       const newPalette = qp.generate(params.numColors);
       palette = newPalette;
@@ -142,6 +159,18 @@
       toast.show = false;
     }, 3000);
   }
+
+  // Convert hex to RGB
+  function hexToRgb(hex: string) {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result
+      ? {
+          r: parseInt(result[1], 16),
+          g: parseInt(result[2], 16),
+          b: parseInt(result[3], 16),
+        }
+      : null;
+  }
 </script>
 
 <div class="bg-gray-100">
@@ -175,28 +204,30 @@
         {:else}
           <div class="space-y-6">
             <!-- Number of Colors -->
-            <div class="form-group">
-              <label
-                for="numColors"
-                class="block text-sm font-medium text-gray-700 mb-2"
-              >
-                Number of Colors
-                <span class="text-blue-600 font-semibold"
-                  >{params.numColors}</span
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <div class="form-group">
+                <label
+                  for="numColors"
+                  class="block text-sm font-medium text-gray-700 mb-2"
                 >
-              </label>
-              <input
-                id="numColors"
-                type="range"
-                min="2"
-                max="12"
-                bind:value={params.numColors}
-                on:input={debouncedGenerate}
-                class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
-              />
-              <div class="flex justify-between text-xs text-gray-500 mt-1">
-                <span>2</span>
-                <span>12</span>
+                  Number of Colors
+                  <span class="text-blue-600 font-semibold"
+                    >{params.numColors}</span
+                  >
+                </label>
+                <input
+                  id="numColors"
+                  type="range"
+                  min="2"
+                  max="12"
+                  bind:value={params.numColors}
+                  on:input={debouncedGenerate}
+                  class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
+                />
+                <div class="flex justify-between text-xs text-gray-500 mt-1">
+                  <span>2</span>
+                  <span>12</span>
+                </div>
               </div>
             </div>
 
@@ -244,6 +275,53 @@
                 }}
               />
             </div>
+
+            <!-- Background Color -->
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <h3 class="font-medium text-gray-900 mb-3">Background Color</h3>
+
+              <div class="mb-3">
+                <label class="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    bind:checked={params.useBackground}
+                    on:change={debouncedGenerate}
+                    class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                  />
+                  <span class="text-sm text-gray-700"
+                    >Optimize for background color</span
+                  >
+                </label>
+              </div>
+
+              {#if params.useBackground}
+                <div class="flex items-center gap-2">
+                  <input
+                    type="color"
+                    bind:value={params.backgroundColor}
+                    on:change={debouncedGenerate}
+                    class="w-1/3 h-8 rounded border border-gray-300 cursor-pointer"
+                    title="Select background color"
+                  />
+                  <input
+                    type="text"
+                    bind:value={params.backgroundColor}
+                    on:input={debouncedGenerate}
+                    class="w-2/3 px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="#ffffff"
+                    pattern="^#[0-9A-Fa-f]{6}$"
+                  />
+                </div>
+                <p class="text-xs text-gray-500 mt-2">
+                  Colors are optimized to be distinct against this background
+                </p>
+              {:else}
+                <p class="text-xs text-gray-500">
+                  Colors will be optimized for general use without a specific
+                  background
+                </p>
+              {/if}
+            </div>
           </div>
         {/if}
       </div>
@@ -262,40 +340,60 @@
               <span class="text-sm text-gray-500">{palette.length} colors</span>
             </div>
 
-            <div class="grid grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-              {#each palette as color}
-                <div class="group">
-                  <button
-                    class="aspect-square rounded-lg cursor-pointer border-2 border-gray-200 hover:border-gray-400 transition-all duration-200 hover:shadow-md relative overflow-hidden w-full"
-                    style="background-color: {color.hex}"
-                    on:click={() => copyColor(color.hex)}
-                    on:keydown={(e) =>
-                      e.key === "Enter" && copyColor(color.hex)}
-                    title="Click to copy {color.hex}"
-                    aria-label="Copy color {color.hex}"
-                  >
-                    <div
-                      class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-200 flex items-center justify-center"
+            <div
+              class="p-4 rounded-lg border-2 border-dashed border-gray-200"
+              style="background-color: {params.useBackground
+                ? params.backgroundColor
+                : '#ffffff'}"
+            >
+              <div class="grid grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+                {#each palette as color}
+                  <div class="group">
+                    <button
+                      class="aspect-square rounded-lg cursor-pointer border-2 border-gray-200 hover:border-gray-400 transition-all duration-200 hover:shadow-md relative overflow-hidden w-full"
+                      style="background-color: {color.hex}"
+                      on:click={() => copyColor(color.hex)}
+                      on:keydown={(e) =>
+                        e.key === "Enter" && copyColor(color.hex)}
+                      title="Click to copy {color.hex}"
+                      aria-label="Copy color {color.hex}"
                     >
-                      <span
-                        class="text-white opacity-0 group-hover:opacity-100 font-medium text-sm bg-black bg-opacity-50 px-2 py-1 rounded"
+                      <div
+                        class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-200 flex items-center justify-center"
                       >
-                        Copy
-                      </span>
-                    </div>
-                  </button>
-                  <div class="mt-2 text-center">
-                    <div class="text-sm font-mono text-gray-700">
-                      {color.hex}
+                        <span
+                          class="text-white opacity-0 group-hover:opacity-100 font-medium text-sm bg-black bg-opacity-50 px-2 py-1 rounded"
+                        >
+                          Copy
+                        </span>
+                      </div>
+                    </button>
+                    <div class="mt-2 text-center">
+                      <div
+                        class="text-sm font-mono"
+                        style="color: {isDarkColor(
+                          params.useBackground
+                            ? params.backgroundColor
+                            : '#ffffff',
+                        )
+                          ? '#fff'
+                          : '#222'}"
+                      >
+                        {color.hex}
+                      </div>
                     </div>
                   </div>
-                </div>
-              {/each}
+                {/each}
+              </div>
             </div>
           </div>
 
-          <!-- Examples Section -->
-          <Examples {palette} />
+          <!-- Examples -->
+          <Examples
+            {palette}
+            useBackground={params.useBackground}
+            backgroundColor={params.backgroundColor}
+          />
 
           <!-- JSON Output -->
           <div class="bg-white rounded-lg shadow-sm border p-6">

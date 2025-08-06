@@ -40,6 +40,7 @@
             nodejs
             tailwindcss
             prettierd
+            vite
           ];
         };
       }

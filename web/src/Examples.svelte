@@ -6,6 +6,18 @@
   declare const topojson: any;
 
   export let palette = [];
+  export let useBackground = false;
+  export let backgroundColor = "#ffffff";
+
+  function isDarkColor(hex: string): boolean {
+    // Simple luminance check
+    const c = hex.replace("#", "");
+    const r = parseInt(c.substring(0, 2), 16);
+    const g = parseInt(c.substring(2, 4), 16);
+    const b = parseInt(c.substring(4, 6), 16);
+    // Perceived luminance formula
+    return 0.299 * r + 0.587 * g + 0.114 * b < 128;
+  }
 
   let barChartContainer;
   let scatterPlotContainer;
@@ -141,6 +153,12 @@
     const svg = d3.select(barChartContainer);
     svg.selectAll("*").remove();
 
+    // Set background
+    const bgColor = useBackground ? backgroundColor : "#ffffff";
+    svg.style("background-color", bgColor);
+
+    const axisColor = isDarkColor(bgColor) ? "#fff" : "#222";
+
     const margin = { top: 20, right: 20, bottom: 40, left: 40 };
     const width = 300 - margin.left - margin.right;
     const height = 200 - margin.bottom - margin.top;
@@ -174,13 +192,19 @@
     g.append("g")
       .attr("transform", `translate(0,${height})`)
       .call(d3.axisBottom(x))
-      .selectAll("text")
-      .style("font-size", "10px");
+      .call((g) =>
+        g.selectAll("text").style("font-size", "10px").style("fill", axisColor),
+      )
+      .call((g) => g.selectAll("path").style("stroke", axisColor))
+      .call((g) => g.selectAll("line").style("stroke", axisColor));
 
     g.append("g")
       .call(d3.axisLeft(y).ticks(5, "s"))
-      .selectAll("text")
-      .style("font-size", "10px");
+      .call((g) =>
+        g.selectAll("text").style("font-size", "10px").style("fill", axisColor),
+      )
+      .call((g) => g.selectAll("path").style("stroke", axisColor))
+      .call((g) => g.selectAll("line").style("stroke", axisColor));
   }
 
   function createScatterPlot() {
@@ -188,6 +212,11 @@
 
     const svg = d3.select(scatterPlotContainer);
     svg.selectAll("*").remove();
+
+    // Set background
+    const bgColor = useBackground ? backgroundColor : "#ffffff";
+    svg.style("background-color", bgColor);
+    const axisColor = isDarkColor(bgColor) ? "#fff" : "#222";
 
     const margin = { top: 20, right: 20, bottom: 40, left: 40 };
     const width = 300 - margin.left - margin.right;
@@ -222,13 +251,19 @@
     g.append("g")
       .attr("transform", `translate(0,${height})`)
       .call(d3.axisBottom(x).ticks(5))
-      .selectAll("text")
-      .style("font-size", "10px");
+      .call((g) =>
+        g.selectAll("text").style("font-size", "10px").style("fill", axisColor),
+      )
+      .call((g) => g.selectAll("path").style("stroke", axisColor))
+      .call((g) => g.selectAll("line").style("stroke", axisColor));
 
     g.append("g")
       .call(d3.axisLeft(y).ticks(5))
-      .selectAll("text")
-      .style("font-size", "10px");
+      .call((g) =>
+        g.selectAll("text").style("font-size", "10px").style("fill", axisColor),
+      )
+      .call((g) => g.selectAll("path").style("stroke", axisColor))
+      .call((g) => g.selectAll("line").style("stroke", axisColor));
   }
 
   function createLineChart() {
@@ -236,6 +271,11 @@
 
     const svg = d3.select(lineChartContainer);
     svg.selectAll("*").remove();
+
+    // Set background
+    const bgColor = useBackground ? backgroundColor : "#ffffff";
+    svg.style("background-color", bgColor);
+    const axisColor = isDarkColor(bgColor) ? "#fff" : "#222";
 
     const margin = { top: 20, right: 20, bottom: 40, left: 40 };
     const width = 300 - margin.left - margin.right;
@@ -287,13 +327,19 @@
     g.append("g")
       .attr("transform", `translate(0,${height})`)
       .call(d3.axisBottom(x))
-      .selectAll("text")
-      .style("font-size", "10px");
+      .call((g) =>
+        g.selectAll("text").style("font-size", "10px").style("fill", axisColor),
+      )
+      .call((g) => g.selectAll("path").style("stroke", axisColor))
+      .call((g) => g.selectAll("line").style("stroke", axisColor));
 
     g.append("g")
       .call(d3.axisLeft(y))
-      .selectAll("text")
-      .style("font-size", "10px");
+      .call((g) =>
+        g.selectAll("text").style("font-size", "10px").style("fill", axisColor),
+      )
+      .call((g) => g.selectAll("path").style("stroke", axisColor))
+      .call((g) => g.selectAll("line").style("stroke", axisColor));
   }
 
   function createMap() {
@@ -301,6 +347,10 @@
 
     const svg = d3.select(mapContainer);
     svg.selectAll("*").remove();
+
+    // Set background
+    const bgColor = useBackground ? backgroundColor : "#ffffff";
+    svg.style("background-color", bgColor);
 
     svg
       .selectAll(".state")
