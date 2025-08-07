@@ -142,10 +142,13 @@ analyzePaletteWrapper(const val& colors_array,
 
   // Convert result to JavaScript object
   val js_result = val::object();
+
   for (const auto& [cvd_type, analysis] : result) {
     val analysis_obj = val::object();
+
     // Convert difference_matrix to JS array of arrays
     val matrix = val::array();
+
     for (size_t i = 0; i < analysis.difference_matrix.nrow(); ++i) {
       val row = val::array();
       for (size_t j = 0; j < analysis.difference_matrix.ncol(); ++j) {
@@ -153,12 +156,16 @@ analyzePaletteWrapper(const val& colors_array,
       }
       matrix.set(i, row);
     }
+
     analysis_obj.set("differenceMatrix", matrix);
+
     // Min distances
     val min_distances = val::array();
+
     for (size_t i = 0; i < analysis.min_distances.size(); ++i) {
       min_distances.set(i, analysis.min_distances[i]);
     }
+
     analysis_obj.set("minDistances", min_distances);
     analysis_obj.set("bgMinDistance", analysis.bg_min_distance);
     js_result.set(cvd_type, analysis_obj);
