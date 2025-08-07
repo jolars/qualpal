@@ -521,6 +521,7 @@
           <PaletteAnalysis
             matrix={analysis?.normal?.differenceMatrix ?? []}
             labels={palette.map((c) => c.hex)}
+            minDistances={analysis?.normal?.minDistances ?? []}
           />
         </div>
       {:else if moduleLoaded}
