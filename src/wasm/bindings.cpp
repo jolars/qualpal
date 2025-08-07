@@ -106,9 +106,9 @@ analyzePaletteWrapper(const val& colors_array,
   int length = colors_array["length"].as<int>();
   for (int i = 0; i < length; ++i) {
     val color = colors_array[i];
-    double r = color["r"].as<double>();
-    double g = color["g"].as<double>();
-    double b = color["b"].as<double>();
+    double r = color["r"].as<double>() / 255;
+    double g = color["g"].as<double>() / 255;
+    double b = color["b"].as<double>() / 255;
     rgb_colors.emplace_back(r, g, b);
   }
 
