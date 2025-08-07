@@ -7,31 +7,16 @@
   import Examples from "./Examples.svelte";
   import PaletteAnalysis from "./PaletteAnalysis.svelte";
   import Toast from "./components/Toast.svelte";
-
-  // State
-  let moduleLoaded = false;
-  let qualpalModule = null;
-  let loading = false;
-  let palette = [];
-  let analysis = null;
-
-  // Parameters
-  let params = {
-    numColors: 5,
-    hueMin: 20,
-    hueMax: 280,
-    satMin: 0.4,
-    satMax: 0.8,
-    lightMin: 0.3,
-    lightMax: 0.7,
-    useBackground: false,
-    backgroundColor: "#ffffff",
-    cvd: {
-      protan: 0,
-      deutan: 0,
-      tritan: 0,
-    },
-  };
+  import {
+    paletteParams,
+    palette,
+    analysis,
+    loading,
+    moduleLoaded,
+    initializeModule,
+    generatePalette,
+    debouncedGenerate,
+  } from "./stores/paletteStore.js";
 
   // Toast notification
   let toast = {
@@ -39,30 +24,13 @@
     message: "",
   };
 
-  // Debounce timer
-  let debounceTimer: ReturnType<typeof setTimeout>;
-
   // Initialize the module
   onMount(async () => {
-    console.log("Loading Qualpal module...");
-    try {
-      qualpalModule = await createQualpalModule();
-      moduleLoaded = true;
-      console.log("Qualpal loaded successfully!");
-      generatePalette();
-    } catch (error) {
-      console.error("Failed to load Qualpal:", error);
-      moduleLoaded = false;
+    const success = await initializeModule();
+    if (success) {
+      generatePalette($paletteParams);
     }
   });
-
-  // Debounced generate function
-  function debouncedGenerate() {
-    clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(() => {
-      generatePalette();
-    }, 300);
-  }
 
   function isDarkColor(hex: string): boolean {
     const c = hex.replace("#", "");
@@ -70,76 +38,6 @@
     const g = parseInt(c.substring(2, 4), 16);
     const b = parseInt(c.substring(4, 6), 16);
     return 0.299 * r + 0.587 * g + 0.114 * b < 128;
-  }
-
-  // Generate palette
-  async function generatePalette() {
-    if (!qualpalModule) return;
-
-    loading = true;
-
-    try {
-      const qp = new qualpalModule.Qualpal();
-
-      // Handle wraparound hue ranges using negative values
-      let normalizedHueMin = params.hueMin;
-      let normalizedHueMax = params.hueMax;
-
-      // If we have a wraparound case (min > max), convert max to negative
-      if (params.hueMin > params.hueMax) {
-        // For wraparound ranges like 270° to 30°, convert to 270° to -330°
-        normalizedHueMin = params.hueMin - 360;
-      }
-
-      qp.setInputColorspace(
-        normalizedHueMin,
-        normalizedHueMax,
-        params.satMin,
-        params.satMax,
-        params.lightMin,
-        params.lightMax,
-      );
-
-      if (params.useBackground) {
-        const bgColor = hexToRgb(params.backgroundColor);
-        if (bgColor) {
-          qp.setBackground(bgColor.r / 255, bgColor.g / 255, bgColor.b / 255);
-        }
-      }
-
-      // Set CVD if any slider > 0
-      const { protan, deutan, tritan } = params.cvd;
-      if (
-        (protan > 0 || deutan > 0 || tritan > 0) &&
-        qualpalModule?.Qualpal.prototype.setCvd
-      ) {
-        qp.setCvd({ protan, deutan, tritan });
-      }
-
-      const newPalette = qp.generate(params.numColors);
-      palette = newPalette;
-      console.log("Generated palette:", newPalette);
-
-      // Analyze palette
-      try {
-        const result = await qualpalModule.analyzePalette(
-          newPalette.map((c) => hexToRgb(c.hex)),
-          params.cvd,
-          params.useBackground ? hexToRgb(params.backgroundColor) : null,
-          4,
-        );
-        console.log("Palette analysis result:", result);
-        analysis = result;
-      } catch (e) {
-        console.error("Error analyzing palette:", e);
-        analysis = null;
-      }
-    } catch (error) {
-      console.error("Error generating palette:", error);
-      showToast("Error generating palette");
-    } finally {
-      loading = false;
-    }
   }
 
   // Copy single color to clipboard
@@ -158,7 +56,7 @@
 
   // Output text computed property
   $: outputText = (() => {
-    const hexColors = palette.map((color) => color.hex);
+    const hexColors = $palette.map((color) => color.hex);
     switch (activeTab) {
       case "JSON":
         return JSON.stringify(hexColors, null, 2);
@@ -192,16 +90,10 @@
     }, 3000);
   }
 
-  // Convert hex to RGB
-  function hexToRgb(hex: string) {
-    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return result
-      ? {
-          r: parseInt(result[1], 16),
-          g: parseInt(result[2], 16),
-          b: parseInt(result[3], 16),
-        }
-      : null;
+  // Parameter update handlers
+  function updateParams(updates: Partial<typeof $paletteParams>) {
+    paletteParams.update((params) => ({ ...params, ...updates }));
+    debouncedGenerate($paletteParams);
   }
 </script>
 
@@ -226,7 +118,7 @@
       <div class="sticky top-6">
         <h2 class="text-lg font-semibold text-gray-900 mb-4">Parameters</h2>
 
-        {#if !moduleLoaded}
+        {#if !$moduleLoaded}
           <div class="text-center py-8">
             <div
               class="animate-spin h-8 w-8 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4"
@@ -244,7 +136,7 @@
                 >
                   Number of Colors
                   <span class="text-blue-600 font-semibold"
-                    >{params.numColors}</span
+                    >{$paletteParams.numColors}</span
                   >
                 </label>
                 <input
@@ -252,8 +144,8 @@
                   type="range"
                   min="2"
                   max="12"
-                  bind:value={params.numColors}
-                  on:input={debouncedGenerate}
+                  bind:value={$paletteParams.numColors}
+                  on:input={() => debouncedGenerate($paletteParams)}
                   class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
                 />
                 <div class="flex justify-between text-xs text-gray-500 mt-1">
@@ -268,11 +160,11 @@
               <h3 class="font-medium text-gray-900 mb-3">Hue Range</h3>
 
               <HueWheel
-                hueMin={params.hueMin}
-                hueMax={params.hueMax}
+                hueMin={$paletteParams.hueMin}
+                hueMax={$paletteParams.hueMax}
                 onChange={({ hueMin, hueMax }) => {
-                  params.hueMin = hueMin;
-                  params.hueMax = hueMax;
+                  $paletteParams.hueMin = hueMin;
+                  $paletteParams.hueMax = hueMax;
                   debouncedGenerate();
                 }}
               />
@@ -283,11 +175,11 @@
               <h3 class="font-medium text-gray-900 mb-3">Saturation Range</h3>
 
               <SaturationSlider
-                satMin={params.satMin}
-                satMax={params.satMax}
+                satMin={$paletteParams.satMin}
+                satMax={$paletteParams.satMax}
                 onChange={({ satMin, satMax }) => {
-                  params.satMin = satMin;
-                  params.satMax = satMax;
+                  $paletteParams.satMin = satMin;
+                  $paletteParams.satMax = satMax;
                   debouncedGenerate();
                 }}
               />
@@ -298,11 +190,11 @@
               <h3 class="font-medium text-gray-900 mb-3">Lightness Range</h3>
 
               <LightnessSlider
-                lightMin={params.lightMin}
-                lightMax={params.lightMax}
+                lightMin={$paletteParams.lightMin}
+                lightMax={$paletteParams.lightMax}
                 onChange={({ lightMin, lightMax }) => {
-                  params.lightMin = lightMin;
-                  params.lightMax = lightMax;
+                  $paletteParams.lightMin = lightMin;
+                  $paletteParams.lightMax = lightMax;
                   debouncedGenerate();
                 }}
               />
@@ -316,8 +208,8 @@
                 <label class="flex items-center gap-2 cursor-pointer">
                   <input
                     type="checkbox"
-                    bind:checked={params.useBackground}
-                    on:change={debouncedGenerate}
+                    bind:checked={$paletteParams.useBackground}
+                    on:change={() => debouncedGenerate($paletteParams)}
                     class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                   />
                   <span class="text-sm text-gray-700"
@@ -326,19 +218,19 @@
                 </label>
               </div>
 
-              {#if params.useBackground}
+              {#if $paletteParams.useBackground}
                 <div class="flex items-center gap-2">
                   <input
                     type="color"
-                    bind:value={params.backgroundColor}
-                    on:change={debouncedGenerate}
+                    bind:value={$paletteParams.backgroundColor}
+                    on:change={() => debouncedGenerate($paletteParams)}
                     class="w-1/3 h-8 rounded border border-gray-300 cursor-pointer"
                     title="Select background color"
                   />
                   <input
                     type="text"
-                    bind:value={params.backgroundColor}
-                    on:input={debouncedGenerate}
+                    bind:value={$paletteParams.backgroundColor}
+                    on:input={() => debouncedGenerate($paletteParams)}
                     class="w-2/3 px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="#ffffff"
                     pattern="^#[0-9A-Fa-f]{6}$"
@@ -354,65 +246,71 @@
                 </p>
               {/if}
             </div>
-          </div>
 
-          <!-- CVD Settings -->
-          <div class="bg-gray-50 p-4 rounded-lg">
-            <h3 class="font-medium text-gray-900 mb-3">
-              Color Vision Deficiency
-            </h3>
-            <div class="space-y-3">
-              <div class="max-w-xs w-full">
-                <label class="text-sm block mb-1">Protanopia</label>
-                <div class="flex items-center gap-2">
-                  <input
-                    type="range"
-                    min="0"
-                    max="1"
-                    step="0.01"
-                    bind:value={params.cvd.protan}
-                    on:input={debouncedGenerate}
-                    class="flex-1 w-full"
-                  />
-                  <span class="text-xs w-8 text-right">{params.cvd.protan}</span
-                  >
+            <!-- CVD Settings -->
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <h3 class="font-medium text-gray-900 mb-3">
+                Color Vision Deficiency
+              </h3>
+              <div class="space-y-3">
+                <div class="max-w-xs w-full">
+                  <label class="text-sm block mb-1">Protanopia</label>
+                  <div class="flex items-center gap-2">
+                    <input
+                      id="protan-slider"
+                      type="range"
+                      min="0"
+                      max="1"
+                      step="0.01"
+                      bind:value={$paletteParams.cvd.protan}
+                      on:input={() => debouncedGenerate($paletteParams)}
+                      class="flex-1 w-full"
+                    />
+                    <span class="text-xs w-8 text-right"
+                      >{$paletteParams.cvd.protan}</span
+                    >
+                  </div>
                 </div>
-              </div>
-              <div class="max-w-xs w-full">
-                <label class="text-sm block mb-1">Deuteranopia</label>
-                <div class="flex items-center gap-2">
-                  <input
-                    type="range"
-                    min="0"
-                    max="1"
-                    step="0.01"
-                    bind:value={params.cvd.deutan}
-                    on:input={debouncedGenerate}
-                    class="flex-1 w-full"
-                  />
-                  <span class="text-xs w-8 text-right">{params.cvd.deutan}</span
-                  >
+                <div class="max-w-xs w-full">
+                  <label class="text-sm block mb-1">Deuteranopia</label>
+                  <div class="flex items-center gap-2">
+                    <input
+                      id="deutan-slider"
+                      type="range"
+                      min="0"
+                      max="1"
+                      step="0.01"
+                      bind:value={$paletteParams.cvd.deutan}
+                      on:input={() => debouncedGenerate($paletteParams)}
+                      class="flex-1 w-full"
+                    />
+                    <span class="text-xs w-8 text-right"
+                      >{$paletteParams.cvd.deutan}</span
+                    >
+                  </div>
                 </div>
-              </div>
-              <div class="max-w-xs w-full">
-                <label class="text-sm block mb-1">Tritanopia</label>
-                <div class="flex items-center gap-2">
-                  <input
-                    type="range"
-                    min="0"
-                    max="1"
-                    step="0.01"
-                    bind:value={params.cvd.tritan}
-                    on:input={debouncedGenerate}
-                    class="flex-1 w-full"
-                  />
-                  <span class="text-xs w-8 text-right">{params.cvd.tritan}</span
-                  >
+                <div class="max-w-xs w-full">
+                  <label class="text-sm block mb-1">Tritanopia</label>
+                  <div class="flex items-center gap-2">
+                    <input
+                      id="tritan-slider"
+                      type="range"
+                      min="0"
+                      max="1"
+                      step="0.01"
+                      bind:value={$paletteParams.cvd.tritan}
+                      on:input={() => debouncedGenerate($paletteParams)}
+                      class="flex-1 w-full"
+                    />
+                    <span class="text-xs w-8 text-right"
+                      >{$paletteParams.cvd.tritan}</span
+                    >
+                  </div>
                 </div>
+                <p class="text-xs text-gray-500 mt-2">
+                  Adapt palette to users with color vision deficiency.
+                </p>
               </div>
-              <p class="text-xs text-gray-500 mt-2">
-                Adapt palette to users with color vision deficiency.
-              </p>
             </div>
           </div>
         {/if}
@@ -421,24 +319,24 @@
 
     <!-- Main Content -->
     <main class="flex-1 p-4">
-      {#if moduleLoaded && palette.length > 0}
+      {#if $moduleLoaded && $palette.length > 0}
         <div class="space-y-6">
           <!-- Palette Display -->
           <div class="flex items-center justify-between mb-4">
             <h2 class="text-xl font-semibold text-gray-900">
               Generated Palette
             </h2>
-            <span class="text-sm text-gray-500">{palette.length} colors</span>
+            <span class="text-sm text-gray-500">{$palette.length} colors</span>
           </div>
 
           <div
             class="p-4 rounded-lg border-2 border-dashed border-gray-200"
-            style="background-color: {params.useBackground
-              ? params.backgroundColor
+            style="background-color: {$paletteParams.useBackground
+              ? $paletteParams.backgroundColor
               : '#ffffff'}"
           >
             <div class="grid grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-              {#each palette as color}
+              {#each $palette as color}
                 <div class="group">
                   <button
                     class="aspect-square rounded-lg cursor-pointer border-2 border-gray-200 hover:border-gray-400 transition-all duration-200 hover:shadow-md relative overflow-hidden w-full"
@@ -463,8 +361,8 @@
                     <div
                       class="text-sm font-mono"
                       style="color: {isDarkColor(
-                        params.useBackground
-                          ? params.backgroundColor
+                        $paletteParams.useBackground
+                          ? $paletteParams.backgroundColor
                           : '#ffffff',
                       )
                         ? '#fff'
@@ -480,9 +378,9 @@
 
           <!-- Examples -->
           <Examples
-            {palette}
-            useBackground={params.useBackground}
-            backgroundColor={params.backgroundColor}
+            palette={$palette}
+            useBackground={$paletteParams.useBackground}
+            backgroundColor={$paletteParams.backgroundColor}
           />
 
           <!-- JSON Output -->
@@ -519,12 +417,12 @@
           </div>
 
           <PaletteAnalysis
-            matrix={analysis?.normal?.differenceMatrix ?? []}
-            labels={palette.map((c) => c.hex)}
-            minDistances={analysis?.normal?.minDistances ?? []}
+            matrix={$analysis?.normal?.differenceMatrix ?? []}
+            labels={$palette?.length > 0 ? $palette.map((c) => c.hex) : []}
+            minDistances={$analysis?.normal?.minDistances ?? []}
           />
         </div>
-      {:else if moduleLoaded}
+      {:else if $moduleLoaded}
         <div class="bg-white rounded-lg shadow-sm border p-12 text-center">
           <div class="text-gray-400 text-6xl mb-4">🎨</div>
           <h2 class="text-xl font-semibold text-gray-900 mb-2">
