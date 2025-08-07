@@ -127,14 +127,6 @@ tasks:
           echo "WASM rebuild complete! Svelte will hot-reload."
         done
 
-  setup:web:
-    desc: Initialize Svelte project (run once)
-    dir: web
-    cmds:
-      - npm create svelte@latest . --template skeleton --types typescript --eslint --prettier
-      - npm install
-      - echo "✓ Svelte project initialized! Run 'task dev' to start development"
-
   build:web:
     desc: Build Svelte app for production
     deps: [build:wasm]
