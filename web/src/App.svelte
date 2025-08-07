@@ -125,7 +125,7 @@
           newPalette.map((c) => hexToRgb(c.hex)),
           params.cvd,
           params.useBackground ? hexToRgb(params.backgroundColor) : null,
-          1000000,
+          4,
         );
         console.log("Palette analysis result:", result);
         analysis = result;
