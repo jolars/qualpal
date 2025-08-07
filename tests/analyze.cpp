@@ -3,6 +3,7 @@
 #include <catch2/matchers/catch_matchers.hpp>
 #include <qualpal/analyze.h>
 #include <qualpal/colors.h>
+#include <qualpal/qualpal.h>
 #include <string>
 #include <vector>
 
@@ -31,6 +32,35 @@ TEST_CASE("analyzePalette returns results for all default CVD types",
     REQUIRE(analysis.min_distances.size() == 3);
     // No background, so bg_min_distance should be NaN
     REQUIRE(std::isnan(analysis.bg_min_distance));
+  }
+}
+
+TEST_CASE(
+  "difference_matrix off-diagonal elements are nonzero for distinct colors",
+  "[analyze]")
+{
+  std::vector<std::string> colors = {
+    "#d16822", "#d0ec6a", "#42257e", "#8fa4d2", "#2c7547"
+  };
+
+  std::vector<qualpal::colors::RGB> palette;
+
+  for (const auto& color : colors) {
+    palette.emplace_back(color);
+  }
+
+  qualpal::PaletteAnalysisMap result = qualpal::analyzePalette(palette);
+
+  for (const auto& [cvd_type, analysis] : result) {
+    for (std::size_t i = 0; i < analysis.difference_matrix.nrow(); ++i) {
+      for (std::size_t j = 0; j < analysis.difference_matrix.ncol(); ++j) {
+        if (i != j) {
+          REQUIRE(analysis.difference_matrix(i, j) > 0.0);
+        } else {
+          REQUIRE(analysis.difference_matrix(i, j) == 0.0);
+        }
+      }
+    }
   }
 }
 
