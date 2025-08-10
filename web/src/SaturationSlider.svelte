@@ -79,7 +79,15 @@
       fill="#fff"
       stroke="#333"
       stroke-width="2"
-      style="cursor: pointer;"
+      style="pointer-events: none;"
+    />
+    <!-- Larger invisible touch target -->
+    <circle
+      cx={valueToX(satMin)}
+      cy="10"
+      r="16"
+      fill="transparent"
+      style="cursor: pointer; touch-action: none;"
       on:pointerdown={() => {
         const moveHandler = (ev: PointerEvent) => handleDrag("min", ev);
         const upHandler = () => {
@@ -97,7 +105,15 @@
       fill="#fff"
       stroke="#333"
       stroke-width="2"
-      style="cursor: pointer;"
+      style="pointer-events: none;"
+    />
+    <!-- Larger invisible touch target -->
+    <circle
+      cx={valueToX(satMax)}
+      cy="10"
+      r="16"
+      fill="transparent"
+      style="cursor: pointer; touch-action: none;"
       on:pointerdown={() => {
         const moveHandler = (ev: PointerEvent) => handleDrag("max", ev);
         const upHandler = () => {
