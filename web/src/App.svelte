@@ -2,7 +2,6 @@
   import { onMount } from "svelte";
   import HueWheel from "./HueWheel.svelte";
   import LightnessSlider from "./LightnessSlider.svelte";
-  import createQualpalModule from "./qualpal.mjs";
   import SaturationSlider from "./SaturationSlider.svelte";
   import Examples from "./Examples.svelte";
   import PaletteAnalysis from "./PaletteAnalysis.svelte";
@@ -11,7 +10,6 @@
     paletteParams,
     palette,
     analysis,
-    loading,
     moduleLoaded,
     initializeModule,
     generatePalette,
