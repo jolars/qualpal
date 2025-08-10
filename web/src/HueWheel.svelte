@@ -61,6 +61,7 @@
           8}px, black {radius + 8}px, transparent {radius + 8}px);
       -webkit-mask: radial-gradient(transparent {radius - 8}px, black {radius -
           8}px, black {radius + 8}px, transparent {radius + 8}px);
+      pointer-events: none;
     "
       ></div>
     </foreignObject>
