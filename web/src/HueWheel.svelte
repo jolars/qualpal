@@ -96,6 +96,7 @@
       fill="#fff"
       stroke="#333"
       stroke-width="2"
+      style="cursor: pointer; touch-action: none;"
       on:pointerdown={() => {
         const moveHandler = (ev: PointerEvent) => handleDrag("min", ev);
         const upHandler = () => {
@@ -113,6 +114,7 @@
       fill="#fff"
       stroke="#333"
       stroke-width="2"
+      style="cursor: pointer; touch-action: none;"
       on:pointerdown={() => {
         const moveHandler = (ev: PointerEvent) => handleDrag("max", ev);
         const upHandler = () => {

@@ -1,4 +1,4 @@
-import { writable, derived } from "svelte/store";
+import { writable, derived, get } from "svelte/store";
 
 // Palette parameters
 export const paletteParams = writable({
@@ -11,6 +11,8 @@ export const paletteParams = writable({
   lightMax: 0.7,
   useBackground: false,
   backgroundColor: "#ffffff",
+  inputMode: "colorspace", // 'colorspace' | 'fixed'
+  fixedInput: "",
   useExtend: false,
   existingPalette: "",
   cvd: {
@@ -79,6 +81,32 @@ function parseExistingPalette(input) {
   return result;
 }
 
+// Extract unique uppercase hex list (for fixed input mode)
+function extractHexList(input) {
+  if (!input || !input.trim()) return [];
+  const raw = input.trim();
+  const hexMatches = raw.match(/#[0-9A-Fa-f]{6}/g) || [];
+  let candidates;
+  if (hexMatches.length > 0) {
+    candidates = hexMatches;
+  } else {
+    candidates = raw
+      .split(/[,;\s\n]+/)
+      .map((c) => c.trim())
+      .filter(Boolean);
+  }
+  const seen = new Set();
+  const out = [];
+  for (const c of candidates) {
+    const up = c.toUpperCase();
+    if (/^#[0-9A-F]{6}$/.test(up) && !seen.has(up)) {
+      seen.add(up);
+      out.push(up);
+    }
+  }
+  return out;
+}
+
 // Initialize the qualpal module
 export async function initializeModule() {
   try {
@@ -104,23 +132,43 @@ export async function generatePalette(params) {
   try {
     const qp = new qualpalModule.Qualpal();
 
-    // Handle wraparound hue ranges using negative values
-    let normalizedHueMin = params.hueMin;
-    let normalizedHueMax = params.hueMax;
+    // Choose input source
+    if (params.inputMode === "fixed") {
+      const hexList = extractHexList(params.fixedInput);
+      if (hexList.length > 0) {
+        qp.setInputHex(hexList);
+      } else {
+        let normalizedHueMin = params.hueMin;
+        let normalizedHueMax = params.hueMax;
 
-    // If we have a wraparound case (min > max), convert max to negative
-    if (params.hueMin > params.hueMax) {
-      normalizedHueMin = params.hueMin - 360;
+        if (params.hueMin > params.hueMax) {
+          normalizedHueMin = params.hueMin - 360;
+        }
+
+        qp.setInputColorspace(
+          normalizedHueMin,
+          normalizedHueMax,
+          params.satMin,
+          params.satMax,
+          params.lightMin,
+          params.lightMax,
+        );
+      }
+    } else {
+      let normalizedHueMin = params.hueMin;
+      let normalizedHueMax = params.hueMax;
+      if (params.hueMin > params.hueMax) {
+        normalizedHueMin = params.hueMin - 360;
+      }
+      qp.setInputColorspace(
+        normalizedHueMin,
+        normalizedHueMax,
+        params.satMin,
+        params.satMax,
+        params.lightMin,
+        params.lightMax,
+      );
     }
-
-    qp.setInputColorspace(
-      normalizedHueMin,
-      normalizedHueMax,
-      params.satMin,
-      params.satMax,
-      params.lightMin,
-      params.lightMax,
-    );
 
     if (params.useBackground) {
       const bgColor = hexToRgb(params.backgroundColor);
@@ -140,7 +188,6 @@ export async function generatePalette(params) {
 
     let newPalette;
     if (params.useExtend && params.existingPalette.trim()) {
-      // Parse existing palette and extend it
       const existingColors = parseExistingPalette(params.existingPalette);
       if (existingColors.length > 0) {
         console.log("Extending palette with existing colors:", existingColors);
@@ -150,12 +197,10 @@ export async function generatePalette(params) {
         newPalette = qp.generate(params.numColors);
       }
     } else {
-      // Generate new palette
       newPalette = qp.generate(params.numColors);
     }
 
     palette.set(newPalette);
-    console.log("Generated palette:", newPalette);
 
     // Analyze palette
     try {
@@ -165,7 +210,6 @@ export async function generatePalette(params) {
         params.useBackground ? hexToRgb(params.backgroundColor) : null,
         4,
       );
-      console.log("Palette analysis result:", result);
       analysis.set(result);
     } catch (e) {
       console.error("Error analyzing palette:", e);
@@ -182,8 +226,9 @@ export async function generatePalette(params) {
 // Debounced generate function
 export function debouncedGenerate(params) {
   clearTimeout(debounceTimer);
+  const p = params ?? get(paletteParams); // fallback to current store if not passed
   debounceTimer = setTimeout(() => {
-    generatePalette(params);
+    generatePalette(p);
   }, 300);
 }
 

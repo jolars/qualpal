@@ -89,37 +89,34 @@
     }, 3000);
   }
 
-  // Parse existing palette input
-  function parseExistingPalette(input: string): string[] {
+  function parseFixedCandidates(input: string): string[] {
     if (!input || !input.trim()) return [];
-
     const raw = input.trim();
-
-    // Always try global hex extraction first (captures JSON arrays, R c(), Python lists, CSS, etc.)
     const hexMatches = raw.match(/#[0-9A-Fa-f]{6}/g) || [];
-
     let candidates: string[];
     if (hexMatches.length > 0) {
       candidates = hexMatches;
     } else {
-      // Fallback: split on common delimiters
       candidates = raw
         .split(/[,;\s\n]+/)
         .map((c) => c.trim())
         .filter(Boolean);
     }
-
     const seen = new Set<string>();
-    const result: string[] = [];
+    const out: string[] = [];
     for (const c of candidates) {
       const up = c.toUpperCase();
       if (/^#[0-9A-F]{6}$/.test(up) && !seen.has(up)) {
         seen.add(up);
-        result.push(up);
+        out.push(up);
       }
     }
-    return result;
+    return out;
   }
+  $: fixedCandidates =
+    $paletteParams.inputMode === "fixed"
+      ? parseFixedCandidates($paletteParams.fixedInput)
+      : [];
 </script>
 
 <div>
@@ -180,50 +177,128 @@
               </div>
             </div>
 
-            <!-- Hue Range -->
+            <!-- Input Mode -->
             <div class="bg-gray-50 p-4 rounded-lg">
-              <h3 class="font-medium text-gray-900 mb-3">Hue Range</h3>
+              <h3 class="text-sm font-medium text-gray-900 mb-3">Input Mode</h3>
+              <div class="flex gap-2 mb-4">
+                <button
+                  class="px-3 py-1 text-sm rounded border transition
+                  {$paletteParams.inputMode === 'colorspace'
+                    ? 'bg-blue-600 text-white border-blue-600'
+                    : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'}"
+                  on:click={() => {
+                    $paletteParams.inputMode = "colorspace";
+                    debouncedGenerate($paletteParams);
+                  }}
+                >
+                  Colorspace
+                </button>
+                <button
+                  class="px-3 py-1 text-sm rounded border transition
+                  {$paletteParams.inputMode === 'fixed'
+                    ? 'bg-blue-600 text-white border-blue-600'
+                    : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'}"
+                  on:click={() => {
+                    $paletteParams.inputMode = "fixed";
+                    debouncedGenerate($paletteParams);
+                  }}
+                >
+                  Fixed Set
+                </button>
+              </div>
 
-              <HueWheel
-                hueMin={$paletteParams.hueMin}
-                hueMax={$paletteParams.hueMax}
-                onChange={({ hueMin, hueMax }) => {
-                  $paletteParams.hueMin = hueMin;
-                  $paletteParams.hueMax = hueMax;
-                  debouncedGenerate();
-                }}
-              />
+              {#if $paletteParams.inputMode === "fixed"}
+                <div class="space-y-3">
+                  <div>
+                    <label
+                      for="fixed-candidates"
+                      class="block text-xs text-gray-600 mb-1"
+                    >
+                      Candidate colors (paste any text containing hex codes)
+                    </label>
+                    <textarea
+                      id="fixed-candidates"
+                      bind:value={$paletteParams.fixedInput}
+                      on:input={() => debouncedGenerate($paletteParams)}
+                      placeholder="#FF0000, #00FF00, #0000FF ..."
+                      class="w-full px-2 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                      rows="3"
+                    />
+                  </div>
+                  {#if fixedCandidates.length > 0}
+                    <div>
+                      <p class="text-xs text-gray-600 mb-1">
+                        {fixedCandidates.length} candidate {fixedCandidates.length ===
+                        1
+                          ? "color"
+                          : "colors"}
+                      </p>
+                      <div class="flex flex-wrap gap-1">
+                        {#each fixedCandidates as c}
+                          <div
+                            class="w-6 h-6 rounded border border-gray-300"
+                            style="background-color:{c}"
+                            title={c}
+                          ></div>
+                        {/each}
+                      </div>
+                    </div>
+                  {:else if $paletteParams.fixedInput.trim()}
+                    <p class="text-xs text-red-600">
+                      No valid hex colors found.
+                    </p>
+                  {/if}
+                  <p class="text-xs text-gray-500">
+                    Palette will be selected from these candidates. If empty,
+                    falls back to colorspace.
+                  </p>
+                </div>
+              {/if}
             </div>
 
-            <!-- Saturation Range -->
-            <div class="bg-gray-50 p-4 rounded-lg">
-              <h3 class="font-medium text-gray-900 mb-3">Saturation Range</h3>
+            {#if $paletteParams.inputMode === "colorspace"}
+              <!-- Hue Range -->
+              <div class="bg-gray-50 p-4 rounded-lg">
+                <h3 class="font-medium text-gray-900 mb-3">Hue Range</h3>
+                <HueWheel
+                  hueMin={$paletteParams.hueMin}
+                  hueMax={$paletteParams.hueMax}
+                  onChange={({ hueMin, hueMax }) => {
+                    $paletteParams.hueMin = hueMin;
+                    $paletteParams.hueMax = hueMax;
+                    debouncedGenerate();
+                  }}
+                />
+              </div>
 
-              <SaturationSlider
-                satMin={$paletteParams.satMin}
-                satMax={$paletteParams.satMax}
-                onChange={({ satMin, satMax }) => {
-                  $paletteParams.satMin = satMin;
-                  $paletteParams.satMax = satMax;
-                  debouncedGenerate();
-                }}
-              />
-            </div>
+              <!-- Saturation Range -->
+              <div class="bg-gray-50 p-4 rounded-lg">
+                <h3 class="font-medium text-gray-900 mb-3">Saturation Range</h3>
+                <SaturationSlider
+                  satMin={$paletteParams.satMin}
+                  satMax={$paletteParams.satMax}
+                  onChange={({ satMin, satMax }) => {
+                    $paletteParams.satMin = satMin;
+                    $paletteParams.satMax = satMax;
+                    debouncedGenerate();
+                  }}
+                />
+              </div>
 
-            <!-- Lightness Range -->
-            <div class="bg-gray-50 p-4 rounded-lg">
-              <h3 class="font-medium text-gray-900 mb-3">Lightness Range</h3>
-
-              <LightnessSlider
-                lightMin={$paletteParams.lightMin}
-                lightMax={$paletteParams.lightMax}
-                onChange={({ lightMin, lightMax }) => {
-                  $paletteParams.lightMin = lightMin;
-                  $paletteParams.lightMax = lightMax;
-                  debouncedGenerate();
-                }}
-              />
-            </div>
+              <!-- Lightness Range -->
+              <div class="bg-gray-50 p-4 rounded-lg">
+                <h3 class="font-medium text-gray-900 mb-3">Lightness Range</h3>
+                <LightnessSlider
+                  lightMin={$paletteParams.lightMin}
+                  lightMax={$paletteParams.lightMax}
+                  onChange={({ lightMin, lightMax }) => {
+                    $paletteParams.lightMin = lightMin;
+                    $paletteParams.lightMax = lightMax;
+                    debouncedGenerate();
+                  }}
+                />
+              </div>
+            {/if}
 
             <!-- Background Color -->
             <div class="bg-gray-50 p-4 rounded-lg">
@@ -282,7 +357,9 @@
               </h3>
               <div class="space-y-3">
                 <div class="max-w-xs w-full">
-                  <label class="text-sm block mb-1">Protanopia</label>
+                  <label for="protan-slider" class="text-sm block mb-1"
+                    >Protanopia</label
+                  >
                   <div class="flex items-center gap-2">
                     <input
                       id="protan-slider"
@@ -300,7 +377,9 @@
                   </div>
                 </div>
                 <div class="max-w-xs w-full">
-                  <label class="text-sm block mb-1">Deuteranopia</label>
+                  <label for="deutan-slider" class="text-sm block mb-1"
+                    >Deuteranopia</label
+                  >
                   <div class="flex items-center gap-2">
                     <input
                       id="deutan-slider"
@@ -318,7 +397,9 @@
                   </div>
                 </div>
                 <div class="max-w-xs w-full">
-                  <label class="text-sm block mb-1">Tritanopia</label>
+                  <label for="tritan-slider" class="text-sm block mb-1"
+                    >Tritanopia</label
+                  >
                   <div class="flex items-center gap-2">
                     <input
                       id="tritan-slider"
