@@ -29,6 +29,7 @@ export const loading = writable(false);
 
 // Module state
 export const moduleLoaded = writable(false);
+export const availablePalettes = writable({}); // { domain: [palette,...] }
 let qualpalModule = null;
 
 // Debounce timer
@@ -44,6 +45,11 @@ function hexToRgb(hex) {
         b: parseInt(result[3], 16),
       }
     : null;
+}
+
+// Helper to enumerate object keys from emscripten val-like objects
+function jsObjectKeys(o) {
+  return Object.keys(o);
 }
 
 // Helper function to parse existing palette string
@@ -115,11 +121,44 @@ export async function initializeModule() {
     qualpalModule = await createQualpalModule();
     moduleLoaded.set(true);
     console.log("Qualpal loaded successfully!");
+
+    // Load built‑in palettes
+    try {
+      const data = qualpalModule.listAvailablePalettes();
+      const obj = {};
+      const keys = jsObjectKeys(data);
+      for (const k of keys) {
+        const arr = data[k];
+        const len = arr.length;
+        obj[k] = [];
+        for (let i = 0; i < len; i++) obj[k].push(arr[i]);
+      }
+      availablePalettes.set(obj);
+    } catch (e) {
+      console.warn("Could not load available palettes:", e);
+    }
     return true;
   } catch (error) {
     console.error("Failed to load Qualpal:", error);
     moduleLoaded.set(false);
     return false;
+  }
+}
+
+// Helper: get built-in palette hex list (domain + palette)
+export function getPaletteHex(domain, name) {
+  if (!qualpalModule) return [];
+  try {
+    const arr = qualpalModule.getPaletteHex(domain, name);
+    const out = [];
+    const len = arr.length;
+    for (let i = 0; i < len; i++) {
+      out.push(String(arr[i]).toUpperCase());
+    }
+    return out;
+  } catch (e) {
+    console.warn("getPaletteHex failed:", e);
+    return [];
   }
 }
 

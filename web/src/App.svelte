@@ -14,8 +14,32 @@
     initializeModule,
     generatePalette,
     debouncedGenerate,
+    availablePalettes,
+    getPaletteHex,
   } from "./stores/paletteStore.js";
   import ExtendPalette from "./components/ExtendPalette.svelte";
+
+  let selectedDomain: string | null = null;
+  let selectedPalette: string | null = null;
+
+  $: domainList = Object.keys($availablePalettes);
+  $: paletteList = selectedDomain
+    ? $availablePalettes[selectedDomain] || []
+    : [];
+
+  function addBuiltInPalette(replace = false) {
+    if (!selectedDomain || !selectedPalette) return;
+    const colors = getPaletteHex(selectedDomain, selectedPalette);
+    if (!colors || colors.length === 0) return;
+    const existing = replace
+      ? []
+      : $paletteParams.fixedInput.match(/#[0-9A-Fa-f]{6}/g) || [];
+    const merged = Array.from(
+      new Set([...existing, ...colors.map((c) => c.toUpperCase())]),
+    );
+    $paletteParams.fixedInput = merged.join("\n");
+    debouncedGenerate($paletteParams);
+  }
 
   // Toast notification
   let toast = {
@@ -208,22 +232,66 @@
               </div>
 
               {#if $paletteParams.inputMode === "fixed"}
-                <div class="space-y-3">
+                <div class="space-y-4">
+                  <!-- Built-in palette picker -->
+                  <div class="flex flex-col gap-2">
+                    <div class="flex flex-col gap-2">
+                      <select
+                        class="border rounded px-2 py-1 text-sm w-full min-w-0"
+                        bind:value={selectedDomain}
+                        on:change={() => {
+                          selectedPalette = null;
+                        }}
+                      >
+                        <option value={null}>Select domain</option>
+                        {#each domainList as d}
+                          <option value={d}>{d}</option>
+                        {/each}
+                      </select>
+                      <select
+                        class="border rounded px-2 py-1 text-sm w-full min-w-0"
+                        bind:value={selectedPalette}
+                        disabled={!selectedDomain}
+                      >
+                        <option value={null}>Select palette</option>
+                        {#each paletteList as p}
+                          <option value={p}>{p}</option>
+                        {/each}
+                      </select>
+                    </div>
+                    <div class="flex gap-2">
+                      <button
+                        class="px-2 py-1 text-xs rounded border border-gray-300 bg-white hover:bg-gray-100 disabled:opacity-50"
+                        disabled={!selectedDomain || !selectedPalette}
+                        on:click={() => addBuiltInPalette(false)}
+                      >
+                        Add
+                      </button>
+                      <button
+                        class="px-2 py-1 text-xs rounded border border-gray-300 bg-white hover:bg-gray-100 disabled:opacity-50"
+                        disabled={!selectedDomain || !selectedPalette}
+                        on:click={() => addBuiltInPalette(true)}
+                      >
+                        Replace
+                      </button>
+                    </div>
+                  </div>
+
                   <div>
                     <label
                       for="fixed-candidates"
                       class="block text-xs text-gray-600 mb-1"
                     >
-                      Candidate colors (paste any text containing hex codes)
+                      Candidate colors (paste or add built-in)
                     </label>
                     <textarea
                       id="fixed-candidates"
                       bind:value={$paletteParams.fixedInput}
                       on:input={() => debouncedGenerate($paletteParams)}
-                      placeholder="#FF0000, #00FF00, #0000FF ..."
+                      placeholder="#FF0000, #00FF00 ... (hex codes auto-detected)"
                       class="w-full px-2 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
-                      rows="3"
-                    />
+                      rows="4"
+                    ></textarea>
                   </div>
                   {#if fixedCandidates.length > 0}
                     <div>
@@ -249,8 +317,8 @@
                     </p>
                   {/if}
                   <p class="text-xs text-gray-500">
-                    Palette will be selected from these candidates. If empty,
-                    falls back to colorspace.
+                    Palette will be chosen from these candidates (built-in +
+                    pasted). Empty falls back to colorspace.
                   </p>
                 </div>
               {/if}

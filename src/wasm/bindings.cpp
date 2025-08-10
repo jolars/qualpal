@@ -1,3 +1,4 @@
+#include "../src/qualpal/palettes.h"
 #include <emscripten/bind.h>
 #include <emscripten/val.h>
 #include <map>
@@ -202,6 +203,36 @@ analyzePaletteWrapper(const val& colors_array,
   return js_result;
 }
 
+// Wrapper: list available palettes (domain -> palettes[])
+val
+listAvailablePalettesWrapper()
+{
+  auto mp = qualpal::listAvailablePalettes();
+  val out = val::object();
+  for (const auto& kv : mp) {
+    const auto& domain = kv.first;
+    const auto& palettes = kv.second;
+    val arr = val::array();
+    for (std::size_t i = 0; i < palettes.size(); ++i) {
+      arr.set(i, palettes[i]);
+    }
+    out.set(domain, arr);
+  }
+  return out;
+}
+
+// Wrapper: get palette hex list by domain + name
+val
+getPaletteWrapper(const std::string& domain, const std::string& palette)
+{
+  auto hex = qualpal::getPalette(domain + ":" + palette);
+  val arr = val::array();
+  for (std::size_t i = 0; i < hex.size(); ++i) {
+    arr.set(i, hex[i]);
+  }
+  return arr;
+}
+
 EMSCRIPTEN_BINDINGS(qualpal)
 {
   class_<QualpalJS>("Qualpal")
@@ -218,4 +249,6 @@ EMSCRIPTEN_BINDINGS(qualpal)
   // Free function binding
   // function("analyzePalette", &analyzePalette);
   function("analyzePalette", &analyzePaletteWrapper);
+  function("listAvailablePalettes", &listAvailablePalettesWrapper);
+  function("getPaletteHex", &getPaletteWrapper);
 }
