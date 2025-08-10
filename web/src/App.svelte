@@ -15,6 +15,7 @@
     generatePalette,
     debouncedGenerate,
   } from "./stores/paletteStore.js";
+  import ExtendPalette from "./components/ExtendPalette.svelte";
 
   // Toast notification
   let toast = {
@@ -88,10 +89,36 @@
     }, 3000);
   }
 
-  // Parameter update handlers
-  function updateParams(updates: Partial<typeof $paletteParams>) {
-    paletteParams.update((params) => ({ ...params, ...updates }));
-    debouncedGenerate($paletteParams);
+  // Parse existing palette input
+  function parseExistingPalette(input: string): string[] {
+    if (!input || !input.trim()) return [];
+
+    const raw = input.trim();
+
+    // Always try global hex extraction first (captures JSON arrays, R c(), Python lists, CSS, etc.)
+    const hexMatches = raw.match(/#[0-9A-Fa-f]{6}/g) || [];
+
+    let candidates: string[];
+    if (hexMatches.length > 0) {
+      candidates = hexMatches;
+    } else {
+      // Fallback: split on common delimiters
+      candidates = raw
+        .split(/[,;\s\n]+/)
+        .map((c) => c.trim())
+        .filter(Boolean);
+    }
+
+    const seen = new Set<string>();
+    const result: string[] = [];
+    for (const c of candidates) {
+      const up = c.toUpperCase();
+      if (/^#[0-9A-F]{6}$/.test(up) && !seen.has(up)) {
+        seen.add(up);
+        result.push(up);
+      }
+    }
+    return result;
   }
 </script>
 
@@ -244,6 +271,9 @@
                 </p>
               {/if}
             </div>
+
+            <!-- Extend Palette -->
+            <ExtendPalette />
 
             <!-- CVD Settings -->
             <div class="bg-gray-50 p-4 rounded-lg">

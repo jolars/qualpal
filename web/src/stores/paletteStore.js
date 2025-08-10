@@ -11,6 +11,8 @@ export const paletteParams = writable({
   lightMax: 0.7,
   useBackground: false,
   backgroundColor: "#ffffff",
+  useExtend: false,
+  existingPalette: "",
   cvd: {
     protan: 0,
     deutan: 0,
@@ -40,6 +42,41 @@ function hexToRgb(hex) {
         b: parseInt(result[3], 16),
       }
     : null;
+}
+
+// Helper function to parse existing palette string
+function parseExistingPalette(input) {
+  if (!input || !input.trim()) return [];
+
+  const raw = input.trim();
+
+  // Extract all hex codes first (handles pasted JSON, R c(""), Python lists, CSS, etc.)
+  const hexMatches = raw.match(/#[0-9A-Fa-f]{6}/g) || [];
+
+  let candidates;
+  if (hexMatches.length > 0) {
+    candidates = hexMatches;
+  } else {
+    // Fallback split
+    candidates = raw
+      .split(/[,;\s\n]+/)
+      .map((c) => c.trim())
+      .filter(Boolean);
+  }
+
+  const seen = new Set();
+  const result = [];
+  for (const c of candidates) {
+    const up = c.toUpperCase();
+    if (/^#[0-9A-F]{6}$/.test(up) && !seen.has(up)) {
+      seen.add(up);
+      const rgb = hexToRgb(up);
+      if (rgb) {
+        result.push({ r: rgb.r / 255, g: rgb.g / 255, b: rgb.b / 255 });
+      }
+    }
+  }
+  return result;
 }
 
 // Initialize the qualpal module
@@ -101,7 +138,22 @@ export async function generatePalette(params) {
       qp.setCvd({ protan, deutan, tritan });
     }
 
-    const newPalette = qp.generate(params.numColors);
+    let newPalette;
+    if (params.useExtend && params.existingPalette.trim()) {
+      // Parse existing palette and extend it
+      const existingColors = parseExistingPalette(params.existingPalette);
+      if (existingColors.length > 0) {
+        console.log("Extending palette with existing colors:", existingColors);
+        newPalette = qp.extend(existingColors, params.numColors);
+      } else {
+        console.warn("No valid existing colors found, generating new palette");
+        newPalette = qp.generate(params.numColors);
+      }
+    } else {
+      // Generate new palette
+      newPalette = qp.generate(params.numColors);
+    }
+
     palette.set(newPalette);
     console.log("Generated palette:", newPalette);
 

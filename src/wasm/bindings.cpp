@@ -92,6 +92,35 @@ public:
 
     return result;
   }
+
+  val extend(const val& existing_palette_array, int n)
+  {
+    // Convert existing palette from JS array
+    std::vector<qualpal::colors::RGB> existing_palette;
+    int length = existing_palette_array["length"].as<int>();
+
+    for (int i = 0; i < length; ++i) {
+      val color = existing_palette_array[i];
+      double r = color["r"].as<double>();
+      double g = color["g"].as<double>();
+      double b = color["b"].as<double>();
+      existing_palette.emplace_back(r, g, b);
+    }
+
+    auto palette = qp.extend(existing_palette, n);
+    val result = val::array();
+
+    for (size_t i = 0; i < palette.size(); ++i) {
+      val color = val::object();
+      color.set("hex", palette[i].hex());
+      color.set("r", palette[i].r());
+      color.set("g", palette[i].g());
+      color.set("b", palette[i].b());
+      result.call<void>("push", color);
+    }
+
+    return result;
+  }
 };
 
 // Wrapper function that uses only JavaScript-compatible types
@@ -183,7 +212,8 @@ EMSCRIPTEN_BINDINGS(qualpal)
     .function("setInputColorspace", &QualpalJS::setInputColorspace)
     .function("setCvd", &QualpalJS::setCvd)
     .function("setBackground", &QualpalJS::setBackground)
-    .function("generate", &QualpalJS::generate);
+    .function("generate", &QualpalJS::generate)
+    .function("extend", &QualpalJS::extend);
 
   // Free function binding
   // function("analyzePalette", &analyzePalette);
