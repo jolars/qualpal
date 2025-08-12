@@ -22,6 +22,33 @@
   let selectedDomain: string | null = null;
   let selectedPalette: string | null = null;
 
+  // About modal state & citation
+  let showAbout = false;
+  const citationBibtex = `@software{
+    qualpal,
+	location = {Lund, Sweden},
+	title = {qualpal},
+	rights = {{MIT}},
+	url = {https://github.com/jolars/qualpal},
+	abstract = {Qualitative color palettes},
+	version = {2.4.0},
+	author = {Larsson, Johan},
+	urldate = {2025-08-12},
+	date = {2025-08-12},
+	note = {original-date: 2023-11-01T20:52:14Z},
+}`;
+
+  async function copyCitation() {
+    try {
+      await navigator.clipboard.writeText(citationBibtex);
+      toast.message = "Citation copied";
+      toast.show = true;
+      setTimeout(() => (toast.show = false), 2000);
+    } catch {
+      /* noop */
+    }
+  }
+
   $: domainList = Object.keys($availablePalettes);
   $: paletteList = selectedDomain
     ? $availablePalettes[selectedDomain] || []
@@ -144,7 +171,6 @@
 </script>
 
 <div>
-  <!-- Header -->
   <header class="bg-white shadow-sm border-b">
     <div class="max-w-7xl mx-auto px-4 py-4">
       <h1 class="text-2xl font-bold text-gray-900">
@@ -614,8 +640,113 @@
     </main>
   </div>
 
+  <footer class="border-t bg-white">
+    <div
+      class="max-w-7xl mx-auto px-4 py-5 flex flex-col md:flex-row gap-4 md:items-center justify-between"
+    >
+      <div class="text-gray-600 text-sm flex items-center gap-2">
+        <span class="font-semibold text-gray-900">Johan Larsson</span>
+        <span class="hidden sm:inline">© {new Date().getFullYear()}</span>
+      </div>
+      <nav
+        aria-label="Footer"
+        class="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm"
+      >
+        <button
+          type="button"
+          class="inline-flex items-center gap-1 text-gray-600 hover:text-gray-900"
+          on:click={() => (showAbout = true)}
+        >
+          <svg
+            width="16"
+            height="16"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+            viewBox="0 0 24 24"
+          >
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="8"></line>
+            <line x1="12" y1="12" x2="12" y2="16"></line>
+          </svg>
+          About
+        </button>
+        <a
+          href="https://github.com/jolars/qualpal"
+          class="inline-flex items-center gap-1 text-gray-600 hover:text-gray-900"
+          target="_blank"
+          rel="noopener"
+        >
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              d="M12 .5C5.65.5.5 5.65.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.4-3.9-1.4-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.6 1 1.6 1 .9 1.6 2.4 1.1 3 .8.1-.7.4-1.1.7-1.4-2.6-.3-5.3-1.3-5.3-5.8 0-1.1.4-2 1-2.8-.1-.3-.4-1.3.1-2.7 0 0 .8-.2 2.8 1 .8-.2 1.7-.4 2.5-.4s1.7.1 2.5.4c2-1.2 2.8-1 2.8-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.7 1 2.8 0 4.5-2.7 5.5-5.3 5.8.4.3.8.9.8 1.9v2.8c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.65 18.35.5 12 .5Z"
+            />
+          </svg>
+          Source Code
+        </a>
+      </nav>
+    </div>
+  </footer>
+
   <!-- Toast Notification -->
   <Toast show={toast.show} message={toast.message} />
+  {#if showAbout}
+    <div
+      class="fixed inset-0 z-50 flex items-start md:items-center justify-center bg-black/50 p-4"
+      on:click={() => (showAbout = false)}
+    >
+      <div
+        class="bg-white rounded-lg shadow-lg w-full max-w-lg overflow-hidden"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="about-title"
+        on:click|stopPropagation
+      >
+        <div class="px-5 py-4 border-b flex justify-between items-center">
+          <h2 id="about-title" class="text-lg font-semibold">About Qualpal</h2>
+          <button
+            class="text-gray-500 hover:text-gray-700"
+            aria-label="Close"
+            on:click={() => (showAbout = false)}
+          >
+            ✕
+          </button>
+        </div>
+        <div class="p-5 space-y-4 text-sm text-gray-700">
+          <p>
+            Qualpal generates perceptually uniform qualitative color palettes
+            optimized for distinctness using DIN99d color difference. Configure
+            a colorspace or provide fixed candidate colors, optionally extend an
+            existing palette, and analyze accessibility impacts.
+          </p>
+          <div>
+            <h3 class="font-medium mb-1">Citation</h3>
+            <pre
+              class="bg-gray-100 p-2 rounded text-xs overflow-x-auto"
+              id="citation-block">{citationBibtex}</pre>
+            <button
+              class="mt-2 px-2 py-1 text-xs bg-blue-600 text-white rounded hover:bg-blue-700"
+              on:click={copyCitation}
+            >
+              Copy BibTeX
+            </button>
+          </div>
+          <p class="text-xs text-gray-500">
+            © {new Date().getFullYear()} Qualpal. MIT License.
+          </p>
+        </div>
+      </div>
+    </div>
+  {/if}
 </div>
 
 <style>
