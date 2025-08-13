@@ -1,8 +1,4 @@
 <script lang="ts">
-  import Examples from "./components/Examples.svelte";
-  import PaletteAnalysis from "./components/PaletteAnalysis.svelte";
-  import ParameterSidebar from "./components/ParameterSidebar.svelte";
-  import Toast from "./components/Toast.svelte";
   import { onMount } from "svelte";
   import { toast, showToast } from "./stores/toast.js";
   import {
@@ -12,11 +8,15 @@
     moduleLoaded,
     initializeModule,
     generatePalette,
-    debouncedGenerate,
   } from "./stores/paletteStore.js";
+
+  import Examples from "./components/Examples.svelte";
+  import PaletteAnalysis from "./components/PaletteAnalysis.svelte";
+  import PaletteOutput from "./components/PaletteOutput.svelte";
+  import ParameterSidebar from "./components/ParameterSidebar.svelte";
+  import Toast from "./components/Toast.svelte";
   import Footer from "./components/Footer.svelte";
   import AboutModal from "./components/AboutModal.svelte";
-  import CopyButton from "./components/CopyButton.svelte";
 
   let selectedDomain = $state<string | null>(null);
   let selectedPalette = $state<string | null>(null);
@@ -96,11 +96,6 @@
     }
     return out;
   }
-  const fixedCandidates = $derived(
-    $paletteParams.inputMode === "fixed"
-      ? parseFixedCandidates($paletteParams.fixedInput)
-      : [],
-  );
 </script>
 
 <div>
@@ -118,113 +113,98 @@
   <div class="flex flex-col md:flex-row min-h-screen">
     <ParameterSidebar
       {selectedDomain}
-      setSelectedDomain={(d) => (selectedDomain = d)}
+      setSelectedDomain={(d: any) => (selectedDomain = d)}
       {selectedPalette}
-      setSelectedPalette={(p) => (selectedPalette = p)}
+      setSelectedPalette={(p: any) => (selectedPalette = p)}
     />
 
     <!-- Main Content -->
     <main class="flex-1 p-4">
       <div class="space-y-6">
-        <!-- Palette Display -->
-        <div class="flex items-center justify-between mb-4">
-          <h2 class="text-xl font-semibold text-gray-900">Generated Palette</h2>
-          <span class="text-sm text-gray-500">{$palette.length} colors</span>
-        </div>
+        {#if $moduleLoaded}
+          <!-- Palette Display -->
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="text-xl font-semibold text-gray-900">
+              Generated Palette
+            </h2>
+            <span class="text-sm text-gray-500">{$palette.length} colors</span>
+          </div>
 
-        <div
-          class="p-4 rounded-lg border-2 border-dashed border-gray-200"
-          style="background-color: {$paletteParams.useBackground
-            ? $paletteParams.backgroundColor
-            : '#ffffff'}"
-        >
-          <div class="grid grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-            {#each $palette as color}
-              <div class="group">
-                <button
-                  class="aspect-square rounded-lg cursor-pointer border-2 border-gray-200 hover:border-gray-400 transition-all duration-200 hover:shadow-md relative overflow-hidden w-full"
-                  style="background-color: {color.hex}"
-                  onclick={() => copyColor(color.hex)}
-                  onkeydown={(e) => e.key === "Enter" && copyColor(color.hex)}
-                  title="Click to copy {color.hex}"
-                  aria-label="Copy color {color.hex}"
-                >
-                  <div
-                    class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-200 flex items-center justify-center"
+          <div
+            class="p-4 rounded-lg border-2 border-dashed border-gray-200"
+            style="background-color: {$paletteParams.useBackground
+              ? $paletteParams.backgroundColor
+              : '#ffffff'}"
+          >
+            <div class="grid grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+              {#each $palette as color}
+                <div class="group">
+                  <button
+                    class="aspect-square rounded-lg cursor-pointer border-2 border-gray-200 hover:border-gray-400 transition-all duration-200 hover:shadow-md relative overflow-hidden w-full"
+                    style="background-color: {color.hex}"
+                    onclick={() => copyColor(color.hex)}
+                    onkeydown={(e) => e.key === "Enter" && copyColor(color.hex)}
+                    title="Click to copy {color.hex}"
+                    aria-label="Copy color {color.hex}"
                   >
-                    <span
-                      class="text-white opacity-0 group-hover:opacity-100 font-medium text-sm bg-black bg-black/50 px-2 py-1 rounded"
+                    <div
+                      class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-200 flex items-center justify-center"
                     >
-                      Copy
-                    </span>
-                  </div>
-                </button>
-                <div class="mt-2 text-center">
-                  <div
-                    class="text-sm font-mono"
-                    style="color: {isDarkColor(
-                      $paletteParams.useBackground
-                        ? $paletteParams.backgroundColor
-                        : '#ffffff',
-                    )
-                      ? '#fff'
-                      : '#222'}"
-                  >
-                    {color.hex}
+                      <span
+                        class="text-white opacity-0 group-hover:opacity-100 font-medium text-sm bg-black bg-black/50 px-2 py-1 rounded"
+                      >
+                        Copy
+                      </span>
+                    </div>
+                  </button>
+                  <div class="mt-2 text-center">
+                    <div
+                      class="text-sm font-mono"
+                      style="color: {isDarkColor(
+                        $paletteParams.useBackground
+                          ? $paletteParams.backgroundColor
+                          : '#ffffff',
+                      )
+                        ? '#fff'
+                        : '#222'}"
+                    >
+                      {color.hex}
+                    </div>
                   </div>
                 </div>
-              </div>
-            {/each}
+              {/each}
+            </div>
           </div>
-        </div>
 
-        <!-- Examples -->
-        <Examples
-          palette={$palette}
-          useBackground={$paletteParams.useBackground}
-          backgroundColor={$paletteParams.backgroundColor}
-        />
+          <Examples
+            palette={$palette}
+            useBackground={$paletteParams.useBackground}
+            backgroundColor={$paletteParams.backgroundColor}
+          />
 
-        <!-- JSON Output -->
-        <h3 class="text-xl text-left font-semibold text-gray-900 mb-4">
-          Output
-        </h3>
-        <div class="mb-4 border-b flex gap-2 border-gray-200">
-          {#each OUTPUT_TABS as tab}
-            <button
-              class="
-                    px-4 py-2 -mb-px border-b-2 font-mono text-sm transition-colors cursor-pointer
-                    {activeTab === tab
-                ? 'border-blue-600 text-blue-700 font-semibold'
-                : 'border-transparent text-gray-500 hover:text-blue-600'}
-                  "
-              onclick={() => (activeTab = tab)}
-              role="tab"
-              aria-selected={activeTab === tab}
-            >
-              {tab}
-            </button>
-          {/each}
-        </div>
-        <div
-          class="relative bg-gray-50 rounded-lg p-4 mt-2 border border-gray-200"
-        >
-          <CopyButton
-            text={outputText()}
-            ariaLabel="Copy output"
-            title="Copy output"
-            extraClass="absolute top-2 right-2 p-1"
+          <PaletteOutput
+            {OUTPUT_TABS}
+            {activeTab}
+            setActiveTab={(tab: any) => (activeTab = tab)}
+            {outputText}
             oncopied={() => showToast("Copied output")}
           />
-          <pre
-            class="text-sm font-mono text-gray-700 overflow-x-auto">{outputText()}</pre>
-        </div>
 
-        <PaletteAnalysis
-          matrix={$analysis?.normal?.differenceMatrix ?? []}
-          labels={$palette?.length > 0 ? $palette.map((c) => c.hex) : []}
-          minDistances={$analysis?.normal?.minDistances ?? []}
-        />
+          <PaletteAnalysis
+            matrix={$analysis?.normal?.differenceMatrix ?? []}
+            labels={$palette?.length > 0 ? $palette.map((c) => c.hex) : []}
+            minDistances={$analysis?.normal?.minDistances ?? []}
+          />
+        {:else}
+          <div class="flex items-center justify-center min-h-screen">
+            <div class="text-center">
+              <div
+                class="animate-spin h-8 w-8 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4"
+              ></div>
+              <p class="text-gray-600">Loading Qualpal...</p>
+            </div>
+          </div>
+        {/if}
       </div>
     </main>
   </div>

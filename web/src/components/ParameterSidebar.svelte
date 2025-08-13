@@ -11,10 +11,13 @@
     availablePalettes,
     getPaletteHex,
   } from "../stores/paletteStore.js";
-  let selectedDomain = $state<string | null>(null);
-  let selectedPalette = $state<string | null>(null);
 
-  let { setSelectedDomain, setSelectedPalette } = $props();
+  let {
+    selectedDomain,
+    setSelectedDomain,
+    selectedPalette,
+    setSelectedPalette,
+  } = $props();
 
   const domainList = $derived(Object.keys($availablePalettes));
   const paletteList = $derived(
