@@ -1,11 +1,11 @@
 <script lang="ts">
-  import { onMount } from "svelte";
+  import Examples from "./components/Examples.svelte";
   import HueWheel from "./components/HueWheel.svelte";
   import LightnessSlider from "./components/LightnessSlider.svelte";
-  import SaturationSlider from "./components/SaturationSlider.svelte";
-  import Examples from "./components/Examples.svelte";
   import PaletteAnalysis from "./components/PaletteAnalysis.svelte";
+  import SaturationSlider from "./components/SaturationSlider.svelte";
   import Toast from "./components/Toast.svelte";
+  import { onMount } from "svelte";
   import { toast, showToast } from "./stores/toast.js";
   import {
     paletteParams,
@@ -254,6 +254,15 @@
                         onclick={() => addBuiltInPalette(true)}
                       >
                         Replace
+                      </button>
+                      <button
+                        class="px-2 py-1 text-xs rounded border border-gray-300 bg-white hover:bg-gray-100 disabled:opacity-50"
+                        onclick={() => {
+                          $paletteParams.fixedInput = "";
+                          debouncedGenerate($paletteParams);
+                        }}
+                      >
+                        Clear
                       </button>
                     </div>
                   </div>
