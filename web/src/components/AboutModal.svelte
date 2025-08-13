@@ -1,23 +1,50 @@
 <script lang="ts">
   import { createEventDispatcher, onMount } from "svelte";
+  import citationFormats from "../lib/citations.generated.json";
+  import CopyButton from "./CopyButton.svelte";
 
   export let open: boolean = false;
 
-  const citationBibtex = `@software{
-    qualpal,
-  	location = {Lund, Sweden},
-  	title = {qualpal},
-  	rights = {{MIT}},
-  	url = {https://github.com/jolars/qualpal},
-  	abstract = {Qualitative color palettes},
-  	version = {2.4.0},
-  	author = {Larsson, Johan},
-  	urldate = {2025-08-12},
-  	date = {2025-08-12},
-  	note = {original-date: 2023-11-01T20:52:14Z},
-  }`;
-
   const dispatch = createEventDispatcher();
+
+  let activeFormat = "bibtex";
+  interface CitationStyle {
+    key: string;
+    label: string;
+    value: string;
+  }
+  $: currentCitation =
+    (
+      citationFormats as Array<{
+        key: string;
+        label: string;
+        value: string;
+        code?: boolean;
+        styles?: CitationStyle[];
+      }>
+    ).find((f) => f.key === activeFormat) ?? (citationFormats as any[])[0];
+  let activeStyleKey: string | undefined;
+  // Ensure activeStyleKey stays valid when citation or styles change (no cycle)
+  $: if (currentCitation?.styles) {
+    if (
+      !activeStyleKey ||
+      !currentCitation.styles.some(
+        (s: CitationStyle) => s.key === activeStyleKey,
+      )
+    ) {
+      activeStyleKey = currentCitation.styles[0].key;
+    }
+  } else {
+    activeStyleKey = undefined;
+  }
+  $: selectedStyle = currentCitation?.styles
+    ? (currentCitation.styles.find(
+        (s: CitationStyle) => s.key === activeStyleKey,
+      ) ?? null)
+    : null;
+  $: displayedCitationValue = selectedStyle
+    ? selectedStyle.value
+    : currentCitation.value;
 
   function close() {
     open = false;
@@ -26,7 +53,7 @@
 
   async function copyCitation() {
     try {
-      await navigator.clipboard.writeText(citationBibtex);
+      await navigator.clipboard.writeText(displayedCitationValue);
       dispatch("copied");
     } catch {
       /* ignore */
@@ -39,14 +66,9 @@
 
   let dialogEl: HTMLDivElement | null = null;
   onMount(() => {
-    if (open && dialogEl) {
-      dialogEl.focus();
-    }
+    if (open && dialogEl) dialogEl.focus();
   });
-  $: if (open && dialogEl) {
-    // focus when it opens
-    setTimeout(() => dialogEl && dialogEl.focus(), 0);
-  }
+  $: if (open && dialogEl) setTimeout(() => dialogEl && dialogEl.focus(), 0);
 </script>
 
 {#if open}
@@ -85,17 +107,57 @@
           existing palette, and analyze accessibility impacts.
         </p>
         <div>
-          <h3 class="font-medium mb-1">Citation</h3>
-          <pre
-            class="bg-gray-100 p-2 rounded text-xs overflow-x-auto"
-            id="citation-block">{citationBibtex}</pre>
-          <button
-            type="button"
-            class="mt-2 px-2 py-1 text-xs bg-blue-600 text-white rounded hover:bg-blue-700 cursor-pointer"
-            on:click={copyCitation}
-          >
-            Copy BibTeX
-          </button>
+          <h3 class="font-medium mb-2">Citation</h3>
+          <div class="flex flex-wrap gap-2 mb-2">
+            {#each citationFormats as f}
+              <button
+                type="button"
+                class="px-2 py-1 text-xs rounded border cursor-pointer transition
+                  {activeFormat === f.key
+                  ? 'bg-blue-600 text-white border-blue-600'
+                  : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'}"
+                on:click={() => (activeFormat = f.key)}
+                aria-pressed={activeFormat === f.key}
+              >
+                {f.label}
+              </button>
+            {/each}
+          </div>
+          {#if currentCitation.styles}
+            <div class="flex items-center gap-2 mb-2">
+              <label class="text-xs font-medium">Style:</label>
+              <select
+                class="text-xs border rounded px-1 py-0.5 bg-white"
+                bind:value={activeStyleKey}
+              >
+                {#each currentCitation.styles as s}
+                  <option value={s.key}>{s.label}</option>
+                {/each}
+              </select>
+            </div>
+          {/if}
+          <div class="relative">
+            {#if currentCitation.code === true && !currentCitation.styles}
+              <pre
+                class="bg-gray-100 p-2 rounded text-xs overflow-x-auto"
+                id="citation-block">{displayedCitationValue}</pre>
+            {:else}
+              <div
+                class="p-2 rounded text-xs border bg-white whitespace-pre-wrap"
+                id="citation-block"
+              >
+                {displayedCitationValue}
+              </div>
+            {/if}
+
+            <CopyButton
+              text={displayedCitationValue}
+              ariaLabel="Copy citation"
+              title="Copy citation"
+              extraClass="absolute top-1 right-1 p-1"
+              on:copied={() => dispatch("copied")}
+            />
+          </div>
         </div>
         <p class="text-xs text-gray-500">
           © {new Date().getFullYear()} Qualpal. MIT License.

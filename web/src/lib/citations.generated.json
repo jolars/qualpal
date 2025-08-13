@@ -1,0 +1,43 @@
+[
+  {
+    "key": "bibtex",
+    "label": "BibTeX",
+    "value": "@misc{Larsson2025qualpal,\n\tauthor = {Larsson, Johan},\n\tyear = {2025},\n\tmonth = {aug 12},\n\ttitle = {qualpal},\n\turl = {https://github.com/jolars/qualpal},\n\thowpublished = {https://github.com/jolars/qualpal},\n}",
+    "code": true
+  },
+  {
+    "key": "biblatex",
+    "label": "BibLaTeX",
+    "value": "@software{Larsson2025qualpal,\n\tauthor = {Larsson, Johan},\n\tdate = {2025-08-12},\n\ttitle = {qualpal},\n\turl = {https://github.com/jolars/qualpal},\n\tversion = {2.4.0},\n}\n\n",
+    "code": true
+  },
+  {
+    "key": "csl",
+    "label": "CSL YAML",
+    "value": "---\nid: qualpal\ntype: software\ntitle: qualpal\nversion: 2.4.0\nURL: https://github.com/jolars/qualpal\nissued:\n  date-parts:\n    - - 2025\n      - 8\n      - 12\nauthor:\n  - given: Johan\n    family: Larsson\nlicense: MIT\n---",
+    "code": true
+  },
+  {
+    "key": "bibliography",
+    "label": "Bibliography",
+    "value": "Larsson, J. (2025). qualpal (2.4.0) [Computer software]. https://github.com/jolars/qualpal",
+    "code": false,
+    "styles": [
+      {
+        "key": "apa",
+        "label": "APA",
+        "value": "Larsson, J. (2025). qualpal (2.4.0) [Computer software]. https://github.com/jolars/qualpal"
+      },
+      {
+        "key": "vancouver",
+        "label": "Vancouver",
+        "value": "1.  Larsson J. qualpal [Internet]. 2025. Available from: https://github.com/jolars/qualpal"
+      },
+      {
+        "key": "chicago",
+        "label": "Chicago",
+        "value": "Larsson, J. (2025). qualpal (2.4.0) [Computer software]. https://github.com/jolars/qualpal"
+      }
+    ]
+  }
+]
