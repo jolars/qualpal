@@ -26,7 +26,7 @@
   let selectedDomain = $state<string | null>(null);
   let selectedPalette = $state<string | null>(null);
 
-  let showAbout = $state(false);
+  let showAbout = $state<boolean>(false);
 
   const domainList = $derived(Object.keys($availablePalettes));
   const paletteList = $derived(
@@ -74,8 +74,19 @@
     }
   }
 
+  function setInputMode(mode: "colorspace" | "fixed") {
+    $paletteParams.inputMode = mode;
+    debouncedGenerate($paletteParams);
+  }
+  function clearFixedInput() {
+    $paletteParams.fixedInput = "";
+    debouncedGenerate($paletteParams);
+  }
+
   // Output tab state
-  let activeTab = $state("JSON");
+  const OUTPUT_TABS = ["JSON", "R", "Python", "CSS"] as const;
+  type OutputTab = (typeof OUTPUT_TABS)[number];
+  let activeTab = $state<OutputTab>("JSON");
 
   // Output text computed property
   const outputText = $derived(() => {
@@ -192,8 +203,7 @@
                     ? 'bg-blue-600 text-white border-blue-600'
                     : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'}"
                   onclick={() => {
-                    $paletteParams.inputMode = "colorspace";
-                    debouncedGenerate($paletteParams);
+                    setInputMode("colorspace");
                   }}
                 >
                   Colorspace
@@ -204,8 +214,7 @@
                     ? 'bg-blue-600 text-white border-blue-600'
                     : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'}"
                   onclick={() => {
-                    $paletteParams.inputMode = "fixed";
-                    debouncedGenerate($paletteParams);
+                    setInputMode("fixed");
                   }}
                 >
                   Fixed Set
@@ -258,8 +267,8 @@
                       <button
                         class="px-2 py-1 text-xs rounded border border-gray-300 bg-white hover:bg-gray-100 disabled:opacity-50"
                         onclick={() => {
-                          $paletteParams.fixedInput = "";
-                          debouncedGenerate($paletteParams);
+                          clearFixedInput();
+                          showToast("Cleared fixed candidates");
                         }}
                       >
                         Clear
@@ -551,7 +560,7 @@
           Output
         </h3>
         <div class="mb-4 border-b flex gap-2 border-gray-200">
-          {#each ["JSON", "R", "Python", "CSS"] as tab}
+          {#each OUTPUT_TABS as tab}
             <button
               class="
                     px-4 py-2 -mb-px border-b-2 font-mono text-sm transition-colors cursor-pointer
