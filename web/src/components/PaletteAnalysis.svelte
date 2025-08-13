@@ -20,7 +20,6 @@
     return grey < 150 ? "#ffffff" : "#333333";
   }
 
-  // Flatten matrix for min/max
   const min = 0;
   const max = 40;
 </script>
