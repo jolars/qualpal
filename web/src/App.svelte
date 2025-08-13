@@ -1,10 +1,10 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import HueWheel from "./HueWheel.svelte";
-  import LightnessSlider from "./LightnessSlider.svelte";
-  import SaturationSlider from "./SaturationSlider.svelte";
-  import Examples from "./Examples.svelte";
-  import PaletteAnalysis from "./PaletteAnalysis.svelte";
+  import HueWheel from "./components/HueWheel.svelte";
+  import LightnessSlider from "./components/LightnessSlider.svelte";
+  import SaturationSlider from "./components/SaturationSlider.svelte";
+  import Examples from "./components/Examples.svelte";
+  import PaletteAnalysis from "./components/PaletteAnalysis.svelte";
   import Toast from "./components/Toast.svelte";
   import {
     paletteParams,
