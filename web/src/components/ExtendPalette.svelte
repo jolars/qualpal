@@ -70,7 +70,7 @@
           placeholder="#ff0000, #00ff00, #0000ff&#10;or&#10;#ff0000 #00ff00 #0000ff"
           class="w-full px-2 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
           rows="3"
-        />
+        ></textarea>
       </div>
 
       {#if $paletteParams.existingPalette.trim()}

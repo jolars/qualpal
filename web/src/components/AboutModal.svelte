@@ -45,20 +45,11 @@
     onclose?.();
   }
 
-  async function copyCitation() {
-    try {
-      await navigator.clipboard.writeText(displayedCitationValue());
-      oncopied?.();
-    } catch {
-      /* ignore */
-    }
-  }
-
   function handleKey(e: KeyboardEvent) {
     if (e.key === "Escape") close();
   }
 
-  let dialogEl = $state<HTMLDialogElement | null>(null);
+  let dialogEl = $state<HTMLDivElement | null>(null);
   onMount(() => {
     if (open && dialogEl) dialogEl.focus();
   });
