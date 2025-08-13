@@ -39,6 +39,7 @@
             emscriptenStdenv
             nodejs
             tailwindcss
+            autoprefixer
             prettierd
             vite
           ];

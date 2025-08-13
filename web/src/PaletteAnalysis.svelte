@@ -117,7 +117,7 @@
       <div class="space-y-2">
         {#each minDistances as distance, i}
           <div
-            class="flex items-center justify-between p-2 bg-gray-50 rounded border"
+            class="flex items-center justify-between p-2 bg-gray-50 rounded border border-gray-200"
           >
             <div class="flex items-center space-x-2">
               <span

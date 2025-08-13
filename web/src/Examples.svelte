@@ -370,7 +370,7 @@
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
   <svg
     bind:this={barChartContainer}
-    class="border rounded w-full h-auto"
+    class="border border-gray-200 rounded w-full h-auto"
     viewBox="0 0 300 200"
     preserveAspectRatio="xMidYMid meet"
   ></svg>
@@ -378,21 +378,21 @@
   <div class="text-center">
     <svg
       bind:this={scatterPlotContainer}
-      class="border rounded w-full h-auto"
+      class="border border-gray-200 rounded w-full h-auto"
       viewBox="0 0 300 200"
       preserveAspectRatio="xMidYMid meet"
     ></svg>
   </div>
   <svg
     bind:this={lineChartContainer}
-    class="border rounded w-full h-auto"
+    class="border border-gray-200 rounded w-full h-auto"
     viewBox="0 0 300 200"
     preserveAspectRatio="xMidYMid meet"
   ></svg>
 
   <svg
     bind:this={mapContainer}
-    class="border rounded w-full h-auto"
+    class="border border-gray-200 rounded w-full h-auto"
     viewBox="0 0 300 200"
     preserveAspectRatio="xMidYMid meet"
   ></svg>

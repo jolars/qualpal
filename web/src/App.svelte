@@ -111,9 +111,9 @@
       case "JSON":
         return JSON.stringify(hexColors, null, 2);
       case "R":
-        return `c(${hexColors.map((h) => `"${h}"`).join(", ")})`;
+        return `c(\n${hexColors.map((h) => `  "${h}"`).join(",\n")}\n)`;
       case "Python":
-        return `[${hexColors.map((h) => `'${h}'`).join(", ")}]`;
+        return `[\n${hexColors.map((h) => `  "${h}"`).join(",\n")}\n]`;
       case "CSS":
         return hexColors.map((h, i) => `--color${i + 1}: ${h};`).join("\n");
       default:
@@ -171,8 +171,8 @@
 </script>
 
 <div>
-  <header class="bg-white shadow-sm border-b">
-    <div class="max-w-7xl mx-auto px-4 py-4">
+  <header class="border-g">
+    <div class="max-w-7xl mx-auto px-4 py-4 border-gray-200 border-b">
       <h1 class="text-2xl font-bold text-gray-900">
         <span class="text-blue-600">Qualpal</span> Color Palette Generator
       </h1>
@@ -185,9 +185,9 @@
   <div class="flex flex-col md:flex-row min-h-screen">
     <!-- Sidebar -->
     <aside
-      class="w-full md:w-64 bg-gray-100 p-4 border-b md:border-b-0 md:border-r"
+      class="w-full md:w-64 bg-gray-100 p-4 md:border-r md:border-gray-200"
     >
-      <div class="sticky top-6">
+      <div class="sticky top-6 border-g">
         <h2 class="text-lg font-semibold text-gray-900 mb-4">Parameters</h2>
 
         {#if !$moduleLoaded}
@@ -522,125 +522,111 @@
 
     <!-- Main Content -->
     <main class="flex-1 p-4">
-      {#if $moduleLoaded && $palette.length > 0}
-        <div class="space-y-6">
-          <!-- Palette Display -->
-          <div class="flex items-center justify-between mb-4">
-            <h2 class="text-xl font-semibold text-gray-900">
-              Generated Palette
-            </h2>
-            <span class="text-sm text-gray-500">{$palette.length} colors</span>
-          </div>
+      <div class="space-y-6">
+        <!-- Palette Display -->
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-xl font-semibold text-gray-900">Generated Palette</h2>
+          <span class="text-sm text-gray-500">{$palette.length} colors</span>
+        </div>
 
-          <div
-            class="p-4 rounded-lg border-2 border-dashed border-gray-200"
-            style="background-color: {$paletteParams.useBackground
-              ? $paletteParams.backgroundColor
-              : '#ffffff'}"
-          >
-            <div class="grid grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-              {#each $palette as color}
-                <div class="group">
-                  <button
-                    class="aspect-square rounded-lg cursor-pointer border-2 border-gray-200 hover:border-gray-400 transition-all duration-200 hover:shadow-md relative overflow-hidden w-full"
-                    style="background-color: {color.hex}"
-                    on:click={() => copyColor(color.hex)}
-                    on:keydown={(e) =>
-                      e.key === "Enter" && copyColor(color.hex)}
-                    title="Click to copy {color.hex}"
-                    aria-label="Copy color {color.hex}"
+        <div
+          class="p-4 rounded-lg border-2 border-dashed border-gray-200"
+          style="background-color: {$paletteParams.useBackground
+            ? $paletteParams.backgroundColor
+            : '#ffffff'}"
+        >
+          <div class="grid grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+            {#each $palette as color}
+              <div class="group">
+                <button
+                  class="aspect-square rounded-lg cursor-pointer border-2 border-gray-200 hover:border-gray-400 transition-all duration-200 hover:shadow-md relative overflow-hidden w-full"
+                  style="background-color: {color.hex}"
+                  on:click={() => copyColor(color.hex)}
+                  on:keydown={(e) => e.key === "Enter" && copyColor(color.hex)}
+                  title="Click to copy {color.hex}"
+                  aria-label="Copy color {color.hex}"
+                >
+                  <div
+                    class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-200 flex items-center justify-center"
                   >
-                    <div
-                      class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-200 flex items-center justify-center"
+                    <span
+                      class="text-white opacity-0 group-hover:opacity-100 font-medium text-sm bg-black bg-black/50 px-2 py-1 rounded"
                     >
-                      <span
-                        class="text-white opacity-0 group-hover:opacity-100 font-medium text-sm bg-black bg-opacity-50 px-2 py-1 rounded"
-                      >
-                        Copy
-                      </span>
-                    </div>
-                  </button>
-                  <div class="mt-2 text-center">
-                    <div
-                      class="text-sm font-mono"
-                      style="color: {isDarkColor(
-                        $paletteParams.useBackground
-                          ? $paletteParams.backgroundColor
-                          : '#ffffff',
-                      )
-                        ? '#fff'
-                        : '#222'}"
-                    >
-                      {color.hex}
-                    </div>
+                      Copy
+                    </span>
+                  </div>
+                </button>
+                <div class="mt-2 text-center">
+                  <div
+                    class="text-sm font-mono"
+                    style="color: {isDarkColor(
+                      $paletteParams.useBackground
+                        ? $paletteParams.backgroundColor
+                        : '#ffffff',
+                    )
+                      ? '#fff'
+                      : '#222'}"
+                  >
+                    {color.hex}
                   </div>
                 </div>
-              {/each}
-            </div>
-          </div>
-
-          <!-- Examples -->
-          <Examples
-            palette={$palette}
-            useBackground={$paletteParams.useBackground}
-            backgroundColor={$paletteParams.backgroundColor}
-          />
-
-          <!-- JSON Output -->
-          <h3 class="text-xl text-left font-semibold text-gray-900 mb-4">
-            Output
-          </h3>
-          <div class="mb-4 border-b flex gap-2">
-            {#each ["JSON", "R", "Python", "CSS"] as tab}
-              <button
-                class="
-                    px-4 py-2 -mb-px border-b-2 font-mono text-sm transition-colors
-                    {activeTab === tab
-                  ? 'border-blue-600 text-blue-700 font-semibold'
-                  : 'border-transparent text-gray-500 hover:text-blue-600'}
-                  "
-                on:click={() => (activeTab = tab)}
-                role="tab"
-                aria-selected={activeTab === tab}
-              >
-                {tab}
-              </button>
+              </div>
             {/each}
           </div>
-          <div class="relative bg-gray-50 rounded-lg p-4 border mt-2">
-            <button
-              class="absolute top-2 right-2 px-2 py-1 bg-green-600 text-white rounded hover:bg-green-700 text-xs"
-              on:click={copyOutput}
-              title="Copy output"
-            >
-              📋 Copy
-            </button>
-            <pre
-              class="text-sm font-mono text-gray-700 overflow-x-auto">{outputText}</pre>
-          </div>
+        </div>
 
-          <PaletteAnalysis
-            matrix={$analysis?.normal?.differenceMatrix ?? []}
-            labels={$palette?.length > 0 ? $palette.map((c) => c.hex) : []}
-            minDistances={$analysis?.normal?.minDistances ?? []}
-          />
+        <!-- Examples -->
+        <Examples
+          palette={$palette}
+          useBackground={$paletteParams.useBackground}
+          backgroundColor={$paletteParams.backgroundColor}
+        />
+
+        <!-- JSON Output -->
+        <h3 class="text-xl text-left font-semibold text-gray-900 mb-4">
+          Output
+        </h3>
+        <div class="mb-4 border-b flex gap-2 border-gray-200">
+          {#each ["JSON", "R", "Python", "CSS"] as tab}
+            <button
+              class="
+                    px-4 py-2 -mb-px border-b-2 font-mono text-sm transition-colors
+                    {activeTab === tab
+                ? 'border-blue-600 text-blue-700 font-semibold'
+                : 'border-transparent text-gray-500 hover:text-blue-600'}
+                  "
+              on:click={() => (activeTab = tab)}
+              role="tab"
+              aria-selected={activeTab === tab}
+            >
+              {tab}
+            </button>
+          {/each}
         </div>
-      {:else if $moduleLoaded}
-        <div class="bg-white rounded-lg shadow-sm border p-12 text-center">
-          <div class="text-gray-400 text-6xl mb-4">🎨</div>
-          <h2 class="text-xl font-semibold text-gray-900 mb-2">
-            Ready to Generate
-          </h2>
-          <p class="text-gray-600">
-            Adjust the parameters in the sidebar and click "Generate New
-            Palette" to get started.
-          </p>
+        <div
+          class="relative bg-gray-50 rounded-lg p-4 mt-2 border border-gray-200"
+        >
+          <button
+            class="absolute top-2 right-2 px-2 py-1 bg-gray-400 text-white rounded hover:bg-gray-700 text-xs"
+            on:click={copyOutput}
+            title="Copy output"
+          >
+            📋 Copy
+          </button>
+          <pre
+            class="text-sm font-mono text-gray-700 overflow-x-auto">{outputText}</pre>
         </div>
-      {/if}
+
+        <PaletteAnalysis
+          matrix={$analysis?.normal?.differenceMatrix ?? []}
+          labels={$palette?.length > 0 ? $palette.map((c) => c.hex) : []}
+          minDistances={$analysis?.normal?.minDistances ?? []}
+        />
+      </div>
     </main>
   </div>
 
-  <footer class="border-t bg-white">
+  <footer class="border-t bg-white border-gray-200">
     <div
       class="max-w-7xl mx-auto px-4 py-5 flex flex-col md:flex-row gap-4 md:items-center justify-between"
     >
