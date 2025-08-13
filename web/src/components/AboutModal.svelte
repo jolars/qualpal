@@ -1,10 +1,10 @@
 <script lang="ts">
   import { onMount } from "svelte";
+  import { showToast } from "./../stores/toast.js";
   import citationFormats from "../lib/citations.generated.json";
   import CopyButton from "./CopyButton.svelte";
-  import showToast from "./../App.svelte";
 
-  let { open = false, onclose, oncopied } = $props();
+  let { open = false, onclose } = $props();
 
   let activeFormat = $state("bibtex");
   interface CitationStyle {
@@ -94,7 +94,7 @@
           existing palette, and analyze accessibility impacts.
         </p>
         <div>
-          <h3 class="font-medium mb-2">Citation</h3>
+          <h3 class="font-bold mb-2">Citation</h3>
           <div class="flex flex-wrap gap-2 mb-2">
             {#each citationFormats as f}
               <button
@@ -145,12 +145,12 @@
               ariaLabel="Copy citation"
               title="Copy citation"
               extraClass="absolute top-1 right-1 p-1"
-              oncopied={() => showToast("Copied output")}
+              oncopied={() => showToast("Copied Citation")}
             />
           </div>
         </div>
         <p class="text-xs text-gray-500">
-          © {new Date().getFullYear()} Qualpal. MIT License.
+          © {new Date().getFullYear()} Johan larsson
         </p>
       </div>
     </div>

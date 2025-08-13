@@ -6,6 +6,7 @@
   import Examples from "./components/Examples.svelte";
   import PaletteAnalysis from "./components/PaletteAnalysis.svelte";
   import Toast from "./components/Toast.svelte";
+  import { toast, showToast } from "./stores/toast.js";
   import {
     paletteParams,
     palette,
@@ -45,9 +46,6 @@
     $paletteParams.fixedInput = merged.join("\n");
     debouncedGenerate($paletteParams);
   }
-
-  // Toast notification
-  let toast = $state({ show: false, message: "" });
 
   // Initialize the module
   onMount(async () => {
@@ -95,15 +93,6 @@
         return "";
     }
   });
-
-  // Show toast notification
-  function showToast(message: string) {
-    toast.message = message;
-    toast.show = true;
-    setTimeout(() => {
-      toast.show = false;
-    }, 3000);
-  }
 
   function parseFixedCandidates(input: string): string[] {
     if (!input || !input.trim()) return [];
@@ -594,13 +583,9 @@
 
   <Footer on:about={() => (showAbout = true)} />
 
-  <Toast show={toast.show} message={toast.message} />
+  <Toast show={$toast.show} message={$toast.message} />
 
-  <AboutModal
-    open={showAbout}
-    onclose={() => (showAbout = false)}
-    oncopied={() => showToast("Citation copied")}
-  />
+  <AboutModal open={showAbout} onclose={() => (showAbout = false)} />
 </div>
 
 <style>
