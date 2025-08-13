@@ -240,6 +240,12 @@
                 Palette will be chosen from these candidates (built-in +
                 pasted). Empty falls back to colorspace.
               </p>
+              {#if $paletteParams.inputMode === "fixed" && fixedCandidates.length > 0 && $paletteParams.numColors > fixedCandidates.length}
+                <p class="text-xs text-red-600 font-semibold mb-1">
+                  Number of colors requested ({$paletteParams.numColors})
+                  exceeds number of fixed candidates ({fixedCandidates.length}).
+                </p>
+              {/if}
             </div>
           {/if}
 
