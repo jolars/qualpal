@@ -42,7 +42,7 @@
 <div class="flex justify-center">
   <svg width="200" height="200" style="touch-action:none;">
     <!-- Base hue circle using CSS background -->
-    <foreignObject x="0" y="0" width="200" height="200">
+    <foreignObject x="0" y="0" width="200" height="200" style="z-index: -1;">
       <div
         style="
       width: 200px; 
@@ -72,6 +72,7 @@
       fill="none"
       stroke="#f3f4f6"
       stroke-width="2"
+      style="z-index: 1;"
     />
     <circle
       cx={center}
@@ -80,6 +81,7 @@
       fill="none"
       stroke="#f3f4f6"
       stroke-width="2"
+      style="z-index: 1;"
     />
     <path
       d={`M${angleToPos(hueMax).x},${angleToPos(hueMax).y}
@@ -87,6 +89,7 @@
       stroke="rgba(0,0,0,0.7)"
       stroke-width="16"
       fill="none"
+      style="z-index: 2;"
     />
     <!-- Handles -->
     <circle
@@ -96,7 +99,7 @@
       fill="#fff"
       stroke="#333"
       stroke-width="2"
-      style="cursor: pointer; touch-action: none;"
+      style="cursor: pointer; touch-action: none; z-index: 3;"
       on:pointerdown={() => {
         const moveHandler = (ev: PointerEvent) => handleDrag("min", ev);
         const upHandler = () => {
@@ -114,7 +117,7 @@
       fill="#fff"
       stroke="#333"
       stroke-width="2"
-      style="cursor: pointer; touch-action: none;"
+      style="cursor: pointer; touch-action: none; z-index: 3;"
       on:pointerdown={() => {
         const moveHandler = (ev: PointerEvent) => handleDrag("max", ev);
         const upHandler = () => {
