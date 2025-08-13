@@ -1,27 +1,25 @@
 <script lang="ts">
-  import { createEventDispatcher } from "svelte";
-
   export let text: string;
   export let ariaLabel: string = "Copy";
   export let title: string = "Copy";
   export let extraClass: string = "";
   export let showFeedback = true;
-
-  const dispatch = createEventDispatcher<{ copied: void; error: void }>();
+  export let oncopied: (() => void) | undefined;
   let copied = false;
   let timeout: ReturnType<typeof setTimeout> | null = null;
 
   async function handleCopy() {
     try {
       await navigator.clipboard.writeText(text);
-      dispatch("copied");
+      console.log("oncopied called");
+      oncopied?.();
       if (showFeedback) {
         copied = true;
         if (timeout) clearTimeout(timeout);
         timeout = setTimeout(() => (copied = false), 1200);
       }
     } catch {
-      dispatch("error");
+      onerror?.("Failed to copy text");
     }
   }
 </script>
@@ -31,7 +29,7 @@
   class="inline-flex items-center justify-center {extraClass}  rounded text-gray-600 hover:text-gray-800 hover:bg-white/80 bg-white/60 border border-gray-200 cursor-pointer"
   aria-label={ariaLabel}
   {title}
-  on:click={handleCopy}
+  onclick={handleCopy}
 >
   {#if copied}
     <svg

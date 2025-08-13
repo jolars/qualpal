@@ -20,16 +20,17 @@
   import ExtendPalette from "./components/ExtendPalette.svelte";
   import Footer from "./components/Footer.svelte";
   import AboutModal from "./components/AboutModal.svelte";
+  import CopyButton from "./components/CopyButton.svelte";
 
-  let selectedDomain: string | null = null;
-  let selectedPalette: string | null = null;
+  let selectedDomain = $state<string | null>(null);
+  let selectedPalette = $state<string | null>(null);
 
-  let showAbout = false;
+  let showAbout = $state(false);
 
-  $: domainList = Object.keys($availablePalettes);
-  $: paletteList = selectedDomain
-    ? $availablePalettes[selectedDomain] || []
-    : [];
+  const domainList = $derived(Object.keys($availablePalettes));
+  const paletteList = $derived(
+    selectedDomain ? $availablePalettes[selectedDomain] || [] : [],
+  );
 
   function addBuiltInPalette(replace = false) {
     if (!selectedDomain || !selectedPalette) return;
@@ -46,10 +47,7 @@
   }
 
   // Toast notification
-  let toast = {
-    show: false,
-    message: "",
-  };
+  let toast = $state({ show: false, message: "" });
 
   // Initialize the module
   onMount(async () => {
@@ -79,10 +77,10 @@
   }
 
   // Output tab state
-  let activeTab = "JSON";
+  let activeTab = $state("JSON");
 
   // Output text computed property
-  $: outputText = (() => {
+  const outputText = $derived(() => {
     const hexColors = $palette.map((color) => color.hex);
     switch (activeTab) {
       case "JSON":
@@ -96,17 +94,7 @@
       default:
         return "";
     }
-  })();
-
-  // Copy output function
-  async function copyOutput() {
-    try {
-      await navigator.clipboard.writeText(outputText);
-      showToast("Copied output");
-    } catch (error) {
-      showToast("Failed to copy");
-    }
-  }
+  });
 
   // Show toast notification
   function showToast(message: string) {
@@ -141,10 +129,11 @@
     }
     return out;
   }
-  $: fixedCandidates =
+  const fixedCandidates = $derived(
     $paletteParams.inputMode === "fixed"
       ? parseFixedCandidates($paletteParams.fixedInput)
-      : [];
+      : [],
+  );
 </script>
 
 <div>
@@ -194,7 +183,7 @@
                   min="2"
                   max="12"
                   bind:value={$paletteParams.numColors}
-                  on:input={() => debouncedGenerate($paletteParams)}
+                  oninput={() => debouncedGenerate($paletteParams)}
                   class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
                 />
                 <div class="flex justify-between text-xs text-gray-500 mt-1">
@@ -209,11 +198,11 @@
               <h3 class="text-sm font-medium text-gray-900 mb-3">Input Mode</h3>
               <div class="flex gap-2 mb-4">
                 <button
-                  class="px-3 py-1 text-sm rounded border transition
+                  class="px-3 py-1 text-sm rounded border transition cursor-pointer
                   {$paletteParams.inputMode === 'colorspace'
                     ? 'bg-blue-600 text-white border-blue-600'
                     : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'}"
-                  on:click={() => {
+                  onclick={() => {
                     $paletteParams.inputMode = "colorspace";
                     debouncedGenerate($paletteParams);
                   }}
@@ -221,11 +210,11 @@
                   Colorspace
                 </button>
                 <button
-                  class="px-3 py-1 text-sm rounded border transition
+                  class="px-3 py-1 text-sm rounded border transition cursor-pointer
                   {$paletteParams.inputMode === 'fixed'
                     ? 'bg-blue-600 text-white border-blue-600'
                     : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'}"
-                  on:click={() => {
+                  onclick={() => {
                     $paletteParams.inputMode = "fixed";
                     debouncedGenerate($paletteParams);
                   }}
@@ -242,7 +231,7 @@
                       <select
                         class="border rounded px-2 py-1 text-sm w-full min-w-0"
                         bind:value={selectedDomain}
-                        on:change={() => {
+                        onchange={() => {
                           selectedPalette = null;
                         }}
                       >
@@ -266,14 +255,14 @@
                       <button
                         class="px-2 py-1 text-xs rounded border border-gray-300 bg-white hover:bg-gray-100 disabled:opacity-50"
                         disabled={!selectedDomain || !selectedPalette}
-                        on:click={() => addBuiltInPalette(false)}
+                        onclick={() => addBuiltInPalette(false)}
                       >
                         Add
                       </button>
                       <button
                         class="px-2 py-1 text-xs rounded border border-gray-300 bg-white hover:bg-gray-100 disabled:opacity-50"
                         disabled={!selectedDomain || !selectedPalette}
-                        on:click={() => addBuiltInPalette(true)}
+                        onclick={() => addBuiltInPalette(true)}
                       >
                         Replace
                       </button>
@@ -290,7 +279,7 @@
                     <textarea
                       id="fixed-candidates"
                       bind:value={$paletteParams.fixedInput}
-                      on:input={() => debouncedGenerate($paletteParams)}
+                      oninput={() => debouncedGenerate($paletteParams)}
                       placeholder="#FF0000, #00FF00 ... (hex codes auto-detected)"
                       class="w-full px-2 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
                       rows="4"
@@ -380,7 +369,7 @@
                   <input
                     type="checkbox"
                     bind:checked={$paletteParams.useBackground}
-                    on:change={() => debouncedGenerate($paletteParams)}
+                    onchange={() => debouncedGenerate($paletteParams)}
                     class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                   />
                   <span class="text-sm text-gray-700"
@@ -394,14 +383,14 @@
                   <input
                     type="color"
                     bind:value={$paletteParams.backgroundColor}
-                    on:change={() => debouncedGenerate($paletteParams)}
+                    onchange={() => debouncedGenerate($paletteParams)}
                     class="w-1/3 h-8 rounded border border-gray-300 cursor-pointer"
                     title="Select background color"
                   />
                   <input
                     type="text"
                     bind:value={$paletteParams.backgroundColor}
-                    on:input={() => debouncedGenerate($paletteParams)}
+                    oninput={() => debouncedGenerate($paletteParams)}
                     class="w-2/3 px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="#ffffff"
                     pattern="^#[0-9A-Fa-f]{6}$"
@@ -439,7 +428,7 @@
                       max="1"
                       step="0.01"
                       bind:value={$paletteParams.cvd.protan}
-                      on:input={() => debouncedGenerate($paletteParams)}
+                      oninput={() => debouncedGenerate($paletteParams)}
                       class="flex-1 w-full"
                     />
                     <span class="text-xs w-8 text-right"
@@ -459,7 +448,7 @@
                       max="1"
                       step="0.01"
                       bind:value={$paletteParams.cvd.deutan}
-                      on:input={() => debouncedGenerate($paletteParams)}
+                      oninput={() => debouncedGenerate($paletteParams)}
                       class="flex-1 w-full"
                     />
                     <span class="text-xs w-8 text-right"
@@ -479,7 +468,7 @@
                       max="1"
                       step="0.01"
                       bind:value={$paletteParams.cvd.tritan}
-                      on:input={() => debouncedGenerate($paletteParams)}
+                      oninput={() => debouncedGenerate($paletteParams)}
                       class="flex-1 w-full"
                     />
                     <span class="text-xs w-8 text-right"
@@ -518,8 +507,8 @@
                 <button
                   class="aspect-square rounded-lg cursor-pointer border-2 border-gray-200 hover:border-gray-400 transition-all duration-200 hover:shadow-md relative overflow-hidden w-full"
                   style="background-color: {color.hex}"
-                  on:click={() => copyColor(color.hex)}
-                  on:keydown={(e) => e.key === "Enter" && copyColor(color.hex)}
+                  onclick={() => copyColor(color.hex)}
+                  onkeydown={(e) => e.key === "Enter" && copyColor(color.hex)}
                   title="Click to copy {color.hex}"
                   aria-label="Copy color {color.hex}"
                 >
@@ -567,12 +556,12 @@
           {#each ["JSON", "R", "Python", "CSS"] as tab}
             <button
               class="
-                    px-4 py-2 -mb-px border-b-2 font-mono text-sm transition-colors
+                    px-4 py-2 -mb-px border-b-2 font-mono text-sm transition-colors cursor-pointer
                     {activeTab === tab
                 ? 'border-blue-600 text-blue-700 font-semibold'
                 : 'border-transparent text-gray-500 hover:text-blue-600'}
                   "
-              on:click={() => (activeTab = tab)}
+              onclick={() => (activeTab = tab)}
               role="tab"
               aria-selected={activeTab === tab}
             >
@@ -583,15 +572,15 @@
         <div
           class="relative bg-gray-50 rounded-lg p-4 mt-2 border border-gray-200"
         >
-          <button
-            class="absolute top-2 right-2 px-2 py-1 bg-gray-400 text-white rounded hover:bg-gray-700 text-xs"
-            on:click={copyOutput}
+          <CopyButton
+            text={outputText()}
+            ariaLabel="Copy output"
             title="Copy output"
-          >
-            📋 Copy
-          </button>
+            extraClass="absolute top-2 right-2 p-1"
+            oncopied={() => showToast("Copied output")}
+          />
           <pre
-            class="text-sm font-mono text-gray-700 overflow-x-auto">{outputText}</pre>
+            class="text-sm font-mono text-gray-700 overflow-x-auto">{outputText()}</pre>
         </div>
 
         <PaletteAnalysis
@@ -608,8 +597,9 @@
   <Toast show={toast.show} message={toast.message} />
 
   <AboutModal
-    bind:open={showAbout}
-    on:copied={() => showToast("Citation copied")}
+    open={showAbout}
+    onclose={() => (showAbout = false)}
+    oncopied={() => showToast("Citation copied")}
   />
 </div>
 
