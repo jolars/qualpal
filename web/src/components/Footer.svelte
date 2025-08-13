@@ -12,7 +12,9 @@
     class="max-w-7xl mx-auto px-4 py-5 flex flex-col md:flex-row gap-4 md:items-center justify-between"
   >
     <div class="text-gray-600 text-sm flex items-center gap-2">
-      <span class="font-semibold text-gray-900">Johan Larsson</span>
+      <a class="font-semibold text-blue-600" href="https://jolars.co"
+        >Johan Larsson</a
+      >
       <span class="hidden sm:inline">© {year}</span>
     </div>
     <nav

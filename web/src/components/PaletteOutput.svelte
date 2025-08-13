@@ -53,7 +53,7 @@
   <div class="relative bg-gray-50 rounded-lg p-4 mt-2 border border-gray-200">
     <CopyButton
       text={outputText()}
-      ariaLabel="Copy output"
+      ariaLabel="Copy Output"
       title="Copy output"
       extraClass="absolute top-2 right-2 p-1"
       oncopied={() => showToast("Copied Output")}

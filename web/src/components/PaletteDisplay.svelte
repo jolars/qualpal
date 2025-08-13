@@ -27,7 +27,7 @@
 </div>
 
 <div
-  class="p-4 rounded-lg border-2 border-dashed border-gray-200"
+  class="p-4 rounded-lg border-1 border-gray-200"
   style="background-color: {paletteParams.backgroundColor}"
 >
   <div class="grid grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-4">

@@ -88,10 +88,28 @@
       </div>
       <div class="p-5 space-y-4 text-sm text-gray-700">
         <p>
-          Qualpal generates perceptually uniform qualitative color palettes
-          optimized for distinctness using DIN99d color difference. Configure a
-          colorspace or provide fixed candidate colors, optionally extend an
-          existing palette, and analyze accessibility impacts.
+          Qualpal generates qualitative color palettes (for categorical data)
+          that are optimized for distinctness by algorithmically maximizing the
+          minimum perceived color difference between the points.
+        </p>
+        <h3 class="font-bold mb-2">Usage</h3>
+        <p>
+          Configure a palette size and input, either as a subspace of the HSL
+          color space, or as a fixed set of colors. Optionally, you can extend
+          an existing palette by providing a list of colors, optimize against a
+          specific background color, and adapt the palette to different color
+          vision deficiencies.
+        </p>
+        <h3 class="font-bold mb-2">Background</h3>
+        <p>
+          This app is built on top of the C++ library <a
+            href="https://github.com/jolars/qualpal"
+          >
+            qualpal
+          </a>. Find out more about the underlying algorithm in the
+          <a href="https://github.io/jolars/qualpal">official documentation</a>.
+          Bindings for R can be found in the
+          <a href="https://cran.r-project.org/package=qualpalr">qualpalr</a> package.
         </p>
         <div>
           <h3 class="font-bold mb-2">Citation</h3>
@@ -129,7 +147,7 @@
           <div class="relative">
             {#if currentCitation().code === true && !currentCitation().styles}
               <pre
-                class="bg-gray-100 p-2 rounded text-xs overflow-x-auto"
+                class="bg-gray-100 mt-3 p-2 rounded text-xs overflow-x-auto"
                 id="citation-block">{displayedCitationValue()}</pre>
             {:else}
               <div
@@ -149,9 +167,6 @@
             />
           </div>
         </div>
-        <p class="text-xs text-gray-500">
-          © {new Date().getFullYear()} Johan larsson
-        </p>
       </div>
     </div>
   </div>

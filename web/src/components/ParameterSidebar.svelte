@@ -119,9 +119,9 @@
           </div>
         </div>
 
-        <!-- Input Mode -->
+        <!-- Input -->
         <div class="bg-gray-50 p-4 rounded-lg">
-          <h3 class="text-sm font-medium text-gray-900 mb-3">Input Mode</h3>
+          <h3 class="font-medium text-gray-900 mb-3">Input Mode</h3>
           <div class="flex gap-2 mb-4">
             <button
               class="px-3 py-1 text-sm rounded border transition cursor-pointer
@@ -242,12 +242,10 @@
               </p>
             </div>
           {/if}
-        </div>
 
-        {#if $paletteParams.inputMode === "colorspace"}
-          <!-- Hue Range -->
-          <div class="bg-gray-50 p-4 rounded-lg">
-            <h3 class="font-medium text-gray-900 mb-3">Hue Range</h3>
+          {#if $paletteParams.inputMode === "colorspace"}
+            <!-- Hue -->
+            <h3 class="font-medium text-gray-900 mb-3">Hue</h3>
             <HueWheel
               hueMin={$paletteParams.hueMin}
               hueMax={$paletteParams.hueMax}
@@ -257,11 +255,11 @@
                 debouncedGenerate();
               }}
             />
-          </div>
 
-          <!-- Saturation Range -->
-          <div class="bg-gray-50 p-4 rounded-lg">
-            <h3 class="font-medium text-gray-900 mb-3">Saturation Range</h3>
+            <!-- Saturation -->
+            <h3 class="font-medium text-sm text-gray-900 mb-3 mt-5">
+              Saturation
+            </h3>
             <SaturationSlider
               satMin={$paletteParams.satMin}
               satMax={$paletteParams.satMax}
@@ -271,11 +269,9 @@
                 debouncedGenerate();
               }}
             />
-          </div>
 
-          <!-- Lightness Range -->
-          <div class="bg-gray-50 p-4 rounded-lg">
-            <h3 class="font-medium text-gray-900 mb-3">Lightness Range</h3>
+            <!-- Lightness -->
+            <h3 class="font-medium text-gray-900 mb-3 mt-5">Lightness</h3>
             <LightnessSlider
               lightMin={$paletteParams.lightMin}
               lightMax={$paletteParams.lightMax}
@@ -285,8 +281,8 @@
                 debouncedGenerate();
               }}
             />
-          </div>
-        {/if}
+          {/if}
+        </div>
 
         <!-- Background Color -->
         <div class="bg-gray-50 p-4 rounded-lg">
