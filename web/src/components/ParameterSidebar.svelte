@@ -241,10 +241,26 @@
                 pasted). Empty falls back to colorspace.
               </p>
               {#if $paletteParams.inputMode === "fixed" && fixedCandidates.length > 0 && $paletteParams.numColors > fixedCandidates.length}
-                <p class="text-xs text-red-600 font-semibold mb-1">
+                <p class="text-xs text-red-600 font-semibold">
                   Number of colors requested ({$paletteParams.numColors})
                   exceeds number of fixed candidates ({fixedCandidates.length}).
                 </p>
+              {/if}
+              {#if $paletteParams.fixedInput.trim() && fixedCandidates.length === 0}
+                <p class="text-xs text-red-600 font-semibold">
+                  No valid hex colors found. Please enter colors in the format <code
+                    >#RRGGBB</code
+                  >.
+                </p>
+              {:else if $paletteParams.fixedInput.trim()}
+                {#each $paletteParams.fixedInput.split(/[,;\s\n]+/) as c}
+                  {#if c.trim() && !/^#[0-9A-Fa-f]{6}$/.test(c.trim())}
+                    <p class="text-xs text-red-600 font-semibold">
+                      "<code>{c.trim()}</code>" is not a valid hex color. Use
+                      <code>#RRGGBB</code> format.
+                    </p>
+                  {/if}
+                {/each}
               {/if}
             </div>
           {/if}

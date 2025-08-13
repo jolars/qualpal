@@ -86,6 +86,12 @@
                 ></div>
               {/each}
             </div>
+            {#if $paletteParams.numColors > parsedColors.length}
+              <p class="text-xs text-red-600 font-semibold mt-2">
+                Number of colors requested ({$paletteParams.numColors}) exceeds
+                number of existing colors ({parsedColors.length}).
+              </p>
+            {/if}
           </div>
         {:else}
           <p class="text-xs text-red-600">
