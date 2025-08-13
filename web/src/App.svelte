@@ -703,14 +703,18 @@
   {#if showAbout}
     <div
       class="fixed inset-0 z-50 flex items-start md:items-center justify-center bg-black/50 p-4"
+      role="presentation"
       on:click={() => (showAbout = false)}
+      on:keydown={(e) => e.key === "Escape" && (showAbout = false)}
     >
       <div
         class="bg-white rounded-lg shadow-lg w-full max-w-lg overflow-hidden"
         role="dialog"
         aria-modal="true"
         aria-labelledby="about-title"
+        tabindex="-1"
         on:click|stopPropagation
+        on:keydown|stopPropagation
       >
         <div class="px-5 py-4 border-b flex justify-between items-center">
           <h2 id="about-title" class="text-lg font-semibold">About Qualpal</h2>
