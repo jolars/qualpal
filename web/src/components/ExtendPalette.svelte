@@ -5,7 +5,6 @@
   } from "./../stores/paletteStore.js";
   import { get } from "svelte/store";
 
-  // Local parser (previously in App.svelte)
   function parseExistingPalette(input: string): string[] {
     if (!input || !input.trim()) return [];
     const raw = input.trim();
@@ -37,7 +36,6 @@
       : [];
 
   function onInput() {
-    // Trigger palette regeneration (debounced)
     debouncedGenerate(get(paletteParams));
   }
 </script>
