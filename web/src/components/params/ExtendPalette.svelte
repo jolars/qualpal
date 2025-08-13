@@ -2,7 +2,7 @@
   import {
     paletteParams,
     debouncedGenerate,
-  } from "./../stores/paletteStore.js";
+  } from "./../../stores/paletteStore.js";
   import { get } from "svelte/store";
 
   function parseExistingPalette(input: string): string[] {

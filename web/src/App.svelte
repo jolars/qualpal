@@ -1,10 +1,7 @@
 <script lang="ts">
   import Examples from "./components/Examples.svelte";
-  import HueWheel from "./components/HueWheel.svelte";
-  import LightnessSlider from "./components/LightnessSlider.svelte";
   import PaletteAnalysis from "./components/PaletteAnalysis.svelte";
   import ParameterSidebar from "./components/ParameterSidebar.svelte";
-  import SaturationSlider from "./components/SaturationSlider.svelte";
   import Toast from "./components/Toast.svelte";
   import { onMount } from "svelte";
   import { toast, showToast } from "./stores/toast.js";
@@ -16,10 +13,7 @@
     initializeModule,
     generatePalette,
     debouncedGenerate,
-    availablePalettes,
-    getPaletteHex,
   } from "./stores/paletteStore.js";
-  import ExtendPalette from "./components/ExtendPalette.svelte";
   import Footer from "./components/Footer.svelte";
   import AboutModal from "./components/AboutModal.svelte";
   import CopyButton from "./components/CopyButton.svelte";
@@ -28,25 +22,6 @@
   let selectedPalette = $state<string | null>(null);
 
   let showAbout = $state<boolean>(false);
-
-  const domainList = $derived(Object.keys($availablePalettes));
-  const paletteList = $derived(
-    selectedDomain ? $availablePalettes[selectedDomain] || [] : [],
-  );
-
-  function addBuiltInPalette(replace = false) {
-    if (!selectedDomain || !selectedPalette) return;
-    const colors = getPaletteHex(selectedDomain, selectedPalette);
-    if (!colors || colors.length === 0) return;
-    const existing = replace
-      ? []
-      : $paletteParams.fixedInput.match(/#[0-9A-Fa-f]{6}/g) || [];
-    const merged = Array.from(
-      new Set([...existing, ...colors.map((c) => c.toUpperCase())]),
-    );
-    $paletteParams.fixedInput = merged.join("\n");
-    debouncedGenerate($paletteParams);
-  }
 
   // Initialize the module
   onMount(async () => {
@@ -73,15 +48,6 @@
       console.error("Failed to copy to clipboard:", error);
       showToast("Failed to copy");
     }
-  }
-
-  function setInputMode(mode: "colorspace" | "fixed") {
-    $paletteParams.inputMode = mode;
-    debouncedGenerate($paletteParams);
-  }
-  function clearFixedInput() {
-    $paletteParams.fixedInput = "";
-    debouncedGenerate($paletteParams);
   }
 
   // Output tab state

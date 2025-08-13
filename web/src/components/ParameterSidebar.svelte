@@ -1,8 +1,8 @@
 <script lang="ts">
-  import HueWheel from "./HueWheel.svelte";
-  import LightnessSlider from "./LightnessSlider.svelte";
-  import SaturationSlider from "./SaturationSlider.svelte";
-  import ExtendPalette from "./ExtendPalette.svelte";
+  import HueWheel from "./params/HueWheel.svelte";
+  import LightnessSlider from "./params/LightnessSlider.svelte";
+  import SaturationSlider from "./params/SaturationSlider.svelte";
+  import ExtendPalette from "./params/ExtendPalette.svelte";
   import { showToast } from "../stores/toast.js";
   import {
     paletteParams,

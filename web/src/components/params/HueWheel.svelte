@@ -8,6 +8,7 @@
 
   const radius = 80;
   const center = 100;
+  const segmentCount = 120; // Increase for smoother wheel
   const handleRadius = 10;
 
   function angleToPos(angle: number) {
@@ -37,34 +38,61 @@
       onChange({ hueMin, hueMax: roundedAngle });
     }
   }
+
+  function describeArc(
+    cx: number,
+    cy: number,
+    r: number,
+    startAngle: number,
+    endAngle: number,
+  ) {
+    const start = polarToCartesian(cx, cy, r, endAngle);
+    const end = polarToCartesian(cx, cy, r, startAngle);
+    const largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
+    return [
+      "M",
+      start.x,
+      start.y,
+      "A",
+      r,
+      r,
+      0,
+      largeArcFlag,
+      0,
+      end.x,
+      end.y,
+    ].join(" ");
+  }
+
+  function polarToCartesian(cx: number, cy: number, r: number, angle: number) {
+    const rad = ((angle - 90) * Math.PI) / 180.0;
+    return {
+      x: cx + r * Math.cos(rad),
+      y: cy + r * Math.sin(rad),
+    };
+  }
 </script>
 
 <div class="flex justify-center">
   <svg width="200" height="200" style="touch-action:none;">
     <!-- Base hue circle using CSS background -->
-    <foreignObject x="0" y="0" width="200" height="200" style="z-index: -1;">
-      <div
-        style="
-      width: 200px; 
-      height: 200px; 
-      border-radius: 50%; 
-      background: conic-gradient(
-        hsl(0, 100%, 50%), 
-        hsl(60, 100%, 50%), 
-        hsl(120, 100%, 50%), 
-        hsl(180, 100%, 50%), 
-        hsl(240, 100%, 50%), 
-        hsl(300, 100%, 50%), 
-        hsl(360, 100%, 50%)
-      );
-      mask: radial-gradient(transparent {radius - 8}px, black {radius -
-          8}px, black {radius + 8}px, transparent {radius + 8}px);
-      -webkit-mask: radial-gradient(transparent {radius - 8}px, black {radius -
-          8}px, black {radius + 8}px, transparent {radius + 8}px);
-      pointer-events: none;
-    "
-      ></div>
-    </foreignObject>
+
+    {#each Array(segmentCount) as _, i}
+      <path
+        d={describeArc(
+          center,
+          center,
+          radius,
+          i * (360 / segmentCount),
+          (i + 1) * (360 / segmentCount) + 1,
+        )}
+        stroke={`hsl(${i * (360 / segmentCount)}, 100%, 50%)`}
+        stroke-width="16"
+        stroke-linecap="butt"
+        fill="none"
+        style="pointer-events: none;"
+      />
+    {/each}
     <circle
       cx={center}
       cy={center}
