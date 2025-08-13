@@ -21,9 +21,8 @@
   }
 
   // Flatten matrix for min/max
-  const flat = matrix.flat();
-  const min = flat.length ? Math.min(...flat) : 0;
-  const max = flat.length ? Math.max(...flat) : 1;
+  const min = 0;
+  const max = 40;
 </script>
 
 {#if !matrix || matrix.length === 0}
