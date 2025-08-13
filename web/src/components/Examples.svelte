@@ -1,9 +1,10 @@
-<script lang="ts">
-  import { onMount, afterUpdate } from "svelte";
-
-  // Add type declarations
+<script context="module" lang="ts">
   declare const d3: any;
   declare const topojson: any;
+</script>
+
+<script lang="ts">
+  import { onMount } from "svelte";
 
   export let palette = [];
   export let useBackground = false;
@@ -19,10 +20,10 @@
     return 0.299 * r + 0.587 * g + 0.114 * b < 128;
   }
 
-  let barChartContainer;
-  let scatterPlotContainer;
-  let lineChartContainer;
-  let mapContainer;
+  let barChartContainer: SVGSVGElement;
+  let scatterPlotContainer: SVGSVGElement;
+  let lineChartContainer: SVGSVGElement;
+  let mapContainer: SVGSVGElement;
 
   $: barData = palette.map((_, i) => ({
     category: String.fromCharCode(65 + i),
@@ -76,7 +77,7 @@
 
     Array.from({ length: numStates }, (_, i) => `State ${i + 1}`);
 
-    svg.forEach((stateName, i) => {
+    Array.from({ length: numStates }, (_, i) => {
       svg
         .append("rect")
         .attr("class", "state-rect")
@@ -111,7 +112,7 @@
         .translate([width / 1.3, height / 2]);
       const path = d3.geoPath().projection(projection);
 
-      usStatesData = states.features.map((feature, index) => ({
+      usStatesData = states.features.map((feature: any) => ({
         name: feature.properties.name,
         path: path(feature),
         id: feature.id,
@@ -126,7 +127,7 @@
     }
   }
 
-  function getColorForIndex(index) {
+  function getColorForIndex(index: number) {
     if (palette.length === 0) return "#3b82f6";
     return palette[index % palette.length].hex;
   }
@@ -159,7 +160,7 @@
 
     const y = d3
       .scaleLinear()
-      .domain([0, d3.max(barData, (d) => d.value)])
+      .domain([0, d3.max(barData, (d: any) => d.value)])
       .range([height, 0]);
 
     g.selectAll(".bar")
@@ -167,28 +168,28 @@
       .enter()
       .append("rect")
       .attr("class", "bar")
-      .attr("x", (d) => x(d.category))
+      .attr("x", (d: any) => x(d.category))
       .attr("width", x.bandwidth())
-      .attr("y", (d) => y(d.value))
-      .attr("height", (d) => height - y(d.value))
-      .attr("fill", (d, i) => getColorForIndex(i));
+      .attr("y", (d: any) => y(d.value))
+      .attr("height", (d: any) => height - y(d.value))
+      .attr("fill", (_d: any, i: number) => getColorForIndex(i));
 
     g.append("g")
       .attr("transform", `translate(0,${height})`)
       .call(d3.axisBottom(x))
-      .call((g) =>
+      .call((g: any) =>
         g.selectAll("text").style("font-size", "10px").style("fill", axisColor),
       )
-      .call((g) => g.selectAll("path").style("stroke", axisColor))
-      .call((g) => g.selectAll("line").style("stroke", axisColor));
+      .call((g: any) => g.selectAll("path").style("stroke", axisColor))
+      .call((g: any) => g.selectAll("line").style("stroke", axisColor));
 
     g.append("g")
       .call(d3.axisLeft(y).ticks(5, "s"))
-      .call((g) =>
+      .call((g: any) =>
         g.selectAll("text").style("font-size", "10px").style("fill", axisColor),
       )
-      .call((g) => g.selectAll("path").style("stroke", axisColor))
-      .call((g) => g.selectAll("line").style("stroke", axisColor));
+      .call((g: any) => g.selectAll("path").style("stroke", axisColor))
+      .call((g: any) => g.selectAll("line").style("stroke", axisColor));
   }
 
   function createScatterPlot() {
@@ -212,12 +213,12 @@
 
     const x = d3
       .scaleLinear()
-      .domain(d3.extent(scatterData, (d) => d.x))
+      .domain(d3.extent(scatterData, (d: any) => d.x))
       .range([10, width]);
 
     const y = d3
       .scaleLinear()
-      .domain(d3.extent(scatterData, (d) => d.y))
+      .domain(d3.extent(scatterData, (d: any) => d.y))
       .range([height - 10, 0]);
 
     const groups = [...new Set(scatterData.map((d) => d.group))];
@@ -227,27 +228,27 @@
       .enter()
       .append("circle")
       .attr("class", "dot")
-      .attr("cx", (d) => x(d.x))
-      .attr("cy", (d) => y(d.y))
+      .attr("cx", (d: any) => x(d.x))
+      .attr("cy", (d: any) => y(d.y))
       .attr("r", 4)
-      .attr("fill", (d) => getColorForIndex(groups.indexOf(d.group)));
+      .attr("fill", (d: any) => getColorForIndex(groups.indexOf(d.group)));
 
     g.append("g")
       .attr("transform", `translate(0,${height})`)
       .call(d3.axisBottom(x).ticks(5))
-      .call((g) =>
+      .call((g: any) =>
         g.selectAll("text").style("font-size", "10px").style("fill", axisColor),
       )
-      .call((g) => g.selectAll("path").style("stroke", axisColor))
-      .call((g) => g.selectAll("line").style("stroke", axisColor));
+      .call((g: any) => g.selectAll("path").style("stroke", axisColor))
+      .call((g: any) => g.selectAll("line").style("stroke", axisColor));
 
     g.append("g")
       .call(d3.axisLeft(y).ticks(5))
-      .call((g) =>
+      .call((g: any) =>
         g.selectAll("text").style("font-size", "10px").style("fill", axisColor),
       )
-      .call((g) => g.selectAll("path").style("stroke", axisColor))
-      .call((g) => g.selectAll("line").style("stroke", axisColor));
+      .call((g: any) => g.selectAll("path").style("stroke", axisColor))
+      .call((g: any) => g.selectAll("line").style("stroke", axisColor));
   }
 
   function createLineChart() {
@@ -286,8 +287,8 @@
 
     const line = d3
       .line()
-      .x((d) => x(d.month))
-      .y((d) => y(d.value));
+      .x((d: any) => x(d.month))
+      .y((d: any) => y(d.value));
 
     palette.forEach((_, i) => {
       const seriesName = String.fromCharCode(65 + i);
@@ -311,19 +312,19 @@
     g.append("g")
       .attr("transform", `translate(0,${height})`)
       .call(d3.axisBottom(x))
-      .call((g) =>
+      .call((g: any) =>
         g.selectAll("text").style("font-size", "10px").style("fill", axisColor),
       )
-      .call((g) => g.selectAll("path").style("stroke", axisColor))
-      .call((g) => g.selectAll("line").style("stroke", axisColor));
+      .call((g: any) => g.selectAll("path").style("stroke", axisColor))
+      .call((g: any) => g.selectAll("line").style("stroke", axisColor));
 
     g.append("g")
       .call(d3.axisLeft(y))
-      .call((g) =>
+      .call((g: any) =>
         g.selectAll("text").style("font-size", "10px").style("fill", axisColor),
       )
-      .call((g) => g.selectAll("path").style("stroke", axisColor))
-      .call((g) => g.selectAll("line").style("stroke", axisColor));
+      .call((g: any) => g.selectAll("path").style("stroke", axisColor))
+      .call((g: any) => g.selectAll("line").style("stroke", axisColor));
   }
 
   function createMap() {
@@ -342,8 +343,8 @@
       .enter()
       .append("path")
       .attr("class", "state")
-      .attr("d", (d) => d.path)
-      .attr("fill", (d, i) => getColorForIndex(i))
+      .attr("d", (d: any) => d.path)
+      .attr("fill", (_: any, i: any) => getColorForIndex(i))
       .attr("stroke", "#fff")
       .attr("stroke-width", 1);
   }
@@ -360,9 +361,16 @@
     updateCharts();
   });
 
-  afterUpdate(() => {
+  $: if (
+    palette &&
+    palette.length &&
+    barChartContainer &&
+    scatterPlotContainer &&
+    lineChartContainer &&
+    mapContainer
+  ) {
     updateCharts();
-  });
+  }
 </script>
 
 <h2 class="text-xl text-left font-semibold text-gray-900 mb-4">Examples</h2>
