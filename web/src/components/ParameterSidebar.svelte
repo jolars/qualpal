@@ -78,7 +78,7 @@
   );
 </script>
 
-<aside class="w-full md:w-64 bg-gray-100 p-4 md:border-r md:border-gray-200">
+<aside class="w-full sm:w-72 bg-gray-100 p-4 md:border-r md:border-gray-200">
   <div class="sticky top-6 border-g">
     <h2 class="text-lg font-semibold text-gray-900 mb-4">Parameters</h2>
 

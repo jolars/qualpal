@@ -1,6 +1,34 @@
 <script lang="ts">
   import CopyButton from "./CopyButton.svelte";
-  let { OUTPUT_TABS, activeTab, setActiveTab, outputText, oncopied } = $props();
+  import { showToast } from "./../stores/toast.js";
+  let { palette } = $props();
+
+  const OUTPUT_TABS = ["JSON", "R", "Python", "CSS"] as const;
+  type OutputTab = (typeof OUTPUT_TABS)[number];
+  let activeTab = $state<OutputTab>("JSON");
+
+  // Output text computed property
+  const outputText = $derived(() => {
+    const hexColors = $palette.map((color: any) => color.hex);
+    switch (activeTab) {
+      case "JSON":
+        return JSON.stringify(hexColors, null, 2);
+      case "R":
+        return `c(\n${hexColors.map((h: any) => `  "${h}"`).join(",\n")}\n)`;
+      case "Python":
+        return `[\n${hexColors.map((h: any) => `  "${h}"`).join(",\n")}\n]`;
+      case "CSS":
+        return hexColors
+          .map((h: any, i: any) => `--color${i + 1}: ${h};`)
+          .join("\n");
+      default:
+        return "";
+    }
+  });
+
+  function setActiveTab(tab: OutputTab) {
+    activeTab = tab;
+  }
 </script>
 
 <section>
@@ -28,7 +56,7 @@
       ariaLabel="Copy output"
       title="Copy output"
       extraClass="absolute top-2 right-2 p-1"
-      {oncopied}
+      oncopied={() => showToast("Copied Output")}
     />
     <pre
       class="text-sm font-mono text-gray-700 overflow-x-auto">{outputText()}</pre>
