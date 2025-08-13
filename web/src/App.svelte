@@ -59,7 +59,6 @@
 
           <Examples
             palette={$palette}
-            useBackground={$paletteParams.useBackground}
             backgroundColor={$paletteParams.backgroundColor}
           />
 
