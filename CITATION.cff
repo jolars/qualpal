@@ -1,0 +1,13 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "qualpal"
+authors:
+  - family-names: Larsson
+    given-names: Johan
+    orcid: "https://orcid.org/0000-0002-4029-5945"
+date-released: 2025-08-12
+version: "2.4.0"
+url: "https://github.com/jolars/qualpal"
+license: MIT
+location: Lund, Sweden
+keywords: [colors, palette]
