@@ -174,21 +174,21 @@
                 </div>
                 <div class="flex gap-2">
                   <button
-                    class="px-2 py-1 text-xs rounded border border-gray-300 bg-white hover:bg-gray-100 disabled:opacity-50"
+                    class="px-2 py-1 text-xs rounded border border-gray-300 bg-white hover:bg-gray-100 disabled:opacity-50 cursor-pointer"
                     disabled={!selectedDomain || !selectedPalette}
                     onclick={() => addBuiltInPalette(false)}
                   >
                     Add
                   </button>
                   <button
-                    class="px-2 py-1 text-xs rounded border border-gray-300 bg-white hover:bg-gray-100 disabled:opacity-50"
+                    class="px-2 py-1 text-xs rounded border border-gray-300 bg-white hover:bg-gray-100 disabled:opacity-50 cursor-pointer"
                     disabled={!selectedDomain || !selectedPalette}
                     onclick={() => addBuiltInPalette(true)}
                   >
                     Replace
                   </button>
                   <button
-                    class="px-2 py-1 text-xs rounded border border-gray-300 bg-white hover:bg-gray-100 disabled:opacity-50"
+                    class="px-2 py-1 text-xs rounded border border-gray-300 bg-white hover:bg-gray-100 disabled:opacity-50 cursor-pointer"
                     onclick={() => {
                       clearFixedInput();
                       showToast("Cleared fixed candidates");
@@ -292,7 +292,25 @@
         <div class="bg-gray-50 p-4 rounded-lg">
           <h3 class="font-medium text-gray-900 mb-3">Background Color</h3>
 
-          <div class="mb-3">
+          <div class="flex items-center gap-2">
+            <input
+              type="color"
+              bind:value={$paletteParams.backgroundColor}
+              onchange={() => debouncedGenerate($paletteParams)}
+              class="w-1/2 h-8 rounded border border-gray-300 cursor-pointer"
+              title="Select background color"
+            />
+            <input
+              type="text"
+              bind:value={$paletteParams.backgroundColor}
+              oninput={() => debouncedGenerate($paletteParams)}
+              class="w-1/2 px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="#ffffff"
+              pattern="^#[0-9A-Fa-f]{6}$"
+            />
+          </div>
+
+          <div class="mt-3">
             <label class="flex items-center gap-2 cursor-pointer">
               <input
                 type="checkbox"
@@ -305,34 +323,6 @@
               >
             </label>
           </div>
-
-          {#if $paletteParams.useBackground}
-            <div class="flex items-center gap-2">
-              <input
-                type="color"
-                bind:value={$paletteParams.backgroundColor}
-                onchange={() => debouncedGenerate($paletteParams)}
-                class="w-1/3 h-8 rounded border border-gray-300 cursor-pointer"
-                title="Select background color"
-              />
-              <input
-                type="text"
-                bind:value={$paletteParams.backgroundColor}
-                oninput={() => debouncedGenerate($paletteParams)}
-                class="w-2/3 px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="#ffffff"
-                pattern="^#[0-9A-Fa-f]{6}$"
-              />
-            </div>
-            <p class="text-xs text-gray-500 mt-2">
-              Colors are optimized to be distinct against this background
-            </p>
-          {:else}
-            <p class="text-xs text-gray-500">
-              Colors will be optimized for general use without a specific
-              background
-            </p>
-          {/if}
         </div>
 
         <!-- Extend Palette -->

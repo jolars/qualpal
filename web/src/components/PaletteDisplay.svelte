@@ -28,11 +28,9 @@
 
 <div
   class="p-4 rounded-lg border-2 border-dashed border-gray-200"
-  style="background-color: {paletteParams.useBackground
-    ? paletteParams.backgroundColor
-    : '#ffffff'}"
+  style="background-color: {paletteParams.backgroundColor}"
 >
-  <div class="grid grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+  <div class="grid grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-4">
     {#each palette as color}
       <div class="group">
         <button
@@ -56,11 +54,7 @@
         <div class="mt-2 text-center">
           <div
             class="text-sm font-mono"
-            style="color: {isDarkColor(
-              paletteParams.useBackground
-                ? paletteParams.backgroundColor
-                : '#ffffff',
-            )
+            style="color: {isDarkColor(paletteParams.backgroundColor)
               ? '#fff'
               : '#222'}"
           >

@@ -7,16 +7,14 @@
   import { onMount } from "svelte";
 
   export let palette = [];
-  export let useBackground = false;
   export let backgroundColor = "#ffffff";
 
   function isDarkColor(hex: string): boolean {
-    // Simple luminance check
     const c = hex.replace("#", "");
     const r = parseInt(c.substring(0, 2), 16);
     const g = parseInt(c.substring(2, 4), 16);
     const b = parseInt(c.substring(4, 6), 16);
-    // Perceived luminance formula
+
     return 0.299 * r + 0.587 * g + 0.114 * b < 128;
   }
 
@@ -139,10 +137,9 @@
     svg.selectAll("*").remove();
 
     // Set background
-    const bgColor = useBackground ? backgroundColor : "#ffffff";
-    svg.style("background-color", bgColor);
+    svg.style("background-color", backgroundColor);
 
-    const axisColor = isDarkColor(bgColor) ? "#fff" : "#222";
+    const axisColor = isDarkColor(backgroundColor) ? "#fff" : "#222";
 
     const margin = { top: 20, right: 20, bottom: 40, left: 40 };
     const width = 300 - margin.left - margin.right;
@@ -199,9 +196,8 @@
     svg.selectAll("*").remove();
 
     // Set background
-    const bgColor = useBackground ? backgroundColor : "#ffffff";
-    svg.style("background-color", bgColor);
-    const axisColor = isDarkColor(bgColor) ? "#fff" : "#222";
+    svg.style("background-color", backgroundColor);
+    const axisColor = isDarkColor(backgroundColor) ? "#fff" : "#222";
 
     const margin = { top: 20, right: 20, bottom: 40, left: 40 };
     const width = 300 - margin.left - margin.right;
@@ -258,9 +254,8 @@
     svg.selectAll("*").remove();
 
     // Set background
-    const bgColor = useBackground ? backgroundColor : "#ffffff";
-    svg.style("background-color", bgColor);
-    const axisColor = isDarkColor(bgColor) ? "#fff" : "#222";
+    svg.style("background-color", backgroundColor);
+    const axisColor = isDarkColor(backgroundColor) ? "#fff" : "#222";
 
     const margin = { top: 20, right: 20, bottom: 40, left: 40 };
     const width = 300 - margin.left - margin.right;
@@ -334,8 +329,7 @@
     svg.selectAll("*").remove();
 
     // Set background
-    const bgColor = useBackground ? backgroundColor : "#ffffff";
-    svg.style("background-color", bgColor);
+    svg.style("background-color", backgroundColor);
 
     svg
       .selectAll(".state")
