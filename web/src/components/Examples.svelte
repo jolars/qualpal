@@ -9,6 +9,11 @@
   let { palette, paletteParams } = $props();
   let backgroundColor = $paletteParams.backgroundColor || "#ffffff";
 
+  let barChartContainer = $state<SVGSVGElement | null>(null);
+  let scatterPlotContainer = $state<SVGSVGElement | null>(null);
+  let lineChartContainer = $state<SVGSVGElement | null>(null);
+  let mapContainer = $state<SVGSVGElement | null>(null);
+
   function isDarkColor(hex: string): boolean {
     const c = hex.replace("#", "");
     const r = parseInt(c.substring(0, 2), 16);
@@ -17,11 +22,6 @@
 
     return 0.299 * r + 0.587 * g + 0.114 * b < 128;
   }
-
-  let barChartContainer: SVGSVGElement;
-  let scatterPlotContainer: SVGSVGElement;
-  let lineChartContainer: SVGSVGElement;
-  let mapContainer: SVGSVGElement;
 
   const barData = $derived(() =>
     $palette.map((_: any, i: number) => ({

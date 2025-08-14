@@ -1,10 +1,6 @@
 <script lang="ts">
-  import { createEventDispatcher } from "svelte";
-  const dispatch = createEventDispatcher();
   const year = new Date().getFullYear();
-  function openAbout() {
-    dispatch("about");
-  }
+  let { onclick } = $props();
 </script>
 
 <footer class="bg-gray-800">
@@ -22,9 +18,9 @@
       class="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm"
     >
       <button
+        {onclick}
         type="button"
         class="inline-flex items-center gap-1 text-gray-100 hover:text-blue-300 cursor-pointer"
-        on:click={openAbout}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

@@ -47,17 +47,13 @@
     <main class="flex-1 p-4 overflow-x-auto">
       <div class="space-y-6">
         {#if $moduleLoaded}
-          <PaletteDisplay palette={$palette} paletteParams={$paletteParams} />
+          <PaletteDisplay {palette} {paletteParams} />
 
           <Examples {palette} {paletteParams} />
 
           <PaletteOutput {palette} />
 
-          <PaletteAnalysis
-            matrix={$analysis?.normal?.differenceMatrix ?? []}
-            labels={$palette?.length > 0 ? $palette.map((c) => c.hex) : []}
-            minDistances={$analysis?.normal?.minDistances ?? []}
-          />
+          <PaletteAnalysis {analysis} {palette} />
         {:else}
           <div class="flex items-center justify-center min-h-screen">
             <div class="text-center">
@@ -72,9 +68,9 @@
     </main>
   </div>
 
-  <Toast show={$toast.show} message={$toast.message} />
+  <Toast {toast} />
 
   <AboutModal open={showAbout} onclose={() => (showAbout = false)} />
 </div>
 
-<Footer on:about={() => (showAbout = true)} />
+<Footer onclick={() => (showAbout = true)} />

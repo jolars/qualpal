@@ -1,6 +1,7 @@
 <script lang="ts">
   import CopyButton from "./CopyButton.svelte";
   import { showToast } from "./../stores/toast.js";
+
   let { palette } = $props();
 
   const OUTPUT_TABS = ["JSON", "R", "Python", "CSS"] as const;

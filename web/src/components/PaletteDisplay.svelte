@@ -1,6 +1,7 @@
 <script lang="ts">
-  let { palette, paletteParams } = $props();
   import { showToast } from "./../stores/toast.js";
+
+  let { palette, paletteParams } = $props();
 
   function isDarkColor(hex: string): boolean {
     const c = hex.replace("#", "");
@@ -23,17 +24,17 @@
 
 <div class="flex items-center justify-between mb-4">
   <h2 class="text-xl font-semibold text-gray-900">Generated Palette</h2>
-  <span class="text-sm text-gray-500">{palette.length} colors</span>
+  <span class="text-sm text-gray-500">{$palette.length} colors</span>
 </div>
 
 <div
   class="p-4 rounded-lg border-1 border-gray-200"
-  style="background-color: {paletteParams.backgroundColor}"
+  style="background-color: {$paletteParams.backgroundColor}"
 >
   <div
     class="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4"
   >
-    {#each palette as color}
+    {#each $palette as color}
       <div class="group">
         <button
           class="aspect-square rounded-lg cursor-pointer border-2 border-gray-200 hover:border-gray-400 transition-all duration-200 hover:shadow-md relative overflow-hidden w-full"
@@ -56,7 +57,7 @@
         <div class="mt-2 text-center">
           <div
             class="text-sm font-mono"
-            style="color: {isDarkColor(paletteParams.backgroundColor)
+            style="color: {isDarkColor($paletteParams.backgroundColor)
               ? '#fff'
               : '#222'}"
           >
