@@ -2,6 +2,7 @@ version: "3"
 
 vars:
   BUILD_DIR: build
+  WASM_BUILD_DIR: build/wasm
   TEST_DIR: test
   CMAKE_BUILD_FLAGS: --build {{.BUILD_DIR}} -j
 
@@ -31,18 +32,18 @@ tasks:
       - cmake -B {{.BUILD_DIR}} -S . -DBUILD_CLI=ON
       - cmake {{.CMAKE_BUILD_FLAGS}}
 
-  build:wasm:
+  build-wasm:
     desc: Build WebAssembly version
     preconditions:
       - sh: command -v emcc
         msg: "Emscripten not found. Please install and source emsdk_env.sh"
     cmds:
       - echo "Building WebAssembly version..."
-      - rm -rf {{.BUILD_DIR}}/wasm
+      - rm -rf {{.WASM_BUILD_DIR}}
       - mkdir -p ~/.emscripten_cache
-      - mkdir -p {{.BUILD_DIR}}/wasm
-      - export EM_CACHE=~/.emscripten_cache && emcmake cmake -B {{.BUILD_DIR}} -S . -DBUILD_WASM=ON -DCMAKE_BUILD_TYPE=Release
-      - export EM_CACHE=~/.emscripten_cache && emmake make -C {{.BUILD_DIR}} qualpal_wasm
+      - mkdir -p {{.WASM_BUILD_DIR}}
+      - export EM_CACHE=~/.emscripten_cache && emcmake cmake -B {{.WASM_BUILD_DIR}} -S . -DBUILD_WASM=ON -DCMAKE_BUILD_TYPE=Release
+      - export EM_CACHE=~/.emscripten_cache && emmake make -C {{.WASM_BUILD_DIR}} qualpal_wasm
       - cp {{.BUILD_DIR}}/qualpal_wasm.* web/static/ 2>/dev/null || cp {{.BUILD_DIR}}/qualpal_wasm.* web/public/ 2>/dev/null || echo "Copy WASM files to web directory manually"
       - echo "✓ WebAssembly build complete! Files in {{.BUILD_DIR}}/wasm/ and copied to web/"
 
@@ -108,26 +109,7 @@ tasks:
     cmds:
       - npm run dev
 
-  dev:full:
-    desc: Build WASM and start Svelte dev server with auto-rebuild
-    deps: [build:wasm]
-    cmds:
-      - echo "Starting full development mode..."
-      - echo "WASM built, starting Svelte dev server"
-      - echo "Open http://localhost:5173 in your browser"
-      - |
-        cd web && \
-        (npm run dev &) && \
-        echo $! > dev-server.pid && \
-        trap 'kill $(cat dev-server.pid) 2>/dev/null || true; rm -f dev-server.pid' EXIT && \
-        while true; do
-          inotifywait -r -e modify ../src ../include 2>/dev/null && \
-          echo "C++ changes detected, rebuilding WASM..." && \
-          task build:wasm && \
-          echo "WASM rebuild complete! Svelte will hot-reload."
-        done
-
-  build:web:
+  build-web:
     desc: Build Svelte app for production
     deps: [build:wasm]
     dir: web
@@ -135,21 +117,14 @@ tasks:
       - npm run build
       - echo "✓ Web app built! Files in web/dist/"
 
-  preview:web:
-    desc: Preview production build locally
-    deps: [build:web]
-    dir: web
-    cmds:
-      - npm run preview
-
-  clean:web:
+  clean-web:
     desc: Clean web build artifacts
     dir: web
     cmds:
       - rm -rf dist node_modules/.vite
       - echo "Web build artifacts cleaned"
 
-  clean:all:
+  clean-all:
     desc: Clean all build artifacts
     deps: [clean, clean:wasm, clean:web]
     cmds:
