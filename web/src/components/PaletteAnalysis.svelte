@@ -1,4 +1,71 @@
+<script module lang="ts">
+  declare const d3: any;
+</script>
+
 <script lang="ts">
+  let minDistSvg: SVGSVGElement;
+
+  function renderMinDistBarChart() {
+    if (!minDistSvg || !labels.length || !minDistances.length) return;
+    minDistSvg.innerHTML = "";
+
+    const svg = d3.select(minDistSvg);
+    const width = Math.max(320, labels.length * 48);
+    const height = 220;
+    const margin = { top: 16, right: 8, bottom: 32, left: 32 };
+
+    const x = d3
+      .scaleBand()
+      .domain(labels)
+      .range([margin.left, width - margin.right])
+      .padding(0.2);
+
+    const y = d3
+      .scaleLinear()
+      .domain([0, 40])
+      .nice()
+      .range([height - margin.bottom, margin.top]);
+
+    // Bars
+    svg
+      .selectAll("rect")
+      .data(minDistances)
+      .join("rect")
+      .attr("x", (_d: number, i: number) => x(labels[i]))
+      .attr("y", (d: number) => y(d))
+      .attr("width", x.bandwidth())
+      .attr("height", (d: number) => y(0) - y(d))
+      .attr("fill", (_: number, i: number) => labels[i])
+      .attr("stroke", "#eaeaea");
+
+    // X axis
+    svg
+      .append("g")
+      .attr("transform", `translate(0,${height - margin.bottom})`)
+      .call(
+        d3
+          .axisBottom(x)
+          .tickFormat((d: string) => d)
+          .tickSizeOuter(0),
+      )
+      .selectAll("text")
+      .attr("font-size", 10)
+      .attr("transform", "rotate(-30)")
+      .style("text-anchor", "end");
+
+    // Y axis
+    svg
+      .append("g")
+      .attr("transform", `translate(${margin.left},0)`)
+      .call(d3.axisLeft(y).ticks(5))
+      .selectAll("text")
+      .attr("font-size", 10);
+  }
+
+  $: if (minDistSvg && labels.length && minDistances.length) {
+    renderMinDistBarChart();
+  }
+
   export let matrix: number[][] = [];
   export let labels: string[] = [];
   export let minDistances: number[] = [];
@@ -29,10 +96,14 @@
 {:else}
   <h3 class="text-xl font-semibold text-gray-900 mb-4">Palette Analysis</h3>
   <!-- Difference Matrix -->
-  <h4 class="text-lg font-medium text-gray-800 mb-3">
-    Color Difference Matrix
-  </h4>
   <div class="w-full max-w-full overflow-x-auto">
+    <h4 class="text-lg font-medium text-gray-800 mb-3">
+      Color Difference Matrix
+    </h4>
+    <p class="text-xs text-gray-500 mt-2 mb-4">
+      Values represent the color difference (in the DIN99d metric) between
+      palette colors.
+    </p>
     <table class="border-collapse w-max">
       <thead>
         <tr>
@@ -105,24 +176,19 @@
   </div>
 
   <!-- Minimum Distances -->
-  <h4 class="text-lg font-medium text-gray-800 mb-3">Minimum Distances</h4>
-  <div class="space-y-2">
-    {#each minDistances as distance, i}
-      <div
-        class="flex items-center justify-between p-2 bg-gray-50 rounded border border-gray-200"
-      >
-        <div class="flex items-center space-x-2">
-          <span
-            class="inline-block w-4 h-4 rounded border border-gray-300"
-            style="background:{labels[i]};"
-            title={labels[i]}
-          ></span>
-          <span class="text-sm font-mono text-gray-700">{labels[i]}</span>
-        </div>
-        <span class="text-sm font-semibold text-gray-900"
-          >{distance.toFixed(2)}</span
-        >
-      </div>
-    {/each}
+  <h4 class="text-lg font-medium text-gray-800 mb-3 flex items-center gap-2">
+    Minimum Distances
+  </h4>
+  <p class="text-xs text-gray-500 mb-2">
+    Shows the smallest color difference (in the DIN99d metric) for each palette
+    color.
+  </p>
+  <div class="w-full overflow-x-auto">
+    <svg
+      bind:this={minDistSvg}
+      width={Math.max(320, labels.length * 48)}
+      height="230"
+      class="block"
+    ></svg>
   </div>
 {/if}
