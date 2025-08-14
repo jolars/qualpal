@@ -7,7 +7,6 @@
   import { onMount } from "svelte";
 
   let { palette, paletteParams } = $props();
-  let backgroundColor = $paletteParams.backgroundColor;
 
   let barChartContainer = $state<SVGSVGElement | null>(null);
   let scatterPlotContainer = $state<SVGSVGElement | null>(null);
@@ -22,6 +21,8 @@
 
     return 0.299 * r + 0.587 * g + 0.114 * b < 128;
   }
+
+  const backgroundColor = $derived(() => $paletteParams.backgroundColor);
 
   const barData = $derived(() =>
     $palette.map((_: any, i: number) => ({
@@ -143,9 +144,9 @@
     svg.selectAll("*").remove();
 
     // Set background
-    svg.style("background-color", backgroundColor);
+    svg.style("background-color", backgroundColor());
 
-    const axisColor = isDarkColor(backgroundColor) ? "#fff" : "#222";
+    const axisColor = isDarkColor(backgroundColor()) ? "#fff" : "#222";
 
     const margin = { top: 20, right: 20, bottom: 40, left: 40 };
     const width = 300 - margin.left - margin.right;
@@ -202,8 +203,8 @@
     svg.selectAll("*").remove();
 
     // Set background
-    svg.style("background-color", backgroundColor);
-    const axisColor = isDarkColor(backgroundColor) ? "#fff" : "#222";
+    svg.style("background-color", backgroundColor());
+    const axisColor = isDarkColor(backgroundColor()) ? "#fff" : "#222";
 
     const margin = { top: 20, right: 20, bottom: 40, left: 40 };
     const width = 300 - margin.left - margin.right;
@@ -260,8 +261,8 @@
     svg.selectAll("*").remove();
 
     // Set background
-    svg.style("background-color", backgroundColor);
-    const axisColor = isDarkColor(backgroundColor) ? "#fff" : "#222";
+    svg.style("background-color", backgroundColor());
+    const axisColor = isDarkColor(backgroundColor()) ? "#fff" : "#222";
 
     const margin = { top: 20, right: 20, bottom: 40, left: 40 };
     const width = 300 - margin.left - margin.right;
@@ -337,7 +338,7 @@
     svg.selectAll("*").remove();
 
     // Set background
-    svg.style("background-color", backgroundColor);
+    svg.style("background-color", backgroundColor());
 
     svg
       .selectAll(".state")
