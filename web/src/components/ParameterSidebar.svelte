@@ -12,12 +12,8 @@
     getPaletteHex,
   } from "../stores/paletteStore.js";
 
-  let {
-    selectedDomain,
-    setSelectedDomain,
-    selectedPalette,
-    setSelectedPalette,
-  } = $props();
+  let selectedDomain = $state<string | null>(null);
+  let selectedPalette = $state<string | null>(null);
 
   const domainList = $derived(Object.keys($availablePalettes));
   const paletteList = $derived(
@@ -46,6 +42,14 @@
   function clearFixedInput() {
     $paletteParams.fixedInput = "";
     debouncedGenerate($paletteParams);
+  }
+
+  function setSelectedDomain(d: any) {
+    selectedDomain = d;
+  }
+
+  function setSelectedPalette(p: any) {
+    selectedPalette = p;
   }
 
   function parseFixedCandidates(input: string): string[] {

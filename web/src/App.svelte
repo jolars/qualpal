@@ -19,9 +19,6 @@
   import ParameterSidebar from "./components/ParameterSidebar.svelte";
   import Toast from "./components/Toast.svelte";
 
-  let selectedDomain = $state<string | null>(null);
-  let selectedPalette = $state<string | null>(null);
-
   let showAbout = $state<boolean>(false);
 
   // Initialize the module
@@ -44,12 +41,7 @@
 
 <div class="main-content">
   <div class="flex flex-col sm:flex-row min-h-screen">
-    <ParameterSidebar
-      {selectedDomain}
-      setSelectedDomain={(d: any) => (selectedDomain = d)}
-      {selectedPalette}
-      setSelectedPalette={(p: any) => (selectedPalette = p)}
-    />
+    <ParameterSidebar />
 
     <!-- Main Content -->
     <main class="flex-1 p-4 overflow-x-auto">
