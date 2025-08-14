@@ -66,7 +66,7 @@
     onkeydown={handleKey}
   >
     <div
-      class="bg-white rounded-lg shadow-lg w-full max-w-lg overflow-hidden"
+      class="bg-white rounded-lg shadow-lg w-full max-w-lg overflow-hidden max-h-[90vh] flex flex-col"
       role="dialog"
       aria-modal="true"
       aria-labelledby="about-title"
@@ -86,7 +86,9 @@
           ✕
         </button>
       </div>
-      <div class="p-5 space-y-4 text-sm text-gray-700">
+      <div
+        class="p-5 space-y-4 text-sm text-gray-700 overflow-y-auto flex-1 min-h-0"
+      >
         <p>
           Qualpal generates qualitative color palettes (for categorical data)
           that are optimized for distinctness by algorithmically maximizing the
