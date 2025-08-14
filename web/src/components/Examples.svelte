@@ -7,7 +7,7 @@
   import { onMount } from "svelte";
 
   let { palette, paletteParams } = $props();
-  let backgroundColor = $paletteParams.backgroundColor || "#ffffff";
+  let backgroundColor = $paletteParams.backgroundColor;
 
   let barChartContainer = $state<SVGSVGElement | null>(null);
   let scatterPlotContainer = $state<SVGSVGElement | null>(null);
