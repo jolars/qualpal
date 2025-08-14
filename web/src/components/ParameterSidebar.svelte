@@ -286,9 +286,7 @@
             />
 
             <!-- Saturation -->
-            <h3 class="font-medium text-sm text-gray-900 mb-3 mt-5">
-              Saturation
-            </h3>
+            <h3 class="font-medium text-gray-900 mb-3 mt-5">Saturation</h3>
             <SaturationSlider
               satMin={$paletteParams.satMin}
               satMax={$paletteParams.satMax}
