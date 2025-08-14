@@ -1,8 +1,6 @@
-<script module lang="ts">
-  declare const d3: any;
-</script>
-
 <script lang="ts">
+  import * as d3 from "d3";
+
   let { analysis, palette } = $props();
 
   const matrix = $derived(() => $analysis?.normal?.differenceMatrix ?? []);

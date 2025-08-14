@@ -1,10 +1,7 @@
-<script module lang="ts">
-  declare const d3: any;
-  declare const topojson: any;
-</script>
-
 <script lang="ts">
   import { onMount } from "svelte";
+  import * as d3 from "d3";
+  import { feature } from "topojson-client";
 
   let { palette, paletteParams } = $props();
 
@@ -69,67 +66,20 @@
   let usStatesData = [];
   let mapLoaded = false;
 
-  function createSimpleMap() {
-    // Fallback simple grid representation
-    if (!mapContainer || $palette.length === 0) return;
-
-    const svg = d3.select(mapContainer);
-    svg.selectAll("*").remove();
-
-    // Create simple rectangles as fallback
-    const numStates = Math.min(20, Math.max($palette.length * 3, 12));
-    const cols = 5;
-
-    Array.from({ length: numStates }, (_, i) => `State ${i + 1}`);
-
-    Array.from({ length: numStates }, (_, i) => {
-      svg
-        .append("rect")
-        .attr("class", "state-rect")
-        .attr("x", (i % cols) * 100 + 20)
-        .attr("y", Math.floor(i / cols) * 60 + 20)
-        .attr("width", 80)
-        .attr("height", 50)
-        .attr("fill", $palette[i % $palette.length]?.hex || "#3b82f6")
-        .attr("stroke", "#fff")
-        .attr("stroke-width", 2);
-    });
-  }
-
   async function loadUSStatesData() {
-    try {
-      // Use the D3 gallery TopoJSON source
-      const response = await fetch(
-        "https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json",
-      );
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const us = await response.json();
+    const response = await fetch("/data/states-albers-10m.json");
+    const us = await response.json();
+    const states = feature(us, us.objects.states);
+    const path = d3.geoPath();
 
-      // Convert TopoJSON to GeoJSON and create path generator
-      const states = topojson.feature(us, us.objects.states);
-      const width = 200;
-      const height = 200;
-      const projection = d3
-        .geoAlbersUsa()
-        .scale(width * 1.75)
-        .translate([width / 1.3, height / 2]);
-      const path = d3.geoPath().projection(projection);
+    usStatesData = states.features.map((feature: any) => ({
+      name: feature.properties.name,
+      path: path(feature),
+      id: feature.id,
+    }));
 
-      usStatesData = states.features.map((feature: any) => ({
-        name: feature.properties.name,
-        path: path(feature),
-        id: feature.id,
-      }));
-
-      mapLoaded = true;
-      createMap();
-    } catch (error) {
-      console.error("Failed to load US states data:", error);
-      mapLoaded = true;
-      createSimpleMap();
-    }
+    mapLoaded = true;
+    createMap();
   }
 
   function getColorForIndex(index: number) {
@@ -349,7 +299,7 @@
       .attr("d", (d: any) => d.path)
       .attr("fill", (_: any, i: any) => getColorForIndex(i))
       .attr("stroke", "#fff")
-      .attr("stroke-width", 1);
+      .attr("stroke-width", 3);
   }
 
   function updateCharts() {
@@ -406,7 +356,7 @@
   <svg
     bind:this={mapContainer}
     class="border border-gray-200 rounded w-full h-auto"
-    viewBox="0 0 300 200"
+    viewBox="0 0 990 660"
     preserveAspectRatio="xMidYMid meet"
   ></svg>
 </div>
