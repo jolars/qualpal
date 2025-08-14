@@ -72,7 +72,7 @@
     const states = feature(us, us.objects.states);
     const path = d3.geoPath();
 
-    usStatesData = states.features.map((feature: any) => ({
+    usStatesData = (states as any).features.map((feature: any) => ({
       name: feature.properties.name,
       path: path(feature),
       id: feature.id,
@@ -114,7 +114,12 @@
 
     const y = d3
       .scaleLinear()
-      .domain([0, d3.max(barData(), (d: any) => d.value)])
+      .domain([
+        0,
+        (d3.max(barData(), (d: any) =>
+          typeof d.value === "number" ? d.value : Number(d.value),
+        ) ?? 0) as number,
+      ])
       .range([height, 0]);
 
     g.selectAll(".bar")
@@ -166,12 +171,22 @@
 
     const x = d3
       .scaleLinear()
-      .domain(d3.extent(scatterData(), (d: any) => d.x))
+      .domain(
+        d3.extent(scatterData(), (d: any) => d.x).map(Number) as [
+          number,
+          number,
+        ],
+      )
       .range([10, width]);
 
     const y = d3
       .scaleLinear()
-      .domain(d3.extent(scatterData(), (d: any) => d.y))
+      .domain(
+        d3.extent(scatterData(), (d: any) => d.x).map(Number) as [
+          number,
+          number,
+        ],
+      )
       .range([height - 10, 0]);
 
     const groups = [...new Set(scatterData().map((d: any) => d.group))];
@@ -259,7 +274,7 @@
           .attr("fill", "none")
           .attr("stroke", getColorForIndex(i))
           .attr("stroke-width", 2)
-          .attr("d", line);
+          .attr("d", line as any);
       }
     });
 
