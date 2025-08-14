@@ -17,7 +17,11 @@ p > a {
 }
 
 #app {
+  min-height: 100vh;
+}
+
+.main-content {
   max-width: 1280px;
   margin: 0 auto;
-  /* text-align: center; */
+  background: white;
 }

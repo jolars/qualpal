@@ -33,16 +33,16 @@
   });
 </script>
 
-<div>
-  <header class="border-g">
-    <div class="max-w-7xl mx-auto px-4 py-4 border-gray-200 border-b">
-      <h1 class="text-2xl font-bold text-gray-900">Qualpal</h1>
-      <p class="text-gray-600 mt-1">
-        Generate maximally distinct color palettes for categorical data
-      </p>
-    </div>
-  </header>
+<header class="bg-gray-800">
+  <div class="max-w-7xl mx-auto px-4 py-4 w-full">
+    <h1 class="text-2xl font-bold text-gray-100">Qualpal</h1>
+    <p class="text-gray-300 mt-1">
+      Generate maximally distinct color palettes for categorical data
+    </p>
+  </div>
+</header>
 
+<div class="main-content">
   <div class="flex flex-col sm:flex-row min-h-screen">
     <ParameterSidebar
       {selectedDomain}
@@ -83,9 +83,9 @@
     </main>
   </div>
 
-  <Footer on:about={() => (showAbout = true)} />
-
   <Toast show={$toast.show} message={$toast.message} />
 
   <AboutModal open={showAbout} onclose={() => (showAbout = false)} />
 </div>
+
+<Footer on:about={() => (showAbout = true)} />

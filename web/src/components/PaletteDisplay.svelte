@@ -30,7 +30,9 @@
   class="p-4 rounded-lg border-1 border-gray-200"
   style="background-color: {paletteParams.backgroundColor}"
 >
-  <div class="grid grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+  <div
+    class="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4"
+  >
     {#each palette as color}
       <div class="group">
         <button

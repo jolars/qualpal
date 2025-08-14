@@ -7,15 +7,15 @@
   }
 </script>
 
-<footer class="border-t bg-white border-gray-200">
+<footer class="bg-gray-800">
   <div
     class="max-w-7xl mx-auto px-4 py-5 flex flex-col md:flex-row gap-4 md:items-center justify-between"
   >
     <div class="text-gray-600 text-sm flex items-center gap-2">
-      <a class="font-semibold text-blue-600" href="https://jolars.co"
+      <a class="font-semibold text-blue-200" href="https://jolars.co"
         >Johan Larsson</a
       >
-      <span class="hidden sm:inline">© {year}</span>
+      <span class="hidden sm:inline text-gray-100">© {year}</span>
     </div>
     <nav
       aria-label="Footer"
@@ -23,7 +23,7 @@
     >
       <button
         type="button"
-        class="inline-flex items-center gap-1 text-gray-600 hover:text-gray-900 cursor-pointer"
+        class="inline-flex items-center gap-1 text-gray-100 hover:text-blue-300 cursor-pointer"
         on:click={openAbout}
       >
         <svg
@@ -45,7 +45,7 @@
       </button>
       <a
         href="https://github.com/jolars/qualpal"
-        class="inline-flex items-center gap-1 text-gray-600 hover:text-gray-900"
+        class="inline-flex items-center gap-1 text-gray-100 hover:text-blue-300"
         target="_blank"
         rel="noopener"
       >
