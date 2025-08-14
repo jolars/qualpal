@@ -29,7 +29,7 @@
 
     const y = d3
       .scaleLinear()
-      .domain([0, 40])
+      .domain([0, 70])
       .nice()
       .range([height - margin.bottom, margin.top]);
 
@@ -79,7 +79,7 @@
   function cellColor(value: number, min: number, max: number) {
     if (max === min) return "rgb(200,200,200)";
     const t = (value - min) / (max - min);
-    const grey = Math.round(255 - t * 180); // 255 (white) to 75 (dark)
+    const grey = Math.round(255 - t * 200); // 255 (white) to 75 (dark)
     return `rgb(${grey},${grey},${grey})`;
   }
 
@@ -93,7 +93,7 @@
   }
 
   const min = 0;
-  const max = 40;
+  const max = 70;
 </script>
 
 {#if !matrix() || matrix().length === 0}
@@ -106,7 +106,7 @@
       Color Difference Matrix
     </h4>
     <p class="text-xs text-gray-500 mt-2 mb-4">
-      Values represent the color difference (in the DIN99d metric) between
+      Values represent the color difference (in the CIEDE2000 metric) between
       palette colors.
     </p>
     <table class="border-collapse w-max">
@@ -185,8 +185,8 @@
     Minimum Distances
   </h4>
   <p class="text-xs text-gray-500 mb-2">
-    Shows the smallest color difference (in the DIN99d metric) for each palette
-    color.
+    Shows the smallest color difference (in the CIEDE2000 metric) for each
+    palette color.
   </p>
   <div class="w-full overflow-x-auto">
     <svg

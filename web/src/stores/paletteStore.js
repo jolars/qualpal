@@ -1,14 +1,13 @@
 import { writable, derived, get } from "svelte/store";
 
-// Palette parameters
 export const paletteParams = writable({
   numColors: 5,
-  hueMin: 20,
-  hueMax: 280,
-  satMin: 0.4,
-  satMax: 0.8,
-  lightMin: 0.3,
-  lightMax: 0.7,
+  hueMin: 170,
+  hueMax: 60,
+  satMin: 0.0,
+  satMax: 0.7,
+  lightMin: 0.2,
+  lightMax: 0.8,
   useBackground: false,
   backgroundColor: "#ffffff",
   inputMode: "colorspace", // 'colorspace' | 'fixed'
