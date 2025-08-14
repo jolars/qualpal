@@ -1,7 +1,7 @@
 # qualpal <img src='https://raw.githubusercontent.com/jolars/qualpal/refs/heads/main/docs/images/logo.svg' align="right" width="139" />
 
 [![Build Status](https://github.com/jolars/qualpal/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/jolars/qualpal/actions/workflows/build-and-test.yml)
-[![codecov](https://img.shields.io/badge/🌐%20%20App-qualpal.cc-blueviolet)](https://codecov.io/gh/jolars/qualpal)
+[![codecov](https://codecov.io/gh/jolars/qualpal/graph/badge.svg?token=p5JTFa9BUz)](https://codecov.io/gh/jolars/qualpal)
 [![App](https://img.shields.io/badge/🌐%20%20App-qualpal.cc-blue)](https://qualpal.cc)
 
 A C++ library for generating qualitative color palettes with maximum perceptual
