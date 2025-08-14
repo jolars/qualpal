@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   declare const d3: any;
   declare const topojson: any;
 </script>
@@ -6,8 +6,8 @@
 <script lang="ts">
   import { onMount } from "svelte";
 
-  export let palette = [];
-  export let backgroundColor = "#ffffff";
+  let { palette, paletteParams } = $props();
+  let backgroundColor = $paletteParams.backgroundColor || "#ffffff";
 
   function isDarkColor(hex: string): boolean {
     const c = hex.replace("#", "");
@@ -23,54 +23,60 @@
   let lineChartContainer: SVGSVGElement;
   let mapContainer: SVGSVGElement;
 
-  $: barData = palette.map((_, i) => ({
-    category: String.fromCharCode(65 + i),
-    value: 20 + ((i * 7 + i * i * 3) % 41),
-  }));
-
-  $: scatterData = palette.flatMap((_, groupIndex) =>
-    Array.from({ length: 3 }, (__, pointIndex) => ({
-      x:
-        10 +
-        (((groupIndex * 3 + pointIndex) * 13 + groupIndex * pointIndex * 11) %
-          81),
-      y:
-        20 +
-        (((groupIndex * 3 + pointIndex) * 17 +
-          groupIndex * groupIndex * 7 +
-          pointIndex * 5) %
-          51),
-      group: String.fromCharCode(65 + groupIndex),
+  const barData = $derived(() =>
+    $palette.map((_: any, i: number) => ({
+      category: String.fromCharCode(65 + i),
+      value: 20 + ((i * 7 + i * i * 3) % 41),
     })),
   );
 
-  $: lineData = Array.from({ length: 6 }, (_, monthIndex) => {
-    const month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"][monthIndex];
-    const dataPoint = { month };
+  const scatterData = $derived(() =>
+    $palette.flatMap((_: any, groupIndex: number) =>
+      Array.from({ length: 3 }, (_: any, pointIndex: number) => ({
+        x:
+          10 +
+          (((groupIndex * 3 + pointIndex) * 13 + groupIndex * pointIndex * 11) %
+            81),
+        y:
+          20 +
+          (((groupIndex * 3 + pointIndex) * 17 +
+            groupIndex * groupIndex * 7 +
+            pointIndex * 5) %
+            51),
+        group: String.fromCharCode(65 + groupIndex),
+      })),
+    ),
+  );
 
-    palette.forEach((_, seriesIndex) => {
-      // More "random-looking" deterministic value between 25-54
-      dataPoint[String.fromCharCode(65 + seriesIndex)] =
-        25 +
-        (((monthIndex + 1) * (seriesIndex + 2) + monthIndex * seriesIndex * 3) %
-          30);
-    });
+  const lineData = $derived(() =>
+    Array.from({ length: 6 }, (_: any, monthIndex: number) => {
+      const month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"][monthIndex];
+      const dataPoint = { month };
 
-    return dataPoint;
-  });
+      $palette.forEach((_: any, seriesIndex: number) => {
+        dataPoint[String.fromCharCode(65 + seriesIndex)] =
+          25 +
+          (((monthIndex + 1) * (seriesIndex + 2) +
+            monthIndex * seriesIndex * 3) %
+            30);
+      });
+
+      return dataPoint;
+    }),
+  );
 
   let usStatesData = [];
   let mapLoaded = false;
 
   function createSimpleMap() {
     // Fallback simple grid representation
-    if (!mapContainer || palette.length === 0) return;
+    if (!mapContainer || $palette.length === 0) return;
 
     const svg = d3.select(mapContainer);
     svg.selectAll("*").remove();
 
     // Create simple rectangles as fallback
-    const numStates = Math.min(20, Math.max(palette.length * 3, 12));
+    const numStates = Math.min(20, Math.max($palette.length * 3, 12));
     const cols = 5;
 
     Array.from({ length: numStates }, (_, i) => `State ${i + 1}`);
@@ -83,7 +89,7 @@
         .attr("y", Math.floor(i / cols) * 60 + 20)
         .attr("width", 80)
         .attr("height", 50)
-        .attr("fill", palette[i % palette.length]?.hex || "#3b82f6")
+        .attr("fill", $palette[i % $palette.length]?.hex || "#3b82f6")
         .attr("stroke", "#fff")
         .attr("stroke-width", 2);
     });
@@ -126,12 +132,12 @@
   }
 
   function getColorForIndex(index: number) {
-    if (palette.length === 0) return "#3b82f6";
-    return palette[index % palette.length].hex;
+    if ($palette.length === 0) return "#3b82f6";
+    return $palette[index % $palette.length].hex;
   }
 
   function createBarChart() {
-    if (!barChartContainer || palette.length === 0) return;
+    if (!barChartContainer || $palette.length === 0) return;
 
     const svg = d3.select(barChartContainer);
     svg.selectAll("*").remove();
@@ -151,17 +157,17 @@
 
     const x = d3
       .scaleBand()
-      .domain(barData.map((d) => d.category))
+      .domain(barData().map((d: any) => d.category))
       .range([0, width])
       .padding(0.2);
 
     const y = d3
       .scaleLinear()
-      .domain([0, d3.max(barData, (d: any) => d.value)])
+      .domain([0, d3.max(barData(), (d: any) => d.value)])
       .range([height, 0]);
 
     g.selectAll(".bar")
-      .data(barData)
+      .data(barData())
       .enter()
       .append("rect")
       .attr("class", "bar")
@@ -190,7 +196,7 @@
   }
 
   function createScatterPlot() {
-    if (!scatterPlotContainer || palette.length === 0) return;
+    if (!scatterPlotContainer || $palette.length === 0) return;
 
     const svg = d3.select(scatterPlotContainer);
     svg.selectAll("*").remove();
@@ -209,15 +215,15 @@
 
     const x = d3
       .scaleLinear()
-      .domain(d3.extent(scatterData, (d: any) => d.x))
+      .domain(d3.extent(scatterData(), (d: any) => d.x))
       .range([10, width]);
 
     const y = d3
       .scaleLinear()
-      .domain(d3.extent(scatterData, (d: any) => d.y))
+      .domain(d3.extent(scatterData(), (d: any) => d.y))
       .range([height - 10, 0]);
 
-    const groups = [...new Set(scatterData.map((d) => d.group))];
+    const groups = [...new Set(scatterData().map((d: any) => d.group))];
 
     g.selectAll(".dot")
       .data(scatterData)
@@ -248,7 +254,7 @@
   }
 
   function createLineChart() {
-    if (!lineChartContainer || palette.length === 0) return;
+    if (!lineChartContainer || $palette.length === 0) return;
 
     const svg = d3.select(lineChartContainer);
     svg.selectAll("*").remove();
@@ -267,12 +273,14 @@
 
     const x = d3
       .scalePoint()
-      .domain(lineData.map((d) => d.month))
+      .domain(lineData().map((d) => d.month))
       .range([0, width]);
 
     // Gather all values for y domain
-    const allValues = lineData
-      .flatMap((d) => palette.map((_, i) => d[String.fromCharCode(65 + i)]))
+    const allValues = lineData()
+      .flatMap((d) =>
+        $palette.map((_: any, i: number) => d[String.fromCharCode(65 + i)]),
+      )
       .filter((v) => v !== undefined);
 
     const y = d3
@@ -285,9 +293,9 @@
       .x((d: any) => x(d.month))
       .y((d: any) => y(d.value));
 
-    palette.forEach((_, i) => {
+    $palette.forEach((_: any, i: number) => {
       const seriesName = String.fromCharCode(65 + i);
-      const seriesData = lineData
+      const seriesData = lineData()
         .map((d) => ({
           month: d.month,
           value: d[seriesName],
@@ -323,7 +331,7 @@
   }
 
   function createMap() {
-    if (!mapContainer || palette.length === 0 || !mapLoaded) return;
+    if (!mapContainer || $palette.length === 0 || !mapLoaded) return;
 
     const svg = d3.select(mapContainer);
     svg.selectAll("*").remove();
@@ -355,16 +363,18 @@
     updateCharts();
   });
 
-  $: if (
-    palette &&
-    palette.length &&
-    barChartContainer &&
-    scatterPlotContainer &&
-    lineChartContainer &&
-    mapContainer
-  ) {
-    updateCharts();
-  }
+  $effect(() => {
+    if (
+      $palette &&
+      $palette.length &&
+      barChartContainer &&
+      scatterPlotContainer &&
+      lineChartContainer &&
+      mapContainer
+    ) {
+      updateCharts();
+    }
+  });
 </script>
 
 <h2 class="text-xl text-left font-semibold text-gray-900 mb-4">Examples</h2>

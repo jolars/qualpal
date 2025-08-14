@@ -49,10 +49,7 @@
         {#if $moduleLoaded}
           <PaletteDisplay palette={$palette} paletteParams={$paletteParams} />
 
-          <Examples
-            palette={$palette}
-            backgroundColor={$paletteParams.backgroundColor}
-          />
+          <Examples {palette} {paletteParams} />
 
           <PaletteOutput {palette} />
 
