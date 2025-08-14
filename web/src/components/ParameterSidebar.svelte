@@ -42,6 +42,7 @@
     $paletteParams.inputMode = mode;
     debouncedGenerate($paletteParams);
   }
+
   function clearFixedInput() {
     $paletteParams.fixedInput = "";
     debouncedGenerate($paletteParams);
@@ -76,6 +77,12 @@
       ? parseFixedCandidates($paletteParams.fixedInput)
       : [],
   );
+
+  $effect(() => {
+    if (selectedDomain && !paletteList.includes(selectedPalette)) {
+      setSelectedPalette(null);
+    }
+  });
 </script>
 
 <aside class="w-full sm:w-72 bg-gray-100 p-4 md:border-r md:border-gray-200">
@@ -154,7 +161,7 @@
                     onchange={(e) =>
                       setSelectedDomain((e.target as HTMLSelectElement).value)}
                   >
-                    <option value={null}>Select domain</option>
+                    <option value={null}>Select group</option>
                     {#each domainList as d}
                       <option value={d}>{d}</option>
                     {/each}
