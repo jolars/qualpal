@@ -26,25 +26,23 @@ and accessibility. It supports flexible palette generation via multiple input
 formats (RGB, HSL and LCHab (HCL) colorspaces, built-in palettes) and can adapt
 palettes to color vision deficiencies (CVD) of the full dichromacy spectrum
 (protanopia, deuteranopia, tritanopia) with any choice of severity. The
-
-color vision deficiency simulation, and perceptual color difference metrics.
-The library uses fast algorithms and perceptually uniform color spaces (DIN99d,
-CIEDE2000) to select colors that are maximally distinct, ensuring accessibility
-for users with color vision deficiencies.
+library is also available as a [R package](https://cran.r-project.org/package=qualpalr)
+and as a web application at [qualpal.cc](https://qualpal.cc), providing easy-to-use
+interfaces for generating color palettes in R and directly in the browser.
 
 # Statement of need
 
-Effective visualization of categorical data requires color palettes where
-colors are easily distinguishable, including for users with color vision
-deficiencies (CVD). Standard palettes are often optimized for a fixed number of
-colors and may not be perceptually distinct or accessible. `qualpal` addresses
-this gap by providing an automated, reproducible method for generating and
-improving color palettes, supporting accessibility and flexible input. It is
-useful for researchers, data scientists, and developers who need high-quality,
+Effective visualization of categorical data requires color palettes with easily
+distinguishable colors, both for people with normal color vision and those with
+color vision deficiencies (CVD). `qualpal` addresses this problem by providing
+an automatic method for generating and extending color palettes, supporting a
+range of inputs and granular control over adaptability to CVD. It is useful for
+researchers, data scientists, and developers in need of high-quality,
 accessible color palettes for figures, charts, and interfaces.
-To support the large community of R users in scientific visualization,
-`qualpalr` provides bindings to the C++ library, allowing palette generation
-directly from R and integration with R plotting packages.
+
+To support the large community of R users in scientific
+visualization, `qualpalr` provides bindings to the C++ library, allowing
+palette generation directly from R and integration with R plotting packages.
 
 # Acknowledgements
 
