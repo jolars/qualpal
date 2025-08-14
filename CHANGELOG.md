@@ -1,5 +1,62 @@
 # Changelog
 
+## [3.0.0](https://github.com/jolars/qualpal/compare/v2.4.0...v3.0.0) (2025-08-14)
+
+### ⚠ BREAKING CHANGES
+
+* set default metric in `analyzePalette` to CIEDE2000
+* switch to CIEDE2000 as the default metric
+
+### Features
+
+* allow hues from -360 to 360 in LCHab input ([d734c01](https://github.com/jolars/qualpal/commit/d734c01fe4dfd368cd79e3182b9232c7f5dd6822))
+* set default metric in `analyzePalette` to CIEDE2000 ([876ec88](https://github.com/jolars/qualpal/commit/876ec884b5a7b011ce322878b5df15e3f92aee02))
+* switch to CIEDE2000 as the default metric ([df530f5](https://github.com/jolars/qualpal/commit/df530f553264a0e665c4e0db21d871a693afd442))
+* **web:** add a button to clear input in fixed mode ([617c7df](https://github.com/jolars/qualpal/commit/617c7dfefb5d6a2ef3d3dfaf2cd72c21f89ba194))
+* **web:** add a footer with copyright, citation, and about ([fbf2da8](https://github.com/jolars/qualpal/commit/fbf2da80fdf773f8e43dc7963d743bc241164176))
+* **web:** add additional web links ([e3b933f](https://github.com/jolars/qualpal/commit/e3b933fb668f2a476e5492fa585b4255cddc7d8a))
+* **web:** add alternative input type ([8914453](https://github.com/jolars/qualpal/commit/89144532cfe726bdbf1ac119406c166f06d83090))
+* **web:** add error if user wants more colors than there are fixed colors ([23425db](https://github.com/jolars/qualpal/commit/23425db210740fa7ec4d08642e0d090ea6600ba7))
+* **web:** add extend functionality to app ([50d8fd4](https://github.com/jolars/qualpal/commit/50d8fd4cab91a26aa2bf71be07b4baf7b64dcbc8))
+* **web:** add min distance section ([c912fc4](https://github.com/jolars/qualpal/commit/c912fc44b755b08cfd67e4a018a581174fd0e0b8))
+* **web:** add opengraph integration ([686741c](https://github.com/jolars/qualpal/commit/686741cabeead11ca951575cc01754585b8d9bf1))
+* **web:** add palette analysis section ([ef5ac71](https://github.com/jolars/qualpal/commit/ef5ac7109ccd3ee97fd6b686ddbb155b809a6350))
+* **web:** add user input assertions ([50ca7ba](https://github.com/jolars/qualpal/commit/50ca7baba57e44abec055880d85dee1e31e98b6a))
+* **web:** add web app ([#34](https://github.com/jolars/qualpal/issues/34)) ([2276cfa](https://github.com/jolars/qualpal/commit/2276cfafad2c249ca267906c2f40240d8af4c57d))
+* **web:** allow adding built-in palettes ([2d76f4d](https://github.com/jolars/qualpal/commit/2d76f4da1799cc814f64c1a24af2bf12c556c646))
+* **web:** allow selecting background without optimizing for it ([4b9d588](https://github.com/jolars/qualpal/commit/4b9d58841845058c7e4e1e5374b00849ef508227))
+* **web:** build sitemap ([2877c74](https://github.com/jolars/qualpal/commit/2877c746dd04d126a5c549f5ba8d089151ac2870))
+* **web:** change title ([b04ca59](https://github.com/jolars/qualpal/commit/b04ca597a6f1d09e1ba62e7945a8279f4c3095d9))
+* **web:** create better citation output ([fa2428d](https://github.com/jolars/qualpal/commit/fa2428dc8f89016b54c7db1c376221d5c7a2f3e6))
+* **web:** redesign footer and header ([510b7b8](https://github.com/jolars/qualpal/commit/510b7b835a0d133fe853589cfa5eb2d89f7d29bb))
+* **web:** redesign responsiveness ([3050095](https://github.com/jolars/qualpal/commit/30500958ae63d7da1d33e073f91df03e664272cf))
+* **web:** replace list with bar chart for min distances ([d49a7d8](https://github.com/jolars/qualpal/commit/d49a7d802e0b6f40e0557eda3a2827c7a47a5525))
+* **web:** support passing a background color ([f09323a](https://github.com/jolars/qualpal/commit/f09323a4ed3a407a349e1dc807b8c102dcdf4417))
+* **web:** update default settings for a better experience ([f9c5566](https://github.com/jolars/qualpal/commit/f9c55660b6b12f91c18f28c3b24a3fb2da543742))
+* **web:** update favicons ([c1a1356](https://github.com/jolars/qualpal/commit/c1a1356ac60b8f5fc8aaa539a78639ebe7fbe9ad))
+* **wep:** add CVD options to web app ([897046d](https://github.com/jolars/qualpal/commit/897046d3fb60a581d329bffd6302e706791a6fab))
+
+### Bug Fixes
+
+* **web:** add missing og logo ([65ad8f0](https://github.com/jolars/qualpal/commit/65ad8f08a1fbc84aee0ed5cfafdfbc339113a4ad))
+* **web:** change publish dir ([16fb2d0](https://github.com/jolars/qualpal/commit/16fb2d0cac2d6044fefbc3f8bf685ed1045d62ef))
+* **web:** correctly apply bg color in examples ([79ccd21](https://github.com/jolars/qualpal/commit/79ccd21271e33505c2f05a73c0559260ece4ceb4))
+* **web:** correctly nullify palette selector ([7f7981c](https://github.com/jolars/qualpal/commit/7f7981cde6d4234d2743ab3b05312d5b23d1fabc))
+* **web:** correctly scale rgb colors for palette analysis ([a772ea9](https://github.com/jolars/qualpal/commit/a772ea98a999c123b04b02061b723267fc3cc2ed))
+* **web:** fix background color computation for examples component ([90e2fd9](https://github.com/jolars/qualpal/commit/90e2fd9fef5f161e04b67952ee0b6f99767b0c32))
+* **web:** fix hue wheel for mobile devices ([fa188e8](https://github.com/jolars/qualpal/commit/fa188e87d45c3ef7e4c35c4454e66dd8f5d4563c))
+* **web:** fix palette analysis display for small screens ([2a42245](https://github.com/jolars/qualpal/commit/2a422456122965d5cef4c137c087277a909185bc))
+* **web:** fix some diagnostic warnings ([af9eb8a](https://github.com/jolars/qualpal/commit/af9eb8ae0c96f124811f924aaab1f68fc0d4ec30))
+* **web:** fix toast notifications ([78c7e81](https://github.com/jolars/qualpal/commit/78c7e814d1ed1b1d4adde328c0db03ab034fb71d))
+* **web:** make modal scrollable ([592f75d](https://github.com/jolars/qualpal/commit/592f75d015384a0e620aeba445dedfec00fb9112))
+* **web:** move CVD section into if-clause ([70d4fa4](https://github.com/jolars/qualpal/commit/70d4fa466e1e344cea387f10bd69b634510137e7))
+* **web:** use explicit z-index ([82a1b49](https://github.com/jolars/qualpal/commit/82a1b4903abf8bca5272ab05d85244adaa868c78))
+* **web:** use medium size for saturation ([f7be1ba](https://github.com/jolars/qualpal/commit/f7be1baeec314fd1dae6267c1a7144201e4a5f24))
+
+### Performance Improvements
+
+* **web:** bundle d3 and topojson, use local json ([a0f0cc5](https://github.com/jolars/qualpal/commit/a0f0cc557fb6872dddf7674fbf209937f533bdf6))
+
 ## [2.4.0](https://github.com/jolars/qualpal/compare/v2.3.0...v2.4.0) (2025-07-28)
 
 ### Features
