@@ -3,6 +3,7 @@
   import LightnessSlider from "./params/LightnessSlider.svelte";
   import SaturationSlider from "./params/SaturationSlider.svelte";
   import ExtendPalette from "./params/ExtendPalette.svelte";
+  import LoadingSpinner from "./LoadingSpinner.svelte";
   import { showToast } from "../stores/toast.js";
   import {
     paletteParams,
@@ -91,16 +92,11 @@
 
 <aside class="w-full sm:w-72 bg-gray-100 p-4 md:border-r md:border-gray-200">
   <div class="sticky top-6 border-g">
-    <h2 class="text-lg font-semibold text-gray-900 mb-4">Parameters</h2>
-
     {#if !$moduleLoaded}
-      <div class="text-center py-8">
-        <div
-          class="animate-spin h-8 w-8 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4"
-        ></div>
-        <p class="text-gray-600">Loading Qualpal module...</p>
-      </div>
+      <LoadingSpinner message="Loading..." />
     {:else}
+      <h2 class="text-lg font-semibold text-gray-900 mb-4">Parameters</h2>
+
       <div class="space-y-6">
         <!-- Number of Colors -->
         <div class="bg-gray-50 p-4 rounded-lg">

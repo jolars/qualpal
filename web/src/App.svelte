@@ -17,6 +17,7 @@
   import PaletteDisplay from "./components/PaletteDisplay.svelte";
   import PaletteOutput from "./components/PaletteOutput.svelte";
   import ParameterSidebar from "./components/ParameterSidebar.svelte";
+  import LoadingSpinner from "./components/LoadingSpinner.svelte";
   import Toast from "./components/Toast.svelte";
 
   let showAbout = $state<boolean>(false);
@@ -55,14 +56,7 @@
 
           <PaletteAnalysis {analysis} {palette} />
         {:else}
-          <div class="flex items-center justify-center min-h-screen">
-            <div class="text-center">
-              <div
-                class="animate-spin h-8 w-8 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4"
-              ></div>
-              <p class="text-gray-600">Loading Qualpal...</p>
-            </div>
-          </div>
+          <LoadingSpinner message="Loading..." />
         {/if}
       </div>
     </main>
