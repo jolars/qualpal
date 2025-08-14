@@ -24,6 +24,13 @@ qualpal -n 5 -i colorspace "0:360" "0.4:0.8" "0.3:0.7"
 You can find examples of how to use the CLI
 in the [examples](#examples-cli) section.
 
+**Web App**
+
+Qualpal is also available as a web application at
+[qualpal.cc](https://qualpal.cc). The web app has slightly
+limited functionality compared to the library, but it allows
+users to quickly generate color palettes directly in their browser.
+
 **R Package**
 
 The qualpal library is also packaged for R as
