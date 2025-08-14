@@ -22,30 +22,25 @@ The next step is to figure out which of the candidate colors are
 maximally distinct from each other. To do so, we first need to measure
 the distances between all candidate colors.
 
-## Projecting into Uniform Color Space
+## Measuring Color Difference
 
-In order to figure our which colors are maximally distinct, qualpal
-constructs a distance matrix that contains the pairwise distances,
-in terms of some color difference metric, between all candidate colors.
+In order to figure our which colors are maximally distinct, qualpal constructs
+a distance matrix that contains the pairwise distances, in terms of some color
+difference metric, between all candidate colors. By default, qualpal uses the
+CIEDE2000 metric, which is current standard of the International Commission on
+Illumination (CIE) for color difference measurement.
 
-In the default case, qualpal does this by projecting the candidate colors (in
-RGB space) into the DIN99d color space (Cui et al. 2002), which is a
-perceptually uniform color space, which means that the Euclidean distances
-between colors in this space correspond to the perceived color differences.
-This makes computing the full color difference matrix efficient.
-To further improve the distance metric, we also apply a power
+Since this formula is quite complex, however, there is alternative metrics. For
+instance, qualpal also includes the possibility to use the DIN99d metric (Cui
+et al. 2002), which is based on simple Euclidean distance in the DIN99d color
+space. In this case, the candidate colors are projected into the DIN99d color
+space, which is a perceptually uniform color space, which means that the
+Euclidean distances between colors in this space correspond to the perceived
+color differences. This makes computing the full color difference matrix
+efficient. To further improve the distance metric, we also apply a power
 function to the computed distances, as suggested by Huang et al. (2015).
 
 ![Projections](images/color_space_progression.png)
-
-qualpal can also use other color difference metrics, such as
-CIEDE2000, which is current standard of the International Commission on
-Illumination (CIE) for color difference measurement. Since this
-formula is more complex than DIN99d (note based on Euclidean distances),
-it is computationally more expensive to compute the distance matrix, but
-may yield better results in some cases. In this case, colors are
-instead projected into the Lab color space, before distances are
-computed.
 
 ## Farthest Point Sampling
 

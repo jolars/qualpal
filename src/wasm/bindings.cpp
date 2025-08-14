@@ -165,7 +165,7 @@ analyzePaletteWrapper(const val& colors_array,
 
   // Call the actual analyze function
   auto result = qualpal::analyzePalette(rgb_colors,
-                                        qualpal::metrics::MetricType::DIN99d,
+                                        qualpal::metrics::MetricType::CIEDE2000,
                                         cvd_params,
                                         bg,
                                         max_memory);

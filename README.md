@@ -12,11 +12,12 @@ difference metrics.
 
 ## Features
 
-- **Perceptually uniform color selection** using DIN99d color space and other metrics
+- **Automatic selection of color palettes** color difference metrics
 - **Color vision deficiency simulation** for accessible palette design
 - **Multiple input formats**: RGB values, hex strings, HSL ranges, built-in palettes
-- **Builder-style C++ API** for flexible palette configuration
 - **Fast algorithms** for large color spaces
+- **Builder-style C++ API** for flexible palette configuration
+- **Web-Based Interface** for simple and interactive color palette generation
 
 ## Motivation
 

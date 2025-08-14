@@ -72,8 +72,8 @@ TEST_CASE("Character method works as it it supposed to", "[colors]")
   qp.setInputPalette("ColorBrewer:Set2");
   std::vector<RGB> result = qp.generate(2);
 
-  REQUIRE(result[0].hex() == "#a6d854");
-  REQUIRE(result[1].hex() == "#e78ac3");
+  REQUIRE(result[0].hex() == "#66c2a5");
+  REQUIRE(result[1].hex() == "#fc8d62");
 
   REQUIRE_THROWS_AS(qp.setInputPalette("ColorBrewer:NonExistentPalette"),
                     std::invalid_argument);

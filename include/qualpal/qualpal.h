@@ -2,11 +2,10 @@
  * @file
  * @brief Qualpal API for generating qualitative color palettes
  *
- * This file defines the Qualpal class, which provides a builder-style interface
- * for configuring and generating maximally distinct color palettes using
- * perceptual color difference in DIN99d color space. The API supports multiple
- * input formats, color vision deficiency simulation, and flexible configuration
- * options.
+ * This file defines the Qualpal class, which provides a builder-style
+ * interface for configuring and generating maximally distinct color palettes
+ * using perceptual color difference. The API supports multiple input formats,
+ * color vision deficiency simulation, and flexible configuration options.
  *
  * Usage example:
  * @code{.cpp}
@@ -191,7 +190,7 @@ private:
 
   std::map<std::string, double> cvd;
   std::optional<colors::RGB> bg;
-  metrics::MetricType metric = metrics::MetricType::DIN99d;
+  metrics::MetricType metric = metrics::MetricType::CIEDE2000;
   double max_memory = 1;
   ColorspaceType colorspace_input = ColorspaceType::HSL;
 };
