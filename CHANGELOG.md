@@ -1,5 +1,19 @@
 # Changelog
 
+## [3.1.0](https://github.com/jolars/qualpal/compare/v3.0.0...v3.1.0) (2025-08-15)
+
+### Features
+
+* increase default number of points to 1000 ([f941fd5](https://github.com/jolars/qualpal/commit/f941fd511365ede7acabadb9eb167746d00ad44e))
+
+### Bug Fixes
+
+* use check for hue ([b7a5a67](https://github.com/jolars/qualpal/commit/b7a5a67a5c3e15a612245248afe91a7771fdf59c))
+
+### Performance Improvements
+
+* **web:** compress and split css ([c7f3fd3](https://github.com/jolars/qualpal/commit/c7f3fd3670cf3ee990e7dd2402caa2f9ee9bdebb))
+
 ## [3.0.0](https://github.com/jolars/qualpal/compare/v2.4.0...v3.0.0) (2025-08-14)
 
 ### ⚠ BREAKING CHANGES
