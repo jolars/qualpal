@@ -62,14 +62,14 @@ them in the palette. We summarize these existing packages and their features in
 : Summary of related work and packages, in terms of their algorithms, metrics, input types, and
 implementation languages. \label{tab:packages}
 
-| Package        | Algorithm               | Metrics                  | Input               | Language     |
-| -------------- | ----------------------- | ------------------------ | ------------------- | ------------ |
-| `Glasbey`      | Simulated annealing     | CIE76                    | LCH~ab~, Fixed      | `Python`     |
-| `iWantHue`     | $k$-means, force vector | CIE76                    | LCH~ab~             | `JavaScript` |
-| `Colorgorical` | Random sampling         | CIEDE2000                | LCH~ab~             | `Python`     |
-| `distinctipy`  | Random sampling         | L~uv~ approx             | Pastel filter       | `Python`     |
-| `Palettailor`  | Simulated annealing     | CIEDE2000                | Hue, lightness      | `JavaScript` |
-| **`qualpal`**  | Farthest points         | CIEDE2000, DIN99d, CIE76 | HSL, LCH~ab~, Fixed | `C++`        |
+| Package        | Algorithm               | Metrics                  | Input               | Language      |
+| -------------- | ----------------------- | ------------------------ | ------------------- | ------------- |
+| `Glasbey`      | Simulated annealing     | CIE76                    | LCH~ab~, Fixed      | `Python`      |
+| `iWantHue`     | $k$-means, force vector | CIE76                    | LCH~ab~             | `JavaScript`  |
+| `Colorgorical` | Random sampling         | CIEDE2000                | LCH~ab~             | `Python`, `C` |
+| `distinctipy`  | Random sampling         | L~uv~ approx             | Pastel filter       | `Python`      |
+| `Palettailor`  | Simulated annealing     | CIEDE2000                | Hue, lightness      | `JavaScript`  |
+| **`qualpal`**  | Farthest points         | CIEDE2000, DIN99d, CIE76 | HSL, LCH~ab~, Fixed | `C++`         |
 
 All of these existing packages have different strengths and weaknesses. `qualpal` is,
 however, the first `C++` library, CLI tool, and R package for generating
