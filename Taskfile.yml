@@ -6,6 +6,8 @@ vars:
   TEST_DIR: test
   CMAKE_BUILD_FLAGS: --build {{.BUILD_DIR}} -j
 
+interval: 500ms
+
 tasks:
   default:
     deps: [configure, build]
@@ -129,3 +131,19 @@ tasks:
     deps: [clean, clean:wasm, clean:web]
     cmds:
       - echo "All build artifacts cleaned"
+
+  paper:
+    desc: Build JOSS paper locally
+    watch: true
+    sources:
+      - "paper/paper.md"
+      - "paper/paper.bib"
+    cmds:
+      - |
+        docker run --rm \
+          --volume $PWD/paper:/data \
+          --user $(id -u):$(id -g) \
+          --env JOURNAL=joss \
+          openjournals/inara
+      - echo "Paper built!"
+      - echo "Watching for changes"
