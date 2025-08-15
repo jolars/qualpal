@@ -144,8 +144,8 @@ cd emsdk && ./emsdk install latest && ./emsdk activate latest
 source ./emsdk_env.sh && cd ..
 
 # Build WebAssembly version
-chmod +x scripts/build-wasm.sh
-./scripts/build-wasm.sh
+emcmake cmake -B build/wasm -S . -DBUILD_WASM=ON -DCMAKE_BUILD_TYPE=Release
+emmake make -C build/wasm qualpal_wasm
 ```
 
 Then you can install it to your system:
