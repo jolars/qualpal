@@ -34,7 +34,10 @@ let qualpalModule = null;
 // Debounce timer
 let debounceTimer;
 
-// Helper function to convert hex to RGB
+/**
+ * @param {string} hex
+ * @returns {{r: number, g: number, b: number} | null}
+ */
 function hexToRgb(hex) {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   return result
@@ -47,11 +50,19 @@ function hexToRgb(hex) {
 }
 
 // Helper to enumerate object keys from emscripten val-like objects
+/**
+ * @param {object} o
+ * @returns {string[]}
+ */
 function jsObjectKeys(o) {
   return Object.keys(o);
 }
 
 // Helper function to parse existing palette string
+/**
+ * @param {string} input
+ * @returns {{r: number, g: number, b: number}[]}
+ */
 function parseExistingPalette(input) {
   if (!input || !input.trim()) return [];
 
@@ -87,6 +98,10 @@ function parseExistingPalette(input) {
 }
 
 // Extract unique uppercase hex list (for fixed input mode)
+/**
+ * @param {string} input
+ * @returns {string[]}
+ */
 function extractHexList(input) {
   if (!input || !input.trim()) return [];
   const raw = input.trim();
@@ -145,6 +160,11 @@ export async function initializeModule() {
 }
 
 // Helper: get built-in palette hex list (domain + palette)
+/**
+ * @param {string} domain
+ * @param {string} name
+ * @returns {string[]}
+ */
 export function getPaletteHex(domain, name) {
   if (!qualpalModule) return [];
   try {
@@ -162,6 +182,10 @@ export function getPaletteHex(domain, name) {
 }
 
 // Generate palette function
+/**
+ * @param {object} params
+ * @returns {Promise<void>}
+ */
 export async function generatePalette(params) {
   if (!qualpalModule) return;
 
@@ -243,7 +267,7 @@ export async function generatePalette(params) {
     // Analyze palette
     try {
       const result = await qualpalModule.analyzePalette(
-        newPalette.map((c) => hexToRgb(c.hex)),
+        newPalette.map((/** @type {{hex: string}} */ c) => hexToRgb(c.hex)),
         params.cvd,
         params.useBackground ? hexToRgb(params.backgroundColor) : null,
         4,
@@ -262,6 +286,9 @@ export async function generatePalette(params) {
 }
 
 // Debounced generate function
+/**
+ * @param {object} [params]
+ */
 export function debouncedGenerate(params) {
   clearTimeout(debounceTimer);
   const p = params ?? get(paletteParams); // fallback to current store if not passed
@@ -271,6 +298,6 @@ export function debouncedGenerate(params) {
 }
 
 // Auto-generate when parameters change
-export const autoGenerate = derived(paletteParams, ($params, set) => {
+export const autoGenerate = derived(paletteParams, ($params) => {
   debouncedGenerate($params);
 });
