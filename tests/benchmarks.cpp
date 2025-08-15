@@ -4,6 +4,7 @@
 #include <catch2/matchers/catch_matchers.hpp>
 #include <cmath>
 #include <qualpal/color_difference.h>
+#include <qualpal/qualpal.h>
 
 TEST_CASE("Parallelization", "[!benchmark]")
 {
@@ -66,5 +67,21 @@ TEST_CASE("Color Difference Metrics", "[!benchmark]")
   BENCHMARK("CIE76")
   {
     qualpal::colorDifferenceMatrix(lab_colors, qualpal::metrics::CIE76{});
+  };
+}
+
+TEST_CASE("Palette sizes", "[!benchmark]")
+{
+  auto qp = qualpal::Qualpal{}.setInputColorspace(
+    { -200, 120 }, { 0.3, 0.8 }, { 0.4, 0.9 });
+
+  BENCHMARK("1000 points, 10 colors")
+  {
+    qp.generate(10);
+  };
+
+  BENCHMARK("1000 points, 100 colors")
+  {
+    qp.generate(100);
   };
 }
