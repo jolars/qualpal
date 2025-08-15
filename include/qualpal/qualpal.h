@@ -174,7 +174,7 @@ private:
   std::array<double, 2> h_lim = { 0, 360 };
   std::array<double, 2> s_or_c_lim = { 0, 1 };
   std::array<double, 2> l_lim = { 0, 1 };
-  std::size_t n_points = 100;
+  std::size_t n_points = 1000;
 
   /**
    * @brief Internal mode for tracking input source.

@@ -354,8 +354,8 @@ TEST_CASE("Qualpal::extend - Regression test with fixed seed")
     REQUIRE(extended_palette[0] == fixed_palette[0]); // Red
     REQUIRE(extended_palette[1] == fixed_palette[1]); // Green
 
-    REQUIRE_THAT(extended_palette[2].r(), WithinAbs(0.21502551440329215, 1e-5));
-    REQUIRE_THAT(extended_palette[2].g(), WithinAbs(0.22243096707818927, 1e-5));
-    REQUIRE_THAT(extended_palette[2].b(), WithinAbs(0.68897448559670793, 1e-5));
+    REQUIRE_THAT(extended_palette[2].r(), WithinAbs(0.1151009398148148, 1e-5));
+    REQUIRE_THAT(extended_palette[2].g(), WithinAbs(0.10663743209876542, 1e-5));
+    REQUIRE_THAT(extended_palette[2].b(), WithinAbs(0.72568256790123464, 1e-5));
   }
 }
