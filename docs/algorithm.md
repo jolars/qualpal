@@ -8,13 +8,14 @@ which can be either
 
 - a predefined set of RGB colors (or any other colors that can be converted to RGB,
   e.g., hex colors or HSL colors),
-- sampled from (part of) the HSL color space, or
+- sampled from (part of) the HSL or LCHab color spaces, or
 - one of the predefined color palettes in the library, such as
   `"ColorBrewer:Set2"`
 
-In case of the second option, qualpal uses a Halton pseudo-random sequence
-to sample colors evenly from the HSL color space, ensuring a uniform distribution
-of colors across the hue, saturation, and lightness dimensions.
+In case of the second option, using the HSL color space, qualpal uses a Halton
+pseudo-random sequence to sample colors evenly in the specified color space,
+ensuring a uniform distribution of colors across the hue, saturation, and
+lightness dimensions.
 
 ![HSL color space](images/hsl_sampling.png)
 

@@ -9,7 +9,9 @@ The only required setting is the input color space, which defines the
 set of colors that can be selected from. There are currently
 three different ways to specify the input color space:
 
-- **HSL**: Specify ranges for hue, saturation, and lightness.
+- **Colorspace**: Specify a subspace of either the HSL or LCHab (HCL)
+  color spaces, by defining ranges for hue, saturation, and lightness (HSL)
+  or hue, chroma, and lightness (HCL).
 - **RGB**: Specify a set of RGB colors.
 - **Predefined**: Use one of the predefined color palettes, such as
   `"Vermeer:PearlEarring"`.
@@ -27,6 +29,19 @@ auto qp = Qualpal{}.setInputColorspace({ 0, 360 }, { 0.4, 0.8 }, { 0.3, 0.7 });
 
 In this case, qualpal will generate a number of color points (by default 1000)
 in the specified HSL color space using a Halton pseudo-random sequence.
+
+You can also specify the input color space using LCHab (HCL) by defining
+ranges for hue, chroma, and lightness. For example:
+
+```cpp
+auto qp = Qualpal{}.setInputColorspace({ 0, 360 },
+                                       { 20, 80 },
+                                       { 30, 70 },
+                                       ColorspaceType::LCHab);
+```
+
+Note that the ranges for lightness and chroma in LCHab are
+different from those in HSL: [0, 100] for lightness and [0, \f$\infty$\f] for chroma.
 
 To generate the actual colors, you can then call the `generate` method
 with the desired number of colors:
