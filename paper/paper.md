@@ -41,13 +41,15 @@ with CVD. Designing a palette is therefore an optimization problem, where the
 goal is to maximize the minimum difference among the colors in the palette in
 order to make the palette as distinct as possible. This is a non-trivial
 problem, since the number of possible palettes grows exponentially with the
-number of colors in the palette. As a result, any given palette can, at best,
-be optimal only for a specific number of categories (colors). Since users may
-also have specific requirements in terms of, for instance, hue, lightness,
-saturation, adaptation to CVD, or background color, it is impossible to provide
-a set of fixed palettes to cover these needs. Therefore, there is a need for
-flexible palette generation tools that can accommodate a wide range of user
-requirements and preferences.
+number of colors in the palette. And as the number of colors in a palette
+_increases_, the minimum distance between colors necessarily _decreases_, since
+the colors must be spread out more densely in the color space. As a result, any
+given palette can, at best, be optimal only for a particular size. And since
+users may also have specific requirements in terms of, for instance, hue,
+lightness, saturation, adaptation to CVD, or background color, it is impossible
+to provide a set of fixed palettes to cover these needs. Therefore, there is a
+need for flexible palette generation tools that can accommodate a wide range of
+user requirements and preferences.
 
 This problem has been tackled by, for instance, @glasbey2007, who developed
 an algorithm based on simulated annealing that is available in the Python
