@@ -22,16 +22,16 @@ bibliography: paper.bib
 # Summary
 
 `qualpal` is a [`C++` library](https://github.com/jolars/qualpal), command-line
-tool, [R package](https://cran.r-project.org/package=qualpalr), and
-[web app](https://qualpal.cc) for creating qualitative color palettes with
-maximally distinct colors. It helps scientists and anyone working with data
-visualization choose colors that remain clear and accessible. `qualpal`
-features flexible palette generation from multiple input formats, such as the
-HSL and LCH~ab~ color spaces or fixed sets of RGB colors, and can adapt
-palettes to color vision deficiencies (CVD) across the full dichromacy spectrum at
-any severity. At its core, `qualpal` is a lightweight `C++` library
-with no external dependencies, making it easy to integrate into
-other software and programming languages.
+tool, [R package](https://cran.r-project.org/package=qualpalr), and [web
+app](https://qualpal.cc) for creating qualitative color palettes with maximally
+distinct colors. It helps scientists and anyone working with data visualization
+choose colors that remain clear and accessible. `qualpal` features flexible
+palette generation from multiple input formats, such as the HSL and LCH~ab~
+color spaces or fixed sets of RGB colors, and can adapt palettes to color
+vision deficiencies (CVD) across the full dichromacy spectrum at any severity.
+At its core, `qualpal` is a lightweight `C++` library with no external
+dependencies, making it easy to integrate into other software and programming
+languages.
 
 # Statement of need
 
