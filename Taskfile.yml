@@ -132,12 +132,8 @@ tasks:
     cmds:
       - echo "All build artifacts cleaned"
 
-  paper:
+  paper-build:
     desc: Build JOSS paper locally
-    watch: true
-    sources:
-      - "paper/paper.md"
-      - "paper/paper.bib"
     cmds:
       - |
         docker run --rm \
@@ -146,5 +142,13 @@ tasks:
           --env JOURNAL=joss \
           openjournals/inara
       - echo "Paper built!"
-      - xdg-open paper/paper.pdf || echo "Could not open PDF automatically"
+      - echo "Watching for changes"
+  paper-preview:
+    watch: true
+    sources:
+      - "paper/paper.md"
+      - "paper/paper.bib"
+    cmds:
+      - task: paper-build
+      - pgrep -f "zathura.*paper/paper.pdf" || (zathura paper/paper.pdf &)
       - echo "Watching for changes"
