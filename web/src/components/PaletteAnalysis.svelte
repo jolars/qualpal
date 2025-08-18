@@ -107,7 +107,8 @@
     </h4>
     <p class="text-xs text-gray-500 mt-2 mb-4">
       Values represent the color difference (in the CIEDE2000 metric) between
-      palette colors.
+      palette colors. For colors in the RGB space, the maximum is around 80.
+      Values above 10 are generally considered to be just noticeable.
     </p>
     <table class="border-collapse w-max">
       <thead>
@@ -186,7 +187,9 @@
   </h4>
   <p class="text-xs text-gray-500 mb-2">
     Shows the smallest color difference (in the CIEDE2000 metric) for each
-    palette color.
+    palette color, which is the minimum row or column-wise of the color
+    difference matrix. Values should optimally be high and equal across the
+    palette.
   </p>
   <div class="w-full overflow-x-auto">
     <svg
