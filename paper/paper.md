@@ -61,8 +61,9 @@ annealing, to find a set of colors that maximizes the minimum distance between
 them in the palette. We summarize these existing packages and their features in
 \autoref{tab:packages} and \autoref{tab:packages-features}, respectively.
 
-: Summary of related work and packages, in terms of their algorithms, metrics, input types, and
-implementation languages. \label{tab:packages}
+: Summary of related work and packages, in terms of their algorithms, color
+difference metrics, input types, and implementation languages.
+\label{tab:packages}
 
 | Package        | Algorithm               | Metrics                  | Input               | Language      |
 | -------------- | ----------------------- | ------------------------ | ------------------- | ------------- |
