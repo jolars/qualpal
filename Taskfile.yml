@@ -143,6 +143,7 @@ tasks:
           openjournals/inara
       - echo "Paper built!"
       - echo "Watching for changes"
+
   paper-preview:
     watch: true
     sources:
@@ -152,3 +153,7 @@ tasks:
       - task: paper-build
       - pgrep -f "zathura.*paper/paper.pdf" || (zathura paper/paper.pdf &)
       - echo "Watching for changes"
+
+  paper-wordcount:
+    cmds:
+      - pandoc paper/paper.md -t plain | wc -w
