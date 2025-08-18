@@ -129,7 +129,7 @@ between colors in the candidate palette. Optionally, a background color can be
 included in this step, in which case the palette is optimized to be distinct
 from it. The algorithm is deterministic (unlike the other algorithms from
 \autoref{tab:packages}) and takes roughly 0.1 seconds to generate a 10-color
-palette from a set of 1000 input colors.
+palette from a set of 1000 input colors on a modern laptop.
 
 # Acknowledgements
 
