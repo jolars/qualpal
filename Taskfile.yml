@@ -146,4 +146,5 @@ tasks:
           --env JOURNAL=joss \
           openjournals/inara
       - echo "Paper built!"
+      - xdg-open paper/paper.pdf || echo "Could not open PDF automatically"
       - echo "Watching for changes"
