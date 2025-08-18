@@ -51,27 +51,37 @@ NP-hard. Even for, say, a required palette of 10 colors and 100 candidate
 colors, solving this problem exactly would be intractable.
 
 Instead, qualpal uses a heuristic algorithm based on the
-basic idea of farthest point sampling in (Schlömer et al. 2011).
-They used a Delaunay triangulation to compute the distances between
-points, but qualpal uses a distance matrix directly instead.
+basic idea of _farthest point_ sampling in (Schlömer et al. 2011).
 
-The algorithm works as follows:
+Letting `n` be the desired size of the palette and
+`m`, the algorithm works as follows:
 
 ```
-M <- Compute a distance matrix of all points in the sample
-S <- Sample n points randomly from M
+P <- 1:n // Selected palette
+C <- (n + 1):m // Candidate set
+D <- Color difference matrix
 repeat
-    for i = 1:n
-        M    <- Add S(i) back into M
-        S(i) <- Find point in M\S with max mindistance to any point in S
-                until M did not change
+  for i in P
+    // Put point i back into the candidate set
+    C = C ∪ {i}
+    P = P \ {i}
+
+    // Find the point j in C that is farthest from all points in P
+    j = P ∪ {argmax_{c in C} min_{p \in P} D[c, p]}
+
+    // Move point j from C to P
+    P = P ∪ {j}
+    C = C \ {j}
+  end for
+until P does not change
 ```
 
-Iteratively, we put one point from our candidate subset (S) back into the
-original se (M) and check all distances between the points in S to those in
-M to find the point with the highest minimum distance. Rinse and repeat until
-we are only putting back the same points we started the loop with, which
-always happens. Let's see how this works on the same data set we used above.
+Iteratively, we put one point from our current palette (P) back into the
+candidate set (C) and check all distances between the points in C to those in P
+to find the point with the maximum minimum distance. We continue until P does
+not change (which is guaranteed to happen eventually), which means that none of
+the candidate points were able to provide an improvement. Let's see how this
+works on the same data set we used above.
 
 The algorithm is guaranteed to converge, and the result is a set of colors that
 are (approximately) maximally distinct from each other, according to the
