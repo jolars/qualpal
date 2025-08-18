@@ -170,7 +170,7 @@
                   )};font-weight:600;"
                   class="text-[10px] sm:text-xs"
                 >
-                  {value.toFixed(2)}
+                  {Math.round(value)}
                 </span>
               </td>
             {/each}
