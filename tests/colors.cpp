@@ -446,3 +446,14 @@ TEST_CASE("LCHab conversion", "[colors][lchab]")
     REQUIRE_THAT(lab.b(), WithinAbs(3.5085, eps));
   }
 }
+
+TEST_CASE("Braced initializer lists for color construction", "[colors]")
+{
+  std::vector<qualpal::colors::RGB> base{ "#ff0000", "#a9ef93", "#ffe302" };
+  std::vector<qualpal::colors::RGB> colors{ std::string("#ff0000"),
+                                            std::string("#a9ef93"),
+                                            std::string("#ffe302") };
+
+  REQUIRE(base.size() == 3);
+  REQUIRE(colors.size() == 3);
+}

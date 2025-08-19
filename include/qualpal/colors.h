@@ -120,6 +120,14 @@ public:
   RGB(const std::string& hex);
 
   /**
+   * @brief Construct RGB from hexadecimal color string literal
+   * @param hex Hex color string in format "#RRGGBB" or "#RGB"
+   * @throws std::invalid_argument if hex format is invalid
+   */
+  RGB(const char* hex)
+    : RGB(std::string(hex)) {};
+
+  /**
    * @brief Construct RGB from HSL color
    * @param hsl HSL color to convert from
    */
