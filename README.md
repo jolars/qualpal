@@ -2,6 +2,7 @@
 
 [![Build Status](https://github.com/jolars/qualpal/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/jolars/qualpal/actions/workflows/build-and-test.yml)
 [![codecov](https://codecov.io/gh/jolars/qualpal/graph/badge.svg?token=p5JTFa9BUz)](https://codecov.io/gh/jolars/qualpal)
+[![Docs](https://img.shields.io/badge/docs-doxygen-blue.svg?logo=readthedocs)](https://jolars.github.io/qualpal/)
 [![App](https://img.shields.io/badge/🌐%20%20App-qualpal.cc-blue)](https://qualpal.cc)
 
 A C++ library for generating qualitative color palettes with maximum perceptual
@@ -10,14 +11,33 @@ builder-style interface for flexible palette configuration, supporting multiple
 input formats, color vision deficiency simulation, and perceptual color
 difference metrics.
 
+Full documentation is available at
+[https://jolars.github.io/qualpal/](https://jolars.github.io/qualpal/).
+
+This library is also available as an R package called [qualpalr](https://cran.r-project.org/package=qualpalr),
+and as a web application at [qualpal.cc](https://qualpal.cc).
+
 ## Features
 
-- **Automatic selection of color palettes** color difference metrics
+- **Automatic selection of color palettes using perceptual color difference metrics**
 - **Color vision deficiency simulation** for accessible palette design
 - **Multiple input formats**: RGB values, hex strings, HSL ranges, built-in palettes
 - **Fast algorithms** for large color spaces
 - **Builder-style C++ API** for flexible palette configuration
 - **Web-Based Interface** for simple and interactive color palette generation
+
+## Table of Contents
+
+- [Features](#features)
+- [Motivation](#motivation)
+- [R Package](#r-package)
+- [Web App](#web-app)
+- [Quick Start](#quick-start)
+- [Installation](#installation)
+- [Usage Examples](#usage-examples)
+- [Contributing](#contributing)
+- [Versioning](#versioning)
+- [License](#license)
 
 ## Motivation
 
@@ -82,9 +102,27 @@ qp.setInputPalette("ColorBrewer:Set2").setCvd({ { "deutan", 0.7 } });
 auto cvd_pal = qp.generate(4);
 ```
 
-### Command Line Usage
+### Command Line Interface (CLI)
 
-```bash
+qualpal includes a powerful command line interface for palette generation and analysis.
+
+- For a full list of options and usage examples, run:
+
+  ```sh
+  qualpal --help
+  ```
+
+- There are also man pages available for the CLI:
+
+  ```sh
+  man qualpal
+  ```
+
+- You can also view the [Doxygen-generated
+  documentation](https://jolars.github.io/qualpal/) for detailed CLI and API
+  usage.
+
+```sh
 # Generate 5 colors from color space
 qualpal -n 5 -i colorspace "0:360" "0.4:0.8" "0.3:0.7"
 
@@ -112,6 +150,14 @@ by reading the man page at `man qualpal`.
 
 ## Installation
 
+### Requirements
+
+- CMake >= 3.15
+- C++17 compatible compiler (e.g., GCC, Clang, MSVC)
+- [Optional] OpenMP for parallelization
+- [Optional] help2man for CLI man page generation
+- [Optional] Catch2 for testing
+
 ### From Source
 
 To build and install qualpal from source, you need to have CMake and a C++17
@@ -120,16 +166,17 @@ parallelized, you also need to have support for OpenMP.
 
 To build, clone the repository and run the following commands:
 
-```bash
+```sh
 git clone https://github.com/jolars/qualpal.git
 cd qualpal
 cmake -B build -S .
 cmake --build build --config Release
 ```
 
-If you want to include the CLI interface, make sure to pass the `-DBUILD_CLI=ON` option to CMake:
+If you want to include the CLI interface, make sure to pass the
+`-DBUILD_CLI=ON` option to CMake:
 
-```bash
+```sh
 cmake -B build -S . -DBUILD_CLI=ON
 ```
 
@@ -137,7 +184,7 @@ cmake -B build -S . -DBUILD_CLI=ON
 
 To build the WebAssembly version for web applications:
 
-```bash
+```sh
 # Install Emscripten first (if not already installed)
 git clone https://github.com/emscripten-core/emsdk.git
 cd emsdk && ./emsdk install latest && ./emsdk activate latest
@@ -150,7 +197,7 @@ emmake make -C build/wasm qualpal_wasm
 
 Then you can install it to your system:
 
-```bash
+```sh
 cmake --install build
 ```
 
