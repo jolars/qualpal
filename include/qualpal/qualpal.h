@@ -86,7 +86,8 @@ public:
 
   /**
    * @brief Set input colors from a vector of RGB values.
-   * @param colors Vector of RGB colors to use as input.
+   * @param colors Vector of RGB colors to use as input. Each
+   * channel should be in [0, 1].
    * @return Reference to this object for chaining.
    */
   Qualpal& setInputRGB(const std::vector<colors::RGB>& colors);
