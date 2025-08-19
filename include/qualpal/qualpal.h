@@ -153,8 +153,9 @@ public:
   /**
    * @brief Extend an existing palette by adding n new colors.
    * @param palette Existing palette (RGB colors) to keep fixed.
-   * @param n Size of the new palette to generate, which includes
-   * the existing palette.
+   * @param n Total size of the new palette to generate, including
+   * existing colors. In other words, the new palette will have
+   * `palette.size() + n` colors.
    * @return Vector of palette + n new RGB colors.
    */
   std::vector<colors::RGB> extend(const std::vector<colors::RGB>& palette,
