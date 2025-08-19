@@ -109,7 +109,7 @@ public:
   Qualpal& setInputPalette(const std::string& palette_name);
 
   /**
-   * @brief Set input colors by sampling HSL colorspace.
+   * @brief Set input colors by sampling a colorspace (HSL or LCHab).
    * @param h_lim Hue range in degrees [-360, 360].
    * @param s_or_c_lim Saturation or Chroma (depending on `ColorspaceType`)
    * range [0, 1] or >= 0.
