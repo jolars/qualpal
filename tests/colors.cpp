@@ -233,7 +233,37 @@ TEST_CASE("RGB hex() output", "[colors][rgb]")
   {
     RGB color(0.5, 0.75, 0.25);
     // 0.5*255=127.5->127, 0.75*255=191.25->191, 0.25*255=63.75->63
-    REQUIRE(color.hex() == "#7fbf3f");
+    REQUIRE(color.hex() == "#80bf40");
+  }
+
+  SECTION("Black")
+  {
+    RGB black(0.0, 0.0, 0.0);
+    REQUIRE(black.hex() == "#000000");
+  }
+
+  SECTION("White")
+  {
+    RGB white(1.0, 1.0, 1.0);
+    REQUIRE(white.hex() == "#ffffff");
+  }
+
+  SECTION("Rounding up to 255")
+  {
+    RGB almost_white(0.999999, 0.999999, 0.999999);
+    REQUIRE(almost_white.hex() == "#ffffff");
+  }
+
+  SECTION("Rounding down to 0")
+  {
+    RGB almost_black(0.000001, 0.000001, 0.000001);
+    REQUIRE(almost_black.hex() == "#000000");
+  }
+
+  SECTION("Middle gray")
+  {
+    RGB gray(0.5, 0.5, 0.5);
+    REQUIRE(gray.hex() == "#808080");
   }
 }
 
