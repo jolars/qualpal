@@ -168,7 +168,7 @@ public:
   /**
    * @brief Generate a qualitative color palette with the configured options.
    * @param n Number of colors to generate.
-   * @return Vector of n selected RGB colors.
+   * @return Vector of n selected RGB colors, each channel in [0, 1].
    * @throws std::runtime_error if no input source is configured.
    * @throws std::invalid_argument for invalid configuration.
    */
