@@ -134,7 +134,8 @@ public:
   Qualpal& setMemoryLimit(double gb);
 
   /**
-   * @brief Set the number of points in the colorspace grid for HSL input.
+   * @brief Set the number of points in the colorspace grid for HSL and LCHab
+   * input.
    * @param n_points Number of points to sample in the colorspace grid.
    * @return Reference to this object for chaining.
    * @throws std::invalid_argument if n_points <= 0.
