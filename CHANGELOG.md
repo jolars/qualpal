@@ -1,5 +1,19 @@
 # Changelog
 
+## [3.2.0](https://github.com/jolars/qualpal/compare/v3.1.0...v3.2.0) (2025-08-19)
+
+### Features
+
+* add string literal constructor for RGB colors ([862f909](https://github.com/jolars/qualpal/commit/862f909f7f2de7cf4f4ea83790db6aa348db09d9))
+* **cli:** change default metric to ciede2000 ([2f85d0e](https://github.com/jolars/qualpal/commit/2f85d0ea3ecc3154c76942a550ad48e74ad75fe2))
+* expand title and description ([e58d2fc](https://github.com/jolars/qualpal/commit/e58d2fc7b2292efae91017a218d867b168921a6c))
+* **web:** round color difference values to integers ([e6a88d5](https://github.com/jolars/qualpal/commit/e6a88d538c0dfbe4f1f9d1410aea1fc5f11605fc))
+
+### Bug Fixes
+
+* **docs:** use correct math syntax ([1882636](https://github.com/jolars/qualpal/commit/1882636d97edb5615e1f6a40adf3a0b99009b8d0))
+* use rounding in rgb to hex color conversion ([9d0f272](https://github.com/jolars/qualpal/commit/9d0f2722ca0ef2e1795967b11f805d1e829047c2))
+
 ## [3.1.0](https://github.com/jolars/qualpal/compare/v3.0.0...v3.1.0) (2025-08-15)
 
 ### Features
