@@ -9,13 +9,32 @@
  *
  * Usage example:
  * @code{.cpp}
+ * // Basic usage with RGB input, 6 color palette
  * qualpal::Qualpal qp;
- * qp.setInputRGB(rgb_colors)
- *   .setCvd(cvd_params)
- *   .setBackground(bg)
- *   .setMetric(metric)
+ * qp.setInputRGB(<rgb_colors>)
+ *   .setCvd({{"protan", 0.5}, {"deuter", 0.2}})
+ *   .setBackground("#ffffff")
+ *   .setMetric(qualpal::metrics::MetricType::DIN99d)
  *   .setMemoryLimit(2.0);
- * auto palette = qp.generate(n);
+ * auto palette = qp.generate(6);
+ *
+ * // Use colorspace input (HSL space)
+ * qualpal::Qualpal qp4;
+ * qp4.setInputColorspace({0, 360}, {0.5, 1.0}, {0.3, 0.7});
+ * auto palette4 = qp4.generate(8);
+ *
+ * // Using hex color input
+ * qualpal::Qualpal qp2;
+ * qp2.setInputHex({"#ff0000", "#00ff00", "#0000ff"});
+ * auto palette2 = qp2.generate(3);
+ *
+ * // Use a built-in palette
+ * auto palette3 =
+ *   qualpal::Qualpal{}.setInputPalette("ColorBrewer:Set2").generate(5);
+ *
+ * // Extend an existing palette
+ * std::vector<qualpal::colors::RGB> base{ "#ff0000", "#a9ef93", "#ffe302" };
+ * auto pal_extended = qualpal::Qualpal{}.extend(base, 3); // base + 3 new
  * @endcode
  */
 
