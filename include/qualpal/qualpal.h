@@ -125,9 +125,12 @@ public:
 
   /**
    * @brief Set color vision deficiency simulation parameters.
-   * @param cvd_params Map of {"protan"|"deutan"|"tritan" ->
-   * severity [0,1]}.
+   * @param cvd_params Map of CVD type to severity, e.g., {{"protan", 0.5},
+   * {"deutan", 0.2}}. Valid keys: "protan", "deutan", "tritan". Severity must
+   * be in [0, 1].
    * @return Reference to this object for chaining.
+   * @throws std::invalid_argument if an invalid key or out-of-range severity is
+   * provided.
    */
   Qualpal& setCvd(const std::map<std::string, double>& cvd_params);
 
