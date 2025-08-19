@@ -98,7 +98,7 @@ main(int argc, char** argv)
     n_colors,
     "Number of candidate points for colorspace search (default: 1000)");
 
-  std::string metric_str = "din99d";
+  std::string metric_str = "ciede2000";
 
   app
     .add_option("-m,--metric",
