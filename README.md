@@ -2,7 +2,7 @@
 
 [![Build Status](https://github.com/jolars/qualpal/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/jolars/qualpal/actions/workflows/build-and-test.yml)
 [![codecov](https://codecov.io/gh/jolars/qualpal/graph/badge.svg?token=p5JTFa9BUz)](https://codecov.io/gh/jolars/qualpal)
-[![Docs](https://img.shields.io/badge/docs-doxygen-blue.svg?logo=readthedocs)](https://jolars.github.io/qualpal/)
+[![Docs](https://img.shields.io/badge/docs-stable-blue.svg?logo=readthedocs)](https://jolars.github.io/qualpal/)
 [![App](https://img.shields.io/badge/🌐%20%20App-qualpal.cc-blue)](https://qualpal.cc)
 
 A C++ library for generating qualitative color palettes with maximum perceptual
@@ -14,8 +14,9 @@ difference metrics.
 Full documentation is available at
 [https://jolars.github.io/qualpal/](https://jolars.github.io/qualpal/).
 
-This library is also available as an R package called [qualpalr](https://cran.r-project.org/package=qualpalr),
-and as a web application at [qualpal.cc](https://qualpal.cc).
+This library is also available as an R package called
+[qualpalr](https://cran.r-project.org/package=qualpalr), and as a web
+application at [qualpal.cc](https://qualpal.cc).
 
 ## Features
 
