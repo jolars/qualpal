@@ -179,7 +179,7 @@ public:
    * @param palette Existing palette (RGB colors) to keep fixed.
    * @param n Total size of the new palette to generate, including
    * existing colors. In other words, the new palette will have
-   * `palette.size() + n` colors.
+   * `n` colors.
    * @return Vector of palette + n new RGB colors.
    */
   std::vector<colors::RGB> extend(const std::vector<colors::RGB>& palette,
