@@ -124,7 +124,7 @@ public:
 
   /**
    * @brief Set color vision deficiency simulation parameters.
-   * @param cvd_params Map of {"protanomaly"|"deutananomaly"|"tritanomaly" ->
+   * @param cvd_params Map of {"protan"|"deutan"|"tritan" ->
    * severity [0,1]}.
    * @return Reference to this object for chaining.
    */
