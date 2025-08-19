@@ -13,7 +13,7 @@ which can be either
   `"ColorBrewer:Set2"`
 
 In case of the second option, using the HSL color space, qualpal uses a Halton
-pseudo-random sequence to sample colors evenly in the specified color space,
+pseudo-random sequence to distribute colors evenly in the specified color space,
 ensuring a uniform distribution of colors across the hue, saturation, and
 lightness dimensions.
 
