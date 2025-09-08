@@ -28,7 +28,7 @@ jobs:
       - name: Install dependencies
         run: sudo apt-get install -y build-essential doxygen graphviz
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
 
       - name: Setup cmake
         uses: jwlawson/actions-setup-cmake@v2.0
