@@ -175,6 +175,12 @@ If you want to include the CLI interface, make sure to pass the
 cmake -B build -S . -DBUILD_CLI=ON
 ```
 
+Then, you can install it to your system:
+
+```sh
+cmake --install build
+```
+
 ### WebAssembly Build
 
 To build the WebAssembly version for web applications:
