@@ -130,9 +130,6 @@ qualpal -n 5 -i colorspace "0:360" "0.4:0.8" "0.3:0.7"
 # Select from hex colors
 qualpal -n 3 "#ff0000" "#00ff00" "#0000ff" "#ffff00"
 
-# Select from hex colors (space-delimited output)
-qualpal -n 3 --output-delim space "#ff0000" "#00ff00" "#0000ff"
-
 # Output comma-delimited palette
 qualpal -n 4 --output-delim comma "#ff0000" "#00ff00" "#0000ff" "#ffff00"
 
