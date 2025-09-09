@@ -2,6 +2,7 @@
   import { onMount } from "svelte";
   import * as d3 from "d3";
   import { feature } from "topojson-client";
+  import { simulateColor, cvdSimulation } from "../stores/cvdStore.js";
 
   let { palette, paletteParams } = $props();
 
@@ -84,7 +85,8 @@
 
   function getColorForIndex(index: number) {
     if ($palette.length === 0) return "#3b82f6";
-    return $palette[index % $palette.length].hex;
+    const originalHex = $palette[index % $palette.length].hex;
+    return $cvdSimulation.enabled ? simulateColor(originalHex) : originalHex;
   }
 
   function createBarChart() {

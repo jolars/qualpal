@@ -1,5 +1,6 @@
 <script lang="ts">
   import { showToast } from "./../stores/toast.js";
+  import { simulateColor, cvdSimulation } from "../stores/cvdStore.js";
 
   let { palette, paletteParams } = $props();
 
@@ -20,6 +21,18 @@
       showToast("Failed to copy");
     }
   }
+
+  const displayedPalette = $derived(() => {
+    const simEnabled = $cvdSimulation.enabled;
+    return $palette.map((color) => {
+      const simulated = simEnabled ? simulateColor(color.hex) : color.hex;
+      return {
+        ...color,
+        originalHex: color.hex,
+        displayHex: simulated,
+      };
+    });
+  });
 </script>
 
 <div class="flex items-center justify-between mb-4">
@@ -34,15 +47,15 @@
   <div
     class="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4"
   >
-    {#each $palette as color}
+    {#each displayedPalette() as color}
       <div class="group">
         <button
           class="aspect-square rounded-lg cursor-pointer border-2 border-gray-200 hover:border-gray-400 transition-all duration-200 hover:shadow-md relative overflow-hidden w-full"
-          style="background-color: {color.hex}"
-          onclick={() => copyColor(color.hex)}
-          onkeydown={(e) => e.key === "Enter" && copyColor(color.hex)}
-          title="Click to copy {color.hex}"
-          aria-label="Copy color {color.hex}"
+          style="background-color: {color.displayHex}"
+          onclick={() => copyColor(color.originalHex)}
+          onkeydown={(e) => e.key === "Enter" && copyColor(color.originalHex)}
+          title="Click to copy {color.originalHex}"
+          aria-label="Copy color {color.originalHex}"
         >
           <div
             class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-200 flex items-center justify-center"
@@ -61,7 +74,7 @@
               ? '#fff'
               : '#222'}"
           >
-            {color.hex}
+            {color.originalHex}
           </div>
         </div>
       </div>

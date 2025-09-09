@@ -1,4 +1,5 @@
 import { writable, derived, get } from "svelte/store";
+import { setQualpalModule, simulateColor, cvdSimulation } from "./cvdStore.js";
 
 export const paletteParams = writable({
   numColors: 5,
@@ -132,7 +133,10 @@ export async function initializeModule() {
   try {
     console.log("Loading Qualpal module...");
     const createQualpalModule = (await import("../qualpal.mjs")).default;
-    qualpalModule = await createQualpalModule();
+    const module = await createQualpalModule();
+    qualpalModule = module;
+    setQualpalModule(module);
+
     moduleLoaded.set(true);
     console.log("Qualpal loaded successfully!");
 
@@ -266,9 +270,16 @@ export async function generatePalette(params) {
 
     // Analyze palette
     try {
+      const sim = get(cvdSimulation);
       const result = await qualpalModule.analyzePalette(
         newPalette.map((/** @type {{hex: string}} */ c) => hexToRgb(c.hex)),
-        params.cvd,
+        sim.enabled
+          ? {
+              protan: sim.severity,
+              deutan: sim.severity,
+              tritan: sim.severity,
+            }
+          : params.cvd,
         params.useBackground ? hexToRgb(params.backgroundColor) : null,
         4,
       );
@@ -284,6 +295,37 @@ export async function generatePalette(params) {
     loading.set(false);
   }
 }
+
+export const autoAnalyze = derived(
+  [palette, cvdSimulation, paletteParams],
+  ([$palette, $cvdSimulation, $paletteParams], set) => {
+    if (!$palette || $palette.length === 0 || !qualpalModule) {
+      analysis.set(null);
+      return;
+    }
+    const cvd = $cvdSimulation.enabled
+      ? {
+          protan: $cvdSimulation.severity,
+          deutan: $cvdSimulation.severity,
+          tritan: $cvdSimulation.severity,
+        }
+      : $paletteParams.cvd;
+    const bg = $paletteParams.useBackground
+      ? hexToRgb($paletteParams.backgroundColor)
+      : null;
+    try {
+      const result = qualpalModule.analyzePalette(
+        $palette.map((c) => hexToRgb(c.hex)),
+        cvd,
+        bg,
+        4,
+      );
+      analysis.set(result);
+    } catch {
+      analysis.set(null);
+    }
+  },
+);
 
 // Debounced generate function
 /**

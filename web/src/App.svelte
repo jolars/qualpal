@@ -1,10 +1,12 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { toast } from "./stores/toast.js";
+  import { cvdSimulation } from "./stores/cvdStore.js";
   import {
     paletteParams,
     palette,
     analysis,
+    autoAnalyze,
     moduleLoaded,
     initializeModule,
     generatePalette,
@@ -29,6 +31,8 @@
       generatePalette($paletteParams);
     }
   });
+
+  autoAnalyze.subscribe(() => {});
 </script>
 
 <header class="bg-gray-800">

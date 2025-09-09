@@ -1,3 +1,4 @@
+#include "../src/qualpal/cvd.h"
 #include "../src/qualpal/palettes.h"
 #include <emscripten/bind.h>
 #include <emscripten/val.h>
@@ -233,6 +234,24 @@ getPaletteWrapper(const std::string& domain, const std::string& palette)
   return arr;
 }
 
+val
+simulateCvdWrapper(double r,
+                   double g,
+                   double b,
+                   const std::string& cvd_type,
+                   double severity)
+{
+  auto simulated =
+    qualpal::simulateCvd(qualpal::colors::RGB(r, g, b), cvd_type, severity);
+
+  val result = val::object();
+  result.set("r", simulated.r());
+  result.set("g", simulated.g());
+  result.set("b", simulated.b());
+  result.set("hex", simulated.hex());
+  return result;
+}
+
 EMSCRIPTEN_BINDINGS(qualpal)
 {
   class_<QualpalJS>("Qualpal")
@@ -250,4 +269,5 @@ EMSCRIPTEN_BINDINGS(qualpal)
   function("analyzePalette", &analyzePaletteWrapper);
   function("listAvailablePalettes", &listAvailablePalettesWrapper);
   function("getPaletteHex", &getPaletteWrapper);
+  function("simulateCvd", &simulateCvdWrapper);
 }

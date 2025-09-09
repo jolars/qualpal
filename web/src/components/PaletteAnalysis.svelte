@@ -1,13 +1,34 @@
 <script lang="ts">
   import * as d3 from "d3";
+  import { simulateColor, cvdSimulation } from "../stores/cvdStore.js";
 
   let { analysis, palette } = $props();
 
-  const matrix = $derived(() => $analysis?.normal?.differenceMatrix ?? []);
+  const matrix = $derived(() => {
+    if (!$analysis) return [];
+    if ($cvdSimulation.enabled) {
+      // Use the simulated type's matrix
+      return $analysis[$cvdSimulation.type]?.differenceMatrix ?? [];
+    }
+    return $analysis.normal?.differenceMatrix ?? [];
+  });
+
   const labels = $derived(() =>
-    $palette?.length > 0 ? $palette.map((c: any) => c.hex) : [],
+    $palette?.length > 0
+      ? $palette.map((c: any) =>
+          $cvdSimulation.enabled ? simulateColor(c.hex) : c.hex,
+        )
+      : [],
   );
-  const minDistances = $derived(() => $analysis?.normal?.minDistances ?? []);
+
+  const minDistances = $derived(() => {
+    if (!$analysis) return [];
+    if ($cvdSimulation.enabled) {
+      // Use the simulated type's matrix
+      return $analysis[$cvdSimulation.type]?.minDistances ?? [];
+    }
+    return $analysis.normal?.minDistances ?? [];
+  });
 
   let minDistSvg = $state<SVGSVGElement | undefined>(undefined);
 

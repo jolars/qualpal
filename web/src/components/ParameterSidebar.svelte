@@ -5,6 +5,7 @@
   import ExtendPalette from "./params/ExtendPalette.svelte";
   import LoadingSpinner from "./LoadingSpinner.svelte";
   import { showToast } from "../stores/toast.js";
+  import { cvdSimulation } from "../stores/cvdStore.js";
   import {
     paletteParams,
     moduleLoaded,
@@ -354,7 +355,7 @@
         <!-- CVD Settings -->
         <div class="bg-gray-50 p-4 rounded-lg">
           <h3 class="font-medium text-gray-900 mb-3">
-            Color Vision Deficiency
+            Color Vision Deficiency Adaptation
           </h3>
           <div class="space-y-3">
             <div class="max-w-xs w-full">
@@ -419,6 +420,51 @@
             </div>
             <p class="text-xs text-gray-500 mt-2">
               Adapt palette to users with color vision deficiency.
+            </p>
+          </div>
+
+          <!-- CVD Simulation Preview -->
+          <div class="mt-4 pt-3 border-t border-gray-300">
+            <label class="flex items-center gap-2 cursor-pointer mb-2">
+              <input
+                type="checkbox"
+                bind:checked={$cvdSimulation.enabled}
+                class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+              />
+              <span class="text-sm text-gray-700">Color simulation</span>
+            </label>
+            <div class="items-center gap-2 mb-2">
+              <label class="text-xs font-medium" for="cvd-sim-type">Type:</label
+              >
+              <select
+                id="cvd-sim-type"
+                bind:value={$cvdSimulation.type}
+                class="text-xs border rounded px-1 py-0.5 bg-white"
+              >
+                <option value="protan">Protanopia</option>
+                <option value="deutan">Deuteranopia</option>
+                <option value="tritan">Tritanopia</option>
+              </select>
+            </div>
+            <div class="flex items-center gap-2 mb-2">
+              <label class="text-xs font-medium" for="cvd-sim-severity"
+                >Severity:</label
+              >
+              <input
+                id="cvd-sim-severity"
+                type="range"
+                min="0"
+                max="1"
+                step="0.01"
+                bind:value={$cvdSimulation.severity}
+                class="w-24"
+              />
+              <span class="text-xs w-8 text-right"
+                >{$cvdSimulation.severity}</span
+              >
+            </div>
+            <p class="text-xs text-gray-500 mt-1">
+              Simulate how colors appear for the selected CVD type and severity.
             </p>
           </div>
         </div>
