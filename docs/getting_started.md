@@ -96,10 +96,10 @@ to consider the background color against which the colors will be displayed.
 This matters especially for scatter plots or other visualizations where
 the canvas color is dominant. qualpal allows you to specify a background color
 to ensure that the selected colors are distinct from it. You can set the background
-color using the `setBackgroundColor` method:
+color using the `setBackground` method:
 
 ```cpp
-qp.setBackgroundColor(colors::RGB("#ffffff")); // white background
+qp.setBackground(colors::RGB("#ffffff")); // white background
 ```
 
 By default, the background color is _not_ considered, so if you want to

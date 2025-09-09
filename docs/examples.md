@@ -23,7 +23,7 @@ Improve an existing palette for a dark background
 ```cpp
 Qualpal qp;
 qp.setInputPalette("ColorBrewer:Set2")
-  .setBackgroundColor(colors::RGB("#000000"))
+  .setBackground(colors::RGB("#000000"))
   .generate(3);
 ```
 
