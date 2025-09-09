@@ -14,6 +14,10 @@
   });
 
   const labels = $derived(() =>
+    $palette?.length > 0 ? $palette.map((c: any) => c.hex) : [],
+  );
+
+  const simulatedLabels = $derived(() =>
     $palette?.length > 0
       ? $palette.map((c: any) =>
           $cvdSimulation.enabled ? simulateColor(c.hex) : c.hex,
@@ -63,7 +67,7 @@
       .attr("y", (d: number) => y(d))
       .attr("width", x.bandwidth())
       .attr("height", (d: number) => y(0) - y(d))
-      .attr("fill", (_: number, i: number) => labels()[i])
+      .attr("fill", (_: number, i: number) => simulatedLabels()[i])
       .attr("stroke", "#eaeaea");
 
     // X axis
@@ -135,12 +139,12 @@
       <thead>
         <tr>
           <th></th>
-          {#each labels() as label}
+          {#each labels() as label, i}
             <th class="text-xs font-mono text-gray-700 px-1 py-1 w-12">
               <div class="flex flex-col items-center">
                 <span
                   class="inline-block w-4 h-4 sm:w-5 sm:h-5 rounded mb-1 border border-gray-300"
-                  style="background:{label};"
+                  style="background:{simulatedLabels()[i]};"
                   title={label}
                 ></span>
                 <span class="hidden sm:inline">{label}</span>
@@ -158,7 +162,7 @@
                 <div class="flex flex-col items-center">
                   <span
                     class="inline-block w-4 h-4 sm:w-5 sm:h-5 rounded mb-1 border border-gray-300"
-                    style="background:{labels()[i]};"
+                    style="background:{simulatedLabels()[i]};"
                     title={labels()[i]}
                   ></span>
                   <span class="hidden sm:inline">{labels()[i]}</span>
