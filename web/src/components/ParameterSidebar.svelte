@@ -102,34 +102,30 @@
     {#if !$moduleLoaded}
       <LoadingSpinner message="Loading..." />
     {:else}
-      <h2 class="text-lg font-semibold text-gray-900 mb-4">Parameters</h2>
-
       <div class="space-y-4">
-        <!-- Number of Colors -->
         <div class="bg-gray-50 p-4 rounded-lg">
-          <div class="form-group">
-            <label
-              for="numColors"
-              class="block text-sm font-medium text-gray-700 mb-2"
+          <label
+            for="qualpal-num-colors"
+            class="block font-semibold text-gray-700 mb-2"
+          >
+            Number of Colors
+            <span class="text-blue-500 font-semibold"
+              >{$paletteParams.numColors}</span
             >
-              Number of Colors
-              <span class="text-blue-600 font-semibold"
-                >{$paletteParams.numColors}</span
-              >
-            </label>
-            <input
-              id="numColors"
-              type="range"
-              min="2"
-              max="12"
-              bind:value={$paletteParams.numColors}
-              oninput={() => debouncedGenerate($paletteParams)}
-              class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
-            />
-            <div class="flex justify-between text-xs text-gray-500 mt-1">
-              <span>2</span>
-              <span>12</span>
-            </div>
+          </label>
+          <input
+            id="qualpal-num-colors"
+            type="range"
+            min="2"
+            max="12"
+            autocomplete="off"
+            bind:value={$paletteParams.numColors}
+            oninput={() => debouncedGenerate($paletteParams)}
+            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
+          />
+          <div class="flex justify-between text-xs text-gray-500 mt-1">
+            <span>2</span>
+            <span>12</span>
           </div>
         </div>
 
@@ -465,12 +461,13 @@
                 </select>
               </div>
               <div class="flex items-center gap-2 mb-2">
-                <label class="text-xs font-medium" for="cvd-sim-slider"
+                <label class="text-xs font-medium" for="colorvision-severity"
                   >Severity:</label
                 >
                 <input
-                  id="cvd-sim-slider"
+                  id="colorvision-severity"
                   type="range"
+                  autocomplete="off"
                   min="0"
                   max="1"
                   step="0.01"

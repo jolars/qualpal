@@ -11,7 +11,7 @@
       aria-expanded={open}
       on:click={onToggle}
     >
-      <span class="flex-1 text-left">{label}</span>
+      <span class="flex-1 text-left text-gray-700">{label}</span>
       <svg
         class="w-4 h-4 ml-1 transition-transform {open ? 'rotate-180' : ''}"
         fill="none"
