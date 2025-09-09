@@ -131,7 +131,7 @@ qualpal -n 5 -i colorspace "0:360" "0.4:0.8" "0.3:0.7"
 qualpal -n 3 "#ff0000" "#00ff00" "#0000ff" "#ffff00"
 
 # Output comma-delimited palette
-qualpal -n 4 --output-delim comma "#ff0000" "#00ff00" "#0000ff" "#ffff00"
+qualpal -n 2 --output-delim comma "#ff0000" "#00ff00" "#0000ff" "#ffff00"
 
 # Colorize output (auto-detects terminal by default)
 qualpal -n 3 --colorize always "#ff0000" "#00ff00" "#0000ff"
