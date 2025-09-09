@@ -101,7 +101,7 @@ qualpal -n 4 --cvd deutan:0.7 "#e41a1c" "#377eb8" "#4daf4a" "#984ea3"
 Improve an existing palette and select subset
 
 ```bash
-qualpal -n 3 --input-palette "ColorBrewer:Set2" --background "#000000" --cvd tritan:0.2,deutan:0.5
+qualpal -n 3 --input palette "ColorBrewer:Set2" --background "#000000" --tritan 0.2 --deutan 0.5
 ```
 
 Generate warm colors (orange to red hues)
