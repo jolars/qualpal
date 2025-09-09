@@ -136,8 +136,8 @@ qualpal -n 4 --output-delim comma "#ff0000" "#00ff00" "#0000ff" "#ffff00"
 # Colorize output (auto-detects terminal by default)
 qualpal -n 3 --colorize always "#ff0000" "#00ff00" "#0000ff"
 
-# Pipe palette to analyze subcommand
-qualpal -n 5 --output-delim space | xargs qualpal analyze --input hex
+# Analyze palette with hex input
+qualpal analyze --input hex "#ffe402" "#ff5733" "#33ff57" "#3357ff"
 ```
 
 You can read more about the command line interface by calling `qualpal --help` or
