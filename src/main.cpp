@@ -263,10 +263,17 @@ main(int argc, char** argv)
 
     // Compute and display color difference matrix
     try {
-      auto matrix = qualpal::colorDifferenceMatrix(
-        rgb_colors, qualpal::metrics::DIN99d{}, max_memory);
+      std::vector<qualpal::colors::XYZ> xyz_colors;
+      xyz_colors.reserve(rgb_colors.size());
 
-      std::cout << "Color Difference Matrix (DIN99d metric):\n";
+      for (const auto& c : rgb_colors) {
+        xyz_colors.emplace_back(c);
+      }
+
+      auto matrix =
+        qualpal::colorDifferenceMatrix(xyz_colors, metric, max_memory);
+
+      std::cout << "Color Difference Matrix (" << metric_str << " metric):\n";
       std::cout << "Colors analyzed: " << rgb_colors.size() << "\n";
 
       // Print color list
