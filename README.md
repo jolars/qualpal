@@ -269,7 +269,7 @@ auto pal = Qualpal{}
                colors::RGB("#377eb8"), // Blue
                colors::RGB("#4daf4a"), // Green
              })
-             .setBackgroundColor(colors::RGB("#ffffff"))
+             .setBackground(colors::RGB("#ffffff"))
              .generate(3);
 ```
 
@@ -284,7 +284,7 @@ for a black background, selecting 3 colors.
 ```cpp
 auto pal = Qualpal{}
              .setInputPalette("ColorBrewer:Set2")
-             .setBackgroundColor(colors::RGB("#000000"))
+             .setBackground(colors::RGB("#000000"))
              .setCvd({ { "tritan", 0.2 }, { "deutan", 0.5 } })
              .generate(3);
 ```
