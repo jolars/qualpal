@@ -181,25 +181,16 @@ Then, you can install it to your system:
 cmake --install build
 ```
 
-### WebAssembly Build
+### WebAssembly
 
-To build the WebAssembly version for web applications:
+To build the WebAssembly package for web applications, you need
+to first install [Emscripten](https://emscripten.org/docs/getting_started/downloads.html).
+
+Then, you can build the package with the following commands:
 
 ```sh
-# Install Emscripten first (if not already installed)
-git clone https://github.com/emscripten-core/emsdk.git
-cd emsdk && ./emsdk install latest && ./emsdk activate latest
-source ./emsdk_env.sh && cd ..
-
-# Build WebAssembly version
 emcmake cmake -B build/wasm -S . -DBUILD_WASM=ON -DCMAKE_BUILD_TYPE=Release
 emmake make -C build/wasm qualpal_wasm
-```
-
-Then you can install it to your system:
-
-```sh
-cmake --install build
 ```
 
 ### CMake Integration
