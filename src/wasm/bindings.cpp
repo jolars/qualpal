@@ -247,7 +247,6 @@ EMSCRIPTEN_BINDINGS(qualpal)
     .function("extend", &QualpalJS::extend);
 
   // Free function binding
-  // function("analyzePalette", &analyzePalette);
   function("analyzePalette", &analyzePaletteWrapper);
   function("listAvailablePalettes", &listAvailablePalettesWrapper);
   function("getPaletteHex", &getPaletteWrapper);
