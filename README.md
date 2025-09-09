@@ -130,9 +130,6 @@ qualpal -n 5 -i colorspace "0:360" "0.4:0.8" "0.3:0.7"
 # Select from hex colors
 qualpal -n 3 "#ff0000" "#00ff00" "#0000ff" "#ffff00"
 
-# Generate 5 colors from color space (newline-delimited, default)
-qualpal -n 5 -i colorspace "0:360" "0.4:0.8" "0.3:0.7"
-
 # Select from hex colors (space-delimited output)
 qualpal -n 3 --output-delim space "#ff0000" "#00ff00" "#0000ff"
 
