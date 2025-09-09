@@ -36,7 +36,7 @@
 </script>
 
 <header class="bg-gray-800">
-  <div class="max-w-7xl mx-auto px-4 py-4 w-full">
+  <div class="max-w-7xl mx-auto px-3 py-4 w-full">
     <h1 class="text-2xl font-bold text-gray-100">Qualpal</h1>
     <p class="text-gray-300 mt-1">
       Generate maximally distinct color palettes for categorical data
