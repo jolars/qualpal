@@ -80,10 +80,10 @@ Colorize output for supported terminals:
 qualpal -n 3 --colorize always "#ff0000" "#00ff00" "#0000ff"
 ```
 
-Pipe palette to analyze subcommand:
+Analyze a palette for color difference:
 
 ```bash
-qualpal -n 5 --output-delim space | xargs qualpal analyze --input hex
+qualpal analyze --input hex "#ff0000" "#00ff00" "#0000ff"
 ```
 
 Generate palette for a dark background
