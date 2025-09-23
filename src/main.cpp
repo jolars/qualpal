@@ -439,8 +439,8 @@ main(int argc, char** argv)
     if (i + 1 < hex_out.size())
       std::cout << delim;
   }
-  if (delim != "\n")
-    std::cout << std::endl;
+
+  std::cout << std::endl;
 
   return 0;
 }

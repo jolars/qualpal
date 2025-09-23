@@ -564,3 +564,10 @@ TEST_CASE("CLI colorize option", "[cli][colorize]")
     REQUIRE(file_output.find("#ff0000") != std::string::npos);
   }
 }
+TEST_CASE("CLI output ends with newline", "[cli][newline]")
+{
+  auto [exit_code, output] = run_cli("-n 2 -i hex \"#ff0000\" \"#00ff00\"");
+  REQUIRE(exit_code == 0);
+  REQUIRE_FALSE(output.empty());
+  REQUIRE(output.back() == '\n');
+}
