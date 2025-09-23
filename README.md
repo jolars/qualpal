@@ -175,10 +175,50 @@ If you want to include the CLI interface, make sure to pass the
 cmake -B build -S . -DBUILD_CLI=ON
 ```
 
-Then, you can install it to your system:
+Then, to install the library (and CLI, if built), use
+the following command:
 
 ```sh
-cmake --install build
+sudo cmake --install build
+```
+
+If you prefer to install the library in a custom location, such as your home
+directory, you can specify the `--prefix` option:
+
+```sh
+cmake --install build --prefix "$HOME/.local"
+```
+
+Optionally, you can also run the CLI app directly from the build directory
+without installing it:
+
+```sh
+./build/qualpal --help
+```
+
+### What Gets Installed
+
+Under your chosen prefix (e.g., `$HOME/.local` or `/usr/local`):
+
+- `bin/qualpal` - Command-line interface (when `BUILD_CLI=ON`)
+- `include/qualpal/` - C++ header files
+- `lib/libqualpal.*` (or `lib64/libqualpal.*`) - Library files
+- `lib/cmake/qualpal/` - CMake package configuration
+- `share/doc/qualpal/LICENSE` - License file
+- `share/man/man1/qualpal.1` - Manual page
+
+### Uninstall
+
+To uninstall qualpal, we provide a CMake uninstall target. Run the following command:
+
+```sh
+cmake --build build --target uninstall
+```
+
+Unix users can also delete the files directly by calling
+
+```sh
+xargs rm < build/install_manifest.txt
 ```
 
 ### WebAssembly
@@ -201,6 +241,13 @@ installing the library, you can find it using CMake's `find_package` command.
 ```cmake
 find_package(qualpal REQUIRED)
 target_link_libraries(your_target qualpal::qualpal)
+```
+
+If you installed qualpal in a custom location, make sure to set the
+`CMAKE_PREFIX_PATH` variable first to include the installation prefix, e.g.:
+
+```cmake
+set(CMAKE_PREFIX_PATH "$ENV{HOME}/.local") # Or your custom prefix
 ```
 
 ## Usage Examples
