@@ -134,8 +134,8 @@ main(int argc, char** argv)
 
   app.footer(
     "Examples:\n"
-    "  Generate 5 colors from hex inputs:\n"
-    "    qualpal -n 5 -i hex \"#ff0000\" \"#00ff00\" \"#0000ff\"\n\n"
+    "  Generate 2 colors from hex inputs:\n"
+    "    qualpal -n 2 -i hex \"#ff0000\" \"#00ff00\" \"#0000ff\"\n\n"
     "  Generate palette from HSL ranges:\n"
     "    qualpal -n 8 -i colorspace \"0:360\" \"0.5:1\" \"0.3:0.7\"\n\n"
     "  Generate from built-in palette:\n"
