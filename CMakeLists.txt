@@ -210,7 +210,6 @@ if(BUILD_TESTING)
 endif()
 
 if(BUILD_VISUALIZATIONS)
-    # Check for gnuplot
     find_package(Gnuplot REQUIRED)
 
     # Data generation executable
