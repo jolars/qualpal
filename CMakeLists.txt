@@ -310,7 +310,6 @@ if(BUILD_WASM)
             --bind
     )
 
-    # Set output name and location
     set_target_properties(
         qualpal_wasm
         PROPERTIES
