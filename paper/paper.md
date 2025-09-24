@@ -21,15 +21,15 @@ bibliography: paper.bib
 
 # Summary
 
-`qualpal` is a [`C++` library](https://github.com/jolars/qualpal), command-line
+Qualpal is a [`C++` library](https://github.com/jolars/qualpal), command-line
 tool, [R package](https://cran.r-project.org/package=qualpalr), and [web
 app](https://qualpal.cc) for creating qualitative color palettes with maximally
 distinct colors. It helps scientists and anyone working with data visualization
-choose colors that remain clear and accessible. `qualpal` features flexible
+choose colors that remain clear and accessible. Qualpal features flexible
 palette generation from multiple input formats, such as the HSL and LCH~ab~
 color spaces or fixed sets of RGB colors, and can adapt palettes to color
 vision deficiencies (CVD) across the full dichromacy spectrum at any severity.
-At its core, `qualpal` is a lightweight `C++` library with no external
+At its core, Qualpal is a lightweight `C++` library with no external
 dependencies, making it easy to integrate into other software and programming
 languages.
 
@@ -72,7 +72,7 @@ difference metrics, input types, and implementation languages.
 | `Colorgorical` | Random sampling         | CIEDE2000                | LCH~ab~             | `Python`, `C` |
 | `distinctipy`  | Random sampling         | L~uv~ approx             | Pastel filter       | `Python`      |
 | `Palettailor`  | Simulated annealing     | CIEDE2000                | Hue, lightness      | `JavaScript`  |
-| **`qualpal`**  | Farthest points         | CIEDE2000, DIN99d, CIE76 | HSL, LCH~ab~, Fixed | `C++`         |
+| **`Qualpal`**  | Farthest points         | CIEDE2000, DIN99d, CIE76 | HSL, LCH~ab~, Fixed | `C++`         |
 
 All of these existing packages have different strengths and weaknesses. `qualpal` is,
 however, the first `C++` library, CLI tool, and R package for generating
@@ -101,7 +101,7 @@ possibility to create palettes with related blocks (such as pairs).
 | `Colorgorical` |              | $\checkmark$[^2] |              |              |              |              |
 | `distinctipy`  | $\checkmark$ |                  |              |              |              |              |
 | `Palettailor`  |              | $\checkmark$[^3] |              |              | $\checkmark$ |              |
-| **`qualpal`**  | $\checkmark$ | $\checkmark$[^4] | $\checkmark$ | $\checkmark$ | $\checkmark$ |              |
+| **`Qualpal`**  | $\checkmark$ | $\checkmark$[^4] | $\checkmark$ | $\checkmark$ | $\checkmark$ |              |
 
 [^1]: <https://medialab.github.io/iwanthue/>
 
@@ -201,7 +201,7 @@ palette from a set of 1000 input colors on a modern laptop.
 # Acknowledgements
 
 [Bruce Lindbloom's webpage](http://www.brucelindbloom.com/) has been
-instrumental in the development of `qualpal`, serving as a vital
+instrumental in the development of Qualpal, serving as a vital
 reference for color space conversions and color difference calculations.
 
 # References
