@@ -42,6 +42,9 @@
             autoprefixer
             prettierd
             vite
+            (python3.withPackages (ps: [
+              ps.matplotlib
+            ]))
           ];
         };
       }

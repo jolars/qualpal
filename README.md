@@ -82,66 +82,115 @@ users to quickly generate color palettes directly in their browser.
 
 ### Library Usage
 
+Generate 5 colors from a HSL colorspace:
+
 ```cpp
 #include <qualpal.h>
 
 using namespace qualpal;
 
-// Generate 5 colors from HSL colorspace
 Qualpal qp;
-qp.setInputColorspace({ 0, 360 }, { 0.4, 0.8 }, { 0.3, 0.7 });
+qp.setInputColorspace({ -170, 60 }, { 0, 0.7 }, { 0.2, 0.8 });
 auto colorspace_pal = qp.generate(5);
+```
 
-// Select 2 colors from given RGB values
+![Five colors from the HSL color space](docs/images/examples/hsl_pal.svg)
+
+Select 2 colors from given RGB values:
+
+```cpp
 qp.setInputRGB({ colors::RGB("#ff0000"),
                  colors::RGB("#00ff00"),
                  colors::RGB("#0000ff") });
 auto rgb_pal = qp.generate(2);
+```
 
-// Consider color vision deficiency (CVD) when generating colors
+![Two colors from hex RGB input](docs/images/examples/hex_pal.svg)
+
+Consider color vision deficiency (CVD) when generating colors
+
+```cpp
 qp.setInputPalette("ColorBrewer:Set2").setCvd({ { "deutan", 0.7 } });
 auto cvd_pal = qp.generate(4);
 ```
 
+![Four colors from ColorBrewer Set2 palette with deuteranomaly simulation](docs/images/examples/brewer_set2_deutan.svg)
+
 ### Command Line Interface (CLI)
 
 qualpal includes a powerful command line interface for palette generation and analysis.
-
-- For a full list of options and usage examples, run:
-
-  ```sh
-  qualpal --help
-  ```
-
-- There are also man pages available for the CLI:
-
-  ```sh
-  man qualpal
-  ```
-
-- You can also view the [Doxygen-generated
-  documentation](https://jolars.github.io/qualpal/) for detailed CLI and API
-  usage.
+For a full list of options and usage examples, run:
 
 ```sh
-# Generate 5 colors from color space
+qualpal --help
+```
+
+There are also man pages available for the CLI:
+
+```sh
+man qualpal
+```
+
+You can also view the [Doxygen-generated
+documentation](https://jolars.github.io/qualpal/) for detailed CLI and API
+usage.
+
+#### Examples
+
+Generate 5 colors from the HSL color space, with full hue range, medium-high
+saturation (0.4-0.8), and medium lightness (0.3-0.7):
+
+```sh
 qualpal -n 5 -i colorspace "0:360" "0.4:0.8" "0.3:0.7"
+```
 
-# Select from hex colors
+![Five colors from the HSL color space](docs/images/examples/cli_hsl.svg)
+
+Select from hex colors:
+
+```sh
 qualpal -n 3 "#ff0000" "#00ff00" "#0000ff" "#ffff00"
+```
 
-# Output comma-delimited palette
+![Three colors from hex RGB input](docs/images/examples/cli_hex.svg)
+
+Output comma-delimited palette:
+
+```sh
 qualpal -n 2 --output-delim comma "#ff0000" "#00ff00" "#0000ff" "#ffff00"
+```
 
-# Colorize output (auto-detects terminal by default)
-qualpal -n 3 --colorize always "#ff0000" "#00ff00" "#0000ff"
+![Two colors from hex RGB input with comma delimiter](docs/images/examples/cli_hex_comma.svg)
 
-# Analyze palette with hex input
+Don't colorize output (auto-detects terminal by default):
+
+```sh
+qualpal -n 2 --colorize never "#1a5577" "#b7e15f" "#6ec8dd"
+```
+
+![Three colors from hex RGB input with colorized output](docs/images/examples/cli_hex_colorized.svg)
+
+Analyze palette with hex input:
+
+```sh
 qualpal analyze --input hex "#ffe402" "#ff5733" "#33ff57" "#3357ff"
 ```
 
-You can read more about the command line interface by calling `qualpal --help` or
-by reading the man page at `man qualpal`.
+    Color Difference Matrix (ciede2000 metric):
+    Colors analyzed: 4
+    Colors:
+      Idx      Hex  MinDist
+        0  #ffe402    29.52
+        1  #ff5733    49.57
+        2  #33ff57    29.52
+        3  #3357ff    50.07
+
+    Color Difference Matrix:
+              0       1       2       3
+      0     0.00   49.57   29.52   83.87
+      1    49.57    0.00   78.05   50.07
+      2    29.52   78.05    0.00   71.78
+      3    83.87   50.07   71.78    0.00
 
 ## Installation
 
@@ -263,7 +312,7 @@ using namespace qualpal;
 int
 main()
 {
-  // Start with some seed colors
+  // Start with some input colors
   Qualpal qp;
   qp.setInputRGB({
     colors::RGB("#e41a1c"), // Red
@@ -284,9 +333,11 @@ main()
 }
 ```
 
+![Three colors from given RGB input](docs/images/examples/lib_hex.svg)
+
 ### Color Vision Deficiency Consideration
 
-Simulate deuteranomaly (red-green colorblindness) of severity 0.8.
+Adapt to deuteranomaly (red-green colorblindness) of severity 0.8:
 
 ```cpp
 Qualpal qp;
@@ -294,19 +345,23 @@ qp.setInputRGB(colors).setCvd({ { "deutan", 0.8 } });
 auto accessible_palette = qp.generate(4);
 ```
 
-### Custom Color Space Sampling
+![Two colors from given RGB input with deuteranomaly adaptation](docs/images/examples/lib_hex_deutan.svg)
 
-Generate warm colors: orange to red hues, high saturation, medium lightness
+### HSL Color Space
+
+A soothing pastel palette, generated from a HSL color space:
 
 ```cpp
 Qualpal qp;
-qp.setInputColorspace({ 15, 45 }, { 0.7, 1.0 }, { 0.4, 0.7 });
-auto warm_colors = qp.generate(6);
+qp.setInputColorspace({ 20, 360 }, { 0.3, 0.7 }, { 0.7, 0.9 });
+auto pastel_palette = qp.generate(6);
 ```
 
-### Cater to Background Colors
+![A palette of pastels](docs/images/examples/lib_pastels.svg)
 
-When visualizing categorical data, consider a background color to ensure contrast.
+### Adaptation to Background Color
+
+When visualizing categorical data, consider a background color to ensure contrast:
 
 ```cpp
 auto pal = Qualpal{}
@@ -320,12 +375,14 @@ auto pal = Qualpal{}
              .generate(3);
 ```
 
-### Improve Existing Palettes
+![Three colors from given RGB input avoiding light colors on white background](docs/images/examples/lib_bg.svg)
+
+### Improving Existing Palettes
 
 Qualpal can take an existing color palette and improve it by selecting a subset
 of the most distinct colors from it, as well as ordering the result.
 
-Here we design a CVD friendly version of the `"ColorBrewer:Set2"` palette
+Here we design a CVD-friendly version of the `"ColorBrewer:Set2"` palette
 for a black background, selecting 3 colors.
 
 ```cpp
@@ -336,9 +393,11 @@ auto pal = Qualpal{}
              .generate(3);
 ```
 
+![Three colors from ColorBrewer Set2 palette with tritanomaly and deuteranomaly simulation on black background](docs/images/examples/lib_cvd.svg)
+
 ### Palette Extension Example
 
-You can extend an existing palette by adding more distinct colors to it:
+Extend an existing palette by adding more distinct colors to it:
 
 ```cpp
 std::vector<colors::RGB> fixed = {

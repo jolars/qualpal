@@ -24,11 +24,15 @@ with colors sampled from the HSL color space, you can use the following code:
 #include <qualpal.h>
 using namespace qualpal;
 
-auto qp = Qualpal{}.setInputColorspace({ 0, 360 }, { 0.4, 0.8 }, { 0.3, 0.7 });
+auto pal = Qualpal{}
+             .setInputColorspace({ -170, 60 }, { 0, 0.7 }, { 0.2, 0.8 })
+             .generate(5);
 ```
 
 In this case, qualpal will generate a number of color points (by default 1000)
 in the specified HSL color space using a Halton pseudo-random sequence.
+
+![Five colors from the HSL color space](images/examples/hsl_pal.svg)
 
 You can also specify the input color space using LCHab (HCL) by defining
 ranges for hue, chroma, and lightness. For example:
@@ -64,7 +68,10 @@ use the `setInputPalette` method:
 
 ```cpp
 qp.setInputPalette("Pokemon:Porygon");
+auto pal = qp.generate(4);
 ```
+
+![Four colors from the Pokemon Porygon palette](images/examples/lib_porygon.svg)
 
 ## Color Vision Deficiency
 
@@ -85,6 +92,8 @@ auto cvd_pal = Qualpal{}
                  .setCvd({ { "deutan", 0.7 } })
                  .generate(5);
 ```
+
+![Five colors from HSL with deuteranomaly simulation](images/examples/cli_hsl2.svg)
 
 The simulation of color vision deficiency is based on the model
 by Machado et al. (2009), and is numerically stable and fast.

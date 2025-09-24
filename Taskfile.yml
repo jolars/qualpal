@@ -157,3 +157,8 @@ tasks:
   paper-wordcount:
     cmds:
       - pandoc paper/paper.md -t plain | wc -w
+
+  generate-palette-examples:
+    desc: Generate color palette examples for documentation
+    cmds:
+      - bash docs/generate_palettes.sh
