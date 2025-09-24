@@ -49,3 +49,28 @@ qualpal -n 4 --deutan 0.7 "#e41a1c" "#377eb8" "#4daf4a" "#984ea3" | \
 
 qualpal -n 5 -i colorspace "-50:200" "0.4:0.8" "0.3:0.7" | \
   python scripts/generate_palette_strip.py docs/images/examples/cli_hsl2.svg
+
+qualpal -n 3 -i colorspace "0:180" "0.3:0.6" "0.7:0.9" --extend "#ff0000" "#00ff00" | \
+  python scripts/generate_palette_strip.py docs/images/examples/cli_hsl_extend.svg
+
+qualpal -n 4 -i hex "#4daf4a" "#984ea3" "#ff7f00" "#ffff33" --extend "#e41a1c" "#377eb8" | \
+  python scripts/generate_palette_strip.py docs/images/examples/hex_extend.svg
+
+# Paper
+
+## Standard palette
+qualpal -n 5 -i colorspace "-190:60" "0:0.7" "0.2:0.8" | \
+  python scripts/generate_palette_strip.py paper/images/pal_hsl.pdf
+
+## Palette that's adapted to CVD
+qualpal -n 4 -i colorspace "-200:60" "0:0.7" "0.1:0.8" \
+  --protan 0.8 --tritan 1.0 | \
+  python scripts/generate_palette_strip.py paper/images/pal_cvd.pdf
+
+## From an existing palette, adapted to background
+qualpal -n 4 -i palette "Vermeer:PearlEarring"  --background "#ffffff" | \
+  python scripts/generate_palette_strip.py paper/images/pal_bg.pdf
+
+## Extended the Bauhaus colors with ones from the Okabe-Ito palette
+qualpal -n 4 -i hex "#000000" "#e69f00" "#56b4e9" "#009e73" --extend "#B33A3A" "#2F5DA5" "#E1B84A"  | \
+  python scripts/generate_palette_strip.py paper/images/pal_ext.pdf

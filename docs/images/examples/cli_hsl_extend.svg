@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
   "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="113.04pt" height="56.88pt" viewBox="0 0 113.04 56.88" xmlns="http://www.w3.org/2000/svg" version="1.1">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="168.84pt" height="56.88pt" viewBox="0 0 168.84 56.88" xmlns="http://www.w3.org/2000/svg" version="1.1">
  <metadata>
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>
@@ -22,8 +22,8 @@
  <g id="figure_1">
   <g id="patch_1">
    <path d="M 0 56.88 
-L 113.04 56.88 
-L 113.04 0 
+L 168.84 56.88 
+L 168.84 0 
 L 0 0 
 L 0 56.88 
 z
@@ -31,24 +31,32 @@ z
   </g>
   <g id="axes_1">
    <g id="patch_2">
-    <path d="M 3.377143 53.64 
-L 56.52 53.64 
-L 56.52 3.24 
-L 3.377143 3.24 
+    <path d="M 3.42 53.64 
+L 57.42 53.64 
+L 57.42 3.24 
+L 3.42 3.24 
 z
-" clip-path="url(#p8c6f0e3c6d)" style="fill: #ff0000; stroke: #000000; stroke-linejoin: miter"/>
+" clip-path="url(#pad8d081a11)" style="fill: #ff0000; stroke: #000000; stroke-linejoin: miter"/>
    </g>
    <g id="patch_3">
-    <path d="M 56.52 53.64 
-L 109.662857 53.64 
-L 109.662857 3.24 
-L 56.52 3.24 
+    <path d="M 57.42 53.64 
+L 111.42 53.64 
+L 111.42 3.24 
+L 57.42 3.24 
 z
-" clip-path="url(#p8c6f0e3c6d)" style="fill: #00ff00; stroke: #000000; stroke-linejoin: miter"/>
+" clip-path="url(#pad8d081a11)" style="fill: #00ff00; stroke: #000000; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 111.42 53.64 
+L 165.42 53.64 
+L 165.42 3.24 
+L 111.42 3.24 
+z
+" clip-path="url(#pad8d081a11)" style="fill: #eee0dd; stroke: #000000; stroke-linejoin: miter"/>
    </g>
    <g id="text_1">
     <!-- #ff0000 -->
-    <g style="fill: #ffffff" transform="translate(11.984196 30.6475) scale(0.08 -0.08)">
+    <g style="fill: #ffffff" transform="translate(12.455625 30.6475) scale(0.08 -0.08)">
      <defs>
       <path id="DejaVuSans-Bold-23" d="M 2847 4594 
 L 2547 3391 
@@ -141,7 +149,7 @@ z
    </g>
    <g id="text_2">
     <!-- #00ff00 -->
-    <g transform="translate(65.127054 30.6475) scale(0.08 -0.08)">
+    <g transform="translate(66.455625 30.6475) scale(0.08 -0.08)">
      <use xlink:href="#DejaVuSans-Bold-23"/>
      <use xlink:href="#DejaVuSans-Bold-30" x="83.789062"/>
      <use xlink:href="#DejaVuSans-Bold-30" x="153.369141"/>
@@ -151,11 +159,76 @@ z
      <use xlink:href="#DejaVuSans-Bold-30" x="379.541016"/>
     </g>
    </g>
+   <g id="text_3">
+    <!-- #eee0dd -->
+    <g transform="translate(118.419375 30.6475) scale(0.08 -0.08)">
+     <defs>
+      <path id="DejaVuSans-Bold-65" d="M 4031 1759 
+L 4031 1441 
+L 1416 1441 
+Q 1456 1047 1700 850 
+Q 1944 653 2381 653 
+Q 2734 653 3104 758 
+Q 3475 863 3866 1075 
+L 3866 213 
+Q 3469 63 3072 -14 
+Q 2675 -91 2278 -91 
+Q 1328 -91 801 392 
+Q 275 875 275 1747 
+Q 275 2603 792 3093 
+Q 1309 3584 2216 3584 
+Q 3041 3584 3536 3087 
+Q 4031 2591 4031 1759 
+z
+M 2881 2131 
+Q 2881 2450 2695 2645 
+Q 2509 2841 2209 2841 
+Q 1884 2841 1681 2658 
+Q 1478 2475 1428 2131 
+L 2881 2131 
+z
+" transform="scale(0.015625)"/>
+      <path id="DejaVuSans-Bold-64" d="M 2919 2988 
+L 2919 4863 
+L 4044 4863 
+L 4044 0 
+L 2919 0 
+L 2919 506 
+Q 2688 197 2409 53 
+Q 2131 -91 1766 -91 
+Q 1119 -91 703 423 
+Q 288 938 288 1747 
+Q 288 2556 703 3070 
+Q 1119 3584 1766 3584 
+Q 2128 3584 2408 3439 
+Q 2688 3294 2919 2988 
+z
+M 2181 722 
+Q 2541 722 2730 984 
+Q 2919 1247 2919 1747 
+Q 2919 2247 2730 2509 
+Q 2541 2772 2181 2772 
+Q 1825 2772 1636 2509 
+Q 1447 2247 1447 1747 
+Q 1447 1247 1636 984 
+Q 1825 722 2181 722 
+z
+" transform="scale(0.015625)"/>
+     </defs>
+     <use xlink:href="#DejaVuSans-Bold-23"/>
+     <use xlink:href="#DejaVuSans-Bold-65" x="83.789062"/>
+     <use xlink:href="#DejaVuSans-Bold-65" x="151.611328"/>
+     <use xlink:href="#DejaVuSans-Bold-65" x="219.433594"/>
+     <use xlink:href="#DejaVuSans-Bold-30" x="287.255859"/>
+     <use xlink:href="#DejaVuSans-Bold-64" x="356.835938"/>
+     <use xlink:href="#DejaVuSans-Bold-64" x="428.417969"/>
+    </g>
+   </g>
   </g>
  </g>
  <defs>
-  <clipPath id="p8c6f0e3c6d">
-   <rect x="0.72" y="0.72" width="111.6" height="55.44"/>
+  <clipPath id="pad8d081a11">
+   <rect x="0.72" y="0.72" width="167.4" height="55.44"/>
   </clipPath>
  </defs>
 </svg>

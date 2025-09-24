@@ -139,3 +139,11 @@ qualpal -n 5 -i colorspace "20:300" "0.3:0.7" "0.7:0.9"
 ```
 
 ![A palette of pastels](images/examples/lib_pastels.svg)
+
+Extend an existing palette:
+
+```bash
+qualpal -n 4 -i hex "#4daf4a" "#984ea3" "#ff7f00" "#ffff33" --extend "#e41a1c" "#377eb8"
+```
+
+![A fixed palette of red and blue extended with four colors from given RGB input](images/examples/hex_extend.svg)

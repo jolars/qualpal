@@ -154,21 +154,13 @@ qualpal -n 3 "#ff0000" "#00ff00" "#0000ff" "#ffff00"
 
 ![Three colors from hex RGB input](docs/images/examples/cli_hex.svg)
 
-Output comma-delimited palette:
+Extend existing palette (keep fixed colors provided after --extend):
 
-```sh
-qualpal -n 2 --output-delim comma "#ff0000" "#00ff00" "#0000ff" "#ffff00"
+```{sh}
+qualpal -n 3 -i colorspace "0:180" "0.3:0.6" "0.7:0.9" --extend "#ff0000" "#00ff00"
 ```
 
-![Two colors from hex RGB input with comma delimiter](docs/images/examples/cli_hex_comma.svg)
-
-Don't colorize output (auto-detects terminal by default):
-
-```sh
-qualpal -n 2 --colorize never "#1a5577" "#b7e15f" "#6ec8dd"
-```
-
-![Three colors from hex RGB input with colorized output](docs/images/examples/cli_hex_colorized.svg)
+![A fixed palette of red and green extended with one color from the HSL space](docs/images/examples/cli_hsl_extend.svg)
 
 Analyze palette with hex input:
 
@@ -415,6 +407,8 @@ std::vector<colors::RGB> input = {
 // Extend to 6 colors, keeping the first two fixed
 auto ext_pal = Qualpal{}.setInputRGB(input).extend(fixed, 4);
 ```
+
+![A fixed palette of red and blue extended with four colors from given RGB input](docs/images/examples/hex_extend.svg)
 
 ## Contributing
 
