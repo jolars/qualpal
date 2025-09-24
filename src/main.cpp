@@ -104,8 +104,8 @@ main(int argc, char** argv)
     .add_option("-m,--metric",
                 metric_str,
                 "Color difference metric to use:\n"
-                "  din99d      - Perceptual color difference (default)\n"
-                "  ciede2000   - CIEDE2000 color difference\n"
+                "  ciede2000   - CIEDE2000 color difference (default)\n"
+                "  din99d      - Perceptual color difference\n"
                 "  cie76       - CIE76 color difference")
     ->check(CLI::IsMember({ "din99d", "ciede2000", "cie76" }));
 
