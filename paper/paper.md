@@ -53,8 +53,8 @@ user requirements and preferences.
 
 This problem has been tackled by, for instance, @glasbey2007, who developed
 an algorithm based on simulated annealing that is available in the Python
-package `glasbey` [@mcinnes2025]. Other tools include `iWantHue` [@jacomy2025],
-`Colorgorical` [@gramazio2016], `distinctipy` [@roberts2024], and `Palettailor`
+package Glasbey [@mcinnes2025]. Other tools include iWantHue [@jacomy2025],
+Colorgorical [@gramazio2016], distinctipy [@roberts2024], and Palettailor
 [@lu2021]. All of these packages rely on some metric to measure the distance
 between colors and use some form of optimization algorithm, such as simulated
 annealing, to find a set of colors that maximizes the minimum distance between
