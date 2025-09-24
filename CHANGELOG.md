@@ -1,5 +1,20 @@
 # Changelog
 
+## [3.3.0](https://github.com/jolars/qualpal/compare/v3.2.0...v3.3.0) (2025-09-24)
+
+### Features
+
+* **cli:** add `--extend` to support extending palettes ([902f546](https://github.com/jolars/qualpal/commit/902f546a220cad7d9c3a37e2df1afd70e0a1c747))
+* **cli:** honor `--metric` option in `analyze` subcommand ([ee5166b](https://github.com/jolars/qualpal/commit/ee5166b401f6d1184545f0fdb5c2005288b864af))
+* **web:** add controls to show colors simulated for CVD ([9f8713d](https://github.com/jolars/qualpal/commit/9f8713da07953d994247924c847747ec05d5bcf0))
+* **web:** use accordions to compact sidebar layout ([039ef57](https://github.com/jolars/qualpal/commit/039ef5769a6b03b4c7e40688a3b26f7a9f4e1369))
+
+### Bug Fixes
+
+* ensure CLI output ends with newline ([3bfe0d4](https://github.com/jolars/qualpal/commit/3bfe0d439f373763c5b2ba7ffb690976e9324e48))
+* use `-n 2` in CLI example ([f5afb8d](https://github.com/jolars/qualpal/commit/f5afb8d75d1c415d8e10a87664f39735ce137628))
+* **web:** don't change hex codes when simulating cvd ([a6f85d5](https://github.com/jolars/qualpal/commit/a6f85d5fc4df4c84fc2cb45cc32fa2ff89fcc233))
+
 ## [3.2.0](https://github.com/jolars/qualpal/compare/v3.1.0...v3.2.0) (2025-08-19)
 
 ### Features
