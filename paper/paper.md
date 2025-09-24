@@ -111,6 +111,72 @@ possibility to create palettes with related blocks (such as pairs).
 
 [^4]: <https://qualpal.cc>
 
+# Examples
+
+In this section we show some examples of palettes generated with Qualpal. We
+begin with a palette generated from candidate colors from part of the HSL color
+space, defined by hue in $[0^\circ, 60^\circ]$ and $[170, 360)$^[Note that we
+specify `-190` as the starting point in Qualpal to wrap around the hue wheel.],
+saturation in $[0, 0.7]$, and lightness in $[0.2, 0.8]$. This produces the
+palette shown in \autoref{fig:hsl}. The command to generate this palette is:
+
+```{.sh}
+qualpal -n 5 -i colorspace "-190:60" "0:0.7" "0.2:0.8"
+```
+
+![A palette of five colors generated from input colors as a subspace of the HSL colorspace.\label{fig:hsl}](images/pal_hsl.pdf)
+
+Next, we show another palette generated from similar input from the HSL
+color space. But this time we adapt the palette to the color vision
+deficiency types protanomaly (at 80\% severity) and
+tritanomaly (at full severity). The resulting palette is shown in \autoref{fig:cvd}. Here,
+we show how to generate this palette using the `C++` library interface:
+
+```cpp
+#include <qualpal.h>
+
+auto pal = qualpal::Qualpal{}
+             .setInputColorspace({ -190, 60 }, { 0, 0.7 }, { 0.2, 0.8 })
+             .setCvd({ { "protan", 0.8 }, { "tritan", 1.0 } })
+             .generate(4);
+```
+
+![A palette of four colors, generated from colors sampled from a portion of the
+HSL color space, and adapted to protanomaly and
+tritanomaly.\label{fig:cvd}](images/pal_cvd.pdf)
+
+Qualpal also features a set of built-in palettes. In this example, we begin
+with a palette derived from Johannes Vermeer's _Girl with a Pearl Earring_, and
+pick four colors from it. We also optimize the palette to distinguish it from a
+background color of white. The resulting palette is displayed in
+\autoref{fig:bg}. This time, we have used the `R` package
+[qualpalr](https://cran.r-project.org/package=qualpalr):
+
+```r
+library(qualpalr)
+pal <- qualpal(4, "Vermeer:PearlEarring", bg = "white")
+```
+
+![A palette derived from the colors in Vermeer's *Girl with a Pearl Earring*,
+optimized to be distinguished from a white
+canvas.\label{fig:bg}](images/pal_bg.pdf)
+
+Finally, we show how to extend an existing palette, in this case one consisting
+of three colors inspired by the Bauhaus art movement. We consider a fixed set
+of four input colors from the Okabe-Ito palette [@okabe2008] as input. The
+result is shown in \autoref{fig:ext} and the CLI command we used to generate
+this palette is:
+
+```sh
+qualpal -n 4 \
+  -i hex "#000000" "#e69f00" "#56b4e9" "#009e73" \
+  --extend "#B33A3A" "#2F5DA5" "#E1B84A"
+```
+
+![An example of extending an existing palette of three colors (blue, red, and
+yellow), with candidates from the Okabe-Ito
+palette.\label{fig:ext}](images/pal_ext.pdf)
+
 # Summary of the algorithm
 
 Qualpal begins with a set of input colors. These can be a fixed set of
