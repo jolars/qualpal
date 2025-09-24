@@ -7,6 +7,7 @@
 #include <qualpal.h>
 #include <stdexcept>
 #include <string>
+#include <unordered_set>
 #include <vector>
 
 #if defined(_WIN32)
@@ -127,10 +128,13 @@ main(int argc, char** argv)
 
   std::size_t n = 8;
   std::vector<std::string> values;
+  std::vector<std::string> extend_colors;
 
   app.add_option<std::size_t, std::size_t>(
     "-n,--number", n, "Number of colors to generate");
   app.add_option("values", values, "Input values (depends on input type)");
+  app.add_option(
+    "--extend", extend_colors, "Fixed palette colors (hex) to extend from");
 
   app.footer(
     "Examples:\n"
@@ -139,7 +143,13 @@ main(int argc, char** argv)
     "  Generate palette from HSL ranges:\n"
     "    qualpal -n 8 -i colorspace \"0:360\" \"0.5:1\" \"0.3:0.7\"\n\n"
     "  Generate from built-in palette:\n"
-    "    qualpal -n 3 -i palette \"ColorBrewer:Set1\"");
+    "    qualpal -n 3 -i palette \"ColorBrewer:Set1\"\n\n"
+    "  Extend existing palette (fixed colors supplied after --extend):\n"
+    "    qualpal -n 6 -i hex \"#0000ff\" \"#ffff00\" \"#ff00ff\" \"#00ffff\" "
+    "--extend \"#ff0000\" \"#00ff00\"\n\n"
+    "  Extend using colorspace candidates:\n"
+    "    qualpal -n 5 -i colorspace \"0:360\" \"0.4:0.8\" \"0.3:0.7\" --extend "
+    "\"#ff0000\" \"#00ff00\"");
 
   auto help_cmd = app.add_subcommand("help", "Show detailed help information");
 
@@ -354,6 +364,26 @@ main(int argc, char** argv)
     qp.setMemoryLimit(max_memory);
     qp.setColorspaceSize(n_colors);
 
+    bool do_extend = !extend_colors.empty();
+    std::vector<qualpal::colors::RGB> fixed_palette;
+
+    // Validate fixed (extend) colors once (always hex)
+    if (do_extend) {
+      for (const auto& hex : extend_colors) {
+        if (!qualpal::isValidHexColor(hex)) {
+          std::cerr << "Error: Invalid hex color in --extend '" << hex
+                    << "'. Expected format: #RRGGBB or #RGB" << std::endl;
+          return 1;
+        }
+        fixed_palette.emplace_back(hex);
+      }
+      if (n <= fixed_palette.size()) {
+        std::cerr << "Error: -n must be greater than number of fixed colors ("
+                  << fixed_palette.size() << ")" << std::endl;
+        return 1;
+      }
+    }
+
     if (input == "hex") {
       for (const auto& color : values) {
         if (!qualpal::isValidHexColor(color)) {
@@ -362,7 +392,36 @@ main(int argc, char** argv)
           return 1;
         }
       }
-      qp.setInputHex(values);
+
+      if (do_extend) {
+        // Filter out any fixed colors duplicated in candidates
+        std::unordered_set<std::string> fixed_set;
+        fixed_set.reserve(extend_colors.size());
+        for (auto s : extend_colors) {
+          std::transform(s.begin(), s.end(), s.begin(), ::tolower);
+          fixed_set.insert(s);
+        }
+        std::vector<std::string> filtered;
+        filtered.reserve(values.size());
+        for (auto s : values) {
+          std::string low = s;
+          std::transform(low.begin(), low.end(), low.begin(), ::tolower);
+          if (fixed_set.find(low) == fixed_set.end()) {
+            filtered.push_back(s);
+          }
+        }
+        std::size_t needed_new = n - fixed_palette.size();
+        if (filtered.size() < needed_new) {
+          std::cerr
+            << "Error: Not enough candidate colors after removing fixed "
+               "duplicates (need "
+            << needed_new << ", have " << filtered.size() << ")" << std::endl;
+          return 1;
+        }
+        qp.setInputHex(filtered);
+      } else {
+        qp.setInputHex(values);
+      }
     } else if (input == "colorspace") {
       if (values.size() != 3) {
         std::cerr << "Error: Colorspace input requires exactly 3 ranges (hue, "
@@ -383,7 +442,12 @@ main(int argc, char** argv)
       }
       qp.setInputPalette(values[0]);
     }
-    rgb_out = qp.generate(n);
+
+    if (do_extend) {
+      rgb_out = qp.extend(fixed_palette, n);
+    } else {
+      rgb_out = qp.generate(n);
+    }
   } catch (const std::invalid_argument& e) {
     std::cerr << "Error: " << e.what() << std::endl;
     return 1;

@@ -571,3 +571,24 @@ TEST_CASE("CLI output ends with newline", "[cli][newline]")
   REQUIRE_FALSE(output.empty());
   REQUIRE(output.back() == '\n');
 }
+
+TEST_CASE("CLI extend option", "[cli][extend]")
+{
+  SECTION("extend existing palette")
+  {
+    auto [exit_code, output] =
+      run_cli("-n 4 -i hex \"#4daf4a\" \"#984ea3\" \"#ff7f00\" \"#ffff33\" "
+              "--extend \"#e41a1c\" \"#377eb8\"");
+    REQUIRE(exit_code == 0);
+    REQUIRE_FALSE(output.empty());
+    REQUIRE(count_hex_colors(output) == 4);
+  }
+
+  SECTION("extend with invalid hex color")
+  {
+    auto [exit_code, output] = run_cli("-n 2 -i hex --extend \"#ff0000\" "
+                                       "\"invalid\" \"#0000ff\"");
+    REQUIRE(exit_code != 0);
+    REQUIRE(output.find("Error") != std::string::npos);
+  }
+}
