@@ -334,7 +334,7 @@ Adapt to deuteranomaly (red-green colorblindness) of severity 0.8:
 ```cpp
 Qualpal qp;
 qp.setInputRGB(colors).setCvd({ { "deutan", 0.8 } });
-auto accessible_palette = qp.generate(4);
+auto accessible_palette = qp.generate(2);
 ```
 
 ![Two colors from given RGB input with deuteranomaly adaptation](docs/images/examples/lib_hex_deutan.svg)
@@ -345,8 +345,8 @@ A soothing pastel palette, generated from a HSL color space:
 
 ```cpp
 Qualpal qp;
-qp.setInputColorspace({ 20, 360 }, { 0.3, 0.7 }, { 0.7, 0.9 });
-auto pastel_palette = qp.generate(6);
+qp.setInputColorspace({ 20, 300 }, { 0.3, 0.7 }, { 0.7, 0.9 });
+auto pastel_palette = qp.generate(5);
 ```
 
 ![A palette of pastels](docs/images/examples/lib_pastels.svg)
