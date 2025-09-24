@@ -5,6 +5,7 @@ vars:
   WASM_BUILD_DIR: build/wasm
   TEST_DIR: test
   CMAKE_BUILD_FLAGS: --build {{.BUILD_DIR}} -j
+  INSTALL_PREFIX: "${HOME}/.local"
 
 interval: 500ms
 
@@ -82,7 +83,7 @@ tasks:
 
   install:
     cmds:
-      - cmake --install {{.BUILD_DIR}}
+      - cmake --install {{.BUILD_DIR}} --prefix {{.INSTALL_PREFIX}}
 
   install-cli: build-cli
     cmake --install $(BUILD_DIR) --component CLI
