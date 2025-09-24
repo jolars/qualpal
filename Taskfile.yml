@@ -88,6 +88,10 @@ tasks:
   install-cli: build-cli
     cmake --install $(BUILD_DIR) --component CLI
 
+  uninstall:
+    cmds:
+      - cmake --build {{.BUILD_DIR}} --target uninstall
+
   test:
     cmds:
       - cmake -B {{.BUILD_DIR}} -S . -DBUILD_CLI=ON -DBUILD_DOCS=OFF -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Debug -DENABLE_CLI_TESTS=ON
