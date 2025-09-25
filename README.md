@@ -3,6 +3,7 @@
 [![Build Status](https://github.com/jolars/qualpal/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/jolars/qualpal/actions/workflows/build-and-test.yml)
 [![codecov](https://codecov.io/gh/jolars/qualpal/graph/badge.svg?token=p5JTFa9BUz)](https://codecov.io/gh/jolars/qualpal)
 [![Docs](https://img.shields.io/badge/docs-stable-blue.svg?logo=readthedocs)](https://jolars.github.io/qualpal/)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17194762.svg)](https://doi.org/10.5281/zenodo.17194762)
 [![App](https://img.shields.io/badge/🌐%20%20App-qualpal.cc-blue)](https://qualpal.cc)
 
 A C++ library for generating qualitative color palettes with maximum perceptual
