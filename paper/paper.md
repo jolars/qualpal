@@ -12,7 +12,7 @@ authors:
     orcid: 0000-0002-4029-5945
     affiliation: "1"
 affiliations:
-  - name: Department of Mathematical Sciences, University of Copenhagen
+  - name: Department of Mathematical Sciences, University of Copenhagen, Denmark
     index: 1
     ror: 035b05819
 date: 15 August 2025
