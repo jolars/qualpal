@@ -80,6 +80,14 @@ Qualpal is also available as a web application at
 limited functionality compared to the library and R package, but it allows
 users to quickly generate color palettes directly in their browser.
 
+## JOSS Paper
+
+Qualpal has been [published in JOSS](https://doi.org/10.21105/joss.08936).
+You can read more about the motivation and design of qualpal in the paper.
+If you find qualpal useful in your research, please consider citing it (either
+using the DOI badge, the GitHub citation tool, or by referring directly
+to <CITATION.cff>.
+
 ## Quick Start
 
 ### Library Usage
