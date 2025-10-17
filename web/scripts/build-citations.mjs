@@ -58,7 +58,7 @@ async function generateCitations() {
   const bibliographyStyles = [
     { key: "apa", template: "apa", label: "APA" },
     { key: "vancouver", template: "vancouver", label: "Vancouver" },
-    { key: "chicago", template: "chicago-author-date", label: "Chicago" },
+    { key: "harvard", template: "harvard1", label: "Harvard" },
   ].map((s) => ({
     ...s,
     value: trimTrailing(
