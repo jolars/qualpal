@@ -4,6 +4,7 @@
 [![codecov](https://codecov.io/gh/jolars/qualpal/graph/badge.svg?token=p5JTFa9BUz)](https://codecov.io/gh/jolars/qualpal)
 [![Docs](https://img.shields.io/badge/docs-stable-blue.svg?logo=readthedocs)](https://jolars.github.io/qualpal/)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17194762.svg)](https://doi.org/10.5281/zenodo.17194762)
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/qualpalr)](https://cran.r-project.org/package=qualpalr)
 [![App](https://img.shields.io/badge/🌐%20%20App-qualpal.cc-blue)](https://qualpal.cc)
 [![DOI](https://joss.theoj.org/papers/10.21105/joss.08936/status.svg)](https://doi.org/10.21105/joss.08936)
 
