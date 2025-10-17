@@ -24,27 +24,38 @@ function parseDateParts(dateStr) {
 
 const raw = readFileSync(CFF_PATH, "utf8");
 const cff = yaml.parse(raw);
+const citation = cff["preferred-citation"] || cff;
 
 // Build minimal CSL JSON object
 const authors =
-  (cff.authors || []).map((a) => ({
+  (citation.authors || []).map((a) => ({
     given: a["given-names"] || a.given || "",
     family: a["family-names"] || a.family || "",
   })) || [];
 
+const issuedYear =
+  citation["date-published"]?.split("-")[0] ||
+  citation["date-released"]?.split("-")[0];
+
 const csl = {
-  id:
-    cff.identifiers?.[0]?.value ||
-    cff.title?.toLowerCase().replace(/\s+/g, "-") ||
-    "software",
-  type: "software",
-  title: cff.title,
-  version: cff.version,
-  URL: cff["repository-code"] || cff.url,
-  abstract: cff.abstract,
-  issued: parseDateParts(cff["date-released"]),
-  author: authors,
-  license: cff.license,
+  id: "larsson_2025_qualpal",
+  type: citation.type || "article-journal",
+  title: citation.title,
+  author: authors.map((a) => ({
+    family: a.family,
+    given: a.given,
+  })),
+  issued: parseDateParts(
+    citation["date-published"] || citation["date-released"],
+  ),
+  date: citation["date-published"] || citation["date-released"],
+  "container-title": citation.journal,
+  DOI: citation.doi,
+  ISSN: citation.issn,
+  issue: citation.issue,
+  page: citation.start ? String(citation.start) : undefined,
+  URL: citation.url,
+  volume: citation.volume,
 };
 
 async function generateCitations() {
@@ -69,15 +80,32 @@ async function generateCitations() {
   const biblatex = cite.format("biblatex");
 
   const cslYaml = yaml.stringify({
-    id: csl.id,
-    type: csl.type,
-    title: csl.title,
-    version: csl.version,
-    abstract: csl.abstract,
-    URL: csl.URL,
-    issued: csl.issued,
-    author: csl.author,
-    license: csl.license,
+    references: [
+      {
+        id: csl.id,
+        type: csl.type,
+        title: csl.title,
+        author: csl.author,
+        issued: [
+          {
+            year: issuedYear ? parseInt(issuedYear, 10) : undefined,
+            month:
+              citation["date-published"]?.split("-")[1] ||
+              citation["date-released"]?.split("-")[1],
+            day:
+              citation["date-published"]?.split("-")[2] ||
+              citation["date-released"]?.split("-")[2],
+          },
+        ],
+        "container-title": csl["container-title"],
+        DOI: csl.DOI,
+        ISSN: csl.ISSN,
+        issue: csl.issue,
+        page: csl.page,
+        URL: csl.URL,
+        volume: csl.volume,
+      },
+    ],
   });
 
   const formats = [

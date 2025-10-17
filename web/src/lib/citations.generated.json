@@ -2,41 +2,41 @@
   {
     "key": "bibtex",
     "label": "BibTeX",
-    "value": "@misc{Larsson2025qualpal,\n\tauthor = {Larsson, Johan},\n\tyear = {2025},\n\tmonth = {aug 12},\n\ttitle = {qualpal},\n\turl = {https://github.com/jolars/qualpal},\n\thowpublished = {https://github.com/jolars/qualpal},\n}",
+    "value": "@article{Larsson2025Qualpal,\n\tauthor = {Larsson, Johan},\n\tjournal = {Journal of Open Source Software},\n\tdoi = {10.21105/joss.08936},\n\tissn = {2475-9066},\n\tnumber = {114},\n\tyear = {2025},\n\tmonth = {oct 16},\n\tpages = {8936},\n\ttitle = {Qualpal: Qualitative {Color} {Palettes} for {Everyone}},\n\turl = {https://joss.theoj.org/papers/10.21105/joss.08936},\n\thowpublished = {https://joss.theoj.org/papers/10.21105/joss.08936},\n\tvolume = {10},\n}",
     "code": true
   },
   {
     "key": "biblatex",
     "label": "BibLaTeX",
-    "value": "@software{Larsson2025qualpal,\n\tauthor = {Larsson, Johan},\n\tdate = {2025-08-12},\n\ttitle = {qualpal},\n\turl = {https://github.com/jolars/qualpal},\n\tversion = {2.4.0},\n}\n\n",
+    "value": "@article{Larsson2025Qualpal,\n\tauthor = {Larsson, Johan},\n\tjournaltitle = {Journal of Open Source Software},\n\tdoi = {10.21105/joss.08936},\n\tissn = {2475-9066},\n\tnumber = {114},\n\tdate = {2025-10-16},\n\tpages = {8936},\n\ttitle = {Qualpal: Qualitative {Color} {Palettes} for {Everyone}},\n\turl = {https://joss.theoj.org/papers/10.21105/joss.08936},\n\tvolume = {10},\n}\n\n",
     "code": true
   },
   {
     "key": "csl",
     "label": "CSL YAML",
-    "value": "---\nid: qualpal\ntype: software\ntitle: qualpal\nversion: 2.4.0\nURL: https://github.com/jolars/qualpal\nissued:\n  date-parts:\n    - - 2025\n      - 8\n      - 12\nauthor:\n  - given: Johan\n    family: Larsson\nlicense: MIT\n---",
+    "value": "---\nreferences:\n  - id: larsson_2025_qualpal\n    type: article\n    title: \"Qualpal: Qualitative Color Palettes for Everyone\"\n    author:\n      - family: Larsson\n        given: Johan\n    issued:\n      - year: 2025\n        month: \"10\"\n        day: \"16\"\n    container-title: Journal of Open Source Software\n    DOI: 10.21105/joss.08936\n    ISSN: 2475-9066\n    issue: 114\n    page: \"8936\"\n    URL: https://joss.theoj.org/papers/10.21105/joss.08936\n    volume: 10\n---",
     "code": true
   },
   {
     "key": "bibliography",
     "label": "Bibliography",
-    "value": "Larsson, J. (2025). qualpal (2.4.0) [Computer software]. https://github.com/jolars/qualpal",
+    "value": "Larsson, J. (2025). Qualpal: Qualitative Color Palettes for Everyone. In Journal of Open Source Software (Vol. 10, Issue 114, p. 8936). https://doi.org/10.21105/joss.08936",
     "code": false,
     "styles": [
       {
         "key": "apa",
         "label": "APA",
-        "value": "Larsson, J. (2025). qualpal (2.4.0) [Computer software]. https://github.com/jolars/qualpal"
+        "value": "Larsson, J. (2025). Qualpal: Qualitative Color Palettes for Everyone. In Journal of Open Source Software (Vol. 10, Issue 114, p. 8936). https://doi.org/10.21105/joss.08936"
       },
       {
         "key": "vancouver",
         "label": "Vancouver",
-        "value": "1.  Larsson J. qualpal [Internet]. 2025. Available from: https://github.com/jolars/qualpal"
+        "value": "1.  Larsson J. Qualpal: Qualitative Color Palettes for Everyone [Internet]. Vol. 10, Journal of Open Source Software. 2025. p. 8936. Available from: https://joss.theoj.org/papers/10.21105/joss.08936"
       },
       {
-        "key": "chicago",
-        "label": "Chicago",
-        "value": "Larsson, J. (2025). qualpal (2.4.0) [Computer software]. https://github.com/jolars/qualpal"
+        "key": "harvard",
+        "label": "Harvard",
+        "value": "Larsson, J. (2025) “Qualpal: Qualitative Color Palettes for Everyone,” Journal of Open Source Software, p. 8936. doi:10.21105/joss.08936."
       }
     ]
   }
