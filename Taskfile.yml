@@ -118,7 +118,7 @@ tasks:
 
   build-web:
     desc: Build Svelte app for production
-    deps: [build:wasm]
+    deps: [build-wasm]
     dir: web
     cmds:
       - npm run build
@@ -133,7 +133,7 @@ tasks:
 
   clean-all:
     desc: Clean all build artifacts
-    deps: [clean, clean:wasm, clean:web]
+    deps: [clean, clean-wasm, clean-web]
     cmds:
       - echo "All build artifacts cleaned"
 
