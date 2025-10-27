@@ -54,6 +54,24 @@
         ]
       }
     ],
-    "@semantic-release/github"
+    [
+      "@semantic-release/github",
+      {
+        "assets": [
+          {
+            "path": "packages/*.deb",
+            "label": "Debian packages"
+          },
+          {
+            "path": "packages/*.rpm", 
+            "label": "RPM packages"
+          },
+          {
+            "path": "packages/*.tar.gz",
+            "label": "Source archive"
+          }
+        ]
+      }
+    ]
   ]
 }

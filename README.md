@@ -197,6 +197,54 @@ qualpal analyze --input hex "#ffe402" "#ff5733" "#33ff57" "#3357ff"
 
 ## Installation
 
+### Binary Packages (Recommended)
+
+Pre-built packages are available for major Linux distributions from [GitHub Releases](https://github.com/jolars/qualpal/releases/latest).
+
+#### Quick Install Script
+
+```bash
+# Automatic installation (detects your system)
+curl -sSL https://raw.githubusercontent.com/jolars/qualpal/main/scripts/install.sh | bash
+```
+
+#### Manual Installation
+
+**Debian/Ubuntu:**
+```bash
+# Download packages (replace with your architecture)
+# For x86_64/amd64:
+wget https://github.com/jolars/qualpal/releases/latest/download/libqualpal1_3.3.0_amd64.deb
+wget https://github.com/jolars/qualpal/releases/latest/download/qualpal_3.3.0_amd64.deb
+
+# For ARM64/aarch64:
+wget https://github.com/jolars/qualpal/releases/latest/download/libqualpal1_3.3.0_arm64.deb
+wget https://github.com/jolars/qualpal/releases/latest/download/qualpal_3.3.0_arm64.deb
+
+# Install
+sudo dpkg -i libqualpal1_*.deb qualpal_*.deb
+```
+
+**Red Hat/Fedora/SUSE:**
+```bash
+# Download packages (replace with your architecture)
+# For x86_64:
+wget https://github.com/jolars/qualpal/releases/latest/download/libqualpal1-3.3.0.x86_64.rpm
+wget https://github.com/jolars/qualpal/releases/latest/download/qualpal-3.3.0.x86_64.rpm
+
+# For ARM64/aarch64:
+wget https://github.com/jolars/qualpal/releases/latest/download/libqualpal1-3.3.0.aarch64.rpm
+wget https://github.com/jolars/qualpal/releases/latest/download/qualpal-3.3.0.aarch64.rpm
+
+# Install
+sudo rpm -i libqualpal1-*.rpm qualpal-*.rpm
+```
+
+**Development Files:**
+If you plan to develop with qualpal, also install the development package:
+- Debian/Ubuntu: `libqualpal-dev_3.3.0_{amd64,arm64}.deb`
+- Red Hat/Fedora/SUSE: `libqualpal-devel-3.3.0.{x86_64,aarch64}.rpm`
+
 ### Requirements
 
 - CMake >= 3.15
@@ -258,6 +306,19 @@ Under your chosen prefix (e.g., `$HOME/.local` or `/usr/local`):
 - `lib/cmake/qualpal/` - CMake package configuration
 - `share/doc/qualpal/LICENSE` - License file
 - `share/man/man1/qualpal.1` - Manual page
+
+### Package Types
+
+The binary packages are split into separate components:
+
+- **Runtime packages** (`libqualpal1`): Contains the shared library needed to run applications that use qualpal
+- **CLI packages** (`qualpal`): Contains the command-line interface - depends on the runtime package
+- **Development packages** (`libqualpal-dev`/`libqualpal-devel`): Contains headers, static library, and CMake files for building applications with qualpal
+
+This separation allows you to install only what you need:
+- Just want the CLI? Install runtime + CLI packages  
+- Developing with qualpal? Install all three packages
+- Deploying an application? Install just the runtime package
 
 ### Uninstall
 

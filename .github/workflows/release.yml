@@ -16,9 +16,75 @@ jobs:
       pages: write
       id-token: write
 
+  build-packages:
+    name: Build packages
+    needs: build-and-test
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            arch: amd64
+            runner: ubuntu-latest
+          - os: ubuntu-latest
+            arch: arm64
+            runner: ubuntu-24.04-arm64
+    runs-on: ${{ matrix.runner }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Install packaging dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y rpm
+
+      - name: Build packages
+        run: |
+          cmake -B build -S . -DBUILD_CLI=ON -DCMAKE_BUILD_TYPE=Release
+          cmake --build build
+          cd build && cpack -G "DEB;RPM;TGZ"
+
+      - name: Test built CLI
+        run: |
+          echo "Testing CLI functionality:"
+          ./build/qualpal --help
+          echo "CLI version check:"
+          ./build/qualpal --version || echo "No version flag available"
+
+      - name: Test DEB package installation (dry run)
+        run: |
+          echo "Testing DEB package metadata:"
+          for deb in build/*.deb; do
+            if [ -f "$deb" ]; then
+              echo "=== $(basename "$deb") ==="
+              dpkg-deb --info "$deb" | head -20
+              echo "Files:"
+              dpkg-deb --contents "$deb" | head -10
+              echo
+            fi
+          done
+
+      - name: List all generated packages
+        run: |
+          echo "All generated packages for ${{ matrix.arch }}:"
+          ls -la build/*.{deb,rpm,tar.gz} 2>/dev/null || echo "No packages found"
+
+      - name: Upload package artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: packages-${{ matrix.arch }}
+          path: |
+            build/*.deb
+            build/*.rpm
+            build/*.tar.gz
+          retention-days: 7
+
   release:
     name: Release
-    needs: build-and-test
+    needs: [build-and-test, build-packages]
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -32,6 +98,25 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
+
+      - name: Download package artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: packages-*
+          path: packages/
+          merge-multiple: true
+
+      - name: List downloaded packages
+        run: |
+          echo "Downloaded packages:"
+          find packages/ -name "*.deb" -o -name "*.rpm" -o -name "*.tar.gz" | sort
+          echo
+          echo "Package details:"
+          for f in packages/*.deb; do
+            if [ -f "$f" ]; then
+              echo "$(basename "$f"): $(dpkg-deb --field "$f" Architecture)"
+            fi
+          done
 
       - name: Semantic Release
         uses: cycjimmy/semantic-release-action@v5
