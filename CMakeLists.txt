@@ -381,7 +381,7 @@ set(CPACK_PACKAGE_VERSION ${project_version})
 set(CPACK_PACKAGE_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
 set(CPACK_PACKAGE_VERSION_MINOR ${PROJECT_VERSION_MINOR})
 set(CPACK_PACKAGE_VERSION_PATCH ${PROJECT_VERSION_PATCH})
-set(CPACK_PACKAGE_CONTACT "Johan Larsson <johan@example.com>")
+set(CPACK_PACKAGE_CONTACT "Johan Larsson <johan@jolars.co>")
 set(CPACK_PACKAGE_HOMEPAGE_URL "https://github.com/jolars/qualpal")
 
 # Resource file
