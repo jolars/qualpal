@@ -8,9 +8,13 @@ list(GET version_list 2 VERSION_PATCH)
 list(LENGTH version_list version_length)
 if(version_length GREATER 3)
     list(GET version_list 3 VERSION_TWEAK)
-    set(project_version_cmake "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}.${VERSION_TWEAK}")
+    set(project_version_cmake
+        "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}.${VERSION_TWEAK}"
+    )
 else()
-    set(project_version_cmake "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
+    set(project_version_cmake
+        "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}"
+    )
 endif()
 
 project(qualpal LANGUAGES CXX VERSION ${project_version_cmake})
@@ -376,7 +380,9 @@ install(FILES LICENSE DESTINATION ${CMAKE_INSTALL_DOCDIR})
 # Basic package information
 set(CPACK_PACKAGE_NAME "qualpal")
 set(CPACK_PACKAGE_VENDOR "Johan Larsson")
-set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Qualitative color palette generation library")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY
+    "Qualitative color palette generation library"
+)
 set(CPACK_PACKAGE_VERSION ${project_version})
 set(CPACK_PACKAGE_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
 set(CPACK_PACKAGE_VERSION_MINOR ${PROJECT_VERSION_MINOR})
@@ -392,7 +398,9 @@ set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Johan Larsson <johan@example.com>")
 set(CPACK_DEBIAN_PACKAGE_SECTION "libs")
 set(CPACK_DEBIAN_PACKAGE_PRIORITY "optional")
 set(CPACK_DEBIAN_PACKAGE_HOMEPAGE "https://github.com/jolars/qualpal")
-set(CPACK_DEBIAN_PACKAGE_DESCRIPTION "C++ library for generating qualitative color palettes with maximum perceptual distinctiveness for data visualization. It uses advanced color science algorithms to create palettes that are optimally distinguishable for human perception, including considerations for color vision deficiency.")
+set(CPACK_DEBIAN_PACKAGE_DESCRIPTION
+    "C++ library for generating qualitative color palettes with maximum perceptual distinctiveness for data visualization. It uses advanced color science algorithms to create palettes that are optimally distinguishable for human perception, including considerations for color vision deficiency."
+)
 
 # Component-based packaging for separate library and CLI packages
 set(CPACK_DEB_COMPONENT_INSTALL ON)
@@ -400,18 +408,24 @@ set(CPACK_COMPONENTS_ALL Libraries Development CLI)
 
 # Library component
 set(CPACK_COMPONENT_LIBRARIES_DISPLAY_NAME "qualpal Runtime Library")
-set(CPACK_COMPONENT_LIBRARIES_DESCRIPTION "Runtime library for qualpal color palette generation")
+set(CPACK_COMPONENT_LIBRARIES_DESCRIPTION
+    "Runtime library for qualpal color palette generation"
+)
 set(CPACK_COMPONENT_LIBRARIES_GROUP "Runtime")
 
-# Development component  
+# Development component
 set(CPACK_COMPONENT_DEVELOPMENT_DISPLAY_NAME "qualpal Development Files")
-set(CPACK_COMPONENT_DEVELOPMENT_DESCRIPTION "Header files and CMake configuration for qualpal development")
+set(CPACK_COMPONENT_DEVELOPMENT_DESCRIPTION
+    "Header files and CMake configuration for qualpal development"
+)
 set(CPACK_COMPONENT_DEVELOPMENT_GROUP "Development")
 set(CPACK_COMPONENT_DEVELOPMENT_DEPENDS Libraries)
 
 # CLI component
 set(CPACK_COMPONENT_CLI_DISPLAY_NAME "qualpal CLI Tool")
-set(CPACK_COMPONENT_CLI_DESCRIPTION "Command-line interface for qualpal color palette generation")
+set(CPACK_COMPONENT_CLI_DESCRIPTION
+    "Command-line interface for qualpal color palette generation"
+)
 set(CPACK_COMPONENT_CLI_GROUP "Applications")
 set(CPACK_COMPONENT_CLI_DEPENDS Libraries)
 
@@ -422,17 +436,23 @@ set(CPACK_DEBIAN_CLI_PACKAGE_NAME "qualpal")
 
 # Debian dependencies for each component
 set(CPACK_DEBIAN_LIBRARIES_PACKAGE_DEPENDS "libc6, libstdc++6, libgomp1")
-set(CPACK_DEBIAN_DEVELOPMENT_PACKAGE_DEPENDS "libqualpal1 (= ${project_version})")
-set(CPACK_DEBIAN_CLI_PACKAGE_DEPENDS "libqualpal1 (= ${project_version}), libc6, libstdc++6")
+set(CPACK_DEBIAN_DEVELOPMENT_PACKAGE_DEPENDS
+    "libqualpal1 (= ${project_version})"
+)
+set(CPACK_DEBIAN_CLI_PACKAGE_DEPENDS
+    "libqualpal1 (= ${project_version}), libc6, libstdc++6"
+)
 
 # Debian sections
 set(CPACK_DEBIAN_LIBRARIES_PACKAGE_SECTION "libs")
-set(CPACK_DEBIAN_DEVELOPMENT_PACKAGE_SECTION "libdevel") 
+set(CPACK_DEBIAN_DEVELOPMENT_PACKAGE_SECTION "libdevel")
 set(CPACK_DEBIAN_CLI_PACKAGE_SECTION "utils")
 
 # RPM-specific settings
 set(CPACK_RPM_PACKAGE_SUMMARY "Qualitative color palette generation library")
-set(CPACK_RPM_PACKAGE_DESCRIPTION "C++ library for generating qualitative color palettes with maximum perceptual distinctiveness for data visualization. It uses advanced color science algorithms to create palettes that are optimally distinguishable for human perception, including considerations for color vision deficiency.")
+set(CPACK_RPM_PACKAGE_DESCRIPTION
+    "C++ library for generating qualitative color palettes with maximum perceptual distinctiveness for data visualization. It uses advanced color science algorithms to create palettes that are optimally distinguishable for human perception, including considerations for color vision deficiency."
+)
 set(CPACK_RPM_PACKAGE_GROUP "Development/Libraries")
 set(CPACK_RPM_PACKAGE_LICENSE "MIT")
 set(CPACK_RPM_PACKAGE_URL "https://github.com/jolars/qualpal")
@@ -449,7 +469,9 @@ set(CPACK_RPM_CLI_PACKAGE_NAME "qualpal")
 # RPM dependencies for each component
 set(CPACK_RPM_LIBRARIES_PACKAGE_REQUIRES "glibc, libstdc++, libgomp")
 set(CPACK_RPM_DEVELOPMENT_PACKAGE_REQUIRES "libqualpal1 = ${project_version}")
-set(CPACK_RPM_CLI_PACKAGE_REQUIRES "libqualpal1 = ${project_version}, glibc, libstdc++")
+set(CPACK_RPM_CLI_PACKAGE_REQUIRES
+    "libqualpal1 = ${project_version}, glibc, libstdc++"
+)
 
 # RPM groups for each component
 set(CPACK_RPM_LIBRARIES_PACKAGE_GROUP "System Environment/Libraries")
@@ -462,9 +484,15 @@ set(CPACK_RPM_DEVELOPMENT_PACKAGE_SUMMARY "qualpal development files")
 set(CPACK_RPM_CLI_PACKAGE_SUMMARY "qualpal command-line tool")
 
 # RPM descriptions for each component
-set(CPACK_RPM_LIBRARIES_PACKAGE_DESCRIPTION "Runtime library for qualpal color palette generation")
-set(CPACK_RPM_DEVELOPMENT_PACKAGE_DESCRIPTION "Header files and CMake configuration for qualpal development")
-set(CPACK_RPM_CLI_PACKAGE_DESCRIPTION "Command-line interface for qualpal color palette generation")
+set(CPACK_RPM_LIBRARIES_PACKAGE_DESCRIPTION
+    "Runtime library for qualpal color palette generation"
+)
+set(CPACK_RPM_DEVELOPMENT_PACKAGE_DESCRIPTION
+    "Header files and CMake configuration for qualpal development"
+)
+set(CPACK_RPM_CLI_PACKAGE_DESCRIPTION
+    "Command-line interface for qualpal color palette generation"
+)
 
 # Include CPack after all configuration
 include(CPack)
