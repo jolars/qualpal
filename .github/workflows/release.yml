@@ -100,7 +100,7 @@ jobs:
           persist-credentials: false
 
       - name: Download package artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v6
         with:
           pattern: packages-*
           path: packages/
