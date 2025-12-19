@@ -1,4 +1,4 @@
-# qualpal <img src='https://raw.githubusercontent.com/jolars/qualpal/refs/heads/main/docs/images/logo.svg' align="right" width="139" />
+# qualpal <img src='https://raw.githubusercontent.com/jolars/qualpal/refs/heads/main/docs/images/logo.svg#gh-light-mode-only' align="right" width="139" />
 
 [![Build Status](https://github.com/jolars/qualpal/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/jolars/qualpal/actions/workflows/build-and-test.yml)
 [![codecov](https://codecov.io/gh/jolars/qualpal/graph/badge.svg?token=p5JTFa9BUz)](https://codecov.io/gh/jolars/qualpal)
@@ -211,6 +211,7 @@ curl -sSL https://raw.githubusercontent.com/jolars/qualpal/main/scripts/install.
 #### Manual Installation
 
 **Debian/Ubuntu:**
+
 ```bash
 # Download packages (replace with your architecture)
 # For x86_64/amd64:
@@ -226,6 +227,7 @@ sudo dpkg -i libqualpal1_*.deb qualpal_*.deb
 ```
 
 **Red Hat/Fedora/SUSE:**
+
 ```bash
 # Download packages (replace with your architecture)
 # For x86_64:
@@ -242,6 +244,7 @@ sudo rpm -i libqualpal1-*.rpm qualpal-*.rpm
 
 **Development Files:**
 If you plan to develop with qualpal, also install the development package:
+
 - Debian/Ubuntu: `libqualpal-dev_3.3.0_{amd64,arm64}.deb`
 - Red Hat/Fedora/SUSE: `libqualpal-devel-3.3.0.{x86_64,aarch64}.rpm`
 
@@ -316,7 +319,8 @@ The binary packages are split into separate components:
 - **Development packages** (`libqualpal-dev`/`libqualpal-devel`): Contains headers, static library, and CMake files for building applications with qualpal
 
 This separation allows you to install only what you need:
-- Just want the CLI? Install runtime + CLI packages  
+
+- Just want the CLI? Install runtime + CLI packages
 - Developing with qualpal? Install all three packages
 - Deploying an application? Install just the runtime package
 
