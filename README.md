@@ -1,4 +1,4 @@
-# qualpal <picture><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/jolars/qualpal/refs/heads/main/docs/images/logo.svg" align="right" width="139"> <img alt="The logo for Qualpal, which is a painting palette with five distinct colors." src="https://raw.githubusercontent.com/jolars/qualpal/refs/heads/main/docs/images/logo-dark.svg" align="right" width="139"> </picture>
+# Qualpal <picture><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/jolars/qualpal/refs/heads/main/docs/images/logo.svg" align="right" width="139"> <img alt="The logo for Qualpal, which is a painting palette with five distinct colors." src="https://raw.githubusercontent.com/jolars/qualpal/refs/heads/main/docs/images/logo-dark.svg" align="right" width="139"> </picture>
 
 [![Build Status](https://github.com/jolars/qualpal/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/jolars/qualpal/actions/workflows/build-and-test.yml)
 [![codecov](https://codecov.io/gh/jolars/qualpal/graph/badge.svg?token=p5JTFa9BUz)](https://codecov.io/gh/jolars/qualpal)
@@ -49,7 +49,7 @@ When visualizing categorical data, it is often necessary to select a set of
 distinct colors that are easily distinguishable from each other. This is
 especially important for accessibility, as many people have color vision
 deficiencies (CVD) that make it difficult to distinguish certain colors.
-qualpal aims to provide a simple and effective way to generate such color
+Qualpal aims to provide a simple and effective way to generate such color
 palettes, ensuring that the selected colors are not only distinct from each
 other, but also accessible to people with CVD.
 
@@ -61,18 +61,18 @@ means that if you want to select a subset of colors from a palette, you will
 not get the best possible result.
 
 They are also often created by a human designer, which means that they may not
-be optimized for perceptual distinctiveness. qualpal, on the other hand, uses
+be optimized for perceptual distinctiveness. Qualpal, on the other hand, uses
 state-of-the art color difference metrics and a farthest-point sampling
 algorithm to select colors that are (approximately) maximally distinct from
 each other, while also considering color vision deficiencies.
 
 ## R Package
 
-The qualpal library is also available as an R package called
+The Qualpal library is also available as an R package called
 [qualpalr](https://cran.r-project.org/package=qualpalr). This package
 is continuously updated to match the latest features of the C++ library,
 but may sometimes lag behind slightly. It provides a similar API for
-generating colors from R, making it easy to integrate qualpal into R workflows,
+generating colors from R, making it easy to integrate Qualpal into R workflows,
 
 ## Web App
 
