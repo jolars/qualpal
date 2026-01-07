@@ -1,5 +1,20 @@
 # Changelog
 
+## [3.4.0](https://github.com/jolars/qualpal/compare/v3.3.0...v3.4.0) (2026-01-07)
+
+### Features
+
+* add `ENABLE_OPENMP` flag for cmake ([980e449](https://github.com/jolars/qualpal/commit/980e4492b85039b51e1e959a483ba4b4c29ceb06))
+* add deb and rpm packages to releases ([813d0ac](https://github.com/jolars/qualpal/commit/813d0ac93a93c4d6817dbb15bbeb10033f4ae28e))
+
+### Bug Fixes
+
+* correctly move MSVC compile definition after target ([d125399](https://github.com/jolars/qualpal/commit/d125399e5f3c632ed90cec472299398804d9a0f7))
+* remove duplicate `message` entry in citation file ([b55c867](https://github.com/jolars/qualpal/commit/b55c86730495aee8b8fc8ef8ea781b23f2ef3d7c))
+* set math defines for msvc builds ([768c41d](https://github.com/jolars/qualpal/commit/768c41d472cbce4f0745b2a71f18485780b4f775))
+* use `add_compile_definitions` for MSVC ([2e05e82](https://github.com/jolars/qualpal/commit/2e05e82b8ccbf5d0155d86de9ec4f929478d6d20))
+* **web:** replace chicago style with harvard ([46bfddc](https://github.com/jolars/qualpal/commit/46bfddc166a3f6565d1106772e2d3e73b0903154))
+
 ## [3.3.0](https://github.com/jolars/qualpal/compare/v3.2.0...v3.3.0) (2025-09-24)
 
 ### Features
