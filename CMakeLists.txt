@@ -50,6 +50,10 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
     add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
+if(MSVC)
+    target_compile_definitions(qualpal PRIVATE _USE_MATH_DEFINES)
+endif()
+
 configure_package_config_file(
     "${CMAKE_CURRENT_SOURCE_DIR}/qualpal-config.cmake.in"
     "${CMAKE_CURRENT_BINARY_DIR}/qualpal-config.cmake"
