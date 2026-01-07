@@ -57,10 +57,10 @@ jobs:
         run: cmake -B build -S . -DBUILD_CLI=ON -DBUILD_TESTING=ON ${{ matrix.compiler == 'mingw' && '-G "MinGW Makefiles" -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-mingw-dynamic' || matrix.compiler == 'msvc' && '-DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows' || '' }}
 
       - name: Build
-        run: cmake --build build
+        run: cmake --build build ${{ matrix.compiler == 'msvc' && '--config Release' || '' }}
 
       - name: Install
-        run: ${{ runner.os == 'Windows' && 'cmake --install build' || 'sudo cmake --install build' }}
+        run: ${{ matrix.compiler == 'msvc' && 'cmake --install build --config Release' || runner.os == 'Windows' && 'cmake --install build' || 'sudo cmake --install build' }}
 
       - name: Test
         run: ctest --test-dir build --output-on-failure
