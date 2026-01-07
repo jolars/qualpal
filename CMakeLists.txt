@@ -27,6 +27,7 @@ option(DAP_DEBUG "Interactive debugging" OFF)
 option(ENABLE_COVERAGE "Generate coverage report" OFF)
 option(ENABLE_CLI_TESTS "Enable CLI tests" ON)
 option(ENABLE_SANITIZER "Enable address/undefined sanitizers" OFF)
+option(ENABLE_OPENMP "Enable OpenMP parallelization" ON)
 
 include(FetchContent)
 include(CTest)
@@ -75,11 +76,14 @@ install(
     COMPONENT Development
 )
 
-find_package(OpenMP)
-
-if(OpenMP_FOUND)
-    message(STATUS "OpenMP found: ${OpenMP_CXX_FLAGS}")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+if(ENABLE_OPENMP AND NOT MSVC)
+    find_package(OpenMP)
+    if(OpenMP_FOUND)
+        message(STATUS "OpenMP found: ${OpenMP_CXX_FLAGS}")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+    endif()
+elseif(MSVC)
+    message(STATUS "OpenMP disabled for MSVC builds")
 endif()
 
 add_subdirectory(src)
