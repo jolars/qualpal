@@ -179,12 +179,12 @@ if(BUILD_CLI)
 endif()
 
 if(BUILD_TESTING)
-    find_package(Catch2 3.6 QUIET)
+    find_package(Catch2 3.12 QUIET)
     if(NOT Catch2_FOUND)
         FetchContent_Declare(
             Catch2
             GIT_REPOSITORY https://github.com/catchorg/Catch2.git
-            GIT_TAG v3.6.0
+            GIT_TAG v3.12.0
         )
         FetchContent_MakeAvailable(Catch2)
     endif()
