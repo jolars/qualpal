@@ -127,13 +127,13 @@ install(
 )
 
 if(BUILD_CLI)
-    find_package(CLI11 2.4 QUIET)
+    find_package(CLI11 2.6 QUIET)
     if(NOT CLI11_FOUND)
         include(FetchContent)
         FetchContent_Declare(
             CLI11
             GIT_REPOSITORY https://github.com/CLIUtils/CLI11.git
-            GIT_TAG v2.4.2
+            GIT_TAG v2.6.1
             GIT_SHALLOW TRUE
         )
         FetchContent_MakeAvailable(CLI11)
