@@ -257,8 +257,7 @@ if(BUILD_DOCS)
     find_package(Doxygen REQUIRED)
 
     string(
-        CONCAT
-        AWESOME_CSS_URL
+        CONCAT AWESOME_CSS_URL
         "https://github.com/jothepro/"
         "doxygen-awesome-css/archive/refs/heads/main.zip"
     )
