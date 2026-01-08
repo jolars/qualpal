@@ -117,6 +117,8 @@ colorDifferenceMatrix(const std::vector<ColorType>& colors,
  * CIE76).
  * @param max_memory Maximum memory (in GB) allowed for the matrix
  * (default: 1.0).
+ * @param white_point Reference white point for XYZ to Lab/DIN99d conversions
+ * (default: D65).
  * @return Matrix<double> Symmetric matrix of pairwise color differences [size:
  * n x n].
  * @throws std::invalid_argument if the metric type is unsupported or input is
@@ -126,8 +128,10 @@ colorDifferenceMatrix(const std::vector<ColorType>& colors,
  * @see metrics::MetricType
  */
 Matrix<double>
-colorDifferenceMatrix(const std::vector<colors::XYZ>& colors,
-                      const metrics::MetricType& metric_type,
-                      const double max_memory = 1);
+colorDifferenceMatrix(
+  const std::vector<colors::XYZ>& colors,
+  const metrics::MetricType& metric_type,
+  const double max_memory = 1,
+  const std::array<double, 3>& white_point = { 0.95047, 1, 1.08883 });
 
 } // namespace qualpal

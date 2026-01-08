@@ -15,6 +15,7 @@
  *   .setCvd({{"protan", 0.5}, {"deuter", 0.2}})
  *   .setBackground("#ffffff")
  *   .setMetric(qualpal::metrics::MetricType::DIN99d)
+ *   .setWhitePoint(qualpal::WhitePoint::D50)  // Optional: D50 for printing
  *   .setMemoryLimit(2.0);
  * auto palette = qp.generate(6);
  *
@@ -166,6 +167,20 @@ public:
   Qualpal& setColorspaceSize(std::size_t n_points);
 
   /**
+   * @brief Set the reference white point for color conversions.
+   * @param wp White point enum value (D65, D50, D55, A, or E).
+   * @return Reference to this object for chaining.
+   */
+  Qualpal& setWhitePoint(WhitePoint wp);
+
+  /**
+   * @brief Set the reference white point using custom XYZ values.
+   * @param white_point Custom XYZ tristimulus values for the white point.
+   * @return Reference to this object for chaining.
+   */
+  Qualpal& setWhitePoint(const std::array<double, 3>& white_point);
+
+  /**
    * @brief Generate a qualitative color palette with the configured options.
    * @param n Number of colors to generate.
    * @return Vector of n selected RGB colors, each channel in [0, 1].
@@ -218,6 +233,7 @@ private:
   metrics::MetricType metric = metrics::MetricType::CIEDE2000;
   double max_memory = 1;
   ColorspaceType colorspace_input = ColorspaceType::HSL;
+  std::array<double, 3> white_point = { 0.95047, 1, 1.08883 }; // D65
 };
 
 } // namespace qualpal

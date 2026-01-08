@@ -137,6 +137,20 @@ Qualpal::setColorspaceSize(std::size_t n_points)
   return *this;
 }
 
+Qualpal&
+Qualpal::setWhitePoint(WhitePoint wp)
+{
+  this->white_point = whitePointToXYZ(wp);
+  return *this;
+}
+
+Qualpal&
+Qualpal::setWhitePoint(const std::array<double, 3>& white_point)
+{
+  this->white_point = white_point;
+  return *this;
+}
+
 std::vector<colors::RGB>
 Qualpal::selectColors(std::size_t n,
                       const std::vector<colors::RGB>& fixed_palette)
@@ -230,7 +244,8 @@ Qualpal::selectColors(std::size_t n,
   }
 
   // Select new colors
-  auto ind = farthestPoints(n, xyz_colors, metric, has_bg, n_fixed, max_memory);
+  auto ind = farthestPoints(
+    n, xyz_colors, metric, has_bg, n_fixed, max_memory, white_point);
 
   // Output: fixed_palette + selected new colors
   std::vector<colors::RGB> result;

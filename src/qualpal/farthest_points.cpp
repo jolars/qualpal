@@ -11,10 +11,11 @@ farthestPoints(const std::size_t n,
                const metrics::MetricType& metric_type,
                const bool has_bg,
                const std::size_t n_fixed,
-               const double max_memory)
+               const double max_memory,
+               const std::array<double, 3>& white_point)
 {
   Matrix<double> dist_mat =
-    colorDifferenceMatrix(colors, metric_type, max_memory);
+    colorDifferenceMatrix(colors, metric_type, max_memory, white_point);
 
   const std::size_t n_candidates = colors.size() - n_fixed - (has_bg ? 1 : 0);
   const std::size_t n_colors = colors.size();
