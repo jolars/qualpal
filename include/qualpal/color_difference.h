@@ -128,10 +128,11 @@ colorDifferenceMatrix(const std::vector<ColorType>& colors,
  * @see metrics::MetricType
  */
 Matrix<double>
-colorDifferenceMatrix(
-  const std::vector<colors::XYZ>& colors,
-  const metrics::MetricType& metric_type,
-  const double max_memory = 1,
-  const std::array<double, 3>& white_point = { 0.95047, 1, 1.08883 });
+colorDifferenceMatrix(const std::vector<colors::XYZ>& colors,
+                      const metrics::MetricType& metric_type,
+                      const double max_memory = 1,
+                      const std::array<double, 3>& white_point = { 0.95047,
+                                                                   1,
+                                                                   1.08883 });
 
 } // namespace qualpal
