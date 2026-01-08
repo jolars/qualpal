@@ -76,9 +76,8 @@ install(
     COMPONENT Development
 )
 
-set(OpenMP_RUNTIME_MSVC "experimental")
-
 if(ENABLE_OPENMP)
+    set(OpenMP_RUNTIME_MSVC "experimental")
     find_package(OpenMP)
     if(OpenMP_FOUND)
         message(STATUS "OpenMP found: ${OpenMP_CXX_FLAGS}")
