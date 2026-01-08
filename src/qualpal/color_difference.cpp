@@ -1,6 +1,6 @@
-#include "qualpal/metrics.h"
 #include <qualpal/color_difference.h>
 #include <qualpal/matrix.h>
+#include <qualpal/metrics.h>
 
 namespace qualpal {
 
