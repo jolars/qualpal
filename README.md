@@ -17,9 +17,13 @@ difference metrics.
 Full documentation is available at
 [https://jolars.github.io/qualpal/](https://jolars.github.io/qualpal/).
 
-This library is also available as an R package called
-[qualpalr](https://cran.r-project.org/package=qualpalr), and as a web
-application at [qualpal.cc](https://qualpal.cc).
+This library is also available as
+
+- an R package called
+  [qualpalr](https://cran.r-project.org/package=qualpalr),
+- as a python package called [qualpal](https://pypi.org/project/qualpal/),
+- and as a web
+  application at [qualpal.cc](https://qualpal.cc).
 
 ## Features
 
