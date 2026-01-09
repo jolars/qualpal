@@ -43,12 +43,10 @@ tasks:
     cmds:
       - echo "Building WebAssembly version..."
       - rm -rf {{.WASM_BUILD_DIR}}
-      - mkdir -p ~/.emscripten_cache
       - mkdir -p {{.WASM_BUILD_DIR}}
-      - export EM_CACHE=~/.emscripten_cache && emcmake cmake -B {{.WASM_BUILD_DIR}} -S . -DBUILD_WASM=ON -DCMAKE_BUILD_TYPE=Release
-      - export EM_CACHE=~/.emscripten_cache && emmake make -C {{.WASM_BUILD_DIR}} qualpal_wasm
-      - cp {{.BUILD_DIR}}/qualpal_wasm.* web/static/ 2>/dev/null || cp {{.BUILD_DIR}}/qualpal_wasm.* web/public/ 2>/dev/null || echo "Copy WASM files to web directory manually"
-      - echo "✓ WebAssembly build complete! Files in {{.BUILD_DIR}}/wasm/ and copied to web/"
+      - emcmake cmake -B {{.WASM_BUILD_DIR}} -S . -DBUILD_WASM=ON -DCMAKE_BUILD_TYPE=Release
+      - emmake make -C {{.WASM_BUILD_DIR}} qualpal_wasm
+      - echo "✓ WebAssembly build complete! Files in {{.WASM_BUILD_DIR}}/wasm/"
 
   plots:
     desc: Generate documentation plots using gnuplot
@@ -133,7 +131,7 @@ tasks:
 
   clean-all:
     desc: Clean all build artifacts
-    deps: [clean, clean-wasm, clean-web]
+    deps: [clean, clean-web]
     cmds:
       - echo "All build artifacts cleaned"
 
