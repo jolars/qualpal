@@ -24,6 +24,14 @@
  * qp4.setInputColorspace({0, 360}, {0.5, 1.0}, {0.3, 0.7});
  * auto palette4 = qp4.generate(8);
  *
+ * // Use multiple colorspace regions (warm and cool colors only)
+ * qualpal::Qualpal qp5;
+ * qp5.setInputColorspaceRegions({
+ *   {{0, 60}, {0.5, 1.0}, {0.3, 0.7}},      // Warm: reds/oranges
+ *   {{180, 240}, {0.5, 1.0}, {0.3, 0.7}}    // Cool: cyans/blues
+ * }, qualpal::ColorspaceType::HSL);
+ * auto palette5 = qp5.generate(8);
+ *
  * // Using hex color input
  * qualpal::Qualpal qp2;
  * qp2.setInputHex({"#ff0000", "#00ff00", "#0000ff"});
@@ -65,6 +73,22 @@ enum class ColorspaceType
 {
   HSL,
   LCHab
+};
+
+/**
+ * @struct ColorspaceRegion
+ * @brief Defines a rectangular region in a cylindrical color space
+ *
+ * This struct represents a 3D rectangular subset of a cylindrical color space
+ * (HSL or LCHab). Multiple regions can be combined to sample from arbitrary
+ * unions of subsets within the same color space. Regions may overlap, which
+ * will result in higher sampling density in overlapping areas.
+ */
+struct ColorspaceRegion
+{
+  std::array<double, 2> h_lim;      ///< Hue range in degrees [-360, 360]
+  std::array<double, 2> s_or_c_lim; ///< Saturation/Chroma range
+  std::array<double, 2> l_lim;      ///< Lightness range
 };
 
 /**
@@ -123,6 +147,29 @@ public:
                               const std::array<double, 2>& s_or_c_lim,
                               const std::array<double, 2>& l_lim,
                               ColorspaceType space = ColorspaceType::HSL);
+
+  /**
+   * @brief Set input colors by sampling multiple regions in a colorspace.
+   * @param regions Vector of colorspace regions to sample from. Regions may
+   * overlap, which will increase sampling density in overlapping areas.
+   * @param space Colorspace type (HSL or LCHab)
+   * @return Reference to this object for chaining.
+   * @throws std::invalid_argument if regions is empty or any region has
+   * invalid ranges.
+   *
+   * @code{.cpp}
+   * // Sample from warm and cool colors only
+   * qualpal::Qualpal qp;
+   * qp.setInputColorspaceRegions({
+   *   {{0, 60}, {0.5, 1.0}, {0.3, 0.7}},    // Reds/oranges
+   *   {{180, 240}, {0.5, 1.0}, {0.3, 0.7}}  // Cyans/blues
+   * }, qualpal::ColorspaceType::HSL);
+   * auto palette = qp.generate(8);
+   * @endcode
+   */
+  Qualpal& setInputColorspaceRegions(
+    const std::vector<ColorspaceRegion>& regions,
+    ColorspaceType space = ColorspaceType::HSL);
 
   /**
    * @brief Set color vision deficiency simulation parameters.
@@ -211,9 +258,7 @@ private:
 
   std::string palette;
 
-  std::array<double, 2> h_lim = { 0, 360 };
-  std::array<double, 2> s_or_c_lim = { 0, 1 };
-  std::array<double, 2> l_lim = { 0, 1 };
+  std::vector<ColorspaceRegion> colorspace_regions;
   std::size_t n_points = 1000;
 
   /**

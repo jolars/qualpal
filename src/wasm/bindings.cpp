@@ -59,6 +59,30 @@ public:
     qp.setInputColorspace({ h_min, h_max }, { s_min, s_max }, { l_min, l_max });
   }
 
+  void setInputColorspaceRegions(const val& regions_array,
+                                 const std::string& space_type)
+  {
+    std::vector<qualpal::ColorspaceRegion> regions;
+    int length = regions_array["length"].as<int>();
+
+    for (int i = 0; i < length; ++i) {
+      val region = regions_array[i];
+      qualpal::ColorspaceRegion r;
+      r.h_lim = { region["h_min"].as<double>(), region["h_max"].as<double>() };
+      r.s_or_c_lim = { region["s_or_c_min"].as<double>(),
+                       region["s_or_c_max"].as<double>() };
+      r.l_lim = { region["l_min"].as<double>(), region["l_max"].as<double>() };
+      regions.push_back(r);
+    }
+
+    qualpal::ColorspaceType space = qualpal::ColorspaceType::HSL;
+    if (space_type == "LCHab") {
+      space = qualpal::ColorspaceType::LCHab;
+    }
+
+    qp.setInputColorspaceRegions(regions, space);
+  }
+
   void setCvd(const val& cvd_obj)
   {
     std::map<std::string, double> cvd_params;
@@ -260,6 +284,8 @@ EMSCRIPTEN_BINDINGS(qualpal)
     .function("setInputHex", &QualpalJS::setInputHex)
     .function("setInputPalette", &QualpalJS::setInputPalette)
     .function("setInputColorspace", &QualpalJS::setInputColorspace)
+    .function("setInputColorspaceRegions",
+              &QualpalJS::setInputColorspaceRegions)
     .function("setCvd", &QualpalJS::setCvd)
     .function("setBackground", &QualpalJS::setBackground)
     .function("generate", &QualpalJS::generate)

@@ -3,12 +3,24 @@ import { setQualpalModule, simulateColor, cvdSimulation } from "./cvdStore.js";
 
 export const paletteParams = writable({
   numColors: 5,
+  // Legacy single region params (kept for backward compatibility)
   hueMin: 170,
   hueMax: 60,
   satMin: 0.0,
   satMax: 0.7,
   lightMin: 0.2,
   lightMax: 0.8,
+  // New multi-region support
+  colorspaceRegions: [
+    {
+      hueMin: 170,
+      hueMax: 60,
+      satMin: 0.0,
+      satMax: 0.7,
+      lightMin: 0.2,
+      lightMax: 0.8,
+    },
+  ],
   useBackground: false,
   backgroundColor: "#ffffff",
   inputMode: "colorspace", // 'colorspace' | 'fixed'
@@ -221,19 +233,40 @@ export async function generatePalette(params) {
         );
       }
     } else {
-      let normalizedHueMin = params.hueMin;
-      let normalizedHueMax = params.hueMax;
-      if (params.hueMin > params.hueMax) {
-        normalizedHueMin = params.hueMin - 360;
+      // Use multi-region API
+      const regions = (params.colorspaceRegions || []).map((region) => {
+        let normalizedHueMin = region.hueMin;
+        if (region.hueMin > region.hueMax) {
+          normalizedHueMin = region.hueMin - 360;
+        }
+        return {
+          h_min: normalizedHueMin,
+          h_max: region.hueMax,
+          s_or_c_min: region.satMin,
+          s_or_c_max: region.satMax,
+          l_min: region.lightMin,
+          l_max: region.lightMax,
+        };
+      });
+
+      if (regions.length > 0) {
+        qp.setInputColorspaceRegions(regions, "HSL");
+      } else {
+        // Fallback to legacy single region
+        let normalizedHueMin = params.hueMin;
+        let normalizedHueMax = params.hueMax;
+        if (params.hueMin > params.hueMax) {
+          normalizedHueMin = params.hueMin - 360;
+        }
+        qp.setInputColorspace(
+          normalizedHueMin,
+          normalizedHueMax,
+          params.satMin,
+          params.satMax,
+          params.lightMin,
+          params.lightMax,
+        );
       }
-      qp.setInputColorspace(
-        normalizedHueMin,
-        normalizedHueMax,
-        params.satMin,
-        params.satMax,
-        params.lightMin,
-        params.lightMax,
-      );
     }
 
     if (params.useBackground) {

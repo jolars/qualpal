@@ -359,3 +359,166 @@ TEST_CASE("Qualpal::extend - Regression test with fixed seed")
     REQUIRE_THAT(extended_palette[2].b(), WithinAbs(0.72568256790123464, 1e-5));
   }
 }
+
+TEST_CASE("Multiple colorspace regions work", "[colorspace-regions]")
+{
+  using namespace qualpal::colors;
+  const double eps = 1e-6;
+
+  SECTION("Two disjoint regions in HSL")
+  {
+    // Warm colors (reds/oranges) and cool colors (blues/cyans)
+    auto result =
+      qualpal::Qualpal{}
+        .setInputColorspaceRegions({
+                                     { { 0, 60 }, { 0.5, 1.0 }, { 0.3, 0.7 } },
+                                     { { 180, 240 }, { 0.5, 1.0 }, { 0.3, 0.7 } },
+                                   },
+                                   qualpal::ColorspaceType::HSL)
+        .generate(6);
+
+    REQUIRE(result.size() == 6);
+
+    // All colors should be in the specified ranges
+    for (const auto& color : result) {
+      HSL hsl = color;
+      bool in_warm = (hsl.h() >= 0 - eps && hsl.h() <= 60 + eps);
+      bool in_cool = (hsl.h() >= 180 - eps && hsl.h() <= 240 + eps);
+      REQUIRE((in_warm || in_cool));
+      REQUIRE(hsl.s() >= 0.5 - eps);
+      REQUIRE(hsl.s() <= 1.0 + eps);
+      REQUIRE(hsl.l() >= 0.3 - eps);
+      REQUIRE(hsl.l() <= 0.7 + eps);
+    }
+  }
+
+  SECTION("Three regions with different lightness")
+  {
+    // Dark, medium, and light colors
+    auto result =
+      qualpal::Qualpal{}
+        .setInputColorspaceRegions({
+                                     { { 0, 360 }, { 0.6, 1.0 }, { 0.1, 0.3 } },
+                                     { { 0, 360 }, { 0.6, 1.0 }, { 0.4, 0.6 } },
+                                     { { 0, 360 }, { 0.6, 1.0 }, { 0.7, 0.9 } },
+                                   },
+                                   qualpal::ColorspaceType::HSL)
+        .generate(9);
+
+    REQUIRE(result.size() == 9);
+
+    for (const auto& color : result) {
+      HSL hsl = color;
+      bool in_dark = (hsl.l() >= 0.1 - eps && hsl.l() <= 0.3 + eps);
+      bool in_medium = (hsl.l() >= 0.4 - eps && hsl.l() <= 0.6 + eps);
+      bool in_light = (hsl.l() >= 0.7 - eps && hsl.l() <= 0.9 + eps);
+      REQUIRE((in_dark || in_medium || in_light));
+    }
+  }
+
+  SECTION("Overlapping regions in LCHab")
+  {
+    // Two overlapping regions to emphasize certain hue range
+    auto result =
+      qualpal::Qualpal{}
+        .setInputColorspaceRegions({
+                                     { { 0, 120 }, { 30, 60 }, { 40, 70 } },
+                                     { { 60, 180 }, { 30, 60 }, { 40, 70 } },
+                                   },
+                                   qualpal::ColorspaceType::LCHab)
+        .generate(5);
+
+    REQUIRE(result.size() == 5);
+
+    // All colors should be within the union of the regions
+    for (const auto& color : result) {
+      LCHab lch = color;
+      REQUIRE(lch.h() >= 0 - eps);
+      REQUIRE(lch.h() <= 180 + eps);
+      REQUIRE(lch.c() >= 30 - eps);
+      REQUIRE(lch.c() <= 60 + eps);
+      REQUIRE(lch.l() >= 40 - eps);
+      REQUIRE(lch.l() <= 70 + eps);
+    }
+  }
+
+  SECTION("Single region via setInputColorspaceRegions")
+  {
+    // Should work the same as setInputColorspace
+    auto result =
+      qualpal::Qualpal{}
+        .setInputColorspaceRegions({
+                                     { { 0, 360 }, { 0.3, 0.8 }, { 0.4, 0.9 } },
+                                   },
+                                   qualpal::ColorspaceType::HSL)
+        .generate(5);
+
+    REQUIRE(result.size() == 5);
+
+    for (const auto& color : result) {
+      HSL hsl = color;
+      REQUIRE(hsl.s() >= 0.3 - eps);
+      REQUIRE(hsl.s() <= 0.8 + eps);
+      REQUIRE(hsl.l() >= 0.4 - eps);
+      REQUIRE(hsl.l() <= 0.9 + eps);
+    }
+  }
+
+  SECTION("Empty regions vector throws")
+  {
+    qualpal::Qualpal qp;
+    REQUIRE_THROWS_AS(qp.setInputColorspaceRegions(
+                        {}, qualpal::ColorspaceType::HSL),
+                      std::invalid_argument);
+  }
+
+  SECTION("Invalid ranges in region throw")
+  {
+    qualpal::Qualpal qp;
+    // Saturation out of range for HSL
+    REQUIRE_THROWS_AS(
+      qp.setInputColorspaceRegions({
+                                     { { 0, 360 }, { -0.1, 0.8 }, { 0.4, 0.9 } },
+                                   },
+                                   qualpal::ColorspaceType::HSL),
+      std::invalid_argument);
+  }
+}
+
+TEST_CASE("setInputColorspace delegates to setInputColorspaceRegions",
+          "[colorspace-regions]")
+{
+  using namespace qualpal::colors;
+  const double eps = 1e-6;
+
+  // Both methods should produce the same result
+  auto result1 = qualpal::Qualpal{}
+                   .setInputColorspace({ 0, 180 }, { 0.5, 1.0 }, { 0.3, 0.7 })
+                   .setColorspaceSize(500)
+                   .generate(5);
+
+  auto result2 =
+    qualpal::Qualpal{}
+      .setInputColorspaceRegions({
+                                   { { 0, 180 }, { 0.5, 1.0 }, { 0.3, 0.7 } },
+                                 },
+                                 qualpal::ColorspaceType::HSL)
+      .setColorspaceSize(500)
+      .generate(5);
+
+  REQUIRE(result1.size() == 5);
+  REQUIRE(result2.size() == 5);
+
+  // Both should respect the same constraints
+  for (const auto& color : result1) {
+    HSL hsl = color;
+    REQUIRE(hsl.h() >= 0 - eps);
+    REQUIRE(hsl.h() <= 180 + eps);
+  }
+
+  for (const auto& color : result2) {
+    HSL hsl = color;
+    REQUIRE(hsl.h() >= 0 - eps);
+    REQUIRE(hsl.h() <= 180 + eps);
+  }
+}

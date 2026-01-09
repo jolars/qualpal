@@ -1,7 +1,5 @@
 <script lang="ts">
-  import HueWheel from "./params/HueWheel.svelte";
-  import LightnessSlider from "./params/LightnessSlider.svelte";
-  import SaturationSlider from "./params/SaturationSlider.svelte";
+  import CollapsibleRegion from "./params/CollapsibleRegion.svelte";
   import ExtendPalette from "./params/ExtendPalette.svelte";
   import Accordion from "./ui/Accordion.svelte";
   import LoadingSpinner from "./LoadingSpinner.svelte";
@@ -95,6 +93,47 @@
   let cvdOpen = $state<boolean>(false);
   let backgroundOpen = $state<boolean>(false);
   let extendOpen = $state<boolean>(false);
+  let expandedRegion = $state<number>(0); // Track which region is expanded
+
+  function addRegion() {
+    const newRegion = {
+      hueMin: 0,
+      hueMax: 360,
+      satMin: 0.0,
+      satMax: 1.0,
+      lightMin: 0.0,
+      lightMax: 1.0,
+    };
+    $paletteParams.colorspaceRegions = [
+      ...$paletteParams.colorspaceRegions,
+      newRegion,
+    ];
+    expandedRegion = $paletteParams.colorspaceRegions.length - 1; // Expand new region
+    debouncedGenerate($paletteParams);
+  }
+
+  function removeRegion(index: number) {
+    if ($paletteParams.colorspaceRegions.length <= 1) return;
+    $paletteParams.colorspaceRegions = $paletteParams.colorspaceRegions.filter(
+      (_, i) => i !== index,
+    );
+    if (expandedRegion >= $paletteParams.colorspaceRegions.length) {
+      expandedRegion = $paletteParams.colorspaceRegions.length - 1;
+    }
+    debouncedGenerate($paletteParams);
+  }
+
+  function updateRegion(index: number, updates: any) {
+    $paletteParams.colorspaceRegions[index] = {
+      ...$paletteParams.colorspaceRegions[index],
+      ...updates,
+    };
+    debouncedGenerate($paletteParams);
+  }
+
+  function toggleRegion(index: number) {
+    expandedRegion = expandedRegion === index ? -1 : index;
+  }
 </script>
 
 <aside class="w-full sm:w-72 bg-gray-100 p-3 md:border-r md:border-gray-200">
@@ -279,41 +318,33 @@
           {/if}
 
           {#if $paletteParams.inputMode === "colorspace"}
-            <!-- Hue -->
-            <h3 class="font-medium text-gray-900 mb-3">Hue</h3>
-            <HueWheel
-              hueMin={$paletteParams.hueMin}
-              hueMax={$paletteParams.hueMax}
-              onChange={({ hueMin, hueMax }) => {
-                $paletteParams.hueMin = hueMin;
-                $paletteParams.hueMax = hueMax;
-                debouncedGenerate();
-              }}
-            />
+            <!-- Multi-Region Editor -->
+            <div class="space-y-2">
+              <div class="flex justify-between items-center mb-2">
+                <h3 class="font-medium text-gray-900 text-sm">
+                  Colorspace Regions
+                </h3>
+                <button
+                  onclick={addRegion}
+                  class="text-xs px-2 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+                  title="Add another region"
+                >
+                  + Add
+                </button>
+              </div>
 
-            <!-- Saturation -->
-            <h3 class="font-medium text-gray-900 mb-3 mt-5">Saturation</h3>
-            <SaturationSlider
-              satMin={$paletteParams.satMin}
-              satMax={$paletteParams.satMax}
-              onChange={({ satMin, satMax }) => {
-                $paletteParams.satMin = satMin;
-                $paletteParams.satMax = satMax;
-                debouncedGenerate();
-              }}
-            />
-
-            <!-- Lightness -->
-            <h3 class="font-medium text-gray-900 mb-3 mt-5">Lightness</h3>
-            <LightnessSlider
-              lightMin={$paletteParams.lightMin}
-              lightMax={$paletteParams.lightMax}
-              onChange={({ lightMin, lightMax }) => {
-                $paletteParams.lightMin = lightMin;
-                $paletteParams.lightMax = lightMax;
-                debouncedGenerate();
-              }}
-            />
+              {#each $paletteParams.colorspaceRegions as region, i}
+                <CollapsibleRegion
+                  {region}
+                  index={i}
+                  isOpen={expandedRegion === i}
+                  canRemove={$paletteParams.colorspaceRegions.length > 1}
+                  onToggle={() => toggleRegion(i)}
+                  onRemove={() => removeRegion(i)}
+                  onChange={(updates) => updateRegion(i, updates)}
+                />
+              {/each}
+            </div>
           {/if}
         </Accordion>
 

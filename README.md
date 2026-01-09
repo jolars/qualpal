@@ -111,6 +111,18 @@ auto colorspace_pal = qp.generate(5);
 
 ![Five colors from the HSL color space](docs/images/examples/hsl_pal.svg)
 
+Generate colors from multiple colorspace regions (e.g., warm and cool colors only):
+
+```cpp
+qp.setInputColorspaceRegions(
+  {
+    { { 0, 60 }, { 0.5, 1.0 }, { 0.3, 0.7 } },   // Warm: reds/oranges/yellows
+    { { 180, 240 }, { 0.5, 1.0 }, { 0.3, 0.7 } } // Cool: cyans/blues
+  },
+  ColorspaceType::HSL);
+auto multi_region_pal = qp.generate(8);
+```
+
 Select 2 colors from given RGB values:
 
 ```cpp
