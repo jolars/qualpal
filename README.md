@@ -23,12 +23,12 @@ application at [qualpal.cc](https://qualpal.cc).
 
 ## Features
 
-- **Automatic selection of color palettes using perceptual color difference metrics**
-- **Color vision deficiency simulation** for accessible palette design
-- **Multiple input formats**: RGB values, hex strings, HSL ranges, built-in palettes
-- **Fast algorithms** for large color spaces
-- **Builder-style C++ API** for flexible palette configuration
-- **Web-Based Interface** for simple and interactive color palette generation
+- Automatic selection of color palettes using perceptual color difference metrics
+- Color vision deficiency simulation for accessible palette design
+- Multiple input formats: RGB values, hex strings, HSL ranges, built-in palettes
+- Fast algorithms for large color spaces
+- Builder-style C++ API for flexible palette configuration
+- Web-Based Interface for simple and interactive color palette generation
 
 ## Table of Contents
 
