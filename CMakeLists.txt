@@ -331,7 +331,7 @@ if(BUILD_WASM)
             -sEXPORT_NAME=createQualpalModule
             -sALLOW_MEMORY_GROWTH=1
             -sDISABLE_EXCEPTION_CATCHING=0
-            --bind
+            -lembind
     )
 
     set_target_properties(
