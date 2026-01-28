@@ -92,6 +92,7 @@
   let inputOpen = $state<boolean>(true);
   let cvdOpen = $state<boolean>(false);
   let backgroundOpen = $state<boolean>(false);
+  let whitePointOpen = $state<boolean>(false);
   let extendOpen = $state<boolean>(false);
   let expandedRegion = $state<number>(0); // Track which region is expanded
 
@@ -386,6 +387,37 @@
               >
             </label>
           </div>
+        </Accordion>
+
+        <!-- White Point -->
+        <Accordion
+          open={whitePointOpen}
+          onToggle={() => (whitePointOpen = !whitePointOpen)}
+          label="White Point"
+        >
+          <div class="space-y-2">
+            <label for="white-point" class="block text-sm text-gray-700">
+              Reference Illuminant
+            </label>
+            <select
+              id="white-point"
+              bind:value={$paletteParams.whitePoint}
+              onchange={() => debouncedGenerate($paletteParams)}
+              class="w-full px-3 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="D65">D65 - Daylight 6500K (default, sRGB)</option>
+              <option value="D50">D50 - Daylight 5000K (printing)</option>
+              <option value="D55">D55 - Daylight 5500K</option>
+              <option value="A">A - Incandescent 2856K</option>
+              <option value="E">E - Equal energy</option>
+            </select>
+          </div>
+
+          <p class="text-xs text-gray-500 mt-3">
+            The white point defines the reference illuminant for color space
+            conversions. D65 is standard for most displays. Use D50 for print
+            work.
+          </p>
         </Accordion>
 
         <!-- Extend Palette -->

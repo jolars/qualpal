@@ -23,6 +23,7 @@ export const paletteParams = writable({
   ],
   useBackground: false,
   backgroundColor: "#ffffff",
+  whitePoint: "D65", // D65, D50, D55, A, E
   inputMode: "colorspace", // 'colorspace' | 'fixed'
   fixedInput: "",
   useExtend: false,
@@ -274,6 +275,11 @@ export async function generatePalette(params) {
       if (bgColor) {
         qp.setBackground(bgColor.r / 255, bgColor.g / 255, bgColor.b / 255);
       }
+    }
+
+    // Set white point
+    if (params.whitePoint && qualpalModule?.Qualpal.prototype.setWhitePoint) {
+      qp.setWhitePoint(params.whitePoint);
     }
 
     // Set CVD if any slider > 0

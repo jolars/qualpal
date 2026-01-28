@@ -102,6 +102,25 @@ public:
     qp.setBackground(qualpal::colors::RGB(r, g, b));
   }
 
+  void setWhitePoint(const std::string& wp_name)
+  {
+    qualpal::WhitePoint wp;
+    if (wp_name == "D65") {
+      wp = qualpal::WhitePoint::D65;
+    } else if (wp_name == "D50") {
+      wp = qualpal::WhitePoint::D50;
+    } else if (wp_name == "D55") {
+      wp = qualpal::WhitePoint::D55;
+    } else if (wp_name == "A") {
+      wp = qualpal::WhitePoint::A;
+    } else if (wp_name == "E") {
+      wp = qualpal::WhitePoint::E;
+    } else {
+      wp = qualpal::WhitePoint::D65; // Default
+    }
+    qp.setWhitePoint(wp);
+  }
+
   val generate(int n)
   {
     auto palette = qp.generate(n);
@@ -288,6 +307,7 @@ EMSCRIPTEN_BINDINGS(qualpal)
               &QualpalJS::setInputColorspaceRegions)
     .function("setCvd", &QualpalJS::setCvd)
     .function("setBackground", &QualpalJS::setBackground)
+    .function("setWhitePoint", &QualpalJS::setWhitePoint)
     .function("generate", &QualpalJS::generate)
     .function("extend", &QualpalJS::extend);
 
