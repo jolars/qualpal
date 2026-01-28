@@ -158,6 +158,46 @@ TEST_CASE("Using different metrics", "[metrics][fail]")
   REQUIRE_NOTHROW(qp.setMetric(metrics::MetricType::CIEDE2000).generate(2));
 }
 
+TEST_CASE("Setting white point affects palette generation", "[white-point]")
+{
+  using namespace qualpal;
+  using namespace qualpal::colors;
+
+  // Generate palettes with different white points from the same input
+  std::vector<RGB> input_colors = {
+    RGB("#ff0000"), RGB("#00ff00"), RGB("#0000ff"),
+    RGB("#ffff00"), RGB("#ff00ff"), RGB("#00ffff")
+  };
+
+  auto result_d65 =
+    Qualpal{}.setInputRGB(input_colors).setWhitePoint(WhitePoint::D65).generate(
+      3);
+
+  auto result_d50 =
+    Qualpal{}.setInputRGB(input_colors).setWhitePoint(WhitePoint::D50).generate(
+      3);
+
+  auto result_a =
+    Qualpal{}.setInputRGB(input_colors).setWhitePoint(WhitePoint::A).generate(3);
+
+  // Different white points should potentially produce different palettes
+  // due to different color space conversions
+  bool d65_vs_d50_different = false;
+  bool d65_vs_a_different = false;
+
+  for (size_t i = 0; i < 3; ++i) {
+    if (result_d65[i].hex() != result_d50[i].hex()) {
+      d65_vs_d50_different = true;
+    }
+    if (result_d65[i].hex() != result_a[i].hex()) {
+      d65_vs_a_different = true;
+    }
+  }
+
+  // At least one comparison should show different results
+  REQUIRE((d65_vs_d50_different || d65_vs_a_different));
+}
+
 TEST_CASE("Qualpal::extend preserves fixed palette and adds distinct colors",
           "[qualpal][extend]")
 {
