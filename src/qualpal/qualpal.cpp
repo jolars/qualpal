@@ -257,26 +257,16 @@ Qualpal::selectColors(std::size_t n,
     rgb_colors.push_back(*bg);
   }
 
-  // Simulate CVD if needed
-  std::vector<colors::RGB> rgb_colors_mod = rgb_colors;
-
-  for (const auto& [cvd_type, cvd_severity] : cvd) {
-    if (cvd_severity > 0) {
-      for (auto& rgb : rgb_colors_mod) {
-        rgb = simulateCvd(rgb, cvd_type, cvd_severity);
-      }
-    }
-  }
-
+  // Convert colors to XYZ for distance calculations
   std::vector<colors::XYZ> xyz_colors;
-  xyz_colors.reserve(rgb_colors_mod.size());
-  for (const auto& c : rgb_colors_mod) {
+  xyz_colors.reserve(rgb_colors.size());
+  for (const auto& c : rgb_colors) {
     xyz_colors.emplace_back(c);
   }
 
-  // Select new colors
+  // Select new colors (CVD-aware if CVD parameters are set)
   auto ind = farthestPoints(
-    n, xyz_colors, metric, has_bg, n_fixed, max_memory, white_point);
+    n, xyz_colors, metric, has_bg, n_fixed, max_memory, white_point, cvd);
 
   // Output: fixed_palette + selected new colors
   std::vector<colors::RGB> result;

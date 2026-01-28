@@ -77,14 +77,20 @@ auto pal = qp.generate(4);
 
 A key feature of qualpal is its ability to generate color palettes
 that are accessible to users with color vision deficiencies (CVD).
-In order to do this, qualpal projects the RGB colors into the
-specific color vision deficiency space and then uses
-these colors to generate the palette. At the moment,
-qualpal supports CVD simulation for deuteranomaly, protanomaly,
+qualpal simulates the effects of CVD on the input colors using the
+physiologically-based model by Machado et al. (2009).
+
+Qualpal supports simulation for deuteranomaly, protanomaly,
 and tritanomaly. You can specify the severity of the CVD
 using a value between 0 and 1, where 0 means no CVD and 1 means
-full CVD. For example, to generate a color palette
-that is accessible to users with deuteranomaly, you can use the following code:
+complete color vision deficiency.
+
+When you specify multiple CVD types, qualpal evaluates each independently
+and selects colors that remain distinguishable under **all** specified
+conditions (including normal vision). This guarantees universal
+accessibility---the palette works well for everyone.
+
+For example, to generate a palette accessible to users with deuteranomaly:
 
 ```cpp
 auto cvd_pal = Qualpal{}
@@ -95,8 +101,7 @@ auto cvd_pal = Qualpal{}
 
 ![Five colors from HSL with deuteranomaly simulation](images/examples/cli_hsl2.svg)
 
-The simulation of color vision deficiency is based on the model
-by Machado et al. (2009), and is numerically stable and fast.
+The simulation is numerically stable and fast.
 
 ## Background Color
 

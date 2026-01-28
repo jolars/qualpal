@@ -106,12 +106,17 @@ As far as the complexity of the algorithm is concerned, it is
 
 A key feature of qualpal is the ability to generate color palettes
 that are accessible to people with color vision deficiencies (CVD).
-To do so, qualpal simulated the effects of CVD on the input (RGB) colors
+To do so, qualpal simulates the effects of CVD on the input (RGB) colors
 by applying a color vision deficiency model from Machado et al. (2009).
 This model simulates the effects of protanopia, deuteranopia, and tritanopia
 (or any combination of these) on the input colors, with selected severity.
-The color difference matrix is then computed on the simulated colors,
-ensuring that the resulting palette is accessible to people with CVD.
+
+When multiple CVD types are specified, qualpal computes separate distance
+matrices for normal vision and each CVD type independently, then takes the
+element-wise minimum across all matrices. This ensures that the resulting
+palette is distinguishable for **all** viewers: those with normal vision
+and those with any of the specified CVD types. The algorithm uses the
+most conservative (minimum) distance to guarantee universal accessibility.
 
 ## Background Color
 

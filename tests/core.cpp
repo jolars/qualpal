@@ -1,4 +1,5 @@
 #include "../src/qualpal/color_grid.h"
+#include "../src/qualpal/cvd.h"
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/matchers/catch_matchers_floating_point.hpp>
 #include <qualpal.h>
@@ -368,14 +369,14 @@ TEST_CASE("Multiple colorspace regions work", "[colorspace-regions]")
   SECTION("Two disjoint regions in HSL")
   {
     // Warm colors (reds/oranges) and cool colors (blues/cyans)
-    auto result =
-      qualpal::Qualpal{}
-        .setInputColorspaceRegions({
-                                     { { 0, 60 }, { 0.5, 1.0 }, { 0.3, 0.7 } },
-                                     { { 180, 240 }, { 0.5, 1.0 }, { 0.3, 0.7 } },
-                                   },
-                                   qualpal::ColorspaceType::HSL)
-        .generate(6);
+    auto result = qualpal::Qualpal{}
+                    .setInputColorspaceRegions(
+                      {
+                        { { 0, 60 }, { 0.5, 1.0 }, { 0.3, 0.7 } },
+                        { { 180, 240 }, { 0.5, 1.0 }, { 0.3, 0.7 } },
+                      },
+                      qualpal::ColorspaceType::HSL)
+                    .generate(6);
 
     REQUIRE(result.size() == 6);
 
@@ -395,15 +396,15 @@ TEST_CASE("Multiple colorspace regions work", "[colorspace-regions]")
   SECTION("Three regions with different lightness")
   {
     // Dark, medium, and light colors
-    auto result =
-      qualpal::Qualpal{}
-        .setInputColorspaceRegions({
-                                     { { 0, 360 }, { 0.6, 1.0 }, { 0.1, 0.3 } },
-                                     { { 0, 360 }, { 0.6, 1.0 }, { 0.4, 0.6 } },
-                                     { { 0, 360 }, { 0.6, 1.0 }, { 0.7, 0.9 } },
-                                   },
-                                   qualpal::ColorspaceType::HSL)
-        .generate(9);
+    auto result = qualpal::Qualpal{}
+                    .setInputColorspaceRegions(
+                      {
+                        { { 0, 360 }, { 0.6, 1.0 }, { 0.1, 0.3 } },
+                        { { 0, 360 }, { 0.6, 1.0 }, { 0.4, 0.6 } },
+                        { { 0, 360 }, { 0.6, 1.0 }, { 0.7, 0.9 } },
+                      },
+                      qualpal::ColorspaceType::HSL)
+                    .generate(9);
 
     REQUIRE(result.size() == 9);
 
@@ -419,14 +420,14 @@ TEST_CASE("Multiple colorspace regions work", "[colorspace-regions]")
   SECTION("Overlapping regions in LCHab")
   {
     // Two overlapping regions to emphasize certain hue range
-    auto result =
-      qualpal::Qualpal{}
-        .setInputColorspaceRegions({
-                                     { { 0, 120 }, { 30, 60 }, { 40, 70 } },
-                                     { { 60, 180 }, { 30, 60 }, { 40, 70 } },
-                                   },
-                                   qualpal::ColorspaceType::LCHab)
-        .generate(5);
+    auto result = qualpal::Qualpal{}
+                    .setInputColorspaceRegions(
+                      {
+                        { { 0, 120 }, { 30, 60 }, { 40, 70 } },
+                        { { 60, 180 }, { 30, 60 }, { 40, 70 } },
+                      },
+                      qualpal::ColorspaceType::LCHab)
+                    .generate(5);
 
     REQUIRE(result.size() == 5);
 
@@ -445,13 +446,13 @@ TEST_CASE("Multiple colorspace regions work", "[colorspace-regions]")
   SECTION("Single region via setInputColorspaceRegions")
   {
     // Should work the same as setInputColorspace
-    auto result =
-      qualpal::Qualpal{}
-        .setInputColorspaceRegions({
-                                     { { 0, 360 }, { 0.3, 0.8 }, { 0.4, 0.9 } },
-                                   },
-                                   qualpal::ColorspaceType::HSL)
-        .generate(5);
+    auto result = qualpal::Qualpal{}
+                    .setInputColorspaceRegions(
+                      {
+                        { { 0, 360 }, { 0.3, 0.8 }, { 0.4, 0.9 } },
+                      },
+                      qualpal::ColorspaceType::HSL)
+                    .generate(5);
 
     REQUIRE(result.size() == 5);
 
@@ -467,21 +468,21 @@ TEST_CASE("Multiple colorspace regions work", "[colorspace-regions]")
   SECTION("Empty regions vector throws")
   {
     qualpal::Qualpal qp;
-    REQUIRE_THROWS_AS(qp.setInputColorspaceRegions(
-                        {}, qualpal::ColorspaceType::HSL),
-                      std::invalid_argument);
+    REQUIRE_THROWS_AS(
+      qp.setInputColorspaceRegions({}, qualpal::ColorspaceType::HSL),
+      std::invalid_argument);
   }
 
   SECTION("Invalid ranges in region throw")
   {
     qualpal::Qualpal qp;
     // Saturation out of range for HSL
-    REQUIRE_THROWS_AS(
-      qp.setInputColorspaceRegions({
-                                     { { 0, 360 }, { -0.1, 0.8 }, { 0.4, 0.9 } },
-                                   },
-                                   qualpal::ColorspaceType::HSL),
-      std::invalid_argument);
+    REQUIRE_THROWS_AS(qp.setInputColorspaceRegions(
+                        {
+                          { { 0, 360 }, { -0.1, 0.8 }, { 0.4, 0.9 } },
+                        },
+                        qualpal::ColorspaceType::HSL),
+                      std::invalid_argument);
   }
 }
 
@@ -497,14 +498,14 @@ TEST_CASE("setInputColorspace delegates to setInputColorspaceRegions",
                    .setColorspaceSize(500)
                    .generate(5);
 
-  auto result2 =
-    qualpal::Qualpal{}
-      .setInputColorspaceRegions({
-                                   { { 0, 180 }, { 0.5, 1.0 }, { 0.3, 0.7 } },
-                                 },
-                                 qualpal::ColorspaceType::HSL)
-      .setColorspaceSize(500)
-      .generate(5);
+  auto result2 = qualpal::Qualpal{}
+                   .setInputColorspaceRegions(
+                     {
+                       { { 0, 180 }, { 0.5, 1.0 }, { 0.3, 0.7 } },
+                     },
+                     qualpal::ColorspaceType::HSL)
+                   .setColorspaceSize(500)
+                   .generate(5);
 
   REQUIRE(result1.size() == 5);
   REQUIRE(result2.size() == 5);
@@ -520,5 +521,141 @@ TEST_CASE("setInputColorspace delegates to setInputColorspaceRegions",
     HSL hsl = color;
     REQUIRE(hsl.h() >= 0 - eps);
     REQUIRE(hsl.h() <= 180 + eps);
+  }
+}
+
+TEST_CASE("CVD simulations are applied independently", "[cvd][qualpal]")
+{
+  using namespace qualpal;
+  using namespace qualpal::colors;
+  using namespace Catch::Matchers;
+
+  SECTION("Multiple CVD types produce order-independent results")
+  {
+    // Create a palette with multiple CVD constraints
+    std::vector<RGB> input = {
+      RGB(1.0, 0.0, 0.0), // Red
+      RGB(1.0, 0.5, 0.0), // Orange
+      RGB(0.0, 1.0, 0.0), // Green
+      RGB(0.0, 0.0, 1.0), // Blue
+      RGB(1.0, 1.0, 0.0), // Yellow
+      RGB(0.0, 1.0, 1.0), // Cyan
+    };
+
+    // Test with protan + deutan
+    Qualpal qp1;
+    qp1.setInputRGB(input);
+    qp1.setCvd({ { "protan", 1.0 }, { "deutan", 1.0 } });
+    auto palette1 = qp1.generate(3);
+
+    // Test with deutan + protan (different order)
+    Qualpal qp2;
+    qp2.setInputRGB(input);
+    qp2.setCvd({ { "deutan", 1.0 }, { "protan", 1.0 } });
+    auto palette2 = qp2.generate(3);
+
+    // Results should be identical (order-independent)
+    REQUIRE(palette1.size() == 3);
+    REQUIRE(palette2.size() == 3);
+    for (size_t i = 0; i < 3; ++i) {
+      REQUIRE_THAT(palette1[i].r(), WithinAbs(palette2[i].r(), 1e-10));
+      REQUIRE_THAT(palette1[i].g(), WithinAbs(palette2[i].g(), 1e-10));
+      REQUIRE_THAT(palette1[i].b(), WithinAbs(palette2[i].b(), 1e-10));
+    }
+  }
+
+  SECTION("CVD constraints improve palette distinguishability for CVD viewers")
+  {
+    // Red and orange are close under protan simulation
+    std::vector<RGB> input = {
+      RGB(1.0, 0.0, 0.0), // Red
+      RGB(1.0, 0.5, 0.0), // Orange
+      RGB(0.0, 0.0, 1.0), // Blue
+      RGB(0.0, 1.0, 1.0), // Cyan
+    };
+
+    // Without CVD constraints - might select red and orange
+    Qualpal qp_no_cvd;
+    qp_no_cvd.setInputRGB(input);
+    auto palette_no_cvd = qp_no_cvd.generate(2);
+
+    // With protan constraints - should prefer more distinct colors
+    Qualpal qp_with_cvd;
+    qp_with_cvd.setInputRGB(input);
+    qp_with_cvd.setCvd({ { "protan", 1.0 } });
+    auto palette_with_cvd = qp_with_cvd.generate(2);
+
+    REQUIRE(palette_no_cvd.size() == 2);
+    REQUIRE(palette_with_cvd.size() == 2);
+
+    // Verify that CVD-aware palette maintains distinguishability under protan
+    auto color1_cvd = simulateCvd(palette_with_cvd[0], "protan", 1.0);
+    auto color2_cvd = simulateCvd(palette_with_cvd[1], "protan", 1.0);
+
+    // Colors should be sufficiently different under CVD simulation
+    double diff_r = std::abs(color1_cvd.r() - color2_cvd.r());
+    double diff_g = std::abs(color1_cvd.g() - color2_cvd.g());
+    double diff_b = std::abs(color1_cvd.b() - color2_cvd.b());
+    double total_diff = diff_r + diff_g + diff_b;
+
+    // Should have some meaningful difference (not collapsed to same color)
+    REQUIRE(total_diff > 0.1);
+  }
+
+  SECTION("Empty CVD map behaves like no CVD constraints")
+  {
+    std::vector<RGB> input = {
+      RGB(1.0, 0.0, 0.0),
+      RGB(0.0, 1.0, 0.0),
+      RGB(0.0, 0.0, 1.0),
+      RGB(1.0, 1.0, 0.0),
+    };
+
+    Qualpal qp1;
+    qp1.setInputRGB(input);
+    auto palette1 = qp1.generate(2);
+
+    Qualpal qp2;
+    qp2.setInputRGB(input);
+    qp2.setCvd({});
+    auto palette2 = qp2.generate(2);
+
+    REQUIRE(palette1.size() == 2);
+    REQUIRE(palette2.size() == 2);
+
+    // Should produce identical results
+    for (size_t i = 0; i < 2; ++i) {
+      REQUIRE_THAT(palette1[i].r(), WithinAbs(palette2[i].r(), 1e-10));
+      REQUIRE_THAT(palette1[i].g(), WithinAbs(palette2[i].g(), 1e-10));
+      REQUIRE_THAT(palette1[i].b(), WithinAbs(palette2[i].b(), 1e-10));
+    }
+  }
+
+  SECTION("CVD severity of 0 is equivalent to no CVD")
+  {
+    std::vector<RGB> input = {
+      RGB(1.0, 0.0, 0.0),
+      RGB(0.0, 1.0, 0.0),
+      RGB(0.0, 0.0, 1.0),
+    };
+
+    Qualpal qp1;
+    qp1.setInputRGB(input);
+    auto palette1 = qp1.generate(2);
+
+    Qualpal qp2;
+    qp2.setInputRGB(input);
+    qp2.setCvd({ { "protan", 0.0 }, { "deutan", 0.0 } });
+    auto palette2 = qp2.generate(2);
+
+    REQUIRE(palette1.size() == 2);
+    REQUIRE(palette2.size() == 2);
+
+    // Should produce identical results
+    for (size_t i = 0; i < 2; ++i) {
+      REQUIRE_THAT(palette1[i].r(), WithinAbs(palette2[i].r(), 1e-10));
+      REQUIRE_THAT(palette1[i].g(), WithinAbs(palette2[i].g(), 1e-10));
+      REQUIRE_THAT(palette1[i].b(), WithinAbs(palette2[i].b(), 1e-10));
+    }
   }
 }

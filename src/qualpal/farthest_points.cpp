@@ -1,4 +1,5 @@
 #include "farthest_points.h"
+#include "cvd.h"
 #include <algorithm>
 #include <limits>
 #include <numeric>
@@ -12,10 +13,42 @@ farthestPoints(const std::size_t n,
                const bool has_bg,
                const std::size_t n_fixed,
                const double max_memory,
-               const std::array<double, 3>& white_point)
+               const std::array<double, 3>& white_point,
+               const std::map<std::string, double>& cvd)
 {
+  // Start with normal vision distances
   Matrix<double> dist_mat =
     colorDifferenceMatrix(colors, metric_type, max_memory, white_point);
+
+  // For each CVD type, compute distances and take element-wise minimum
+  for (const auto& [cvd_type, cvd_severity] : cvd) {
+    if (cvd_severity > 0.0) {
+      std::vector<colors::RGB> rgb_cvd;
+      rgb_cvd.reserve(colors.size());
+      for (const auto& xyz : colors) {
+        colors::RGB rgb(xyz);
+        rgb_cvd.push_back(simulateCvd(rgb, cvd_type, cvd_severity));
+      }
+
+      // Convert back to XYZ
+      std::vector<colors::XYZ> xyz_cvd;
+      xyz_cvd.reserve(rgb_cvd.size());
+      for (const auto& rgb : rgb_cvd) {
+        xyz_cvd.emplace_back(rgb);
+      }
+
+      // Compute distance matrix for this CVD simulation
+      Matrix<double> cvd_dist_mat =
+        colorDifferenceMatrix(xyz_cvd, metric_type, max_memory, white_point);
+
+      // Take element-wise minimum with existing matrix
+      for (std::size_t i = 0; i < dist_mat.nrow(); ++i) {
+        for (std::size_t j = 0; j < dist_mat.ncol(); ++j) {
+          dist_mat(i, j) = std::min(dist_mat(i, j), cvd_dist_mat(i, j));
+        }
+      }
+    }
+  }
 
   const std::size_t n_candidates = colors.size() - n_fixed - (has_bg ? 1 : 0);
   const std::size_t n_colors = colors.size();
