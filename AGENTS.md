@@ -73,8 +73,15 @@ task build   # Basic build
 **Pre-commit validation:**
 
 1. Build: `cmake --build build`
-2. Test: `ctest --test-dir build --output-on-failure` (all 82 must pass)
+2. Test: `ctest --test-dir build --output-on-failure` (all 85 must pass)
 3. Format (optional): `clang-format -i <files>`
+
+**Release Process:**
+
+- Releases use semantic-release with Conventional Commits
+- CHANGELOG.md is auto-generated (never edit manually)
+- Breaking changes require `!` suffix or `BREAKING CHANGE:` footer
+- Version bumping: major (breaking), minor (feat), patch (fix)
 
 ## Important Patterns and Pitfalls
 
@@ -93,7 +100,14 @@ task build   # Basic build
 
 - Formatting: Mozilla style (`.clang-format`), 2-space indent
 - Naming: Classes `UpperCamelCase`, functions `lowerCamelCase`, variables `snake_case`
-- Commits: Conventional Commits (`feat:`, `fix:`, `docs:`)
+- Commits: Conventional Commits format required
+  - `feat:` - New features
+  - `fix:` - Bug fixes
+  - `docs:` - Documentation changes
+  - `test:` - Test additions/changes
+  - `refactor:`, `perf:`, `style:`, `chore:` - Other changes
+  - Use `!` or `BREAKING CHANGE:` footer for breaking changes (e.g., `fix!: ...`)
+  - CHANGELOG is auto-generated via semantic-release (do NOT edit manually)
 
 **Dependencies:** CLI11 and Catch2 auto-fetched. OpenMP optional (parallelization). help2man optional (man pages).
 
