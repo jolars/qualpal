@@ -524,5 +524,18 @@ set(CPACK_ARCHIVE_CLI_FILE_NAME
     "${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}-${CMAKE_SYSTEM_NAME}-${CMAKE_SYSTEM_PROCESSOR}"
 )
 
+# ZIP-specific settings (Windows)
+set(CPACK_ZIP_COMPONENT_INSTALL ON)
+
+# Windows-specific settings (NSIS installer - optional)
+if(WIN32)
+    set(CPACK_NSIS_PACKAGE_NAME "qualpal")
+    set(CPACK_NSIS_DISPLAY_NAME "Qualpal Color Palette Generator")
+    set(CPACK_NSIS_HELP_LINK "${CPACK_PACKAGE_HOMEPAGE_URL}")
+    set(CPACK_NSIS_URL_INFO_ABOUT "${CPACK_PACKAGE_HOMEPAGE_URL}")
+    set(CPACK_NSIS_CONTACT "${CPACK_PACKAGE_CONTACT}")
+    set(CPACK_NSIS_MODIFY_PATH ON)
+endif()
+
 # Include CPack after all configuration
 include(CPack)
