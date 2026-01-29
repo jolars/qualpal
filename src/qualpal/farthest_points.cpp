@@ -1,5 +1,6 @@
 #include "farthest_points.h"
 #include "cvd.h"
+#include "threads.h"
 #include <algorithm>
 #include <limits>
 #include <numeric>
@@ -42,8 +43,14 @@ farthestPoints(const std::size_t n,
         colorDifferenceMatrix(xyz_cvd, metric_type, max_memory, white_point);
 
       // Take element-wise minimum with existing matrix
-      for (std::size_t i = 0; i < dist_mat.nrow(); ++i) {
-        for (std::size_t j = 0; j < dist_mat.ncol(); ++j) {
+#ifdef _OPENMP
+#pragma omp parallel for num_threads(Threads::get())
+#endif
+      for (int i = 0; i < static_cast<int>(dist_mat.nrow()); ++i) {
+#ifdef _OPENMP
+#pragma omp simd
+#endif
+        for (int j = 0; j < static_cast<int>(dist_mat.ncol()); ++j) {
           dist_mat(i, j) = std::min(dist_mat(i, j), cvd_dist_mat(i, j));
         }
       }
