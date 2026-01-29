@@ -1,0 +1,238 @@
+name: Build Packages
+
+on:
+  workflow_dispatch:
+    inputs:
+      attach_to_release:
+        description: "Attach packages to latest release?"
+        required: false
+        type: boolean
+        default: false
+  release:
+    types: [published]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-packages:
+    name: Build Linux packages
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            arch: amd64
+            runner: ubuntu-latest
+          - os: ubuntu-latest
+            arch: arm64
+            runner: ubuntu-24.04-arm64
+    runs-on: ${{ matrix.runner }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Install packaging dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y rpm
+
+      - name: Build packages
+        run: |
+          cmake -B build -S . -DBUILD_CLI=ON -DCMAKE_BUILD_TYPE=Release
+          cmake --build build
+          cd build && cpack -G "DEB;RPM;TGZ"
+
+      - name: Test built CLI
+        run: |
+          echo "Testing CLI functionality:"
+          ./build/qualpal --help
+          echo "CLI version check:"
+          ./build/qualpal --version || echo "No version flag available"
+
+      - name: Test DEB package installation (dry run)
+        run: |
+          echo "Testing DEB package metadata:"
+          for deb in build/*.deb; do
+            if [ -f "$deb" ]; then
+              echo "=== $(basename "$deb") ==="
+              dpkg-deb --info "$deb" | head -20
+              echo "Files:"
+              dpkg-deb --contents "$deb" | head -10
+              echo
+            fi
+          done
+
+      - name: List all generated packages
+        run: |
+          echo "All generated packages for ${{ matrix.arch }}:"
+          ls -la build/*.{deb,rpm,tar.gz} 2>/dev/null || echo "No packages found"
+
+      - name: Upload package artifacts
+        uses: actions/upload-artifact@v6
+        with:
+          name: packages-${{ matrix.arch }}
+          path: |
+            build/*.deb
+            build/*.rpm
+            build/*.tar.gz
+          retention-days: 7
+
+  build-binaries:
+    name: Build binaries
+    strategy:
+      matrix:
+        include:
+          - os: macos-13
+            arch: x86_64
+            name: macOS-Intel
+          - os: macos-latest
+            arch: arm64
+            name: macOS-AppleSilicon
+          - os: windows-latest
+            arch: x64
+            toolchain: msvc
+            name: Windows-x64-MSVC
+          - os: windows-latest
+            arch: x64
+            toolchain: mingw
+            name: Windows-x64-MinGW
+      fail-fast: false
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Install dependencies (macOS)
+        if: runner.os == 'macOS'
+        run: brew install catch2
+
+      - name: Install dependencies (Windows MinGW)
+        if: runner.os == 'Windows' && matrix.toolchain == 'mingw'
+        run: |
+          choco install mingw
+          vcpkg install catch2 --triplet x64-mingw-dynamic
+
+      - name: Install dependencies (Windows MSVC)
+        if: runner.os == 'Windows' && matrix.toolchain == 'msvc'
+        run: vcpkg install catch2 --triplet x64-windows
+
+      - name: Setup cmake
+        uses: jwlawson/actions-setup-cmake@v2
+
+      - name: Configure CMake (macOS)
+        if: runner.os == 'macOS'
+        run: cmake -B build -S . -DBUILD_CLI=ON -DCMAKE_BUILD_TYPE=Release
+
+      - name: Configure CMake (Windows MinGW)
+        if: runner.os == 'Windows' && matrix.toolchain == 'mingw'
+        run: cmake -B build -S . -DBUILD_CLI=ON -DCMAKE_BUILD_TYPE=Release -G "MinGW Makefiles" -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-mingw-dynamic
+
+      - name: Configure CMake (Windows MSVC)
+        if: runner.os == 'Windows' && matrix.toolchain == 'msvc'
+        run: cmake -B build -S . -DBUILD_CLI=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows
+
+      - name: Build
+        run: cmake --build build ${{ matrix.toolchain == 'msvc' && '--config Release' || '' }}
+
+      - name: Create binary package
+        run: |
+          cd build
+          ${{ runner.os == 'Windows' && 'cpack -G ZIP -C Release' || 'cpack -G TGZ' }}
+
+      - name: Test built CLI
+        run: |
+          echo "Testing CLI functionality:"
+          ${{ runner.os == 'Windows' && matrix.toolchain == 'msvc' && './build/Release/qualpal.exe --help' || runner.os == 'Windows' && './build/qualpal.exe --help' || './build/qualpal --help' }}
+
+      - name: List generated binaries
+        run: |
+          echo "Generated binaries for ${{ matrix.name }}:"
+          ${{ runner.os == 'Windows' && 'dir build\*.zip' || 'ls -lh build/*.tar.gz' }}
+
+      - name: Upload binary artifacts
+        uses: actions/upload-artifact@v6
+        with:
+          name: binaries-${{ matrix.name }}
+          path: |
+            build/*.tar.gz
+            build/*.zip
+          retention-days: 7
+
+  upload-to-release:
+    name: Upload to GitHub Release
+    needs: [build-packages, build-binaries]
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release' || (github.event_name == 'workflow_dispatch' && inputs.attach_to_release)
+    permissions:
+      contents: write
+
+    steps:
+      - name: Download package artifacts
+        uses: actions/download-artifact@v7
+        with:
+          pattern: packages-*
+          path: packages/
+          merge-multiple: true
+
+      - name: Download binary artifacts
+        uses: actions/download-artifact@v7
+        with:
+          pattern: binaries-*
+          path: binaries/
+          merge-multiple: true
+
+      - name: List downloaded artifacts
+        run: |
+          echo "Downloaded packages:"
+          find packages/ -type f | sort
+          echo
+          echo "Downloaded binaries:"
+          find binaries/ -type f | sort
+
+      - name: Get release info
+        id: release_info
+        run: |
+          if [ "${{ github.event_name }}" == "release" ]; then
+            echo "tag_name=${{ github.event.release.tag_name }}" >> $GITHUB_OUTPUT
+            echo "release_id=${{ github.event.release.id }}" >> $GITHUB_OUTPUT
+          else
+            # Get latest release for manual dispatch
+            LATEST_RELEASE=$(gh api repos/${{ github.repository }}/releases/latest)
+            TAG_NAME=$(echo "$LATEST_RELEASE" | jq -r .tag_name)
+            RELEASE_ID=$(echo "$LATEST_RELEASE" | jq -r .id)
+            echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
+            echo "release_id=$RELEASE_ID" >> $GITHUB_OUTPUT
+          fi
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Upload packages to release
+        run: |
+          echo "Uploading to release ${{ steps.release_info.outputs.tag_name }}"
+
+          # Upload all packages
+          for file in packages/*; do
+            if [ -f "$file" ]; then
+              echo "Uploading $(basename "$file")..."
+              gh release upload ${{ steps.release_info.outputs.tag_name }} "$file" --clobber
+            fi
+          done
+
+          # Upload all binaries
+          for file in binaries/*; do
+            if [ -f "$file" ]; then
+              echo "Uploading $(basename "$file")..."
+              gh release upload ${{ steps.release_info.outputs.tag_name }} "$file" --clobber
+            fi
+          done
+
+          echo "Upload complete!"
+        env:
+          GH_TOKEN: ${{ github.token }}

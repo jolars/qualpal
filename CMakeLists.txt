@@ -406,7 +406,11 @@ set(CPACK_DEBIAN_PACKAGE_SECTION "libs")
 set(CPACK_DEBIAN_PACKAGE_PRIORITY "optional")
 set(CPACK_DEBIAN_PACKAGE_HOMEPAGE "https://github.com/jolars/qualpal")
 set(CPACK_DEBIAN_PACKAGE_DESCRIPTION
-    "C++ library for generating qualitative color palettes with maximum perceptual distinctiveness for data visualization. It uses advanced color science algorithms to create palettes that are optimally distinguishable for human perception, including considerations for color vision deficiency."
+    "C++ library for generating qualitative color palettes with maximum
+    perceptual distinctiveness for data visualization. It uses advanced color
+    science algorithms to create palettes that are optimally distinguishable
+    for human perception, including considerations for color vision
+    deficiency."
 )
 
 # Component-based packaging for separate library and CLI packages
@@ -458,12 +462,18 @@ set(CPACK_DEBIAN_CLI_PACKAGE_SECTION "utils")
 # RPM-specific settings
 set(CPACK_RPM_PACKAGE_SUMMARY "Qualitative color palette generation library")
 set(CPACK_RPM_PACKAGE_DESCRIPTION
-    "C++ library for generating qualitative color palettes with maximum perceptual distinctiveness for data visualization. It uses advanced color science algorithms to create palettes that are optimally distinguishable for human perception, including considerations for color vision deficiency."
+    "C++ library for generating qualitative color palettes with maximum
+    perceptual distinctiveness for data visualization. It uses advanced color
+    science algorithms to create palettes that are optimally distinguishable
+    for human perception, including considerations for color vision
+    deficiency."
 )
 set(CPACK_RPM_PACKAGE_GROUP "Development/Libraries")
 set(CPACK_RPM_PACKAGE_LICENSE "MIT")
 set(CPACK_RPM_PACKAGE_URL "https://github.com/jolars/qualpal")
 set(CPACK_RPM_PACKAGE_VENDOR "Johan Larsson")
+
+# RPM package naming and architecture
 set(CPACK_RPM_FILE_NAME RPM-DEFAULT)
 set(CPACK_RPM_PACKAGE_RELEASE "1")
 
@@ -501,6 +511,12 @@ set(CPACK_RPM_DEVELOPMENT_PACKAGE_DESCRIPTION
 )
 set(CPACK_RPM_CLI_PACKAGE_DESCRIPTION
     "Command-line interface for qualpal color palette generation"
+)
+
+# Archive-specific settings (TGZ/ZIP for cross-platform binaries)
+set(CPACK_ARCHIVE_COMPONENT_INSTALL ON)
+set(CPACK_ARCHIVE_CLI_FILE_NAME
+    "${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}-${CMAKE_SYSTEM_NAME}-${CMAKE_SYSTEM_PROCESSOR}"
 )
 
 # Include CPack after all configuration
