@@ -215,7 +215,10 @@ qualpal analyze --input hex "#ffe402" "#ff5733" "#33ff57" "#3357ff"
 
 ### Binary Packages (Recommended)
 
-Pre-built packages are available for major Linux distributions from [GitHub Releases](https://github.com/jolars/qualpal/releases/latest).
+Pre-built packages and binaries are available for Linux, macOS, and Windows from [GitHub Releases](https://github.com/jolars/qualpal/releases/latest).
+
+<details>
+<summary><b>📦 Linux - Debian/Ubuntu (DEB packages)</b></summary>
 
 #### Quick Install Script
 
@@ -226,43 +229,84 @@ curl -sSL https://raw.githubusercontent.com/jolars/qualpal/main/scripts/install.
 
 #### Manual Installation
 
-**Debian/Ubuntu:**
-
 ```bash
-# Download packages (replace with your architecture)
+# Download packages (replace VERSION with actual version, e.g., 3.3.0)
 # For x86_64/amd64:
-wget https://github.com/jolars/qualpal/releases/latest/download/libqualpal1_3.3.0_amd64.deb
-wget https://github.com/jolars/qualpal/releases/latest/download/qualpal_3.3.0_amd64.deb
+wget https://github.com/jolars/qualpal/releases/latest/download/libqualpal1_VERSION-1_amd64.deb
+wget https://github.com/jolars/qualpal/releases/latest/download/qualpal_VERSION-1_amd64.deb
 
 # For ARM64/aarch64:
-wget https://github.com/jolars/qualpal/releases/latest/download/libqualpal1_3.3.0_arm64.deb
-wget https://github.com/jolars/qualpal/releases/latest/download/qualpal_3.3.0_arm64.deb
+wget https://github.com/jolars/qualpal/releases/latest/download/libqualpal1_VERSION-1_arm64.deb
+wget https://github.com/jolars/qualpal/releases/latest/download/qualpal_VERSION-1_arm64.deb
 
 # Install
 sudo dpkg -i libqualpal1_*.deb qualpal_*.deb
 ```
 
-**Red Hat/Fedora/SUSE:**
+**Development package:** `libqualpal-dev_VERSION-1_{amd64,arm64}.deb`
+
+</details>
+
+<details>
+<summary><b>📦 Linux - Red Hat/Fedora/SUSE (RPM packages)</b></summary>
 
 ```bash
-# Download packages (replace with your architecture)
+# Download packages (replace VERSION with actual version, e.g., 3.3.0)
 # For x86_64:
-wget https://github.com/jolars/qualpal/releases/latest/download/libqualpal1-3.3.0.x86_64.rpm
-wget https://github.com/jolars/qualpal/releases/latest/download/qualpal-3.3.0.x86_64.rpm
+wget https://github.com/jolars/qualpal/releases/latest/download/libqualpal1-VERSION-1.x86_64.rpm
+wget https://github.com/jolars/qualpal/releases/latest/download/qualpal-VERSION-1.x86_64.rpm
 
 # For ARM64/aarch64:
-wget https://github.com/jolars/qualpal/releases/latest/download/libqualpal1-3.3.0.aarch64.rpm
-wget https://github.com/jolars/qualpal/releases/latest/download/qualpal-3.3.0.aarch64.rpm
+wget https://github.com/jolars/qualpal/releases/latest/download/libqualpal1-VERSION-1.aarch64.rpm
+wget https://github.com/jolars/qualpal/releases/latest/download/qualpal-VERSION-1.aarch64.rpm
 
 # Install
 sudo rpm -i libqualpal1-*.rpm qualpal-*.rpm
 ```
 
-**Development Files:**
-If you plan to develop with qualpal, also install the development package:
+**Development package:** `libqualpal-devel-VERSION-1.{x86_64,aarch64}.rpm`
 
-- Debian/Ubuntu: `libqualpal-dev_3.3.0_{amd64,arm64}.deb`
-- Red Hat/Fedora/SUSE: `libqualpal-devel-3.3.0.{x86_64,aarch64}.rpm`
+</details>
+
+<details>
+<summary><b>🍎 macOS (Intel and Apple Silicon)</b></summary>
+
+```bash
+# Download for your Mac architecture (replace VERSION with actual version)
+# For Intel Macs:
+wget https://github.com/jolars/qualpal/releases/latest/download/qualpal-VERSION-Darwin-x86_64.tar.gz
+tar -xzf qualpal-VERSION-Darwin-x86_64.tar.gz
+
+# For Apple Silicon (M1/M2/M3/M4):
+wget https://github.com/jolars/qualpal/releases/latest/download/qualpal-VERSION-Darwin-arm64.tar.gz
+tar -xzf qualpal-VERSION-Darwin-arm64.tar.gz
+
+# Move to your PATH (optional)
+sudo mv qualpal-*/bin/qualpal /usr/local/bin/
+```
+
+Headers and libraries are included in the archive for development.
+
+</details>
+
+<details>
+<summary><b>🪟 Windows (x64 and ARM64)</b></summary>
+
+Download the appropriate ZIP file for your system:
+
+- [Windows x64 (MSVC)](https://github.com/jolars/qualpal/releases/latest) - Recommended for most users
+- [Windows x64 (MinGW)](https://github.com/jolars/qualpal/releases/latest) - Alternative build
+- [Windows ARM64](https://github.com/jolars/qualpal/releases/latest) - For ARM-based Windows devices
+
+**Installation:**
+
+1. Download and extract the ZIP file
+2. Add the `bin` directory to your PATH environment variable, or
+3. Run `qualpal.exe` directly from the extracted location
+
+Headers and libraries are included in the archive for development.
+
+</details>
 
 ### Requirements
 
