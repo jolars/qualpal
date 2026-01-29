@@ -100,6 +100,10 @@ jobs:
             arch: x64
             toolchain: mingw
             name: Windows-x64-MinGW
+          - os: windows-11-arm
+            arch: arm64
+            toolchain: msvc
+            name: Windows-ARM64-MSVC
       fail-fast: false
     runs-on: ${{ matrix.os }}
 
@@ -121,7 +125,7 @@ jobs:
 
       - name: Install dependencies (Windows MSVC)
         if: runner.os == 'Windows' && matrix.toolchain == 'msvc'
-        run: vcpkg install catch2 --triplet x64-windows
+        run: vcpkg install catch2 --triplet ${{ matrix.arch == 'arm64' && 'arm64-windows' || 'x64-windows' }}
 
       - name: Setup cmake
         uses: jwlawson/actions-setup-cmake@v2
@@ -136,7 +140,7 @@ jobs:
 
       - name: Configure CMake (Windows MSVC)
         if: runner.os == 'Windows' && matrix.toolchain == 'msvc'
-        run: cmake -B build -S . -DBUILD_CLI=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows
+        run: cmake -B build -S . -DBUILD_CLI=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=${{ matrix.arch == 'arm64' && 'arm64-windows' || 'x64-windows' }}
 
       - name: Build
         run: cmake --build build ${{ matrix.toolchain == 'msvc' && '--config Release' || '' }}

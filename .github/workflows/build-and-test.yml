@@ -27,8 +27,8 @@ jobs:
             compiler: msvc
             name: Windows x64 MSVC
           - os: windows-11-arm
-            compiler: mingw
-            name: Windows ARM MinGW
+            compiler: msvc
+            name: Windows ARM MSVC
       fail-fast: false
     name: ${{ matrix.name }}
     steps:
@@ -47,27 +47,24 @@ jobs:
           brew install eigen catch2
 
       - name: Install dependencies (Windows MinGW x64)
-        if: runner.os == 'Windows' && matrix.compiler == 'mingw' && matrix.os == 'windows-latest'
+        if: runner.os == 'Windows' && matrix.compiler == 'mingw'
         run: |
           choco install mingw
           vcpkg install catch2 --triplet x64-mingw-dynamic
 
-      - name: Install dependencies (Windows MinGW ARM)
-        if: runner.os == 'Windows' && matrix.compiler == 'mingw' && matrix.os == 'windows-11-arm'
-        run: |
-          choco install mingw
-          vcpkg install catch2 --triplet arm64-mingw-dynamic
+      - name: Install dependencies (Windows MSVC x64)
+        if: runner.os == 'Windows' && matrix.compiler == 'msvc' && matrix.os == 'windows-latest'
+        run: vcpkg install catch2 --triplet x64-windows
 
-      - name: Install dependencies (Windows MSVC)
-        if: runner.os == 'Windows' && matrix.compiler == 'msvc'
-        run: |
-          vcpkg install catch2 --triplet x64-windows
+      - name: Install dependencies (Windows MSVC ARM)
+        if: runner.os == 'Windows' && matrix.compiler == 'msvc' && matrix.os == 'windows-11-arm'
+        run: vcpkg install catch2 --triplet arm64-windows
 
       - name: Setup cmake
         uses: jwlawson/actions-setup-cmake@v2
 
       - name: Configure CMake
-        run: cmake -B build -S . -DBUILD_CLI=ON -DBUILD_TESTING=ON ${{ matrix.compiler == 'mingw' && matrix.os == 'windows-latest' && '-G "MinGW Makefiles" -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-mingw-dynamic' || matrix.compiler == 'mingw' && matrix.os == 'windows-11-arm' && '-G "MinGW Makefiles" -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=arm64-mingw-dynamic' || matrix.compiler == 'msvc' && '-DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows' || '' }}
+        run: cmake -B build -S . -DBUILD_CLI=ON -DBUILD_TESTING=ON ${{ matrix.compiler == 'mingw' && '-G "MinGW Makefiles" -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-mingw-dynamic' || matrix.compiler == 'msvc' && matrix.os == 'windows-latest' && '-DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows' || matrix.compiler == 'msvc' && matrix.os == 'windows-11-arm' && '-DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=arm64-windows' || '' }}
 
       - name: Build
         run: cmake --build build ${{ matrix.compiler == 'msvc' && '--config Release' || '' }}
