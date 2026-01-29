@@ -89,12 +89,12 @@ colorDifferenceMatrix(const std::vector<ColorType>& colors,
 #ifdef _OPENMP
 #pragma omp parallel for num_threads(Threads::get())
 #endif
-  for (std::size_t i = 0; i < n_colors; ++i) {
+  for (int i = 0; i < static_cast<int>(n_colors); ++i) {
     result(i, i) = 0.0;
 #ifdef _OPENMP
 #pragma omp simd
 #endif
-    for (std::size_t j = i + 1; j < n_colors; ++j) {
+    for (std::size_t j = static_cast<std::size_t>(i) + 1; j < n_colors; ++j) {
       double d = metric(colors[i], colors[j]);
       result(i, j) = d;
       result(j, i) = d;
