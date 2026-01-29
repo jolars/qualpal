@@ -385,6 +385,19 @@ endif()
 
 install(FILES LICENSE DESTINATION ${CMAKE_INSTALL_DOCDIR})
 
+# Install Windows runtime libraries (MSVC)
+if(WIN32 AND MSVC)
+    set(CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS_SKIP TRUE)
+    include(InstallRequiredSystemLibraries)
+    if(CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS)
+        install(
+            PROGRAMS ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS}
+            DESTINATION bin
+            COMPONENT Libraries
+        )
+    endif()
+endif()
+
 # CPack configuration for packaging
 
 # Basic package information
@@ -527,15 +540,13 @@ set(CPACK_ARCHIVE_CLI_FILE_NAME
 # ZIP-specific settings (Windows)
 set(CPACK_ZIP_COMPONENT_INSTALL ON)
 
-# Windows-specific settings (NSIS installer - optional)
-if(WIN32)
-    set(CPACK_NSIS_PACKAGE_NAME "qualpal")
-    set(CPACK_NSIS_DISPLAY_NAME "Qualpal Color Palette Generator")
-    set(CPACK_NSIS_HELP_LINK "${CPACK_PACKAGE_HOMEPAGE_URL}")
-    set(CPACK_NSIS_URL_INFO_ABOUT "${CPACK_PACKAGE_HOMEPAGE_URL}")
-    set(CPACK_NSIS_CONTACT "${CPACK_PACKAGE_CONTACT}")
-    set(CPACK_NSIS_MODIFY_PATH ON)
-endif()
+# Configure CPack project-specific options
+configure_file(
+    "${CMAKE_CURRENT_SOURCE_DIR}/cmake/CPackOptions.cmake.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/CPackOptions.cmake"
+    @ONLY
+)
+set(CPACK_PROJECT_CONFIG_FILE "${CMAKE_CURRENT_BINARY_DIR}/CPackOptions.cmake")
 
 # Include CPack after all configuration
 include(CPack)

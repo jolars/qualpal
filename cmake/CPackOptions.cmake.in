@@ -1,0 +1,35 @@
+# CPack project-specific configuration
+# This file is configured by CMake and loaded by CPack after the main config
+
+# Platform-specific settings based on the generator being used
+if(CPACK_GENERATOR MATCHES "NSIS")
+    # Windows NSIS installer specific settings
+    set(CPACK_NSIS_PACKAGE_NAME "qualpal")
+    set(CPACK_NSIS_DISPLAY_NAME "Qualpal Color Palette Generator")
+    set(CPACK_NSIS_HELP_LINK "@CPACK_PACKAGE_HOMEPAGE_URL@")
+    set(CPACK_NSIS_URL_INFO_ABOUT "@CPACK_PACKAGE_HOMEPAGE_URL@")
+    set(CPACK_NSIS_CONTACT "@CPACK_PACKAGE_CONTACT@")
+    set(CPACK_NSIS_MODIFY_PATH ON)
+    
+    # Create start menu shortcuts
+    set(CPACK_PACKAGE_EXECUTABLES "qualpal" "Qualpal")
+    set(CPACK_NSIS_MENU_LINKS
+        "https://github.com/jolars/qualpal" "Qualpal Website"
+        "https://github.com/jolars/qualpal/issues" "Report Issues")
+endif()
+
+if(CPACK_GENERATOR MATCHES "DEB")
+    # Debian-specific settings loaded at CPack time
+    # Architecture is automatically detected
+    message(STATUS "Generating Debian package")
+endif()
+
+if(CPACK_GENERATOR MATCHES "RPM")
+    # RPM-specific settings loaded at CPack time
+    message(STATUS "Generating RPM package")
+endif()
+
+if(CPACK_GENERATOR MATCHES "ZIP|TGZ")
+    # Archive-specific settings
+    message(STATUS "Generating archive package: ${CPACK_GENERATOR}")
+endif()
