@@ -1,0 +1,21 @@
+# Valgrind suppression file for known false positives
+# Usage: valgrind --suppressions=valgrind.supp ...
+
+# OpenMP thread pool allocations
+{
+   openmp_thread_pool
+   Memcheck:Leak
+   match-leak-kinds: possible
+   ...
+   fun:pthread_create*
+   ...
+   obj:*/libgomp.so*
+}
+
+{
+   openmp_gomp_parallel
+   Memcheck:Leak
+   match-leak-kinds: possible
+   ...
+   fun:GOMP_parallel
+}
