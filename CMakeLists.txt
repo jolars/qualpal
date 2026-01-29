@@ -76,7 +76,7 @@ install(
     COMPONENT Development
 )
 
-set(OpenMP_RUNTIME_MSVC "llvm")
+set(OpenMP_RUNTIME_MSVC "experimental")
 
 if(ENABLE_OPENMP)
     find_package(OpenMP)
