@@ -15,6 +15,7 @@ jobs:
       - name: Configure with sanitizers
         run: |
           cmake -B build -S . \
+            -DBUILD_CLI=ON \
             -DBUILD_TESTING=ON \
             -DCMAKE_CXX_FLAGS="-fsanitize=address,undefined -fno-omit-frame-pointer -g"
 
@@ -33,7 +34,7 @@ jobs:
         run: sudo apt-get install -y build-essential catch2 valgrind
 
       - name: Configure
-        run: cmake -B build -S . -DBUILD_TESTING=ON
+        run: cmake -B build -S . -DBUILD_CLI=ON -DBUILD_TESTING=ON
 
       - name: Build
         run: cmake --build build
