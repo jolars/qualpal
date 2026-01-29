@@ -193,7 +193,7 @@ if(BUILD_TESTING)
     endif()
 
     set(ADD_CLI_TESTS OFF)
-    if(ENABLE_CLI_TESTS AND NOT WIN32)
+    if(BUILD_CLI AND ENABLE_CLI_TESTS AND NOT WIN32)
         set(ADD_CLI_TESTS ON)
     endif()
 
