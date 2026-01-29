@@ -11,7 +11,6 @@
 
 #pragma once
 
-#include <cmath>
 #include <qualpal/matrix.h>
 #include <qualpal/metrics.h>
 #include <qualpal/threads.h>
