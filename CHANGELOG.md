@@ -1,5 +1,40 @@
 # Changelog
 
+## [4.0.0](https://github.com/jolars/qualpal/compare/v3.4.0...v4.0.0) (2026-01-29)
+
+### ⚠ BREAKING CHANGES
+
+* correctly compute distances for multiple cvd types
+
+### Features
+
+* add setting to configure white point ([e53f87d](https://github.com/jolars/qualpal/commit/e53f87d59b53cd54e88ee8658806d1d2fabc5545))
+* allow specifying multiple colorspace regions ([69a6bea](https://github.com/jolars/qualpal/commit/69a6bea9c025f9fdd88a135a59dc466fae65ebf8))
+* disable OpenMP on MSVC again ([3fcaec2](https://github.com/jolars/qualpal/commit/3fcaec29ac5a88efae7946fae011d5af2501123a))
+* enable OpenMP on MSVC too through llvm option ([a955388](https://github.com/jolars/qualpal/commit/a955388b0f2fdd9c861ef54245ca2ba357a6fd41))
+* include windows arm binaries ([9b329b1](https://github.com/jolars/qualpal/commit/9b329b116489e1edcb672ede4e87f02ddca98607))
+* use standard deb naming scheme ([c9fad7b](https://github.com/jolars/qualpal/commit/c9fad7b6e179b771f970e86fd721dfeea1f8e102))
+* **web:** support setting white point reference ([b36fc29](https://github.com/jolars/qualpal/commit/b36fc294c046ca5d47a44822e601daa991442f67))
+
+### Bug Fixes
+
+* cast to int for omp loop to fix windows builds ([4d0e336](https://github.com/jolars/qualpal/commit/4d0e336a7e815a41b7440ef112c2ea7cce09b2db))
+* correctly compute distances for multiple cvd types ([ba4f4f2](https://github.com/jolars/qualpal/commit/ba4f4f2c00b741f993d250dd5ab4e531487d2f9f))
+* use correct include path ([adb58f7](https://github.com/jolars/qualpal/commit/adb58f7ade8752ead7e88eeef68fd50e69b4eaa3))
+* use correct path for fetchcontent ([3ba0c12](https://github.com/jolars/qualpal/commit/3ba0c12bb29aab7224fafcbe609e1a53dc3b3c5b))
+* use correct threads header ([e22a8ba](https://github.com/jolars/qualpal/commit/e22a8ba95df98822a2e92124bd4fdb5f60b33f46))
+* use experimental openmp flag ([020b983](https://github.com/jolars/qualpal/commit/020b9831b180a4100eefc9340f070d0843e75f14))
+* use MSVC experimental llvm support ([e9628b4](https://github.com/jolars/qualpal/commit/e9628b494583628159be14bf79ec973d6b95bfb5))
+
+### Performance Improvements
+
+* enable openmp on msvc ([36d9cbf](https://github.com/jolars/qualpal/commit/36d9cbf62afbefcef9f15e1697aeabf6ed8300cb))
+* parallelize matrix minima computations ([fb8e602](https://github.com/jolars/qualpal/commit/fb8e60260c32ae509e4d506ea36d5de7a9b81b46))
+
+### Reverts
+
+* "ci: don't build package on arm64 ubuntu" ([0b60005](https://github.com/jolars/qualpal/commit/0b600057684b43f435daf9e358e2200a7019f58a))
+
 ## [3.4.0](https://github.com/jolars/qualpal/compare/v3.3.0...v3.4.0) (2026-01-07)
 
 ### Features
