@@ -59,16 +59,13 @@
       {
         "assets": [
           {
-            "path": "packages/*.deb",
-            "label": "Debian packages"
+            "path": "packages/*.deb"
           },
           {
-            "path": "packages/*.rpm", 
-            "label": "RPM packages"
+            "path": "packages/*.rpm"
           },
           {
-            "path": "packages/*.tar.gz",
-            "label": "Source archive"
+            "path": "packages/*.tar.gz"
           }
         ]
       }
