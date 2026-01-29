@@ -1,9 +1,9 @@
 #include "farthest_points.h"
 #include "cvd.h"
-#include "threads.h"
 #include <algorithm>
 #include <limits>
 #include <numeric>
+#include <qualpal/threads.h>
 
 namespace qualpal {
 
