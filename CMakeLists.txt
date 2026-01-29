@@ -464,6 +464,8 @@ set(CPACK_RPM_PACKAGE_GROUP "Development/Libraries")
 set(CPACK_RPM_PACKAGE_LICENSE "MIT")
 set(CPACK_RPM_PACKAGE_URL "https://github.com/jolars/qualpal")
 set(CPACK_RPM_PACKAGE_VENDOR "Johan Larsson")
+set(CPACK_RPM_FILE_NAME RPM-DEFAULT)
+set(CPACK_RPM_PACKAGE_RELEASE "1")
 
 # Component-based RPM packaging
 set(CPACK_RPM_COMPONENT_INSTALL ON)
