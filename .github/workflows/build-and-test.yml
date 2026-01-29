@@ -49,9 +49,7 @@ jobs:
           vcpkg install catch2 --triplet x64-windows
 
       - name: Setup cmake
-        uses: jwlawson/actions-setup-cmake@v2.1
-        with:
-          cmake-version: "3.25"
+        uses: jwlawson/actions-setup-cmake@v2
 
       - name: Configure CMake
         run: cmake -B build -S . -DBUILD_CLI=ON -DBUILD_TESTING=ON ${{ matrix.compiler == 'mingw' && '-G "MinGW Makefiles" -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-mingw-dynamic' || matrix.compiler == 'msvc' && '-DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows' || '' }}
@@ -79,9 +77,7 @@ jobs:
       - uses: actions/setup-python@v6
 
       - name: Setup cmake
-        uses: jwlawson/actions-setup-cmake@v2.1
-        with:
-          cmake-version: "3.25"
+        uses: jwlawson/actions-setup-cmake@v2
 
       - name: Configure CMake
         run: cmake -B build -S . -DBUILD_DOCS=ON -DBUILD_TESTING=OFF -DBUILD_CLI=ON
