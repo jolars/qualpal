@@ -76,11 +76,12 @@ install(
     COMPONENT Development
 )
 
-if(ENABLE_OPENMP AND NOT MSVC)
+set(OpenMP_RUNTIME_MSVC "llvm")
+
+if(ENABLE_OPENMP)
     find_package(OpenMP)
     if(OpenMP_FOUND)
         message(STATUS "OpenMP found: ${OpenMP_CXX_FLAGS}")
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
     endif()
 endif()
 
@@ -98,6 +99,10 @@ set_target_properties(
     qualpal
     PROPERTIES VERSION ${PROJECT_VERSION} SOVERSION ${PROJECT_VERSION_MAJOR}
 )
+
+if(OpenMP_FOUND)
+    target_link_libraries(qualpal PUBLIC OpenMP::OpenMP_CXX)
+endif()
 
 install(
     DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/qualpal/
