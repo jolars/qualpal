@@ -40,4 +40,6 @@ jobs:
         run: cmake --build build
 
       - name: Valgrind test
-        run: valgrind --leak-check=full --error-exitcode=1 ./build/tests
+        run: |
+          cd build
+          valgrind --leak-check=full --error-exitcode=1 ./tests
