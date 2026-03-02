@@ -179,14 +179,14 @@ jobs:
 
     steps:
       - name: Download package artifacts
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           pattern: packages-*
           path: packages/
           merge-multiple: true
 
       - name: Download binary artifacts
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           pattern: binaries-*
           path: binaries/
