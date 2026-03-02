@@ -72,7 +72,7 @@ jobs:
           ls -la build/*.{deb,rpm,tar.gz} 2>/dev/null || echo "No packages found"
 
       - name: Upload package artifacts
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: packages-${{ matrix.arch }}
           path: |
@@ -161,7 +161,7 @@ jobs:
           ${{ runner.os == 'Windows' && 'dir build\*.zip' || 'ls -lh build/*.tar.gz' }}
 
       - name: Upload binary artifacts
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: binaries-${{ matrix.name }}
           path: |
