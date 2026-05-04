@@ -396,9 +396,108 @@ TEST_CASE("Qualpal::extend - Regression test with fixed seed")
     REQUIRE(extended_palette[0] == fixed_palette[0]); // Red
     REQUIRE(extended_palette[1] == fixed_palette[1]); // Green
 
-    REQUIRE_THAT(extended_palette[2].r(), WithinAbs(0.27653889863923126, 1e-5));
-    REQUIRE_THAT(extended_palette[2].g(), WithinAbs(0.7256985248726896, 1e-5));
-    REQUIRE_THAT(extended_palette[2].b(), WithinAbs(0.91460724756139977, 1e-5));
+    REQUIRE_THAT(extended_palette[2].r(), WithinAbs(0.44583038600489072, 1e-5));
+    REQUIRE_THAT(extended_palette[2].g(), WithinAbs(0.75035980850923500, 1e-5));
+    REQUIRE_THAT(extended_palette[2].b(), WithinAbs(0.93832982522809871, 1e-5));
+  }
+}
+
+TEST_CASE("Continuous refinement strictly improves palette quality",
+          "[refinement]")
+{
+  using namespace qualpal;
+  using namespace qualpal::colors;
+
+  auto minDeltaE2000 = [](const std::vector<RGB>& pal) {
+    metrics::CIEDE2000 dE;
+    std::vector<Lab> lab;
+    lab.reserve(pal.size());
+    for (const auto& c : pal) {
+      lab.emplace_back(c);
+    }
+    double m = std::numeric_limits<double>::infinity();
+    for (std::size_t i = 0; i < lab.size(); ++i) {
+      for (std::size_t j = i + 1; j < lab.size(); ++j) {
+        m = std::min(m, dE(lab[i], lab[j]));
+      }
+    }
+    return m;
+  };
+
+  SECTION("Refinement does not lower min CIEDE2000 vs discrete-only")
+  {
+    auto baseline = Qualpal{}
+                      .setInputColorspace({ 0, 360 }, { 0.4, 1.0 }, { 0.3, 0.85 })
+                      .setMetric(metrics::MetricType::CIEDE2000)
+                      .setRefinementStarts(0)
+                      .generate(5);
+    auto single = Qualpal{}
+                    .setInputColorspace({ 0, 360 }, { 0.4, 1.0 }, { 0.3, 0.85 })
+                    .setMetric(metrics::MetricType::CIEDE2000)
+                    .setRefinementStarts(1)
+                    .generate(5);
+    auto multi = Qualpal{}
+                   .setInputColorspace({ 0, 360 }, { 0.4, 1.0 }, { 0.3, 0.85 })
+                   .setMetric(metrics::MetricType::CIEDE2000)
+                   .setRefinementStarts(5)
+                   .generate(5);
+    REQUIRE(baseline.size() == 5);
+    REQUIRE(single.size() == 5);
+    REQUIRE(multi.size() == 5);
+    REQUIRE(minDeltaE2000(single) >= minDeltaE2000(baseline) - 1e-9);
+    REQUIRE(minDeltaE2000(multi) >= minDeltaE2000(single) - 1e-9);
+  }
+
+  SECTION("setRefinementStarts rejects negative values")
+  {
+    REQUIRE_THROWS_AS(Qualpal{}.setRefinementStarts(-1),
+                      std::invalid_argument);
+  }
+
+  SECTION("Refinement respects HSL region bounds")
+  {
+    const double eps = 1e-6;
+    auto pal = Qualpal{}
+                 .setInputColorspaceRegions(
+                   { { { 0, 60 }, { 0.5, 1.0 }, { 0.3, 0.7 } },
+                     { { 180, 240 }, { 0.5, 1.0 }, { 0.3, 0.7 } } },
+                   ColorspaceType::HSL)
+                 .generate(6);
+    for (const auto& rgb : pal) {
+      HSL hsl(rgb);
+      bool warm = hsl.h() >= 0 - eps && hsl.h() <= 60 + eps;
+      bool cool = hsl.h() >= 180 - eps && hsl.h() <= 240 + eps;
+      REQUIRE((warm || cool));
+      REQUIRE(hsl.s() >= 0.5 - eps);
+      REQUIRE(hsl.s() <= 1.0 + eps);
+      REQUIRE(hsl.l() >= 0.3 - eps);
+      REQUIRE(hsl.l() <= 0.7 + eps);
+    }
+  }
+
+  SECTION("Refinement preserves CVD-aware min distance")
+  {
+    auto pal = Qualpal{}
+                 .setInputColorspace({ 0, 360 }, { 0.4, 1.0 }, { 0.3, 0.85 })
+                 .setCvd({ { "deutan", 1.0 } })
+                 .generate(5);
+    REQUIRE(pal.size() == 5);
+    metrics::CIEDE2000 dE;
+    std::vector<Lab> lab_normal;
+    std::vector<Lab> lab_cvd;
+    for (const auto& rgb : pal) {
+      lab_normal.emplace_back(rgb);
+      lab_cvd.emplace_back(simulateCvd(rgb, "deutan", 1.0));
+    }
+    double m = std::numeric_limits<double>::infinity();
+    for (std::size_t i = 0; i < pal.size(); ++i) {
+      for (std::size_t j = i + 1; j < pal.size(); ++j) {
+        m = std::min(m,
+                     std::min(dE(lab_normal[i], lab_normal[j]),
+                              dE(lab_cvd[i], lab_cvd[j])));
+      }
+    }
+    REQUIRE(m > 5.0);
   }
 }
 

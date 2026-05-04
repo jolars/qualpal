@@ -324,6 +324,20 @@ if(BUILD_TUNING)
         tune_candidates
         PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/tools"
     )
+
+    add_executable(multistart_bench tools/multistart_bench.cpp)
+    target_link_libraries(multistart_bench PRIVATE qualpal::qualpal)
+    target_include_directories(
+        multistart_bench
+        PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include
+    )
+    if(OpenMP_FOUND)
+        target_link_libraries(multistart_bench PRIVATE OpenMP::OpenMP_CXX)
+    endif()
+    set_target_properties(
+        multistart_bench
+        PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/tools"
+    )
 endif()
 
 if(BUILD_WASM)

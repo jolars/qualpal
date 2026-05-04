@@ -4,6 +4,7 @@ add_library(
     qualpal/color_difference.cpp
     qualpal/colors.cpp
     qualpal/cvd.cpp
+    qualpal/continuous_refinement.cpp
     qualpal/farthest_points.cpp
     qualpal/palettes.cpp
     qualpal/validation.cpp

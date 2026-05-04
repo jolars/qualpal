@@ -1,7 +1,5 @@
 #include <algorithm>
 #include <array>
-#include <cmath>
-#include <limits>
 #include <qualpal/colors.h>
 #include <vector>
 
@@ -135,8 +133,7 @@ hslColorGridDirect(const std::array<double, 2>& h_lim_hsl,
                    const std::array<double, 2>& l_lim_hsl,
                    std::size_t n_points)
 {
-  auto hsl =
-    colorGrid<colors::HSL>(h_lim_hsl, s_lim_hsl, l_lim_hsl, n_points);
+  auto hsl = colorGrid<colors::HSL>(h_lim_hsl, s_lim_hsl, l_lim_hsl, n_points);
   std::vector<colors::RGB> out;
   out.reserve(hsl.size());
   for (const auto& c : hsl) {
@@ -226,16 +223,14 @@ hslColorGridViaLch(const std::array<double, 2>& h_lim_hsl,
   // Budget: 50 attempts per output. Wide HSL ranges (>10% LCHab acceptance)
   // finish well below the cap; ranges that drive acceptance under ~2% start
   // requiring HSL top-up.
-  const std::size_t max_attempts =
-    std::max<std::size_t>(n_points * 50, 20000);
+  const std::size_t max_attempts = std::max<std::size_t>(n_points * 50, 20000);
 
   auto out = hslColorGridLchAttempt(
     h_lim_hsl, s_lim_hsl, l_lim_hsl, n_points, max_attempts);
 
   if (out.size() < n_points) {
     std::size_t deficit = n_points - out.size();
-    auto top_up =
-      hslColorGridDirect(h_lim_hsl, s_lim_hsl, l_lim_hsl, deficit);
+    auto top_up = hslColorGridDirect(h_lim_hsl, s_lim_hsl, l_lim_hsl, deficit);
     out.insert(out.end(), top_up.begin(), top_up.end());
   }
 
