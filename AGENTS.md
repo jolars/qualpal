@@ -93,6 +93,7 @@ task build   # Basic build
 - `BUILD_TESTING=ON` - Tests (auto-fetches Catch2)
 - `BUILD_DOCS=ON` - Docs (needs doxygen, graphviz)
 - `BUILD_WASM=ON` - WebAssembly (needs Emscripten)
+- `BUILD_TUNING=ON` - Builds `tools/tune_candidates` for measuring candidate-sampling quality (palette min/median ΔE2000 across configs)
 - `ENABLE_COVERAGE=ON` - Coverage
 - `ENABLE_SANITIZER=ON` - AddressSanitizer/UBSan
 
