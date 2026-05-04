@@ -1,5 +1,6 @@
 #include "../src/qualpal/color_grid.h"
 #include "../src/qualpal/cvd.h"
+#include <catch2/catch_approx.hpp>
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/matchers/catch_matchers_floating_point.hpp>
 #include <qualpal.h>
@@ -395,9 +396,53 @@ TEST_CASE("Qualpal::extend - Regression test with fixed seed")
     REQUIRE(extended_palette[0] == fixed_palette[0]); // Red
     REQUIRE(extended_palette[1] == fixed_palette[1]); // Green
 
-    REQUIRE_THAT(extended_palette[2].r(), WithinAbs(0.1151009398148148, 1e-5));
-    REQUIRE_THAT(extended_palette[2].g(), WithinAbs(0.10663743209876542, 1e-5));
-    REQUIRE_THAT(extended_palette[2].b(), WithinAbs(0.72568256790123464, 1e-5));
+    REQUIRE_THAT(extended_palette[2].r(), WithinAbs(0.27653889863923126, 1e-5));
+    REQUIRE_THAT(extended_palette[2].g(), WithinAbs(0.7256985248726896, 1e-5));
+    REQUIRE_THAT(extended_palette[2].b(), WithinAbs(0.91460724756139977, 1e-5));
+  }
+}
+
+TEST_CASE("HSL input handles narrow and pinned axes", "[colorspace-degenerate]")
+{
+  using namespace qualpal::colors;
+
+  SECTION("Pinned lightness produces a usable palette")
+  {
+    auto pal = qualpal::Qualpal{}
+                 .setInputColorspace({ 0, 360 }, { 0.4, 1.0 }, { 0.5, 0.5 })
+                 .generate(5);
+    REQUIRE(pal.size() == 5);
+    // All candidates were drawn with HSL l == 0.5. The selected palette
+    // colors should round-trip to HSL lightness near 0.5.
+    for (const auto& rgb : pal) {
+      HSL hsl(rgb);
+      REQUIRE(hsl.l() == Catch::Approx(0.5).margin(0.02));
+    }
+  }
+
+  SECTION("Pinned saturation produces a usable palette")
+  {
+    auto pal = qualpal::Qualpal{}
+                 .setInputColorspace({ 0, 360 }, { 0.7, 0.7 }, { 0.3, 0.7 })
+                 .generate(5);
+    REQUIRE(pal.size() == 5);
+    for (const auto& rgb : pal) {
+      HSL hsl(rgb);
+      REQUIRE(hsl.s() == Catch::Approx(0.7).margin(0.02));
+    }
+  }
+
+  SECTION("Very narrow lightness range still yields distinct colors")
+  {
+    auto pal = qualpal::Qualpal{}
+                 .setInputColorspace({ 0, 360 }, { 0.5, 1.0 }, { 0.49, 0.51 })
+                 .generate(4);
+    REQUIRE(pal.size() == 4);
+    for (std::size_t i = 0; i < pal.size(); ++i) {
+      for (std::size_t j = i + 1; j < pal.size(); ++j) {
+        REQUIRE(pal[i] != pal[j]);
+      }
+    }
   }
 }
 

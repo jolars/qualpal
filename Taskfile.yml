@@ -165,3 +165,52 @@ tasks:
     desc: Generate color palette examples for documentation
     cmds:
       - bash docs/generate_palettes.sh
+
+  ingest-paper:
+    desc: "Fast first-pass parse of a PDF paper into references/<NAME>/source.md (pymupdf4llm)."
+    summary: |
+      Args:
+        PDF=path/to/paper.pdf  source PDF (copied to references/<NAME>/source.pdf)
+        NAME=lbfgs             slug for the references/<NAME>/ directory
+
+      Output:
+        references/<NAME>/source.pdf   copy of the input
+        references/<NAME>/source.md    pymupdf4llm-parsed markdown (full doc)
+
+      pymupdf4llm is fast (~1s) but mangles equations and drops figures. For
+      pages where math fidelity matters, follow up with `task ingest-paper-pages`.
+    requires:
+      vars: [PDF, NAME]
+    cmds:
+      - mkdir -p references/{{.NAME}}
+      - cp -n {{.PDF}} references/{{.NAME}}/source.pdf
+      - >
+        uv run --project tools python -c
+        "import pymupdf4llm, pathlib;
+        p = pathlib.Path('references/{{.NAME}}');
+        p.joinpath('source.md').write_text(pymupdf4llm.to_markdown(str(p / 'source.pdf')))"
+
+  ingest-paper-pages:
+    desc: "Marker pass on selected PDF pages (slow, high quality math/figures). Outputs source.marker.md."
+    summary: |
+      Args:
+        NAME=lbfgs             slug under references/
+        PAGES="3-4,7"          0-indexed PDF page range (marker convention)
+
+      Output:
+        references/<NAME>/source.marker.md    marker-parsed markdown for those pages
+
+      Marker is ML-based and slow on CPU (~minutes per page). Run only on pages
+      where pymupdf4llm's output is unusable (dense equations, critical figures).
+    requires:
+      vars: [NAME, PAGES]
+    cmds:
+      - >
+        uv run --project tools marker_single
+        references/{{.NAME}}/source.pdf
+        --config_json tools/marker_config.json
+        --page_range "{{.PAGES}}"
+        --output_dir references/{{.NAME}}/
+      # marker writes to references/<NAME>/source/source.md by default; flatten:
+      - mv references/{{.NAME}}/source/source.md references/{{.NAME}}/source.marker.md
+      - rm -rf references/{{.NAME}}/source

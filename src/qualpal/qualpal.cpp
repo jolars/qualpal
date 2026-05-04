@@ -201,11 +201,11 @@ Qualpal::selectColors(std::size_t n,
         std::size_t region_points = points_per_region + (i < remainder ? 1 : 0);
 
         if (colorspace_input == ColorspaceType::HSL) {
-          for (const auto& hsl : colorGrid<colors::HSL>(region.h_lim,
-                                                        region.s_or_c_lim,
-                                                        region.l_lim,
-                                                        region_points)) {
-            rgb_colors_in.emplace_back(hsl);
+          for (const auto& rgb : hslColorGridViaLch(region.h_lim,
+                                                   region.s_or_c_lim,
+                                                   region.l_lim,
+                                                   region_points)) {
+            rgb_colors_in.push_back(rgb);
           }
         } else if (colorspace_input == ColorspaceType::LCHab) {
           for (const auto& lch : colorGrid<colors::LCHab>(region.h_lim,

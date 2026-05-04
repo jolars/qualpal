@@ -23,6 +23,7 @@ option(BUILD_DOCS "Build documentation" OFF)
 option(BUILD_CLI "Build CLI application" OFF)
 option(BUILD_VISUALIZATIONS "Build visualization tools" OFF)
 option(BUILD_WASM "Build WebAssembly bindings" OFF)
+option(BUILD_TUNING "Build tuning/benchmark tools" OFF)
 option(DAP_DEBUG "Interactive debugging" OFF)
 option(ENABLE_COVERAGE "Generate coverage report" OFF)
 option(ENABLE_CLI_TESTS "Enable CLI tests" ON)
@@ -309,6 +310,19 @@ if(BUILD_DOCS)
         include/
         ALL
         COMMENT "Generate package documentation"
+    )
+endif()
+
+if(BUILD_TUNING)
+    add_executable(tune_candidates tools/tune_candidates.cpp)
+    target_link_libraries(tune_candidates PRIVATE qualpal::qualpal)
+    target_include_directories(
+        tune_candidates
+        PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include
+    )
+    set_target_properties(
+        tune_candidates
+        PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/tools"
     )
 endif()
 
