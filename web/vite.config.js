@@ -11,7 +11,7 @@ export default defineConfig({
   ],
   build: {
     target: "esnext",
-    minify: "esbuild",
+    minify: "oxc",
     sourcemap: false,
     cssCodeSplit: true,
     assetsInlineLimit: 4096,
