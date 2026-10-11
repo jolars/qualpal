@@ -1,5 +1,18 @@
 # Changelog
 
+## [4.1.0](https://github.com/jolars/qualpal/compare/v4.0.0...v4.1.0) (2026-10-11)
+
+### Features
+
+- migrate web app to Cloudflare Workers ([`5e22578`](https://github.com/jolars/qualpal/commit/5e22578ef59d6a06829fcd0ab3c03f31ed243067))
+- add continuos refinement and multi-starts ([`75ba64a`](https://github.com/jolars/qualpal/commit/75ba64af849252b2b4cb4db750971339e311cde7))
+- use LCHab-sampler for HSL input to improve end-results ([`bff6323`](https://github.com/jolars/qualpal/commit/bff632307531c1404fb75e2756023f73571d56d0))
+
+### Bug Fixes
+
+- **web:** bump js-yaml and yaml to patch vulnerabilities ([`971c9da`](https://github.com/jolars/qualpal/commit/971c9dab3f75da5ca40b2f575eaac2e357489caf))
+- **web:** use oxc minifier for Vite 8 ([`d414ee4`](https://github.com/jolars/qualpal/commit/d414ee42733cb48e34218e8ad23d80bcb310c7c5))
+
 ## [4.0.0](https://github.com/jolars/qualpal/compare/v3.4.0...v4.0.0) (2026-01-29)
 
 ### ⚠ BREAKING CHANGES
