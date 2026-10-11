@@ -68,7 +68,7 @@ task build   # Basic build
 **codecov.yml** (PR, push to main) - Code coverage reporting.  
 **leaks.yml** (Manual) - AddressSanitizer/UBSan, Valgrind for memory leaks.  
 **docs.yml** (Release, manual) - Doxygen docs to GitHub Pages.  
-**release.yml** (Manual) - Semantic versioning releases.
+**release.yml** (Push to main, manual) - Versionary releases after build and test.
 
 **Pre-commit validation:**
 
@@ -78,7 +78,12 @@ task build   # Basic build
 
 **Release Process:**
 
-- Releases use semantic-release with Conventional Commits
+- Releases use Versionary with Conventional Commits and release PRs. The
+  `release.yml` workflow runs Versionary after build and test pass. It uses the
+  `RELEASE_TOKEN` secret so published releases trigger docs and package builds.
+- `versionary.jsonc` configures releases and updates `version.txt`. The bootstrap
+  SHA points to `v4.0.0`; Versionary tracks later releases in
+  `.versionary-manifest.json`.
 - CHANGELOG.md is auto-generated (never edit manually)
 - Breaking changes require `!` suffix or `BREAKING CHANGE:` footer
 - Version bumping: major (breaking), minor (feat), patch (fix)
@@ -108,7 +113,7 @@ task build   # Basic build
   - `test:` - Test additions/changes
   - `refactor:`, `perf:`, `style:`, `chore:` - Other changes
   - Use `!` or `BREAKING CHANGE:` footer for breaking changes (e.g., `fix!: ...`)
-  - CHANGELOG is auto-generated via semantic-release (do NOT edit manually)
+  - CHANGELOG is auto-generated via Versionary (do NOT edit manually)
 
 **Dependencies:** CLI11 and Catch2 auto-fetched. OpenMP optional (parallelization). help2man optional (man pages).
 

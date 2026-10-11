@@ -2,10 +2,9 @@ name: Docs
 
 on:
   workflow_dispatch:
-  workflow_run:
-    workflows: ["Release"]
+  release:
     types:
-      - completed
+      - published
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -13,7 +12,7 @@ concurrency:
 
 jobs:
   docs:
-    if: ${{ github.ref == 'refs/heads/main' }}
+    if: github.event_name == 'release' || github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     permissions:
       pages: write

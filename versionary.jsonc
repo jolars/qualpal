@@ -1,0 +1,10 @@
+{
+  "$schema": "https://raw.githubusercontent.com/jolars/versionary/main/schemas/config.json",
+  "version": 1,
+  "review-mode": "pr",
+  "release-type": "simple",
+  "version-file": "version.txt",
+  "bootstrap-sha": "8b62005b233abec05077d99da36feecbdd611a5b",
+  "include-commit-authors": true,
+  "release-reference-comments": "best-effort"
+}

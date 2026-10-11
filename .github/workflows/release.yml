@@ -2,10 +2,13 @@ name: Release
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   build-and-test:
@@ -19,27 +22,21 @@ jobs:
   release:
     name: Release
     needs: build-and-test
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     permissions:
       contents: write
       issues: write
       pull-requests: write
-      id-token: write
-
     steps:
       - name: Checkout
         uses: actions/checkout@v7
         with:
           fetch-depth: 0
-          persist-credentials: false
+          fetch-tags: true
+          token: ${{ secrets.RELEASE_TOKEN || github.token }}
 
-      - name: Semantic Release
-        uses: cycjimmy/semantic-release-action@v6
+      - name: Versionary
+        uses: jolars/versionary@v1
         with:
-          extra_plugins: |
-            @semantic-release/changelog
-            @semantic-release/git
-            conventional-changelog-conventionalcommits
-            semantic-release-replace-plugin
-        env:
-          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+          token: ${{ secrets.RELEASE_TOKEN }}
