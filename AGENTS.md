@@ -33,7 +33,7 @@ Build time: ~30-60 seconds
 ctest --test-dir build --output-on-failure
 ```
 
-82 tests, ~2 seconds. All must pass.
+All configured tests must pass. The test count depends on build options and platform.
 
 **Clean build:**
 
@@ -55,7 +55,7 @@ task build   # Basic build
 - `include/qualpal/` - Public API headers (qualpal.h is main entry point)
 - `src/qualpal/` - Core library implementation
 - `src/main.cpp` - CLI application
-- `tests/` - Catch2 test suite (82 tests)
+- `tests/` - Catch2 test suite
 - `web/` - Svelte web app (Node.js, Vite)
 - `docs/` - Documentation markdown
 - `CMakeLists.txt` - Main build config (options: BUILD_CLI, BUILD_TESTING, BUILD_DOCS, BUILD_WASM)
@@ -64,7 +64,7 @@ task build   # Basic build
 
 ## CI/CD Workflows
 
-**build-and-test.yml** (PR, push to main) - Primary validation. Tests on Ubuntu, macOS (latest+13), Windows.  
+**build-and-test.yml** (PR, push to main) - Primary validation. Tests on Ubuntu, macOS (`macos-latest` and `macos-14`), Windows.\
 **codecov.yml** (PR, push to main) - Code coverage reporting.  
 **leaks.yml** (Manual) - AddressSanitizer/UBSan, Valgrind for memory leaks.  
 **docs.yml** (Release, manual) - Doxygen docs to GitHub Pages.  
@@ -73,7 +73,7 @@ task build   # Basic build
 **Pre-commit validation:**
 
 1. Build: `cmake --build build`
-2. Test: `ctest --test-dir build --output-on-failure` (all 85 must pass)
+2. Test: `ctest --test-dir build --output-on-failure` (all configured tests must pass)
 3. Format (optional): `clang-format -i <files>`
 
 **Release Process:**
@@ -92,7 +92,7 @@ task build   # Basic build
 
 **Build:** ALWAYS use `cmake -B build -S . [OPTIONS]` then `cmake --build build`. DO NOT run `make` directly.
 
-**CMake Options** (defaults OFF):
+**CMake Options** (all listed options default to OFF except `BUILD_TESTING`, which defaults to ON):
 
 - `BUILD_CLI=ON` - CLI application
 - `BUILD_TESTING=ON` - Tests (auto-fetches Catch2)
