@@ -207,3 +207,7 @@ devenv.local.yaml
 
 # pre-commit
 .pre-commit-config.yaml
+
+# Cloudflare local state and secrets
+.wrangler/
+.dev.vars*

@@ -85,6 +85,22 @@ Qualpal is also available as a web application at
 limited functionality compared to the library and R package, but it allows
 users to quickly generate color palettes directly in their browser.
 
+The app is hosted on Cloudflare Workers with Static Assets. To run the production
+server locally, run `npm ci` and `npm run dev:worker` in `web/`. Use
+`npm run test:worker` to test content negotiation and `npm run deploy` to build
+and deploy the app. The Web GitHub Actions workflow validates pull requests and
+deploys changes on `main` using the `CLOUDFLARE_API_TOKEN` and
+`CLOUDFLARE_ACCOUNT_ID` repository secrets.
+
+Requests to the homepage with `Accept: text/markdown` receive the app's usage
+guide from `web/public/index.md`. Browsers receive HTML by default. Both responses
+include `Vary: Accept`. Keep the Markdown guide current when app features change.
+
+The custom domain `qualpal.cc` is configured in `web/wrangler.jsonc`. Deployment
+connects it to the Worker. Remove the previous host's apex DNS records before the
+first custom-domain deployment. Disable the old Netlify Git integration after
+verifying the migrated site.
+
 ## JOSS Paper
 
 Qualpal has been [published in JOSS](https://doi.org/10.21105/joss.08936).
