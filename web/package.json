@@ -31,7 +31,7 @@
     "vite": "^8.3.5",
     "vite-plugin-compression": "^0.5.1",
     "vite-plugin-sitemap": "^0.8.2",
-    "wrangler": "^4.149.0",
+    "wrangler": "^4.156.0",
     "yaml": "^2.8.1"
   }
 }
