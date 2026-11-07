@@ -11,6 +11,9 @@
   const segmentCount = 120; // Increase for smoother wheel
   const handleRadius = 10;
 
+  $: hueSpan = hueMax - hueMin + (hueMin > hueMax ? 360 : 0);
+  $: singleHue = hueSpan === 0;
+
   function angleToPos(angle: number) {
     const rad = ((angle - 90) * Math.PI) / 180;
     return {
@@ -111,14 +114,25 @@
       stroke-width="2"
       style="z-index: 1;"
     />
-    <path
-      d={`M${angleToPos(hueMax).x},${angleToPos(hueMax).y}
-        A${radius},${radius} 0 ${(hueMin + 360 - hueMax) % 360 > 180 ? 1 : 0},1 ${angleToPos(hueMin).x},${angleToPos(hueMin).y}`}
-      stroke="rgba(0,0,0,0.7)"
-      stroke-width="16"
-      fill="none"
-      style="z-index: 2;"
-    />
+    {#if singleHue}
+      <circle
+        cx={center}
+        cy={center}
+        r={radius}
+        stroke="rgba(0,0,0,0.7)"
+        stroke-width="16"
+        fill="none"
+      />
+    {:else}
+      <path
+        d={`M${angleToPos(hueMax).x},${angleToPos(hueMax).y}
+          A${radius},${radius} 0 ${(hueMin + 360 - hueMax) % 360 > 180 ? 1 : 0},1 ${angleToPos(hueMin).x},${angleToPos(hueMin).y}`}
+        stroke="rgba(0,0,0,0.7)"
+        stroke-width="16"
+        fill="none"
+        style="z-index: 2;"
+      />
+    {/if}
     <!-- Handles -->
     <circle
       cx={angleToPos(hueMin).x}
@@ -142,7 +156,7 @@
       cx={angleToPos(hueMax).x}
       cy={angleToPos(hueMax).y}
       r={handleRadius}
-      fill="#fff"
+      fill={singleHue ? `hsl(${hueMax}, 100%, 50%)` : "#fff"}
       stroke="#333"
       stroke-width="2"
       style="cursor: pointer; touch-action: none; z-index: 3;"
@@ -159,6 +173,10 @@
   </svg>
 </div>
 <div class="flex justify-between mt-2 text-sm">
-  <span>Start: {hueMin}°</span>
-  <span>End: {hueMax}°</span>
+  {#if singleHue}
+    <span>Single hue: {hueMax}°</span>
+  {:else}
+    <span>Start: {hueMin}°</span>
+    <span>End: {hueMax}°</span>
+  {/if}
 </div>
