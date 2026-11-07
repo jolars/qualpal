@@ -64,7 +64,7 @@ task build   # Basic build
 
 ## CI/CD Workflows
 
-**build-and-test.yml** (PR, push to main) - Primary validation. Tests on Ubuntu, macOS (`macos-latest` and `macos-14`), Windows.\
+**build-and-test.yml** (PR, push to main) - Primary validation. Tests on Ubuntu, macOS (`macos-latest` and `macos-15-intel`), Windows.\
 **leaks.yml** (Manual) - AddressSanitizer/UBSan, Valgrind for memory leaks.  
 **docs.yml** (Release, manual) - Doxygen docs to GitHub Pages.  
 **release.yml** (Push to main, manual) - Versionary releases after build and test.
