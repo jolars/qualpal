@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.1.1](https://github.com/jolars/qualpal/compare/v4.1.0...v4.1.1) (2026-11-10)
+
+### Bug Fixes
+
+- **docs:** proxy assets under the docs path ([`f73efa5`](https://github.com/jolars/qualpal/commit/f73efa507f8ab52d2ddc70e8e5994ca6aa953621))
+- **ci:** use supported macOS Intel runner ([`fd9f9c7`](https://github.com/jolars/qualpal/commit/fd9f9c75652f2fb836fdd98998f1ce794d26f702))
+- **web:** show equal endpoints as a single hue ([`55e0907`](https://github.com/jolars/qualpal/commit/55e090704522a578bf0da319d4c64ebe0be8d774)), fixes [#91](https://github.com/jolars/qualpal/issues/91)
+
 ## [4.1.0](https://github.com/jolars/qualpal/compare/v4.0.0...v4.1.0) (2026-10-11)
 
 ### Features
