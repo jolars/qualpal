@@ -4,7 +4,16 @@ updates:
     directory: "/web"
     schedule:
       interval: "weekly"
+    groups:
+      website:
+        patterns:
+          - "*"
+
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
+    groups:
+      actions:
+        patterns:
+          - "*"
