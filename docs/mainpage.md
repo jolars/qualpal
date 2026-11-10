@@ -45,4 +45,4 @@ especially for data visualization tasks.
 - [Browse the extensive list of examples](#examples)
 - [Learn about the algorithm](#algorithm)
 - [Explore the color spaces](#colors)
-- [Read the API documentation](https://jolars.github.io/qualpal/namespaces.html)
+- [Read the API documentation](namespaces.html)

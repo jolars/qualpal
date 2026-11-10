@@ -1,9 +1,20 @@
 {
+  config,
+  lib,
   pkgs,
   ...
 }:
 
 {
+  # The npm workerd executable needs the Nix dynamic linker on Linux.
+  env = lib.optionalAttrs pkgs.stdenv.isLinux {
+    MINIFLARE_WORKERD_PATH = "${pkgs.writeShellScript "qualpal-workerd" ''
+      cd "${config.devenv.root}/web"
+      binary=$(node -e 'const {createRequire}=require("node:module"); const wrangler=createRequire(require.resolve("wrangler/package.json")); const miniflare=createRequire(wrangler.resolve("miniflare/package.json")); process.stdout.write(miniflare("workerd").default);')
+      exec "${pkgs.stdenv.cc.bintools.dynamicLinker}" "$binary" "$@"
+    ''}";
+  };
+
   packages = with pkgs; [
     git
     bashInteractive
@@ -28,6 +39,7 @@
     emscripten
     emscriptenStdenv
     nodejs
+    python3
     tailwindcss
     autoprefixer
     prettierd

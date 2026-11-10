@@ -109,7 +109,7 @@
           >
             qualpal
           </a>. Find out more about the underlying algorithm in the
-          <a href="https://github.io/jolars/qualpal">official documentation</a>.
+          <a href="https://qualpal.cc/docs/">official documentation</a>.
           Bindings for R can be found in the
           <a href="https://cran.r-project.org/package=qualpalr">qualpalr</a> package.
         </p>

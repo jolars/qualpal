@@ -300,6 +300,12 @@ if(BUILD_DOCS)
     set(DOXYGEN_HAVE_DOT YES)
     set(DOXYGEN_DOT_IMAGE_FORMAT svg)
 
+    configure_file(
+        docs/_redirects
+        ${CMAKE_CURRENT_BINARY_DIR}/docs/html/_redirects
+        COPYONLY
+    )
+
     doxygen_add_docs(
         docs
         docs/algorithm.md

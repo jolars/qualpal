@@ -57,10 +57,29 @@ tasks:
       - cd {{.BUILD_DIR}} && bash "$(pwd)/../docs/generate_plots.sh"
 
   docs:
-    deps: [plots]
+    desc: Build Doxygen documentation from checked-in guides and figures
     cmds:
       - cmake -B {{.BUILD_DIR}} -S . -DBUILD_DOCS=ON -DBUILD_TESTING=OFF -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
-      - cmake {{.CMAKE_BUILD_FLAGS}}
+      - cmake --build {{.BUILD_DIR}} --target docs
+
+  docs:check:
+    desc: Check documentation links, published paths, and Workers packaging
+    deps: [docs]
+    cmds:
+      - python3 docs/check_site.py {{.BUILD_DIR}}/docs/html
+      - npm exec --prefix web -- wrangler deploy --config docs/wrangler.jsonc --dry-run
+
+  docs:preview:
+    desc: Serve the documentation at http://localhost:8787/docs/
+    deps: [docs]
+    cmds:
+      - npm exec --prefix web -- wrangler dev --config docs/wrangler.jsonc
+
+  docs:deploy:
+    desc: Deploy documentation to https://qualpal.cc/docs/
+    deps: [docs:check]
+    cmds:
+      - npm exec --prefix web -- wrangler deploy --config docs/wrangler.jsonc
 
   coverage:
     cmds:

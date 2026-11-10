@@ -1,0 +1,18 @@
+{
+  "$schema": "../web/node_modules/wrangler/config-schema.json",
+  "name": "qualpal-docs",
+  "compatibility_date": "2026-11-10",
+  "workers_dev": true,
+  // Route matching includes query strings, so the mount needs a trailing wildcard.
+  "routes": [{ "pattern": "qualpal.cc/docs*", "zone_name": "qualpal.cc" }],
+  "assets": {
+    "directory": "../build/docs/html",
+    "base_path": "/docs",
+    "html_handling": "none",
+    "not_found_handling": "none",
+  },
+  "observability": {
+    "enabled": true,
+    "traces": { "enabled": true, "head_sampling_rate": 0.01 },
+  },
+}

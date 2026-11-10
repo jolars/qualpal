@@ -1,7 +1,7 @@
 # Qualpal <picture><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/jolars/qualpal/refs/heads/main/docs/images/logo.svg" align="right" width="139"> <img alt="The logo for Qualpal, which is a painting palette with five distinct colors." src="https://raw.githubusercontent.com/jolars/qualpal/refs/heads/main/docs/images/logo-dark.svg" align="right" width="139"> </picture>
 
 [![Build Status](https://github.com/jolars/qualpal/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/jolars/qualpal/actions/workflows/build-and-test.yml)
-[![Docs](https://img.shields.io/badge/docs-stable-blue.svg?logo=readthedocs)](https://jolars.github.io/qualpal/)
+[![Docs](https://img.shields.io/badge/docs-stable-blue.svg?logo=readthedocs)](https://qualpal.cc/docs/)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17194762.svg)](https://doi.org/10.5281/zenodo.17194762)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/qualpalr)](https://cran.r-project.org/package=qualpalr)
 [![App](https://img.shields.io/badge/🌐%20%20App-qualpal.cc-blue)](https://qualpal.cc)
@@ -14,7 +14,7 @@ input formats, color vision deficiency simulation, and perceptual color
 difference metrics.
 
 Full documentation is available at
-[https://jolars.github.io/qualpal/](https://jolars.github.io/qualpal/).
+[qualpal.cc/docs/](https://qualpal.cc/docs/).
 
 This library is also available as
 
@@ -39,6 +39,7 @@ This library is also available as
 - [Motivation](#motivation)
 - [R Package](#r-package)
 - [Web App](#web-app)
+- [Documentation](#documentation)
 - [Quick Start](#quick-start)
 - [Installation](#installation)
 - [Usage Examples](#usage-examples)
@@ -99,6 +100,40 @@ The custom domain `qualpal.cc` is configured in `web/wrangler.jsonc`. Deployment
 connects it to the Worker. Remove the previous host's apex DNS records before the
 first custom-domain deployment. Disable the old Netlify Git integration after
 verifying the migrated site.
+
+## Documentation
+
+The documentation uses Doxygen and Cloudflare Workers Static Assets at
+[qualpal.cc/docs/](https://qualpal.cc/docs/). Install the shared Workers tooling
+with `npm ci --prefix web`, then run:
+
+```bash
+task docs:check    # Build, check links and compatibility, and validate Workers packaging
+task docs:preview  # Serve http://localhost:8787/docs/
+```
+
+The documentation build uses checked-in figures. Regenerate them with `task plots`
+when updating the algorithm illustrations.
+
+The Linux devenv environment supplies the dynamic loader needed by npm's workerd
+binary. The documentation Worker, `qualpal-docs`, uses `docs/wrangler.jsonc` and
+the Wrangler version locked in `web/package-lock.json`. It serves `/docs` and
+`/docs/*` on the app's existing Cloudflare domain, retaining Doxygen's `.html`
+paths and anchors. The documentation Worker serves the generated files directly.
+
+The Docs workflow builds and checks the site on published releases and manual
+runs on `main`, then deploys the checked artifact using the existing
+`CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` repository secrets. The token
+must allow managing Worker routes in the `qualpal.cc` zone. Pull requests run the
+same build and packaging checks without deployment credentials. To deploy
+locally, run `task docs:deploy` with Cloudflare credentials configured.
+
+After a successful Workers deployment, the workflow replaces the old GitHub
+Pages site with compatibility redirects. They preserve page paths, query
+parameters, and fragments in browsers. GitHub Pages also retains public assets
+for existing external links. Keep Pages enabled while those historical URLs are
+in use. `docs/site-contract.json` records published paths and key anchors, and
+`docs/check_site.py` checks that each build preserves them.
 
 ## JOSS Paper
 
@@ -174,7 +209,7 @@ man qualpal
 ```
 
 You can also view the [Doxygen-generated
-documentation](https://jolars.github.io/qualpal/) for detailed CLI and API
+documentation](https://qualpal.cc/docs/) for detailed CLI and API
 usage.
 
 #### Examples

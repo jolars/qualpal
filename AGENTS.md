@@ -66,7 +66,8 @@ task build   # Basic build
 
 **build-and-test.yml** (PR, push to main) - Primary validation. Tests on Ubuntu, macOS (`macos-latest` and `macos-15-intel`), Windows.\
 **leaks.yml** (Manual) - AddressSanitizer/UBSan, Valgrind for memory leaks.  
-**docs.yml** (Release, manual) - Doxygen docs to GitHub Pages.  
+**docs.yml** (Release, manual) - Doxygen docs to Cloudflare Workers at
+`https://qualpal.cc/docs/`; GitHub Pages serves legacy redirects after deployment.
 **release.yml** (Push to main, manual) - Versionary releases after build and test.
 
 **Pre-commit validation:**
@@ -143,7 +144,13 @@ ctest --test-dir build --output-on-failure
 ./build/qualpal -n 3 "#ff0000" "#00ff00" "#0000ff"  # Manual test
 ```
 
-**Documentation:** Edit `docs/*.md` or add Doxygen comments in headers. Verify: `cmake -B build -S . -DBUILD_DOCS=ON && cmake --build build`
+**Documentation:** Edit `docs/*.md` or add Doxygen comments in headers. Install
+Workers tooling with `npm ci --prefix web`. Run `task docs:check` to build, check
+links and published paths, and validate Workers packaging. Use `task docs:preview`
+to serve `http://localhost:8787/docs/`. `task docs:deploy` publishes to Workers.
+`docs/wrangler.jsonc` reuses the Wrangler dependency in `web/package-lock.json`.
+The fixture in `docs/site-contract.json` records the published paths and key
+anchors to preserve. On Linux, devenv supplies the loader for npm's workerd binary.
 
 **Run specific tests:** `./build/tests "test-name-pattern"`
 

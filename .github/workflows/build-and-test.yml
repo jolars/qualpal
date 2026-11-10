@@ -77,8 +77,6 @@ jobs:
 
   docs:
     runs-on: ubuntu-latest
-    permissions:
-      id-token: write
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -88,6 +86,14 @@ jobs:
 
       - uses: actions/setup-python@v7
 
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - run: npm ci --prefix web
+
       - name: Setup cmake
         uses: jwlawson/actions-setup-cmake@v2
 
@@ -95,4 +101,13 @@ jobs:
         run: cmake -B build -S . -DBUILD_DOCS=ON -DBUILD_TESTING=OFF -DBUILD_CLI=ON
 
       - name: Build
-        run: cmake --build build
+        run: cmake --build build --target docs
+
+      - name: Check documentation compatibility
+        run: python3 docs/check_site.py build/docs/html
+
+      - name: Check Workers packaging
+        run: npm exec --prefix web -- wrangler deploy --config docs/wrangler.jsonc --dry-run
+
+      - name: Build legacy redirects
+        run: python3 docs/redirect_pages.py build/docs/html build/docs/redirects

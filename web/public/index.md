@@ -32,7 +32,7 @@ open the interactive app in a browser with JavaScript and WebAssembly enabled.
 ## Library and documentation
 
 - [C++ library and source code](https://github.com/jolars/qualpal)
-- [Official documentation](https://jolars.github.io/qualpal/)
+- [Official documentation](https://qualpal.cc/docs/)
 - [R package: qualpalr](https://cran.r-project.org/package=qualpalr)
 - [Python package: qualpal](https://pypi.org/project/qualpal/)
 - [Author: Johan Larsson](https://jolars.co/)
