@@ -7,7 +7,6 @@
   "routes": [{ "pattern": "qualpal.cc/docs*", "zone_name": "qualpal.cc" }],
   "assets": {
     "directory": "../build/docs/html",
-    "base_path": "/docs",
     "html_handling": "none",
     "not_found_handling": "none",
   },
