@@ -10,12 +10,30 @@ presentation:
     description: Generate palettes from a color space or a set of colors, with options for background contrast and color vision deficiency.
     guide: docs/index.html
     actions:
+      - {label: 'What is Qualpal?', path: docs/index.html, icon: book-open}
+      - {label: Get started, path: docs/guides/getting_started.html, icon: book-open}
       - {label: Open the app, path: app/index.html, icon: arrow-right}
-      - {label: Read the docs, path: docs/index.html, icon: book-open}
     features:
-      - {title: C++ reference, description: Use the Qualpal library., path: packages/cpp/index.html}
-      - {title: R reference, description: Generate palettes with qualpalr., path: packages/r/index.html}
-      - {title: Python reference, description: Generate palettes with qualpal for Python., path: packages/python/index.html}
+      - title: Distinguish categories
+        description: Qualpal chooses colors that look as different from one another as possible, so categories are easier to tell apart.
+      - title: Control your palette
+        description: Sample from hue, saturation, and lightness ranges or choose from a set of colors. Keep your existing colors when you add categories.
+      - title: Design for your readers
+        description: Account for color vision deficiencies and choose colors that stand out against your chart background.
+  sidebar:
+    /docs/:
+      - text: Introduction
+        items:
+          - {text: 'What is Qualpal?', link: docs/index.html}
+          - {text: Getting started, link: docs/guides/getting_started.html}
+      - text: Guide
+        items:
+          - {text: The Algorithm, link: docs/guides/algorithm.html}
+          - {text: Examples, link: docs/guides/examples.html}
+          - {text: Colors, link: docs/guides/colors.html}
+      - text: Reference
+        items:
+          - {text: Command-line, link: docs/command-line.html}
 repositories:
   - {id: core, path: ., url: 'https://github.com/jolars/qualpal'}
   - {id: r, path: build/site-workspace/qualpalr, url: 'https://github.com/jolars/qualpalr'}
@@ -62,3 +80,4 @@ content:
   - {id: algorithm, owner: project, repository: core, path: docs/algorithm.md, mount: docs/guides, format: gfm}
   - {id: colors, owner: project, repository: core, path: docs/colors.md, mount: docs/guides, format: gfm}
   - {id: headers, owner: project, repository: core, path: site/headers.md, mount: docs, format: gfm}
+  - {id: cli, owner: project, repository: core, path: site/command-line.md, mount: docs, format: gfm}

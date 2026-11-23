@@ -1,4 +1,4 @@
-# Getting Started {#getting-started}
+# Getting started {#getting-started}
 
 The main API of qualpal is a builder-style interface that allows you to
 configure the color palette generation process step by step.
