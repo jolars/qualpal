@@ -105,12 +105,12 @@ async function preview() {
   function applyTheme() {
     document.documentElement.classList.toggle("dark", dark);
     themeButton.textContent = dark ? "Light preview" : "Dark preview";
-    axisMaterial.color.set(dark ? "#e7edf7" : "#142136");
+    axisMaterial.color.set(dark ? "#b8b8b8" : "#142136");
     const background = new THREE.Color(dark ? "#121212" : "#ffffff");
     for (const { material, hex, selected } of markers) {
       const color = material.uniforms.baseColor.value.set(hex);
       if (!selected) {
-        color.lerp(background, dark ? 0.70 : 0.75);
+        color.lerp(background, dark ? 0.85 : 0.60);
       }
     }
     draw();
