@@ -112,9 +112,12 @@ task site:check
 task docs:preview
 ```
 
-Run `task docs:preview` inside devenv for live docs and app development at
-`http://127.0.0.1:5173/`. The task prepares the API sources on the first run and
-starts Diplodocus and Vite.
+Run `task docs:preview` inside devenv to preview the site at
+`http://127.0.0.1:8000/`. The task prepares the API sources on the first run
+and builds the palette generator. Diplodocus watches the docs and the built
+app bundle. Run `npm run build:component --prefix web -- --watch` in a second
+terminal to rebuild the bundle as you edit the app, or use `task dev` for
+standalone Svelte development.
 
 The build stages the binding releases listed in `site/sources.env` and packages
 the combined site in `build/site`. Update those pins when adopting new releases.

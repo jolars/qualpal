@@ -22,6 +22,7 @@
   import LoadingSpinner from "./components/LoadingSpinner.svelte";
   import Toast from "./components/Toast.svelte";
 
+  let { embedded = false } = $props();
   let showAbout = $state<boolean>(false);
 
   // Initialize the module
@@ -32,17 +33,19 @@
     }
   });
 
-  autoAnalyze.subscribe(() => {});
+  onMount(() => autoAnalyze.subscribe(() => {}));
 </script>
 
-<header class="bg-gray-800">
-  <div class="max-w-7xl mx-auto px-4 py-4 w-full">
-    <h1 class="text-2xl font-bold text-gray-100">Qualpal</h1>
-    <p class="text-gray-300 mt-1">
-      Generate maximally distinct color palettes for categorical data
-    </p>
-  </div>
-</header>
+{#if !embedded}
+  <header class="bg-gray-800">
+    <div class="max-w-7xl mx-auto px-4 py-4 w-full">
+      <h1 class="text-2xl font-bold text-gray-100">Qualpal</h1>
+      <p class="text-gray-300 mt-1">
+        Generate maximally distinct color palettes for categorical data
+      </p>
+    </div>
+  </header>
+{/if}
 
 <div class="main-content">
   <div class="flex flex-col sm:flex-row min-h-screen">

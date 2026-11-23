@@ -81,7 +81,7 @@ tasks:
     deps: [site:check]
 
   docs:preview:
-    desc: Preview the documentation and app with live reload
+    desc: Preview the documentation and built palette generator
     cmds:
       - bash site/preview.sh
 

@@ -26,6 +26,6 @@ python3 -m venv "$workspace/python-env"
 "$workspace/python-env/bin/python" -m pip install 'sphinx==9.2.0' -e "$workspace/qualpal-py[viz]"
 cp site/sources.env "$workspace/prepared-sources.env"
 if [[ ${1:-} == --prepare-only ]]; then exit 0; fi
+npm run build:component --prefix web
 PATH="$workspace/python-env/bin:$PATH" MPLBACKEND=Agg "${DIPLODOCUS:-diplodocus}" build --no-cache --output build/site
-npm run build --prefix web
 python3 site/package.py

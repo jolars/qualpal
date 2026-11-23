@@ -10,18 +10,7 @@ if ! cmp -s site/sources.env "$workspace/prepared-sources.env" ||
   bash site/build.sh --prepare-only
 fi
 
-npm run build:citations --prefix web
+npm run build:component --prefix web
 
-pids=()
-trap 'if (("${#pids[@]}")); then kill "${pids[@]}" 2>/dev/null || true; fi' EXIT
-trap 'exit 130' INT
-trap 'exit 143' TERM
-
-PATH="$workspace/python-env/bin:$PATH" MPLBACKEND=Agg "${DIPLODOCUS:-diplodocus}"   serve --no-cache --host 127.0.0.1 --port 8000 --output build/docs-preview &
-pids+=("$!")
-(
-  cd web
-  QUALPAL_DOCS_PREVIEW=1 exec ./node_modules/.bin/vite --host 127.0.0.1 --strictPort
-) &
-pids+=("$!")
-wait -n "${pids[@]}"
+PATH="$workspace/python-env/bin:$PATH" MPLBACKEND=Agg \
+  exec "${DIPLODOCUS:-diplodocus}" serve --host 127.0.0.1 --port "${DIPLODOCUS_PORT:-8000}" --output build/docs-preview
