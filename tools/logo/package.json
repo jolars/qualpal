@@ -1,0 +1,7 @@
+{
+  "name": "qualpal-logo-preview",
+  "private": true,
+  "dependencies": {
+    "three": "0.187.0"
+  }
+}

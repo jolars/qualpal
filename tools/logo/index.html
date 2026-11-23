@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Qualpal logo preview</title>
+<style>
+  :root { color-scheme: light; font: 15px system-ui; }
+  :root.dark { color-scheme: dark; }
+  body { margin: 0; min-height: 100dvh; display: grid; place-items: center; }
+  main { display: grid; justify-items: center; gap: 1rem; }
+  #scene { width: min(76vw, 70vh, 640px); aspect-ratio: 1; }
+  canvas { display: block; width: 100%; height: 100%; touch-action: none; }
+  nav { display: flex; flex-wrap: wrap; justify-content: center; gap: .5rem; }
+  button { font: inherit; padding: .4em .75em; cursor: pointer; }
+</style>
+<script type="importmap">
+  {
+    "imports": {
+      "three": "./node_modules/three/build/three.module.js",
+      "three/addons/": "./node_modules/three/examples/jsm/"
+    }
+  }
+</script>
+<main>
+  <div id="scene" aria-label="Rotatable DIN99d scatterplot"></div>
+  <nav aria-label="Preview controls">
+    <button id="theme" type="button">Dark preview</button>
+    <button id="reset" type="button">Reset view</button>
+    <button id="export" type="button">Download PNG</button>
+  </nav>
+  <output id="status" hidden></output>
+</main>
+<script type="module" src="./preview.js"></script>
+</html>

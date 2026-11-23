@@ -96,6 +96,9 @@ target_include_directories(
 )
 target_compile_features(qualpal PUBLIC cxx_std_17)
 add_library(qualpal::qualpal ALIAS qualpal)
+
+add_executable(generate_logo EXCLUDE_FROM_ALL tools/generate_logo.cpp)
+target_link_libraries(generate_logo PRIVATE qualpal::qualpal)
 set_target_properties(
     qualpal
     PROPERTIES VERSION ${PROJECT_VERSION} SOVERSION ${PROJECT_VERSION_MAJOR}
@@ -293,7 +296,7 @@ if(BUILD_DOCS)
     set(DOXYGEN_GENERATE_TREEVIEW YES)
     set(DOXYGEN_HTML_COLORSTYLE LIGHT)
     set(DOXYGEN_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/docs)
-    set(DOXYGEN_PROJECT_LOGO "${CMAKE_CURRENT_SOURCE_DIR}/docs/images/logo.svg")
+    set(DOXYGEN_PROJECT_LOGO "${CMAKE_CURRENT_SOURCE_DIR}/docs/images/logo.png")
     set(DOXYGEN_SOURCE_BROWSER YES)
     set(DOXYGEN_USE_MATHJAX YES)
     set(DOXYGEN_WARN_AS_ERROR YES)
