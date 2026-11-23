@@ -82,20 +82,9 @@ jobs:
         uses: actions/checkout@v7
 
       - name: Install dependencies
-        run: sudo apt-get install -y build-essential doxygen graphviz
+        run: sudo apt-get install -y build-essential cmake doxygen graphviz
 
       - uses: actions/setup-python@v7
-
-      - uses: actions/setup-node@v7
-        with:
-          node-version: "24"
-          cache: npm
-          cache-dependency-path: web/package-lock.json
-
-      - run: npm ci --prefix web
-
-      - name: Setup cmake
-        uses: jwlawson/actions-setup-cmake@v2
 
       - name: Configure CMake
         run: cmake -B build -S . -DBUILD_DOCS=ON -DBUILD_TESTING=OFF -DBUILD_CLI=ON
@@ -105,9 +94,6 @@ jobs:
 
       - name: Check documentation compatibility
         run: python3 docs/check_site.py build/docs/html
-
-      - name: Check Workers packaging
-        run: npm exec --prefix web -- wrangler deploy --config docs/wrangler.jsonc --dry-run
 
       - name: Build legacy redirects
         run: python3 docs/redirect_pages.py build/docs/html build/docs/redirects

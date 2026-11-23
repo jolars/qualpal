@@ -44,8 +44,7 @@ auto qp = Qualpal{}.setInputColorspace({ 0, 360 },
                                        ColorspaceType::LCHab);
 ```
 
-Note that the ranges for lightness and chroma in LCHab are different from those
-in HSL: $[0, 100]$ for lightness and $[0, \infty]$ for chroma.
+In LCHab, lightness ranges from 0 to 100, and chroma is nonnegative.
 
 To generate the actual colors, you can then call the `generate` method
 with the desired number of colors:
