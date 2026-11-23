@@ -20,6 +20,8 @@ presentation:
         description: Sample from hue, saturation, and lightness ranges or choose from a set of colors. Keep your existing colors when you add categories.
       - title: Design for your readers
         description: Account for color vision deficiencies and choose colors that stand out against your chart background.
+  sections:
+    - {label: App, path: app/index.html}
   sidebar:
     /docs/:
       - text: Introduction
