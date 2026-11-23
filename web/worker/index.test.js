@@ -1,77 +1,28 @@
 import assert from "node:assert/strict";
-import { test } from "node:test";
-import worker from "./index.js";
+import test from "node:test";
+import legacy from "../../site/legacy.json" with { type: "json" };
+import { siteWorker } from "./index.js";
 
-function assets() {
-  return {
-    ASSETS: {
-      async fetch(request) {
-        const markdown = new URL(request.url).pathname === "/index.md";
-        return new Response(
-          request.method === "HEAD"
-            ? null
-            : markdown
-              ? "# Qualpal\n"
-              : "<!doctype html>",
-          {
-            headers: {
-              "Content-Type": markdown ? "text/plain" : "text/html",
-              Vary: "Accept-Encoding",
-              "Cache-Control": "public, max-age=0, must-revalidate",
-            },
-          },
-        );
-      },
-    },
-  };
-}
+const worker = siteWorker({
+  fetch: (request) => new Response(new URL(request.url).pathname, { status: 404 }),
+});
 
-test("negotiates Markdown only for an explicit, acceptable media type", async () => {
-  for (const [accept, markdown] of [
-    ["text/markdown", true],
-    ["text/html, text/markdown;q=0.5", true],
-    ["TEXT/MARKDOWN; charset=utf-8", true],
-    ["text/markdown;q=0", false],
-    ["text/markdown;q=invalid", false],
-    ["text/markdown-extra", false],
-    ["text/html, */*;q=0.8", false],
-    ["", false],
-  ]) {
+test("redirects every historical page and preserves queries", async () => {
+  for (const [old, target] of Object.entries(legacy.paths)) {
     const response = await worker.fetch(
-      new Request("https://qualpal.cc/", { headers: { Accept: accept } }),
-      assets(),
+      new Request(`https://qualpal.cc/docs/${old}?source=legacy`, { method: "HEAD" }),
     );
-    assert.equal(
-      response.headers.get("Content-Type"),
-      markdown ? "text/markdown; charset=utf-8" : "text/html",
-      accept,
-    );
-    assert.equal(response.headers.get("Vary"), "Accept-Encoding, Accept");
-    assert.equal(
-      await response.text(),
-      markdown ? "# Qualpal\n" : "<!doctype html>",
-    );
+    assert.equal(response.status, 301);
+    assert.equal(response.headers.get("Location"), `https://qualpal.cc/${target}?source=legacy`);
   }
 });
 
-test("supports HEAD and leaves asset requests alone", async () => {
-  const head = await worker.fetch(
-    new Request("https://qualpal.cc/?source=agent", {
-      method: "HEAD",
-      headers: { Accept: "text/markdown" },
-    }),
-    assets(),
-  );
-  assert.equal(
-    head.headers.get("Content-Type"),
-    "text/markdown; charset=utf-8",
-  );
-  assert.equal(await head.text(), "");
-  const response = await worker.fetch(
-    new Request("https://qualpal.cc/favicon.svg", {
-      headers: { Accept: "text/markdown" },
-    }),
-    assets(),
-  );
-  assert.equal(response.headers.get("Vary"), "Accept-Encoding");
+test("canonicalizes directory URLs and delegates other requests", async () => {
+  for (const path of ["/app", "/docs"]) {
+    const response = await worker.fetch(new Request(`https://qualpal.cc${path}`));
+    assert.equal(response.headers.get("Location"), `https://qualpal.cc${path}/`);
+  }
+  const response = await worker.fetch(new Request("https://qualpal.cc/docs/missing.html"));
+  assert.equal(response.status, 404);
+  assert.equal(await response.text(), "/docs/missing.html");
 });

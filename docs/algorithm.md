@@ -46,7 +46,7 @@ function to the computed distances, as suggested by Huang et al. (2015).
 ## Farthest Point Sampling
 
 The problem of selecting a set of points (in our case colors) that are
-maximally distinct is known as the max-min \f$k\f$-dispersion problem, which is
+maximally distinct is known as the max-min $k$-dispersion problem, which is
 NP-hard. Even for, say, a required palette of 10 colors and 100 candidate
 colors, solving this problem exactly would be intractable.
 
@@ -139,7 +139,7 @@ distinctiveness of the selected colors.
 If aesthetic considerations are important, however, then it is
 also possible to use qualpal to improve on existing color palettes, for
 instance by taking a predefined color palette (such as `"ColorBrewer:Set2"`),
-and tweaking it by picking out (and ordering) the \f$n\f$ most distinct colors
+and tweaking it by picking out (and ordering) the $n$ most distinct colors
 as well as ensuring that the colors are distinct from a given background color
 and accessible to people with color vision deficiencies.
 

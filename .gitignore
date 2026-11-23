@@ -211,3 +211,5 @@ devenv.local.yaml
 # Cloudflare local state and secrets
 .wrangler/
 .dev.vars*
+
+.diplodocus/

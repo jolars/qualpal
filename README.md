@@ -4,7 +4,7 @@
 [![Docs](https://img.shields.io/badge/docs-stable-blue.svg?logo=readthedocs)](https://qualpal.cc/docs/)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17194762.svg)](https://doi.org/10.5281/zenodo.17194762)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/qualpalr)](https://cran.r-project.org/package=qualpalr)
-[![App](https://img.shields.io/badge/🌐%20%20App-qualpal.cc-blue)](https://qualpal.cc)
+[![App](https://img.shields.io/badge/🌐%20%20App-qualpal.cc-blue)](https://qualpal.cc/app/)
 [![DOI](https://joss.theoj.org/papers/10.21105/joss.08936/status.svg)](https://doi.org/10.21105/joss.08936)
 
 A C++ library for generating qualitative color palettes with maximum perceptual
@@ -22,7 +22,7 @@ This library is also available as
   [qualpalr](https://cran.r-project.org/package=qualpalr),
 - as a python package called [qualpal](https://pypi.org/project/qualpal/),
 - and as a web
-  application at [qualpal.cc](https://qualpal.cc).
+  application at [qualpal.cc](https://qualpal.cc/app/).
 
 ## Features
 
@@ -81,7 +81,7 @@ generating colors from R, making it easy to integrate Qualpal into R workflows,
 ## Web App
 
 Qualpal is also available as a web application at
-[qualpal.cc](https://qualpal.cc). The web app has slightly
+[qualpal.cc](https://qualpal.cc/app/). The web app has slightly
 limited functionality compared to the library and R package, but it allows
 users to quickly generate color palettes directly in their browser.
 
@@ -96,44 +96,25 @@ Requests to the homepage with `Accept: text/markdown` receive the app's usage
 guide from `web/public/index.md`. Browsers receive HTML by default. Both responses
 include `Vary: Accept`. Keep the Markdown guide current when app features change.
 
-The custom domain `qualpal.cc` is configured in `web/wrangler.jsonc`. Deployment
-connects it to the Worker. Remove the previous host's apex DNS records before the
-first custom-domain deployment. Disable the old Netlify Git integration after
-verifying the migrated site.
-
 ## Documentation
 
-The documentation uses Doxygen and Cloudflare Workers Static Assets at
-[qualpal.cc/docs/](https://qualpal.cc/docs/). Install the shared Workers tooling
-with `npm ci --prefix web`, then run:
+The [documentation hub](https://qualpal.cc/docs/) uses Diplodocus and includes
+references for C++, R, and Python. The Svelte app is served at
+[qualpal.cc/app/](https://qualpal.cc/app/).
+
+Install the web dependencies with `npm ci --prefix web`. Build Diplodocus in
+`../diplodocus` with `cargo build --locked`, or set `DIPLODOCUS` to the CLI
+path. The site build also needs Doxygen, Python 3.14, a C++ compiler, and R
+with pkgload, pkgbuild, cpp11, roxygen2, evaluate, and jsonlite.
 
 ```bash
-task docs:check    # Build, check links and compatibility, and validate Workers packaging
-task docs:preview  # Serve http://localhost:8787/docs/
+task site:check
+task site:preview
 ```
 
-The documentation build uses checked-in figures. Regenerate them with `task plots`
-when updating the algorithm illustrations.
-
-The Linux devenv environment supplies the dynamic loader needed by npm's workerd
-binary. The documentation Worker, `qualpal-docs`, uses `docs/wrangler.jsonc` and
-the Wrangler version locked in `web/package-lock.json`. It serves `/docs` and
-`/docs/*` on the app's existing Cloudflare domain, retaining Doxygen's `.html`
-paths and anchors. The documentation Worker serves the generated files directly.
-
-The Docs workflow builds and checks the site on published releases and manual
-runs on `main`, then deploys the checked artifact using the existing
-`CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` repository secrets. The token
-must allow managing Worker routes in the `qualpal.cc` zone. Pull requests run the
-same build and packaging checks without deployment credentials. To deploy
-locally, run `task docs:deploy` with Cloudflare credentials configured.
-
-After a successful Workers deployment, the workflow replaces the old GitHub
-Pages site with compatibility redirects. They preserve page paths, query
-parameters, and fragments in browsers. GitHub Pages also retains public assets
-for existing external links. Keep Pages enabled while those historical URLs are
-in use. `docs/site-contract.json` records published paths and key anchors, and
-`docs/check_site.py` checks that each build preserves them.
+The build stages the binding releases listed in `site/sources.env` and packages
+the combined site in `build/site`. Update those pins when adopting new releases.
+See [the site rollout instructions](site/rollout.md) for the initial cutover.
 
 ## JOSS Paper
 

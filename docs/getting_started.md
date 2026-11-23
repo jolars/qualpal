@@ -32,7 +32,7 @@ auto pal = Qualpal{}
 In this case, qualpal will generate a number of color points (by default 1000)
 in the specified HSL color space using a Halton pseudo-random sequence.
 
-![Five colors from the HSL color space](images/examples/hsl_pal.svg)
+![Five colors from the HSL color space](images/examples/hsl_pal.png)
 
 You can also specify the input color space using LCHab (HCL) by defining
 ranges for hue, chroma, and lightness. For example:
@@ -45,7 +45,7 @@ auto qp = Qualpal{}.setInputColorspace({ 0, 360 },
 ```
 
 Note that the ranges for lightness and chroma in LCHab are different from those
-in HSL: \f$[0, 100]\f$ for lightness and \f$[0, \infty]\f$ for chroma.
+in HSL: $[0, 100]$ for lightness and $[0, \infty]$ for chroma.
 
 To generate the actual colors, you can then call the `generate` method
 with the desired number of colors:
@@ -71,7 +71,7 @@ qp.setInputPalette("Pokemon:Porygon");
 auto pal = qp.generate(4);
 ```
 
-![Four colors from the Pokemon Porygon palette](images/examples/lib_porygon.svg)
+![Four colors from the Pokemon Porygon palette](images/examples/lib_porygon.png)
 
 ## Color Vision Deficiency
 
@@ -99,7 +99,7 @@ auto cvd_pal = Qualpal{}
                  .generate(5);
 ```
 
-![Five colors from HSL with deuteranomaly simulation](images/examples/cli_hsl2.svg)
+![Five colors from HSL with deuteranomaly simulation](images/examples/cli_hsl2.png)
 
 The simulation is numerically stable and fast.
 

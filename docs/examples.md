@@ -13,7 +13,7 @@ qp.setInputColorspace({ -170, 60 }, { 0, 0.7 }, { 0.2, 0.8 });
 auto hsl_pal = qp.generate(5);
 ```
 
-![Five colors from the HSL color space](images/examples/hsl_pal.svg)
+![Five colors from the HSL color space](images/examples/hsl_pal.png)
 
 Select colors considering color vision deficiency:
 
@@ -22,7 +22,7 @@ qp.setInputPalette("ColorBrewer:Set2").setCvd({ { "deutan", 0.7 } });
 auto cvd_pal = qp.generate(4);
 ```
 
-![Four colors from ColorBrewer Set2 palette with deuteranomaly simulation](images/examples/brewer_set2_deutan.svg)
+![Four colors from ColorBrewer Set2 palette with deuteranomaly simulation](images/examples/brewer_set2_deutan.png)
 
 Here we design a CVD-friendly version of the `"ColorBrewer:Set2"` palette
 for a black background, selecting 3 colors.
@@ -34,7 +34,7 @@ qp.setInputPalette("ColorBrewer:Set2")
   .generate(3);
 ```
 
-![Three colors from ColorBrewer Set2 palette with tritanomaly and deuteranomaly simulation on black background](images/examples/lib_cvd.svg)
+![Three colors from ColorBrewer Set2 palette with tritanomaly and deuteranomaly simulation on black background](images/examples/lib_cvd.png)
 
 Generate a palette from custom RGB colors:
 
@@ -49,7 +49,7 @@ qp.setInputRGB({
 auto rgb_pal = qp.generate(3);
 ```
 
-![Three colors from given RGB input](images/examples/lib_hex.svg)
+![Three colors from given RGB input](images/examples/lib_hex.png)
 
 Generate a palette using a predefined palette:
 
@@ -58,7 +58,7 @@ qp.setInputPalette("Pokemon:Porygon");
 auto palette = qp.generate(4);
 ```
 
-![Four colors from the Pokemon Porygon palette](images/examples/lib_porygon.svg)
+![Four colors from the Pokemon Porygon palette](images/examples/lib_porygon.png)
 
 ## Command Line Examples {#examples-cli}
 
@@ -68,7 +68,7 @@ Generate 5 colors from HSL color space:
 qualpal -n 5 -i colorspace "-170:60" "0:0.7" "0.2:0.8"
 ```
 
-![Five colors from the HSL color space](images/examples/hsl_pal.svg)
+![Five colors from the HSL color space](images/examples/hsl_pal.png)
 
 Select 2 colors from hex values:
 
@@ -76,7 +76,7 @@ Select 2 colors from hex values:
 qualpal -n 2 "#ff0000" "#00ff00" "#0000ff"
 ```
 
-![Two colors from hex RGB input](images/examples/hex_pal.svg)
+![Two colors from hex RGB input](images/examples/hex_pal.png)
 
 Output palette as comma-delimited values:
 
@@ -114,7 +114,7 @@ Generate palette for a dark background
 qualpal -n 2 --background "#000000" "#e41a1c" "#377eb8" "#4daf4a" "#984ea3"
 ```
 
-![Two colors from given RGB input optimized for black background](images/examples/cli_bg_dark.svg)
+![Two colors from given RGB input optimized for black background](images/examples/cli_bg_dark.png)
 
 Simulate color vision deficiency (CVD)
 
@@ -122,7 +122,7 @@ Simulate color vision deficiency (CVD)
 qualpal -n 4 --deutan 0.7 "#e41a1c" "#377eb8" "#4daf4a" "#984ea3"
 ```
 
-![Four colors from given RGB input with deuteranomaly simulation](images/examples/cli_deutan.svg)
+![Four colors from given RGB input with deuteranomaly simulation](images/examples/cli_deutan.png)
 
 Improve an existing palette and select subset
 
@@ -130,7 +130,7 @@ Improve an existing palette and select subset
 qualpal -n 3 -i palette "ColorBrewer:Set2" -b "#000000" --deutan 0.5 --tritan 0.2
 ```
 
-![Three colors from ColorBrewer Set2 palette with tritanomaly and deuteranomaly simulation on black background](images/examples/lib_cvd.svg)
+![Three colors from ColorBrewer Set2 palette with tritanomaly and deuteranomaly simulation on black background](images/examples/lib_cvd.png)
 
 A soothing pastel palette, generated from a HSL color space:
 
@@ -138,7 +138,7 @@ A soothing pastel palette, generated from a HSL color space:
 qualpal -n 5 -i colorspace "20:300" "0.3:0.7" "0.7:0.9"
 ```
 
-![A palette of pastels](images/examples/lib_pastels.svg)
+![A palette of pastels](images/examples/lib_pastels.png)
 
 Extend an existing palette:
 
@@ -146,4 +146,4 @@ Extend an existing palette:
 qualpal -n 4 -i hex "#4daf4a" "#984ea3" "#ff7f00" "#ffff33" --extend "#e41a1c" "#377eb8"
 ```
 
-![A fixed palette of red and blue extended with four colors from given RGB input](images/examples/hex_extend.svg)
+![A fixed palette of red and blue extended with four colors from given RGB input](images/examples/hex_extend.png)

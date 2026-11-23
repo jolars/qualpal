@@ -1,0 +1,58 @@
+project:
+  name: Qualpal
+presentation:
+  site-url: https://qualpal.cc/
+  canonical-url-style: clean
+  description: Generate distinct color palettes for categorical data.
+  logo: {repository: core, path: web/public/logo.png}
+  home:
+    tagline: Distinct colors for categorical data
+    description: Generate palettes from a color space or a set of colors, with options for background contrast and color vision deficiency.
+    guide: docs/index.html
+    actions:
+      - {label: Open the app, url: 'https://qualpal.cc/app/', icon: arrow-right}
+      - {label: Read the docs, path: docs/index.html, icon: book-open}
+    features:
+      - {title: C++ reference, description: Use the Qualpal library., path: packages/cpp/index.html}
+      - {title: R reference, description: Generate palettes with qualpalr., path: packages/r/index.html}
+      - {title: Python reference, description: Generate palettes with qualpal for Python., path: packages/python/index.html}
+repositories:
+  - {id: core, path: ., url: 'https://github.com/jolars/qualpal'}
+  - {id: r, path: build/site-workspace/qualpalr, url: 'https://github.com/jolars/qualpalr'}
+  - {id: python, path: build/site-workspace/qualpal-py, url: 'https://github.com/jolars/qualpal-py'}
+packages:
+  - id: qualpal
+    name: C++
+    slug: cpp
+    ecosystem: cpp
+    repository: core
+    path: .
+    metadata-path: build/site-workspace/Doxyfile.api
+    overview: site/cpp.md
+    targets:
+      - {id: api, extractor: doxygen, path: build/site-workspace/Doxyfile.api, role: public-api}
+  - id: qualpalr
+    name: R
+    slug: r
+    ecosystem: r
+    repository: r
+    path: .
+    metadata-path: DESCRIPTION
+    targets:
+      - {id: api, extractor: r, path: ., role: public-api}
+  - id: qualpal-py
+    name: Python
+    slug: python
+    ecosystem: python
+    repository: python
+    path: .
+    metadata-path: pyproject.toml
+    targets:
+      - {id: api, extractor: python, path: qualpal, role: public-api}
+content:
+  - {id: hub, owner: project, repository: core, path: site/index.md, mount: docs, format: gfm}
+  - {id: start, owner: project, repository: core, path: docs/getting_started.md, mount: docs/guides, format: gfm}
+  - {id: examples, owner: project, repository: core, path: docs/examples.md, mount: docs/guides, format: gfm}
+  - {id: algorithm, owner: project, repository: core, path: docs/algorithm.md, mount: docs/guides, format: gfm}
+  - {id: colors, owner: project, repository: core, path: docs/colors.md, mount: docs/guides, format: gfm}
+  - {id: headers, owner: project, repository: core, path: site/headers.md, mount: docs, format: gfm}

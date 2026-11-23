@@ -62,24 +62,34 @@ tasks:
       - cmake -B {{.BUILD_DIR}} -S . -DBUILD_DOCS=ON -DBUILD_TESTING=OFF -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
       - cmake --build {{.BUILD_DIR}} --target docs
 
-  docs:check:
-    desc: Check documentation links, published paths, and Workers packaging
-    deps: [docs]
+  site:build:
     cmds:
-      - python3 docs/check_site.py {{.BUILD_DIR}}/docs/html
-      - npm exec --prefix web -- wrangler deploy --config docs/wrangler.jsonc --dry-run
+      - bash site/build.sh
+
+  site:check:
+    deps: [site:build]
+    cmds:
+      - npm run test:worker --prefix web
+      - npm exec --prefix web -- wrangler deploy --config web/wrangler.jsonc --dry-run
+
+  site:preview:
+    deps: [site:build]
+    cmds:
+      - npm exec --prefix web -- wrangler dev --config web/wrangler.jsonc
+
+  site:deploy:
+    deps: [site:check]
+    cmds:
+      - npm exec --prefix web -- wrangler deploy --config web/wrangler.jsonc
+
+  docs:check:
+    deps: [site:check]
 
   docs:preview:
-    desc: Serve the documentation at http://localhost:8787/docs/
-    deps: [docs]
-    cmds:
-      - npm exec --prefix web -- wrangler dev --config docs/wrangler.jsonc
+    deps: [site:preview]
 
   docs:deploy:
-    desc: Deploy documentation to https://qualpal.cc/docs/
-    deps: [docs:check]
-    cmds:
-      - npm exec --prefix web -- wrangler deploy --config docs/wrangler.jsonc
+    deps: [site:deploy]
 
   coverage:
     cmds:

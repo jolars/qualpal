@@ -15,19 +15,7 @@ several different color spaces, including:
 
 A chart for conversion between these color spaces is shown below:
 
-@dot
-digraph ColorSpaces {
-RGB -> HSL;
-RGB -> XYZ;
-HSL -> RGB;
-Lab -> XYZ;
-XYZ -> RGB;
-XYZ -> Lab;
-XYZ -> DIN99d;
-Lab -> LCHab;
-LCHab -> Lab;
-}
-@enddot
+![Conversions between color spaces](images/color-conversions.png)
 
 ## HSL
 

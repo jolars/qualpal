@@ -68,7 +68,7 @@
   let mapLoaded = false;
 
   async function loadUSStatesData() {
-    const response = await fetch("/data/states-albers-10m.json");
+    const response = await fetch(`${import.meta.env.BASE_URL}data/states-albers-10m.json`);
     const us = await response.json();
     const states = feature(us, us.objects.states);
     const path = d3.geoPath();

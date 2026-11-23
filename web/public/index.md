@@ -1,6 +1,6 @@
 # Qualpal
 
-[Qualpal](https://qualpal.cc/) generates qualitative color palettes for categorical
+[Qualpal](https://qualpal.cc/app/) generates qualitative color palettes for categorical
 data. It maximizes the minimum perceived color difference to create distinct
 colors for data visualization.
 
