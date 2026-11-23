@@ -104,8 +104,10 @@ references for C++, R, and Python. The Svelte app is served at
 
 Install the web dependencies with `npm ci --prefix web`. Build Diplodocus in
 `../diplodocus` with `cargo build --locked`, or set `DIPLODOCUS` to the CLI
-path. The site build also needs Doxygen, Python 3.14, a C++ compiler, and R
-with pkgload, pkgbuild, cpp11, roxygen2, evaluate, and jsonlite.
+path. Run the site tasks inside `devenv shell`, which provides Doxygen,
+Python, a C++ compiler, and R with the required packages. If you use your own
+environment, install Python 3.14 and R with pkgload, pkgbuild, cpp11, roxygen2,
+evaluate, and jsonlite, and make sure `Rscript` is on your PATH.
 
 ```bash
 task site:check

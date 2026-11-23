@@ -40,6 +40,16 @@
     emscriptenStdenv
     nodejs
     python3
+    (rWrapper.override {
+      packages = with rPackages; [
+        cpp11
+        evaluate
+        jsonlite
+        pkgbuild
+        pkgload
+        roxygen2
+      ];
+    })
     tailwindcss
     autoprefixer
     prettierd
