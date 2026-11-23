@@ -20,8 +20,8 @@ write_logo() {
     -bordercolor none -border "$margin" -strip "$output"
 }
 
-write_logo "$light" 320 docs/images/logo.png
-write_logo "$dark" 320 docs/images/logo-dark.png
+write_logo "$light" 800 docs/images/logo.png
+write_logo "$dark" 800 docs/images/logo-dark.png
 write_logo "$light" 512 web/public/logo.png
 write_logo "$small" 96 docs/images/logo-small.png
 write_logo "$small_dark" 96 docs/images/logo-small-dark.png

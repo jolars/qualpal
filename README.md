@@ -1,4 +1,4 @@
-# Qualpal <picture><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/jolars/qualpal/refs/heads/main/docs/images/logo.png" align="right" width="139"> <img alt="Qualpal logo showing five selected colors in a DIN99d point cloud." src="https://raw.githubusercontent.com/jolars/qualpal/refs/heads/main/docs/images/logo-dark.png" align="right" width="169"> </picture>
+# Qualpal <picture><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/jolars/qualpal/refs/heads/main/docs/images/logo.png"> <img alt="Qualpal logo showing five selected colors in a DIN99d point cloud." src="https://raw.githubusercontent.com/jolars/qualpal/refs/heads/main/docs/images/logo-dark.png" align="right" width="220"> </picture>
 
 [![Build
 Status](https://github.com/jolars/qualpal/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/jolars/qualpal/actions/workflows/build-and-test.yml)
