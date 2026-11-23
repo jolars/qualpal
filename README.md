@@ -1,6 +1,7 @@
-# Qualpal <picture><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/jolars/qualpal/refs/heads/main/docs/images/logo.png" align="right" width="139"> <img alt="Qualpal logo showing five selected colors in a DIN99d point cloud." src="https://raw.githubusercontent.com/jolars/qualpal/refs/heads/main/docs/images/logo-dark.png" align="right" width="139"> </picture>
+# Qualpal <picture><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/jolars/qualpal/refs/heads/main/docs/images/logo.png" align="right" width="139"> <img alt="Qualpal logo showing five selected colors in a DIN99d point cloud." src="https://raw.githubusercontent.com/jolars/qualpal/refs/heads/main/docs/images/logo-dark.png" align="right" width="169"> </picture>
 
-[![Build Status](https://github.com/jolars/qualpal/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/jolars/qualpal/actions/workflows/build-and-test.yml)
+[![Build
+Status](https://github.com/jolars/qualpal/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/jolars/qualpal/actions/workflows/build-and-test.yml)
 [![Docs](https://img.shields.io/badge/docs-stable-blue.svg?logo=readthedocs)](https://qualpal.cc/docs/)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17194762.svg)](https://doi.org/10.5281/zenodo.17194762)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/qualpalr)](https://cran.r-project.org/package=qualpalr)
@@ -8,25 +9,22 @@
 [![DOI](https://joss.theoj.org/papers/10.21105/joss.08936/status.svg)](https://doi.org/10.21105/joss.08936)
 
 A C++ library for generating qualitative color palettes with maximum perceptual
-distinctiveness, especially for data visualization. The API uses a
-builder-style interface for flexible palette configuration, supporting multiple
-input formats, color vision deficiency simulation, and perceptual color
-difference metrics.
+distinctiveness, especially for data visualization. The API uses a builder-style
+interface for flexible palette configuration, supporting multiple input formats,
+color vision deficiency simulation, and perceptual color difference metrics.
 
-Full documentation is available at
-[qualpal.cc/docs/](https://qualpal.cc/docs/).
+Full documentation is available at [qualpal.cc/docs/](https://qualpal.cc/docs/).
 
 This library is also available as
 
-- an R package called
-  [qualpalr](https://cran.r-project.org/package=qualpalr),
+- an R package called [qualpalr](https://cran.r-project.org/package=qualpalr),
 - as a python package called [qualpal](https://pypi.org/project/qualpal/),
-- and as a web
-  application at [qualpal.cc](https://qualpal.cc/app/).
+- and as a web application at [qualpal.cc](https://qualpal.cc/app/).
 
 ## Features
 
-- Automatic selection of color palettes using perceptual color difference metrics
+- Automatic selection of color palettes using perceptual color difference
+  metrics
 - Color vision deficiency simulation for accessible palette design
 - Multiple input formats: RGB values, hex strings, HSL ranges, built-in palettes
 - Fast algorithms for large color spaces
@@ -52,49 +50,50 @@ This library is also available as
 When visualizing categorical data, it is often necessary to select a set of
 distinct colors that are easily distinguishable from each other. This is
 especially important for accessibility, as many people have color vision
-deficiencies (CVD) that make it difficult to distinguish certain colors.
-Qualpal aims to provide a simple and effective way to generate such color
-palettes, ensuring that the selected colors are not only distinct from each
-other, but also accessible to people with CVD.
+deficiencies (CVD) that make it difficult to distinguish certain colors. Qualpal
+aims to provide a simple and effective way to generate such color palettes,
+ensuring that the selected colors are not only distinct from each other, but
+also accessible to people with CVD.
 
 The problem with almost all standard color palettes is that they are optimized
-for a specific number of colors. This is of course a problem by
-design, since a good 10-color palette has to be designed with the assumption
-that it will be used as a whole, not that it will be used in parts. But it
-means that if you want to select a subset of colors from a palette, you will
-not get the best possible result.
+for a specific number of colors. This is of course a problem by design, since a
+good 10-color palette has to be designed with the assumption that it will be
+used as a whole, not that it will be used in parts. But it means that if you
+want to select a subset of colors from a palette, you will not get the best
+possible result.
 
 They are also often created by a human designer, which means that they may not
 be optimized for perceptual distinctiveness. Qualpal, on the other hand, uses
 state-of-the art color difference metrics and a farthest-point sampling
-algorithm to select colors that are (approximately) maximally distinct from
-each other, while also considering color vision deficiencies.
+algorithm to select colors that are (approximately) maximally distinct from each
+other, while also considering color vision deficiencies.
 
 ## R Package
 
 The Qualpal library is also available as an R package called
-[qualpalr](https://cran.r-project.org/package=qualpalr). This package
-is continuously updated to match the latest features of the C++ library,
-but may sometimes lag behind slightly. It provides a similar API for
-generating colors from R, making it easy to integrate Qualpal into R workflows,
+[qualpalr](https://cran.r-project.org/package=qualpalr). This package is
+continuously updated to match the latest features of the C++ library, but may
+sometimes lag behind slightly. It provides a similar API for generating colors
+from R, making it easy to integrate Qualpal into R workflows,
 
 ## Web App
 
 Qualpal is also available as a web application at
-[qualpal.cc](https://qualpal.cc/app/). The web app has slightly
-limited functionality compared to the library and R package, but it allows
-users to quickly generate color palettes directly in their browser.
+[qualpal.cc](https://qualpal.cc/app/). The web app has slightly limited
+functionality compared to the library and R package, but it allows users to
+quickly generate color palettes directly in their browser.
 
-The app is hosted on Cloudflare Workers with Static Assets. To run the production
-server locally, run `npm ci` and `npm run dev:worker` in `web/`. Use
+The app is hosted on Cloudflare Workers with Static Assets. To run the
+production server locally, run `npm ci` and `npm run dev:worker` in `web/`. Use
 `npm run test:worker` to test content negotiation and `npm run deploy` to build
 and deploy the app. The Web GitHub Actions workflow validates pull requests and
 deploys changes on `main` using the `CLOUDFLARE_API_TOKEN` and
 `CLOUDFLARE_ACCOUNT_ID` repository secrets.
 
 Requests to the homepage with `Accept: text/markdown` receive the app's usage
-guide from `web/public/index.md`. Browsers receive HTML by default. Both responses
-include `Vary: Accept`. Keep the Markdown guide current when app features change.
+guide from `web/public/index.md`. Browsers receive HTML by default. Both
+responses include `Vary: Accept`. Keep the Markdown guide current when app
+features change.
 
 ## Documentation
 
@@ -114,8 +113,8 @@ task docs:preview
 ```
 
 Run `task docs:preview` inside devenv for live docs and app development at
-`http://127.0.0.1:5173/`. The task prepares the API sources on the first run
-and starts Diplodocus and Vite.
+`http://127.0.0.1:5173/`. The task prepares the API sources on the first run and
+starts Diplodocus and Vite.
 
 The build stages the binding releases listed in `site/sources.env` and packages
 the combined site in `build/site`. Update those pins when adopting new releases.
@@ -123,11 +122,11 @@ See [the site rollout instructions](site/rollout.md) for the initial cutover.
 
 ## JOSS Paper
 
-Qualpal has been [published in JOSS](https://doi.org/10.21105/joss.08936).
-You can read more about the motivation and design of qualpal in the paper.
-If you find qualpal useful in your research, please consider citing it (either
-using the DOI badge, the GitHub citation tool, or by referring directly
-to <CITATION.cff>.
+Qualpal has been [published in JOSS](https://doi.org/10.21105/joss.08936). You
+can read more about the motivation and design of qualpal in the paper. If you
+find qualpal useful in your research, please consider citing it (either using
+the DOI badge, the GitHub citation tool, or by referring directly to
+<CITATION.cff>.
 
 ## Quick Start
 
@@ -147,7 +146,8 @@ auto colorspace_pal = qp.generate(5);
 
 ![Five colors from the HSL color space](docs/images/examples/hsl_pal.svg)
 
-Generate colors from multiple colorspace regions (e.g., warm and cool colors only):
+Generate colors from multiple colorspace regions (e.g., warm and cool colors
+only):
 
 ```cpp
 qp.setInputColorspaceRegions(
@@ -181,8 +181,8 @@ auto cvd_pal = qp.generate(4);
 
 ### Command Line Interface (CLI)
 
-qualpal includes a powerful command line interface for palette generation and analysis.
-For a full list of options and usage examples, run:
+qualpal includes a powerful command line interface for palette generation and
+analysis. For a full list of options and usage examples, run:
 
 ```sh
 qualpal --help
@@ -195,8 +195,7 @@ man qualpal
 ```
 
 You can also view the [Doxygen-generated
-documentation](https://qualpal.cc/docs/) for detailed CLI and API
-usage.
+documentation](https://qualpal.cc/docs/) for detailed CLI and API usage.
 
 #### Examples
 
@@ -219,9 +218,7 @@ qualpal -n 3 "#ff0000" "#00ff00" "#0000ff" "#ffff00"
 
 Extend existing palette (keep fixed colors provided after --extend):
 
-```{sh}
-qualpal -n 3 -i colorspace "0:180" "0.3:0.6" "0.7:0.9" --extend "#ff0000" "#00ff00"
-```
+`{sh} qualpal -n 3 -i colorspace "0:180" "0.3:0.6" "0.7:0.9" --extend "#ff0000" "#00ff00"`
 
 ![A fixed palette of red and green extended with one color from the HSL space](docs/images/examples/cli_hsl_extend.svg)
 
@@ -231,27 +228,30 @@ Analyze palette with hex input:
 qualpal analyze --input hex "#ffe402" "#ff5733" "#33ff57" "#3357ff"
 ```
 
-    Color Difference Matrix (ciede2000 metric):
-    Colors analyzed: 4
-    Colors:
-      Idx      Hex  MinDist
-        0  #ffe402    29.52
-        1  #ff5733    49.57
-        2  #33ff57    29.52
-        3  #3357ff    50.07
+```
+Color Difference Matrix (ciede2000 metric):
+Colors analyzed: 4
+Colors:
+  Idx      Hex  MinDist
+    0  #ffe402    29.52
+    1  #ff5733    49.57
+    2  #33ff57    29.52
+    3  #3357ff    50.07
 
-    Color Difference Matrix:
-              0       1       2       3
-      0     0.00   49.57   29.52   83.87
-      1    49.57    0.00   78.05   50.07
-      2    29.52   78.05    0.00   71.78
-      3    83.87   50.07   71.78    0.00
+Color Difference Matrix:
+          0       1       2       3
+  0     0.00   49.57   29.52   83.87
+  1    49.57    0.00   78.05   50.07
+  2    29.52   78.05    0.00   71.78
+  3    83.87   50.07   71.78    0.00
+```
 
 ## Installation
 
 ### Binary Packages (Recommended)
 
-Pre-built packages and binaries are available for Linux, macOS, and Windows from [GitHub Releases](https://github.com/jolars/qualpal/releases/latest).
+Pre-built packages and binaries are available for Linux, macOS, and Windows from
+[GitHub Releases](https://github.com/jolars/qualpal/releases/latest).
 
 <details>
 <summary><b>📦 Linux - Debian/Ubuntu (DEB packages)</b></summary>
@@ -355,8 +355,8 @@ Headers and libraries are included in the archive for development.
 ### From Source
 
 To build and install qualpal from source, you need to have CMake and a C++17
-compatible C++ compiler installed. If you want the algorithm to be
-parallelized, you also need to have support for OpenMP.
+compatible C++ compiler installed. If you want the algorithm to be parallelized,
+you also need to have support for OpenMP.
 
 To build, clone the repository and run the following commands:
 
@@ -367,15 +367,14 @@ cmake -B build -S .
 cmake --build build --config Release
 ```
 
-If you want to include the CLI interface, make sure to pass the
-`-DBUILD_CLI=ON` option to CMake:
+If you want to include the CLI interface, make sure to pass the `-DBUILD_CLI=ON`
+option to CMake:
 
 ```sh
 cmake -B build -S . -DBUILD_CLI=ON
 ```
 
-Then, to install the library (and CLI, if built), use
-the following command:
+Then, to install the library (and CLI, if built), use the following command:
 
 ```sh
 sudo cmake --install build
@@ -410,9 +409,13 @@ Under your chosen prefix (e.g., `$HOME/.local` or `/usr/local`):
 
 The binary packages are split into separate components:
 
-- **Runtime packages** (`libqualpal1`): Contains the shared library needed to run applications that use qualpal
-- **CLI packages** (`qualpal`): Contains the command-line interface - depends on the runtime package
-- **Development packages** (`libqualpal-dev`/`libqualpal-devel`): Contains headers, static library, and CMake files for building applications with qualpal
+- **Runtime packages** (`libqualpal1`): Contains the shared library needed to
+  run applications that use qualpal
+- **CLI packages** (`qualpal`): Contains the command-line interface - depends on
+  the runtime package
+- **Development packages** (`libqualpal-dev`/`libqualpal-devel`): Contains
+  headers, static library, and CMake files for building applications with
+  qualpal
 
 This separation allows you to install only what you need:
 
@@ -422,7 +425,8 @@ This separation allows you to install only what you need:
 
 ### Uninstall
 
-To uninstall qualpal, we provide a CMake uninstall target. Run the following command:
+To uninstall qualpal, we provide a CMake uninstall target. Run the following
+command:
 
 ```sh
 cmake --build build --target uninstall
@@ -436,8 +440,8 @@ xargs rm < build/install_manifest.txt
 
 ### WebAssembly
 
-To build the WebAssembly package for web applications, you need
-to first install [Emscripten](https://emscripten.org/docs/getting_started/downloads.html).
+To build the WebAssembly package for web applications, you need to first install
+[Emscripten](https://emscripten.org/docs/getting_started/downloads.html).
 
 Then, you can build the package with the following commands:
 
@@ -525,7 +529,8 @@ auto pastel_palette = qp.generate(5);
 
 ### Adaptation to Background Color
 
-When visualizing categorical data, consider a background color to ensure contrast:
+When visualizing categorical data, consider a background color to ensure
+contrast:
 
 ```cpp
 auto pal = Qualpal{}
@@ -546,8 +551,8 @@ auto pal = Qualpal{}
 Qualpal can take an existing color palette and improve it by selecting a subset
 of the most distinct colors from it, as well as ordering the result.
 
-Here we design a CVD-friendly version of the `"ColorBrewer:Set2"` palette
-for a black background, selecting 3 colors.
+Here we design a CVD-friendly version of the `"ColorBrewer:Set2"` palette for a
+black background, selecting 3 colors.
 
 ```cpp
 auto pal = Qualpal{}
@@ -589,9 +594,9 @@ for more information.
 
 ## Versioning
 
-This project follows [Semantic Versioning](https://semver.org/).
-Expect breaking changes in major releases, new features
-in minor releases, and bug fixes in patch releases.
+This project follows [Semantic Versioning](https://semver.org/). Expect breaking
+changes in major releases, new features in minor releases, and bug fixes in
+patch releases.
 
 ## License
 
