@@ -4,14 +4,14 @@
   export let label: string;
 </script>
 
-<div class="bg-gray-50 p-3 rounded-lg">
+<div class="bg-surface p-3 rounded-lg">
   <h3>
     <button
       class="w-full flex justify-start items-center py-1 font-semibold bg-transparent transition rounded cursor-pointer"
       aria-expanded={open}
       on:click={onToggle}
     >
-      <span class="flex-1 text-left text-gray-700">{label}</span>
+      <span class="flex-1 text-left text-ink">{label}</span>
       <svg
         class="w-4 h-4 ml-1 transition-transform {open ? 'rotate-180' : ''}"
         fill="none"

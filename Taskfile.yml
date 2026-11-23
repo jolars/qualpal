@@ -141,12 +141,11 @@ tasks:
       - npm run dev
 
   build-web:
-    desc: Build Svelte app for production
+    desc: Build the palette generator component
     deps: [build-wasm]
     dir: web
     cmds:
-      - npm run build
-      - echo "✓ Web app built! Files in web/dist/"
+      - npm run build:component
 
   clean-web:
     desc: Clean web build artifacts

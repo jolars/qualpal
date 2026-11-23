@@ -26,7 +26,7 @@
 
 <button
   type="button"
-  class="inline-flex items-center justify-center {extraClass} rounded text-gray-600 bg-white/10 hover:bg-white/90 border border-gray-200 cursor-pointer"
+  class="inline-flex items-center justify-center {extraClass} rounded text-muted bg-surface hover:bg-inset border border-line cursor-pointer"
   aria-label={ariaLabel}
   {title}
   onclick={handleCopy}

@@ -1,29 +1,67 @@
 @import "tailwindcss";
 
+@theme inline {
+  --color-canvas: var(--app-canvas);
+  --color-surface: var(--app-surface);
+  --color-inset: var(--app-inset);
+  --color-ink: var(--app-ink);
+  --color-muted: var(--app-muted);
+  --color-line: var(--app-line);
+  --color-link: var(--app-link);
+  --color-accent: var(--app-accent);
+  --color-action: var(--app-action);
+  --color-action-hover: var(--app-action-hover);
+  --color-on-action: var(--app-on-action);
+  --color-focus: var(--app-focus);
+  --color-danger: var(--app-danger);
+  --color-danger-soft: var(--app-danger-soft);
+}
+
+:root {
+  color-scheme: light dark;
+}
+
 :root,
 :host {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --app-canvas: var(--background, light-dark(#fff, #11191f));
+  --app-surface: var(--surface, light-dark(#fafbf9, #202b33));
+  --app-inset: var(--sidebar-background, light-dark(#f6f6f7, #182128));
+  --app-ink: var(--ink, light-dark(#202c38, #e6edf3));
+  --app-muted: var(--muted, light-dark(#4d606b, #a5b3bd));
+  --app-line: var(--border, light-dark(#d6dedc, #34434c));
+  --app-link: var(--link, light-dark(#165c7c, #79c7e3));
+  --app-accent: var(--accent, light-dark(#30776b, #90cfbe));
+  --app-action: var(--accent-background, light-dark(#2d7064, #90cfbe));
+  --app-action-hover: var(--accent-hover-background, light-dark(#225b51, #aaddce));
+  --app-on-action: var(--on-accent, light-dark(#fff, #10251e));
+  --app-focus: var(--focus-ring, light-dark(#a04605, #f5b36b));
+  --app-danger: light-dark(#b91c1c, #fca5a5);
+  --app-danger-soft: light-dark(#fef2f2, #451a1a);
+
+  font-family: system-ui, sans-serif;
   line-height: 1.5;
-  font-weight: 400;
-  color: #111827;
+  color: var(--app-ink);
 }
 
 body {
-  width: 100%;
-  min-height: 100vh;
+  background: var(--app-canvas);
+}
+
+:where(a, button, input, select, textarea):focus-visible {
+  outline: 2px solid var(--app-focus);
+  outline-offset: 2px;
+}
+
+input {
+  accent-color: var(--app-action);
 }
 
 p > a {
-  color: #2563eb; /* blue-600 */
-  text-decoration: none;
-}
-
-#app {
-  min-height: 100vh;
+  color: var(--app-link);
+  text-decoration: underline;
 }
 
 .main-content {
-  max-width: 1280px;
-  margin: 0 auto;
-  background: white;
+  max-width: 80rem;
+  margin-inline: auto;
 }

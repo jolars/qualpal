@@ -344,12 +344,12 @@
   });
 </script>
 
-<h2 class="text-xl text-left font-semibold text-gray-900 mb-4">Examples</h2>
+<h2 class="text-xl text-left font-semibold text-ink mb-4">Examples</h2>
 
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
   <svg
     bind:this={barChartContainer}
-    class="border border-gray-200 rounded w-full h-auto"
+    class="border border-line rounded w-full h-auto"
     viewBox="0 0 300 200"
     preserveAspectRatio="xMidYMid meet"
   ></svg>
@@ -357,21 +357,21 @@
   <div class="text-center">
     <svg
       bind:this={scatterPlotContainer}
-      class="border border-gray-200 rounded w-full h-auto"
+      class="border border-line rounded w-full h-auto"
       viewBox="0 0 300 200"
       preserveAspectRatio="xMidYMid meet"
     ></svg>
   </div>
   <svg
     bind:this={lineChartContainer}
-    class="border border-gray-200 rounded w-full h-auto"
+    class="border border-line rounded w-full h-auto"
     viewBox="0 0 300 200"
     preserveAspectRatio="xMidYMid meet"
   ></svg>
 
   <svg
     bind:this={mapContainer}
-    class="border border-gray-200 rounded w-full h-auto"
+    class="border border-line rounded w-full h-auto"
     viewBox="0 0 990 660"
     preserveAspectRatio="xMidYMid meet"
   ></svg>

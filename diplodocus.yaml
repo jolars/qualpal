@@ -4,7 +4,7 @@ presentation:
   site-url: https://qualpal.cc/
   canonical-url-style: clean
   description: Generate distinct color palettes for categorical data.
-  logo: {repository: core, path: docs/images/logo-small.png}
+  logo: {repository: core, path: docs/images/logo.png}
   home:
     tagline: Distinct colors for categorical data
     description: Generate palettes from a color space or a set of colors, with options for background contrast and color vision deficiency.

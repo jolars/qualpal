@@ -122,15 +122,15 @@
 </script>
 
 {#if !matrix() || matrix().length === 0}
-  <div class="text-red-500 text-sm">No matrix data received.</div>
+  <div class="text-danger text-sm">No matrix data received.</div>
 {:else}
-  <h3 class="text-xl font-semibold text-gray-900 mb-4">Palette Analysis</h3>
+  <h3 class="text-xl font-semibold text-ink mb-4">Palette Analysis</h3>
   <!-- Difference Matrix -->
   <div class="w-full max-w-full overflow-x-auto">
-    <h4 class="text-lg font-medium text-gray-800 mb-3">
+    <h4 class="text-lg font-medium text-ink mb-3">
       Color Difference Matrix
     </h4>
-    <p class="text-xs text-gray-500 mt-2 mb-4">
+    <p class="text-xs text-muted mt-2 mb-4">
       Values represent the color difference (in the CIEDE2000 metric) between
       palette colors. For colors in the RGB space, the maximum is around 80.
       Values above 10 are generally considered to be just noticeable.
@@ -140,10 +140,10 @@
         <tr>
           <th></th>
           {#each labels() as label, i}
-            <th class="text-xs font-mono text-gray-700 px-1 py-1 w-12">
+            <th class="text-xs font-mono text-ink px-1 py-1 w-12">
               <div class="flex flex-col items-center">
                 <span
-                  class="inline-block w-4 h-4 sm:w-5 sm:h-5 rounded mb-1 border border-gray-300"
+                  class="inline-block w-4 h-4 sm:w-5 sm:h-5 rounded mb-1 border border-line"
                   style="background:{simulatedLabels()[i]};"
                   title={label}
                 ></span>
@@ -157,11 +157,11 @@
       <tbody>
         {#each matrix() as row, i}
           <tr>
-            <th class="text-xs font-mono text-gray-700 px-1 py-1 w-12">
+            <th class="text-xs font-mono text-ink px-1 py-1 w-12">
               {#if labels()[i]}
                 <div class="flex flex-col items-center">
                   <span
-                    class="inline-block w-4 h-4 sm:w-5 sm:h-5 rounded mb-1 border border-gray-300"
+                    class="inline-block w-4 h-4 sm:w-5 sm:h-5 rounded mb-1 border border-line"
                     style="background:{simulatedLabels()[i]};"
                     title={labels()[i]}
                   ></span>
@@ -183,7 +183,7 @@
                   min,
                   max,
                 )};width:32px;height:32px;position:relative;"
-                class="sm:w-12 sm:h-12 border border-gray-200 text-xs font-mono text-center align-middle"
+                class="sm:w-12 sm:h-12 border border-line text-xs font-mono text-center align-middle"
                 title={labels()[i] && labels()[j]
                   ? `${labels()[i]} vs ${labels()[j]}: ${value.toFixed(2)}`
                   : value.toFixed(2)}
@@ -207,10 +207,10 @@
   </div>
 
   <!-- Minimum Distances -->
-  <h4 class="text-lg font-medium text-gray-800 mb-3 flex items-center gap-2">
+  <h4 class="text-lg font-medium text-ink mb-3 flex items-center gap-2">
     Minimum Distances
   </h4>
-  <p class="text-xs text-gray-500 mb-2">
+  <p class="text-xs text-muted mb-2">
     Shows the smallest color difference (in the CIEDE2000 metric) for each
     palette color, which is the minimum row or column-wise of the color
     difference matrix. Values should optimally be high and equal across the

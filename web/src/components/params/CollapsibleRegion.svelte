@@ -35,12 +35,12 @@
   }
 </script>
 
-<div class="border rounded bg-white shadow-sm">
+<div class="border rounded bg-canvas shadow-sm">
   <!-- Header with collapse/expand -->
   <div class="flex items-center overflow-hidden">
     <button
       onclick={onToggle}
-      class="flex-1 px-3 py-2 flex items-center gap-2 hover:bg-gray-50 transition text-left min-w-0"
+      class="flex-1 px-3 py-2 flex items-center gap-2 hover:bg-surface transition text-left min-w-0"
     >
       <svg
         class="w-3 h-3 transition-transform flex-shrink-0 {isOpen
@@ -57,7 +57,7 @@
       </svg>
       <span class="font-medium text-sm flex-shrink-0">Region {index + 1}</span>
       {#if !isOpen}
-        <span class="text-xs text-gray-500 truncate min-w-0">
+        <span class="text-xs text-muted truncate min-w-0">
           H {formatRange(region.hueMin, region.hueMax)}°, S {formatRange(
             region.satMin,
             region.satMax,
@@ -66,7 +66,7 @@
         </span>
         <!-- Mini color preview gradient (clockwise from hueMin to hueMax) -->
         <div
-          class="h-3 w-12 rounded border border-gray-200 flex-shrink-0"
+          class="h-3 w-12 rounded border border-line flex-shrink-0"
           style="background: linear-gradient(90deg, 
                  hsl({region.hueMin}, {region.satMax * 100}%, 50%), 
                  hsl({getHueMidpoint(
@@ -81,7 +81,7 @@
     {#if canRemove}
       <button
         onclick={onRemove}
-        class="text-red-600 text-lg px-3 py-2 hover:bg-red-50 transition border-l leading-none"
+        class="text-danger text-lg px-3 py-2 hover:bg-danger-soft transition border-l leading-none"
         title="Remove this region"
       >
         ×
@@ -95,7 +95,7 @@
       <div>
         <label
           for="region-{index}-hue"
-          class="text-xs font-medium text-gray-700 block mb-2">Hue</label
+          class="text-xs font-medium text-ink block mb-2">Hue</label
         >
         <HueWheel
           hueMin={region.hueMin}
@@ -107,7 +107,7 @@
       <div>
         <label
           for="region-{index}-saturation"
-          class="text-xs font-medium text-gray-700 block mb-2">Saturation</label
+          class="text-xs font-medium text-ink block mb-2">Saturation</label
         >
         <SaturationSlider
           satMin={region.satMin}
@@ -119,7 +119,7 @@
       <div>
         <label
           for="region-{index}-lightness"
-          class="text-xs font-medium text-gray-700 block mb-2">Lightness</label
+          class="text-xs font-medium text-ink block mb-2">Lightness</label
         >
         <LightnessSlider
           lightMin={region.lightMin}

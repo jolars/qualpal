@@ -33,15 +33,15 @@
 </script>
 
 <section>
-  <h3 class="text-xl text-left font-semibold text-gray-900 mb-4">Output</h3>
-  <div class="mb-4 border-b flex gap-2 border-gray-200">
+  <h3 class="text-xl text-left font-semibold text-ink mb-4">Output</h3>
+  <div class="mb-4 border-b flex flex-wrap gap-2 border-line">
     {#each OUTPUT_TABS as tab}
       <button
         class="
-          px-4 py-2 -mb-px border-b-2 font-mono text-sm transition-colors cursor-pointer
+          px-2 sm:px-4 py-2 -mb-px border-b-2 font-mono text-sm transition-colors cursor-pointer
           {activeTab === tab
-          ? 'border-blue-600 text-blue-700 font-semibold'
-          : 'border-transparent text-gray-500 hover:text-blue-600'}
+          ? 'border-accent text-link font-semibold'
+          : 'border-transparent text-muted hover:text-link'}
         "
         onclick={() => setActiveTab(tab)}
         role="tab"
@@ -51,7 +51,7 @@
       </button>
     {/each}
   </div>
-  <div class="relative bg-gray-50 rounded-lg p-4 mt-2 border border-gray-200">
+  <div class="relative bg-surface rounded-lg p-4 mt-2 border border-line">
     <CopyButton
       text={outputText()}
       ariaLabel="Copy Output"
@@ -60,6 +60,6 @@
       oncopied={() => showToast("Copied Output")}
     />
     <pre
-      class="text-sm font-mono text-gray-700 overflow-x-auto">{outputText()}</pre>
+      class="text-sm font-mono text-ink overflow-x-auto">{outputText()}</pre>
   </div>
 </section>

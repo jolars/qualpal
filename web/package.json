@@ -9,8 +9,6 @@
     "build": "npm run build:citations && vite build",
     "build:component": "npm run build:citations && vite build --mode component",
     "preview": "vite preview",
-    "dev:worker": "npm run build && wrangler dev",
-    "deploy": "npm run build && wrangler deploy",
     "test:worker": "node --test worker/index.test.js"
   },
   "devDependencies": {

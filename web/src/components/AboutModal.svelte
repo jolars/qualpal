@@ -46,7 +46,10 @@
   }
 
   function handleKey(e: KeyboardEvent) {
-    if (e.key === "Escape") close();
+    if (e.key === "Escape") {
+      e.stopPropagation();
+      close();
+    }
   }
 
   let dialogEl = $state<HTMLDivElement | null>(null);
@@ -66,20 +69,20 @@
     onkeydown={handleKey}
   >
     <div
-      class="bg-white rounded-lg shadow-lg w-full max-w-lg overflow-hidden max-h-[90vh] flex flex-col"
+      class="bg-canvas rounded-lg shadow-lg w-full max-w-lg overflow-hidden max-h-[90vh] flex flex-col"
       role="dialog"
       aria-modal="true"
       aria-labelledby="about-title"
       tabindex="-1"
       bind:this={dialogEl}
       onclick={(e) => e.stopPropagation()}
-      onkeydown={(e) => e.stopPropagation()}
+      onkeydown={handleKey}
     >
       <div class="px-5 py-4 border-b flex justify-between items-center">
         <h2 id="about-title" class="text-lg font-semibold">About Qualpal</h2>
         <button
           type="button"
-          class="text-gray-500 hover:text-gray-700 cursor-pointer"
+          class="text-muted hover:text-ink cursor-pointer"
           aria-label="Close"
           onclick={close}
         >
@@ -87,7 +90,7 @@
         </button>
       </div>
       <div
-        class="p-5 space-y-4 text-sm text-gray-700 overflow-y-auto flex-1 min-h-0"
+        class="p-5 space-y-4 text-sm text-ink overflow-y-auto flex-1 min-h-0"
       >
         <p>
           Qualpal generates qualitative color palettes (for categorical data)
@@ -121,8 +124,8 @@
                 type="button"
                 class="px-2 py-1 text-xs rounded border cursor-pointer transition
                   {activeFormat === f.key
-                  ? 'bg-blue-600 text-white border-blue-600'
-                  : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'}"
+                  ? 'bg-action text-on-action border-accent'
+                  : 'bg-canvas text-ink border-line hover:bg-inset'}"
                 onclick={() => (activeFormat = f.key)}
                 aria-pressed={activeFormat === f.key}
               >
@@ -137,7 +140,7 @@
               >
               <select
                 id="citation-style-select"
-                class="text-xs border rounded px-1 py-0.5 bg-white"
+                class="text-xs border rounded px-1 py-0.5 bg-canvas"
                 bind:value={activeStyleKey}
               >
                 {#each currentCitation().styles as s}
@@ -149,11 +152,11 @@
           <div class="relative">
             {#if currentCitation().code === true && !currentCitation().styles}
               <pre
-                class="bg-gray-100 mt-3 p-2 rounded text-xs overflow-x-auto"
+                class="bg-inset mt-3 p-2 rounded text-xs overflow-x-auto"
                 id="citation-block">{displayedCitationValue()}</pre>
             {:else}
               <div
-                class="p-2 rounded text-xs border bg-white whitespace-pre-wrap"
+                class="p-2 rounded text-xs border bg-canvas whitespace-pre-wrap"
                 id="citation-block"
               >
                 {displayedCitationValue()}

@@ -137,19 +137,19 @@
   }
 </script>
 
-<aside class="w-full sm:w-72 bg-gray-100 p-3 md:border-r md:border-gray-200">
-  <div class="sticky top-3 border-g">
+<aside class="min-w-0 rounded-lg border border-line bg-inset p-3">
+  <div>
     {#if !$moduleLoaded}
       <LoadingSpinner message="Loading..." />
     {:else}
       <div class="space-y-4">
-        <div class="bg-gray-50 p-4 rounded-lg">
+        <div class="bg-surface p-4 rounded-lg">
           <label
             for="qualpal-num-colors"
-            class="block font-semibold text-gray-700 mb-2"
+            class="block font-semibold text-ink mb-2"
           >
             Number of Colors
-            <span class="text-blue-500 font-semibold"
+            <span class="text-link font-semibold"
               >{$paletteParams.numColors}</span
             >
           </label>
@@ -161,9 +161,9 @@
             autocomplete="off"
             bind:value={$paletteParams.numColors}
             oninput={() => debouncedGenerate($paletteParams)}
-            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
+            class="w-full h-2 bg-line rounded-lg appearance-none cursor-pointer slider"
           />
-          <div class="flex justify-between text-xs text-gray-500 mt-1">
+          <div class="flex justify-between text-xs text-muted mt-1">
             <span>2</span>
             <span>12</span>
           </div>
@@ -174,13 +174,13 @@
           onToggle={() => (inputOpen = !inputOpen)}
           label="Input"
         >
-          <h3 class="font-medium text-gray-900 mb-3">Mode</h3>
+          <h3 class="font-medium text-ink mb-3">Mode</h3>
           <div class="flex gap-2 mb-4">
             <button
               class="px-3 py-1 text-sm rounded border transition cursor-pointer
               {$paletteParams.inputMode === 'colorspace'
-                ? 'bg-blue-600 text-white border-blue-600'
-                : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'}"
+                ? 'bg-action text-on-action border-accent'
+                : 'bg-canvas text-ink border-line hover:bg-inset'}"
               onclick={() => setInputMode("colorspace")}
             >
               Colorspace
@@ -188,8 +188,8 @@
             <button
               class="px-3 py-1 text-sm rounded border transition cursor-pointer
               {$paletteParams.inputMode === 'fixed'
-                ? 'bg-blue-600 text-white border-blue-600'
-                : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'}"
+                ? 'bg-action text-on-action border-accent'
+                : 'bg-canvas text-ink border-line hover:bg-inset'}"
               onclick={() => setInputMode("fixed")}
             >
               Fixed Set
@@ -227,21 +227,21 @@
                 </div>
                 <div class="flex gap-2">
                   <button
-                    class="px-2 py-1 text-xs rounded border border-gray-300 bg-white hover:bg-gray-100 disabled:opacity-50 cursor-pointer"
+                    class="px-2 py-1 text-xs rounded border border-line bg-canvas hover:bg-inset disabled:opacity-50 cursor-pointer"
                     disabled={!selectedDomain || !selectedPalette}
                     onclick={() => addBuiltInPalette(false)}
                   >
                     Add
                   </button>
                   <button
-                    class="px-2 py-1 text-xs rounded border border-gray-300 bg-white hover:bg-gray-100 disabled:opacity-50 cursor-pointer"
+                    class="px-2 py-1 text-xs rounded border border-line bg-canvas hover:bg-inset disabled:opacity-50 cursor-pointer"
                     disabled={!selectedDomain || !selectedPalette}
                     onclick={() => addBuiltInPalette(true)}
                   >
                     Replace
                   </button>
                   <button
-                    class="px-2 py-1 text-xs rounded border border-gray-300 bg-white hover:bg-gray-100 disabled:opacity-50 cursor-pointer"
+                    class="px-2 py-1 text-xs rounded border border-line bg-canvas hover:bg-inset disabled:opacity-50 cursor-pointer"
                     onclick={() => {
                       clearFixedInput();
                       showToast("Cleared fixed candidates");
@@ -255,7 +255,7 @@
               <div>
                 <label
                   for="fixed-candidates"
-                  class="block text-xs text-gray-600 mb-1"
+                  class="block text-xs text-muted mb-1"
                 >
                   Candidate colors (paste or add built-in)
                 </label>
@@ -264,13 +264,13 @@
                   bind:value={$paletteParams.fixedInput}
                   oninput={() => debouncedGenerate($paletteParams)}
                   placeholder="#FF0000, #00FF00 ... (hex codes auto-detected)"
-                  class="w-full px-2 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                  class="w-full px-2 py-2 text-sm border border-line rounded focus:outline-none focus:ring-2 focus:ring-focus resize-none"
                   rows="4"
                 ></textarea>
               </div>
               {#if fixedCandidates.length > 0}
                 <div>
-                  <p class="text-xs text-gray-600 mb-1">
+                  <p class="text-xs text-muted mb-1">
                     {fixedCandidates.length} candidate {fixedCandidates.length ===
                     1
                       ? "color"
@@ -279,7 +279,7 @@
                   <div class="flex flex-wrap gap-1">
                     {#each fixedCandidates as c}
                       <div
-                        class="w-6 h-6 rounded border border-gray-300"
+                        class="w-6 h-6 rounded border border-line"
                         style="background-color:{c}"
                         title={c}
                       ></div>
@@ -287,20 +287,20 @@
                   </div>
                 </div>
               {:else if $paletteParams.fixedInput.trim()}
-                <p class="text-xs text-red-600">No valid hex colors found.</p>
+                <p class="text-xs text-danger">No valid hex colors found.</p>
               {/if}
-              <p class="text-xs text-gray-500">
+              <p class="text-xs text-muted">
                 Palette will be chosen from these candidates (built-in +
                 pasted). Empty falls back to colorspace.
               </p>
               {#if $paletteParams.inputMode === "fixed" && fixedCandidates.length > 0 && $paletteParams.numColors > fixedCandidates.length}
-                <p class="text-xs text-red-600 font-semibold">
+                <p class="text-xs text-danger font-semibold">
                   Number of colors requested ({$paletteParams.numColors})
                   exceeds number of fixed candidates ({fixedCandidates.length}).
                 </p>
               {/if}
               {#if $paletteParams.fixedInput.trim() && fixedCandidates.length === 0}
-                <p class="text-xs text-red-600 font-semibold">
+                <p class="text-xs text-danger font-semibold">
                   No valid hex colors found. Please enter colors in the format <code
                     >#RRGGBB</code
                   >.
@@ -308,7 +308,7 @@
               {:else if $paletteParams.fixedInput.trim()}
                 {#each $paletteParams.fixedInput.split(/[,;\s\n]+/) as c}
                   {#if c.trim() && !/^#[0-9A-Fa-f]{6}$/.test(c.trim())}
-                    <p class="text-xs text-red-600 font-semibold">
+                    <p class="text-xs text-danger font-semibold">
                       "<code>{c.trim()}</code>" is not a valid hex color. Use
                       <code>#RRGGBB</code> format.
                     </p>
@@ -322,12 +322,12 @@
             <!-- Multi-Region Editor -->
             <div class="space-y-2">
               <div class="flex justify-between items-center mb-2">
-                <h3 class="font-medium text-gray-900 text-sm">
+                <h3 class="font-medium text-ink text-sm">
                   Colorspace Regions
                 </h3>
                 <button
                   onclick={addRegion}
-                  class="text-xs px-2 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+                  class="text-xs px-2 py-1 bg-action text-on-action rounded hover:bg-action-hover transition"
                   title="Add another region"
                 >
                   + Add
@@ -354,21 +354,21 @@
           onToggle={() => (backgroundOpen = !backgroundOpen)}
           label="Background"
         >
-          <h3 class="font-medium text-gray-900 mb-3">Background Color</h3>
+          <h3 class="font-medium text-ink mb-3">Background Color</h3>
 
           <div class="flex items-center gap-2">
             <input
               type="color"
               bind:value={$paletteParams.backgroundColor}
               onchange={() => debouncedGenerate($paletteParams)}
-              class="w-1/2 h-8 rounded border border-gray-300 cursor-pointer"
+              class="w-1/2 h-8 rounded border border-line cursor-pointer"
               title="Select background color"
             />
             <input
               type="text"
               bind:value={$paletteParams.backgroundColor}
               oninput={() => debouncedGenerate($paletteParams)}
-              class="w-1/2 px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              class="w-1/2 px-2 py-1 text-sm border border-line rounded focus:outline-none focus:ring-2 focus:ring-focus"
               placeholder="#ffffff"
               pattern="^#[0-9A-Fa-f]{6}$"
             />
@@ -380,9 +380,9 @@
                 type="checkbox"
                 bind:checked={$paletteParams.useBackground}
                 onchange={() => debouncedGenerate($paletteParams)}
-                class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                class="rounded border-line text-link focus:ring-focus"
               />
-              <span class="text-sm text-gray-700"
+              <span class="text-sm text-ink"
                 >Optimize for background color</span
               >
             </label>
@@ -396,14 +396,14 @@
           label="White Point"
         >
           <div class="space-y-2">
-            <label for="white-point" class="block text-sm text-gray-700">
+            <label for="white-point" class="block text-sm text-ink">
               Reference Illuminant
             </label>
             <select
               id="white-point"
               bind:value={$paletteParams.whitePoint}
               onchange={() => debouncedGenerate($paletteParams)}
-              class="w-full px-3 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              class="w-full px-3 py-2 text-sm border border-line rounded focus:outline-none focus:ring-2 focus:ring-focus"
             >
               <option value="D65">D65 - Daylight 6500K (default, sRGB)</option>
               <option value="D50">D50 - Daylight 5000K (printing)</option>
@@ -413,7 +413,7 @@
             </select>
           </div>
 
-          <p class="text-xs text-gray-500 mt-3">
+          <p class="text-xs text-muted mt-3">
             The white point defines the reference illuminant for color space
             conversions. D65 is standard for most displays. Use D50 for print
             work.
@@ -493,19 +493,19 @@
               >
             </div>
           </div>
-          <p class="text-xs text-gray-500 mt-2">
+          <p class="text-xs text-muted mt-2">
             Adapt palette to users with color vision deficiency.
           </p>
 
           <!-- CVD Simulation Preview -->
-          <div class="mt-4 pt-3 border-t border-gray-300">
+          <div class="mt-4 pt-3 border-t border-line">
             <label class="flex items-center gap-2 cursor-pointer mb-2">
               <input
                 type="checkbox"
                 bind:checked={$cvdSimulation.enabled}
-                class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                class="rounded border-line text-link focus:ring-focus"
               />
-              <span class="text-sm text-gray-700">Simulate CVD</span>
+              <span class="text-sm text-ink">Simulate CVD</span>
             </label>
 
             {#if $cvdSimulation.enabled}
@@ -516,7 +516,7 @@
                 <select
                   id="cvd-sim-type"
                   bind:value={$cvdSimulation.type}
-                  class="text-xs border rounded px-1 py-0.5 bg-white"
+                  class="text-xs border rounded px-1 py-0.5 bg-canvas"
                 >
                   <option value="protan">Protanopia</option>
                   <option value="deutan">Deuteranopia</option>
@@ -542,7 +542,7 @@
                 >
               </div>
             {/if}
-            <p class="text-xs text-gray-500 mt-1">
+            <p class="text-xs text-muted mt-1">
               Simulate how colors appear for a selected CVD type. This also
               updates the palette analysis.
             </p>
@@ -559,7 +559,7 @@
     height: 20px;
     width: 20px;
     border-radius: 50%;
-    background: #3b82f6;
+    background: var(--app-action);
     cursor: pointer;
     border: 2px solid white;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -569,7 +569,7 @@
     height: 20px;
     width: 20px;
     border-radius: 50%;
-    background: #3b82f6;
+    background: var(--app-action);
     cursor: pointer;
     border: 2px solid white;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);

@@ -36,12 +36,12 @@
 </script>
 
 <div class="flex items-center justify-between mb-4">
-  <h2 class="text-xl font-semibold text-gray-900">Generated Palette</h2>
-  <span class="text-sm text-gray-500">{$palette.length} colors</span>
+  <h2 class="text-xl font-semibold text-ink">Generated Palette</h2>
+  <span class="text-sm text-muted">{$palette.length} colors</span>
 </div>
 
 <div
-  class="p-4 rounded-lg border-1 border-gray-200"
+  class="p-4 rounded-lg border-1 border-line"
   style="background-color: {$paletteParams.backgroundColor}"
 >
   <div
@@ -50,7 +50,7 @@
     {#each displayedPalette() as color}
       <div class="group">
         <button
-          class="aspect-square rounded-lg cursor-pointer border-2 border-gray-200 hover:border-gray-400 transition-all duration-200 hover:shadow-md relative overflow-hidden w-full"
+          class="aspect-square rounded-lg cursor-pointer border-2 border-line hover:border-accent transition-all duration-200 hover:shadow-md relative overflow-hidden w-full"
           style="background-color: {color.displayHex}"
           onclick={() => copyColor(color.originalHex)}
           onkeydown={(e) => e.key === "Enter" && copyColor(color.originalHex)}

@@ -46,16 +46,16 @@
       type="checkbox"
       bind:checked={$paletteParams.useExtend}
       on:change={onInput}
-      class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+      class="rounded border-line text-link focus:ring-focus"
     />
-    <span class="text-sm text-gray-700">Extend existing palette</span>
+    <span class="text-sm text-ink">Extend existing palette</span>
   </label>
 </div>
 
 {#if $paletteParams.useExtend}
   <div class="space-y-3">
     <div>
-      <label for="existing-palette" class="block text-xs text-gray-600 mb-1"
+      <label for="existing-palette" class="block text-xs text-muted mb-1"
         >Existing colors (hex values, any format / pasted list)</label
       >
       <textarea
@@ -63,7 +63,7 @@
         bind:value={$paletteParams.existingPalette}
         on:input={onInput}
         placeholder="#ff0000, #00ff00, #0000ff&#10;or&#10;#ff0000 #00ff00 #0000ff"
-        class="w-full px-2 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+        class="w-full px-2 py-2 text-sm border border-line rounded focus:outline-none focus:ring-2 focus:ring-focus resize-none"
         rows="3"
       ></textarea>
     </div>
@@ -71,13 +71,13 @@
     {#if $paletteParams.existingPalette.trim()}
       {#if parsedColors.length > 0}
         <div>
-          <p class="text-xs text-gray-600 mb-2">
+          <p class="text-xs text-muted mb-2">
             Existing colors ({parsedColors.length})
           </p>
           <div class="flex flex-wrap gap-1">
             {#each parsedColors as color}
               <div
-                class="w-6 h-6 rounded border border-gray-300"
+                class="w-6 h-6 rounded border border-line"
                 style="background-color: {color}"
                 title={color}
               ></div>
@@ -85,16 +85,16 @@
           </div>
         </div>
       {:else}
-        <p class="text-xs text-red-600">
+        <p class="text-xs text-danger">
           No valid hex colors found. Use format: #ff0000
         </p>
       {/if}
     {/if}
   </div>
 
-  <p class="text-xs text-gray-500 mt-2">
+  <p class="text-xs text-muted mt-2">
     New colors will be added while preserving the existing ones.
   </p>
 {:else}
-  <p class="text-xs text-gray-500">Generate a completely new palette</p>
+  <p class="text-xs text-muted">Generate a completely new palette</p>
 {/if}

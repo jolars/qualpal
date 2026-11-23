@@ -83,17 +83,7 @@ Qualpal is also available as a web application at
 functionality compared to the library and R package, but it allows users to
 quickly generate color palettes directly in their browser.
 
-The app is hosted on Cloudflare Workers with Static Assets. To run the
-production server locally, run `npm ci` and `npm run dev:worker` in `web/`. Use
-`npm run test:worker` to test content negotiation and `npm run deploy` to build
-and deploy the app. The Web GitHub Actions workflow validates pull requests and
-deploys changes on `main` using the `CLOUDFLARE_API_TOKEN` and
-`CLOUDFLARE_ACCOUNT_ID` repository secrets.
-
-Requests to the homepage with `Accept: text/markdown` receive the app's usage
-guide from `web/public/index.md`. Browsers receive HTML by default. Both
-responses include `Vary: Accept`. Keep the Markdown guide current when app
-features change.
+The app and documentation share a site and a Cloudflare Workers deployment.
 
 ## Documentation
 
@@ -117,7 +107,8 @@ Run `task docs:preview` inside devenv to preview the site at
 and builds the palette generator. Diplodocus watches the docs and the built
 app bundle. Run `npm run build:component --prefix web -- --watch` in a second
 terminal to rebuild the bundle as you edit the app, or use `task dev` for
-standalone Svelte development.
+standalone Svelte development. Use `task site:deploy` to publish the combined
+site.
 
 The build stages the binding releases listed in `site/sources.env` and packages
 the combined site in `build/site`. Update those pins when adopting new releases.

@@ -1,7 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { toast } from "./stores/toast.js";
-  import { cvdSimulation } from "./stores/cvdStore.js";
   import {
     paletteParams,
     palette,
@@ -48,11 +47,11 @@
 {/if}
 
 <div class="main-content">
-  <div class="flex flex-col sm:flex-row min-h-screen">
+  <div class="grid gap-6 md:grid-cols-[18rem_minmax(0,1fr)] md:items-start">
     <ParameterSidebar />
 
     <!-- Main Content -->
-    <main class="flex-1 p-4 overflow-x-auto">
+    <div class="min-w-0">
       <div class="space-y-6">
         {#if $moduleLoaded}
           <PaletteDisplay {palette} {paletteParams} />
@@ -66,12 +65,13 @@
           <LoadingSpinner message="Loading..." />
         {/if}
       </div>
-    </main>
+    </div>
   </div>
 
   <Toast {toast} />
-
-  <AboutModal open={showAbout} onclose={() => (showAbout = false)} />
 </div>
 
-<Footer onclick={() => (showAbout = true)} />
+{#if !embedded}
+  <AboutModal open={showAbout} onclose={() => (showAbout = false)} />
+  <Footer onclick={() => (showAbout = true)} />
+{/if}
