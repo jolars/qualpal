@@ -1,7 +1,7 @@
 # yaml-language-server: $schema=https://devenv.sh/devenv.schema.json
 inputs:
   diplodocus:
-    url: github:jolars/diplodocus/a5cb0907eb2dca4db91d07c8c0fc7e61c47781ea
+    url: github:jolars/diplodocus
   nixpkgs:
     url: github:cachix/devenv-nixpkgs/rolling
 
