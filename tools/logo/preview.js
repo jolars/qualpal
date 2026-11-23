@@ -28,7 +28,9 @@ async function preview() {
   controls.saveState();
 
   const themeButton = document.querySelector("#theme");
+  const smallButton = document.querySelector("#small");
   let dark = matchMedia("(prefers-color-scheme: dark)").matches;
+  let small = false;
   const axisMaterial = new LineMaterial({ linewidth: 1.35 });
   const sphere = new THREE.SphereGeometry(1, 28, 18);
   const markers = points.map(({ coordinates: [a, b, lightness], hex, selected }) => {
@@ -76,7 +78,7 @@ async function preview() {
     mesh.position.set(a, lightness - 58, -b);
     mesh.scale.setScalar(selected ? 4.6 : 1.55);
     scene.add(mesh);
-    return { material, hex, selected };
+    return { mesh, material, hex, selected };
   });
 
   for (const [axis, length] of [
@@ -96,7 +98,7 @@ async function preview() {
 
   function resize() {
     const size = container.clientWidth;
-    axisMaterial.linewidth = size * 0.0045;
+    axisMaterial.linewidth = size * (small ? 0.0065 : 0.0045);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setSize(size, size, false);
     draw();
@@ -105,7 +107,7 @@ async function preview() {
   function applyTheme() {
     document.documentElement.classList.toggle("dark", dark);
     themeButton.textContent = dark ? "Light preview" : "Dark preview";
-    axisMaterial.color.set(dark ? "#b8b8b8" : "#142136");
+    axisMaterial.color.set(dark ? "#b8b8b8" : small ? "#525252" : "#142136");
     const background = new THREE.Color(dark ? "#121212" : "#ffffff");
     for (const { material, hex, selected } of markers) {
       const color = material.uniforms.baseColor.value.set(hex);
@@ -123,9 +125,18 @@ async function preview() {
     dark = !dark;
     applyTheme();
   });
+  smallButton.addEventListener("click", () => {
+    small = !small;
+    smallButton.setAttribute("aria-pressed", small);
+    for (const { mesh, selected } of markers) {
+      mesh.visible = !small || selected;
+    }
+    resize();
+    applyTheme();
+  });
   document.querySelector("#export").addEventListener("click", () => {
     renderer.setPixelRatio(1);
-    axisMaterial.linewidth = 1200 * 0.0045;
+    axisMaterial.linewidth = 1200 * (small ? 0.0065 : 0.0045);
     renderer.setSize(1200, 1200, false);
     draw();
     renderer.domElement.toBlob((blob) => {
@@ -133,7 +144,7 @@ async function preview() {
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      link.download = dark ? "qualpal-logo-dark.png" : "qualpal-logo.png";
+      link.download = `qualpal-logo${small ? "-small" : ""}${dark ? "-dark" : ""}.png`;
       link.click();
       setTimeout(() => URL.revokeObjectURL(url), 1000);
     });

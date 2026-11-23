@@ -54,6 +54,14 @@ for file in ("index.html", "index.md"):
     path = root / file
     path.write_text(path.read_text().replace("https://qualpal.cc/app/", "/app/"))
 
+assets = root / "assets"
+shutil.copyfile("docs/images/logo-small-dark.png", assets / "logo-small-dark.png")
+with (assets / "site.css").open("a") as stylesheet:
+    stylesheet.write(
+        '\n:root[data-theme="dark"] .brand-logo {'
+        ' content: url("./logo-small-dark.png"); }\n'
+    )
+
 shutil.copytree("web/dist", root / "app", dirs_exist_ok=True)
 sitemap = root / "sitemap.xml"
 sitemap.write_text(sitemap.read_text().replace(

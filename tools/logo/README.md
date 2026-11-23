@@ -12,11 +12,15 @@ python3 -m http.server --bind 127.0.0.1 8765
 
 Open http://127.0.0.1:8765/tools/logo/. Drag to orbit and scroll to zoom.
 Use **Download PNG** to save the current view at 1200 × 1200 with a transparent
-background. The preview theme sets the axis and candidate colors.
+background. Toggle **Small logo** to preview and export the version with
+thicker gray axes and only the selected points. Both versions have light and
+dark themes.
 
-To update the shipped assets, reset the camera, download a PNG in each theme,
-and run the following from the repository root with ImageMagick installed.
+To update the shipped assets, reset the camera and download both sizes in
+both themes. Run the following from the repository root with
+ImageMagick installed.
 
 ```sh
-bash tools/logo/update-assets.sh /path/to/qualpal-logo.png /path/to/qualpal-logo-dark.png
+bash tools/logo/update-assets.sh qualpal-logo.png qualpal-logo-dark.png \
+  qualpal-logo-small.png qualpal-logo-small-dark.png
 ```
