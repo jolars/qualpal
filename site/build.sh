@@ -4,6 +4,7 @@ cd "$(dirname "$0")/.."
 source site/sources.env
 workspace="$PWD/build/site-workspace"
 mkdir -p "$workspace"
+rm -f "$workspace/prepared-sources.env"
 stage() {
   local name=$1 revision=$2 source="../$1" target="$workspace/$1"
   if [[ ! -d "$target/.git" ]]; then
@@ -23,6 +24,8 @@ python3 site/prepare.py "$workspace"
 (cd "$workspace/qualpalr" && Rscript --vanilla -e "pkgbuild::compile_dll('.', force=TRUE, compile_attributes=FALSE, debug=FALSE)")
 python3 -m venv "$workspace/python-env"
 "$workspace/python-env/bin/python" -m pip install 'sphinx==9.2.0' -e "$workspace/qualpal-py[viz]"
-PATH="$workspace/python-env/bin:$PATH" MPLBACKEND=Agg "${DIPLODOCUS:-../diplodocus/target/debug/diplodocus}" build --no-cache --output build/site
+cp site/sources.env "$workspace/prepared-sources.env"
+if [[ ${1:-} == --prepare-only ]]; then exit 0; fi
+PATH="$workspace/python-env/bin:$PATH" MPLBACKEND=Agg "${DIPLODOCUS:-diplodocus}" build --no-cache --output build/site
 npm run build --prefix web
 python3 site/package.py

@@ -72,11 +72,6 @@ tasks:
       - npm run test:worker --prefix web
       - npm exec --prefix web -- wrangler deploy --config web/wrangler.jsonc --dry-run
 
-  site:preview:
-    deps: [site:build]
-    cmds:
-      - npm exec --prefix web -- wrangler dev --config web/wrangler.jsonc
-
   site:deploy:
     deps: [site:check]
     cmds:
@@ -86,7 +81,9 @@ tasks:
     deps: [site:check]
 
   docs:preview:
-    deps: [site:preview]
+    desc: Preview the documentation and app with live reload
+    cmds:
+      - bash site/preview.sh
 
   docs:deploy:
     deps: [site:deploy]

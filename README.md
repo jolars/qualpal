@@ -102,17 +102,20 @@ The [documentation hub](https://qualpal.cc/docs/) uses Diplodocus and includes
 references for C++, R, and Python. The Svelte app is served at
 [qualpal.cc/app/](https://qualpal.cc/app/).
 
-Install the web dependencies with `npm ci --prefix web`. Build Diplodocus in
-`../diplodocus` with `cargo build --locked`, or set `DIPLODOCUS` to the CLI
-path. Run the site tasks inside `devenv shell`, which provides Doxygen,
-Python, a C++ compiler, and R with the required packages. If you use your own
-environment, install Python 3.14 and R with pkgload, pkgbuild, cpp11, roxygen2,
-evaluate, and jsonlite, and make sure `Rscript` is on your PATH.
+Install the web dependencies with `npm ci --prefix web`. The Qualpal devenv
+provides Diplodocus and the native build tools. Outside devenv, provide
+Diplodocus on `PATH` or set `DIPLODOCUS` to the CLI path. The site build also
+needs Doxygen, Python 3.14, a C++ compiler, and R with pkgload, pkgbuild, cpp11,
+roxygen2, evaluate, and jsonlite.
 
 ```bash
 task site:check
-task site:preview
+task docs:preview
 ```
+
+Run `task docs:preview` inside devenv for live docs and app development at
+`http://127.0.0.1:5173/`. The task prepares the API sources on the first run
+and starts Diplodocus and Vite.
 
 The build stages the binding releases listed in `site/sources.env` and packages
 the combined site in `build/site`. Update those pins when adopting new releases.

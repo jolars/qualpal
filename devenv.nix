@@ -1,5 +1,6 @@
 {
   config,
+  inputs,
   lib,
   pkgs,
   ...
@@ -26,6 +27,7 @@
     clang-tools
     cmake
     gnuplot
+    inputs.diplodocus.packages.${stdenv.hostPlatform.system}.diplodocus
     doxygen
     gcc
     ghostscript
