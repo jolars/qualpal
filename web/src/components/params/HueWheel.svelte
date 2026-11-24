@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { sliderKeyValue } from "./sliderKeyValue";
+
   export let hueMin = 0;
   export let hueMax = 360;
   export let onChange: (values: {
@@ -23,8 +25,10 @@
   }
 
   function handleDrag(type: "min" | "max", event: PointerEvent) {
-    const target = event.target as SVGElement;
-    const svg = target.ownerSVGElement || target.closest("svg");
+    const target = event.currentTarget as SVGCircleElement;
+    if (!target.hasPointerCapture(event.pointerId)) return;
+
+    const svg = target.ownerSVGElement;
     if (!svg) return;
 
     const rect = svg.getBoundingClientRect();
@@ -33,13 +37,23 @@
     let angle = (Math.atan2(y, x) * 180) / Math.PI + 90;
     if (angle < 0) angle += 360;
 
-    const roundedAngle = Math.round(angle);
+    updateValue(type, angle);
+  }
 
-    if (type === "min") {
-      onChange({ hueMin: roundedAngle, hueMax });
-    } else {
-      onChange({ hueMin, hueMax: roundedAngle });
-    }
+  function updateValue(type: "min" | "max", value: number) {
+    const rounded = Math.round(value);
+    onChange(
+      type === "min" ? { hueMin: rounded, hueMax } : { hueMin, hueMax: rounded },
+    );
+  }
+
+  function handleKey(type: "min" | "max", event: KeyboardEvent) {
+    const current = type === "min" ? hueMin : hueMax;
+    const value = sliderKeyValue(event.key, current, 360, 1);
+    if (value === undefined) return;
+
+    event.preventDefault();
+    updateValue(type, value);
   }
 
   function describeArc(
@@ -142,15 +156,15 @@
       stroke="#333"
       stroke-width="2"
       style="cursor: pointer; touch-action: none; z-index: 3;"
-      on:pointerdown={() => {
-        const moveHandler = (ev: PointerEvent) => handleDrag("min", ev);
-        const upHandler = () => {
-          window.removeEventListener("pointermove", moveHandler);
-          window.removeEventListener("pointerup", upHandler);
-        };
-        window.addEventListener("pointermove", moveHandler);
-        window.addEventListener("pointerup", upHandler);
-      }}
+      role="slider"
+      tabindex="0"
+      aria-label="Hue start"
+      aria-valuemin="0"
+      aria-valuemax="360"
+      aria-valuenow={hueMin}
+      on:keydown={(event) => handleKey("min", event)}
+      on:pointerdown={(event) => event.currentTarget.setPointerCapture(event.pointerId)}
+      on:pointermove={(event) => handleDrag("min", event)}
     />
     <circle
       cx={angleToPos(hueMax).x}
@@ -160,15 +174,15 @@
       stroke="#333"
       stroke-width="2"
       style="cursor: pointer; touch-action: none; z-index: 3;"
-      on:pointerdown={() => {
-        const moveHandler = (ev: PointerEvent) => handleDrag("max", ev);
-        const upHandler = () => {
-          window.removeEventListener("pointermove", moveHandler);
-          window.removeEventListener("pointerup", upHandler);
-        };
-        window.addEventListener("pointermove", moveHandler);
-        window.addEventListener("pointerup", upHandler);
-      }}
+      role="slider"
+      tabindex="0"
+      aria-label="Hue end"
+      aria-valuemin="0"
+      aria-valuemax="360"
+      aria-valuenow={hueMax}
+      on:keydown={(event) => handleKey("max", event)}
+      on:pointerdown={(event) => event.currentTarget.setPointerCapture(event.pointerId)}
+      on:pointermove={(event) => handleDrag("max", event)}
     />
   </svg>
 </div>

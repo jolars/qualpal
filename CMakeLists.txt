@@ -369,6 +369,7 @@ if(BUILD_WASM)
             -flto
             -sWASM=1
             -sEXPORT_ES6=1
+            -sENVIRONMENT=web
             -sMODULARIZE=1
             -sEXPORT_NAME=createQualpalModule
             -sALLOW_MEMORY_GROWTH=1

@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { sliderKeyValue } from "./sliderKeyValue";
+
   export let satMin = 0;
   export let satMax = 1;
   export let onChange: (values: {
@@ -20,19 +22,31 @@
   }
 
   function handleDrag(type: "min" | "max", event: PointerEvent) {
-    const target = event.target as SVGElement;
-    const svg = target.ownerSVGElement || target.closest("svg");
+    const target = event.currentTarget as SVGCircleElement;
+    if (!target.hasPointerCapture(event.pointerId)) return;
+
+    const svg = target.ownerSVGElement;
     if (!svg) return;
 
     const rect = svg.getBoundingClientRect();
     const x = event.clientX - rect.left;
-    const value = xToValue(x);
+    updateValue(type, xToValue(x));
+  }
 
-    if (type === "min") {
-      onChange({ satMin: Math.round(value * 10) / 10, satMax });
-    } else {
-      onChange({ satMin, satMax: Math.round(value * 10) / 10 });
-    }
+  function updateValue(type: "min" | "max", value: number) {
+    const rounded = Math.round(value * 10) / 10;
+    onChange(
+      type === "min" ? { satMin: rounded, satMax } : { satMin, satMax: rounded },
+    );
+  }
+
+  function handleKey(type: "min" | "max", event: KeyboardEvent) {
+    const current = type === "min" ? satMin : satMax;
+    const value = sliderKeyValue(event.key, current, 1, 0.1);
+    if (value === undefined) return;
+
+    event.preventDefault();
+    updateValue(type, value);
   }
 </script>
 
@@ -88,15 +102,15 @@
       r="16"
       fill="transparent"
       style="cursor: pointer; touch-action: none;"
-      on:pointerdown={() => {
-        const moveHandler = (ev: PointerEvent) => handleDrag("min", ev);
-        const upHandler = () => {
-          window.removeEventListener("pointermove", moveHandler);
-          window.removeEventListener("pointerup", upHandler);
-        };
-        window.addEventListener("pointermove", moveHandler);
-        window.addEventListener("pointerup", upHandler);
-      }}
+      role="slider"
+      tabindex="0"
+      aria-label="Saturation minimum"
+      aria-valuemin="0"
+      aria-valuemax="1"
+      aria-valuenow={satMin}
+      on:keydown={(event) => handleKey("min", event)}
+      on:pointerdown={(event) => event.currentTarget.setPointerCapture(event.pointerId)}
+      on:pointermove={(event) => handleDrag("min", event)}
     />
 
     <!-- Max handle -->
@@ -114,15 +128,15 @@
       r="16"
       fill="transparent"
       style="cursor: pointer; touch-action: none;"
-      on:pointerdown={() => {
-        const moveHandler = (ev: PointerEvent) => handleDrag("max", ev);
-        const upHandler = () => {
-          window.removeEventListener("pointermove", moveHandler);
-          window.removeEventListener("pointerup", upHandler);
-        };
-        window.addEventListener("pointermove", moveHandler);
-        window.addEventListener("pointerup", upHandler);
-      }}
+      role="slider"
+      tabindex="0"
+      aria-label="Saturation maximum"
+      aria-valuemin="0"
+      aria-valuemax="1"
+      aria-valuenow={satMax}
+      on:keydown={(event) => handleKey("max", event)}
+      on:pointerdown={(event) => event.currentTarget.setPointerCapture(event.pointerId)}
+      on:pointermove={(event) => handleDrag("max", event)}
     />
   </svg>
 </div>
@@ -130,3 +144,10 @@
   <span>Min: {satMin}</span>
   <span>Max: {satMax}</span>
 </div>
+
+<style>
+  circle:focus-visible {
+    fill: currentColor;
+    fill-opacity: 0.15;
+  }
+</style>
