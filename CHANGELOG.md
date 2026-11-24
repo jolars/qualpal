@@ -1,5 +1,20 @@
 # Changelog
 
+## [4.2.0](https://github.com/jolars/qualpal/compare/v4.1.0...v4.2.0) (2026-11-24)
+
+### Features
+
+- serve the palette generator with Diplodocus ([`f160b95`](https://github.com/jolars/qualpal/commit/f160b954c366e398fd173a53fc8a88af22e3dc52))
+
+### Bug Fixes
+
+- **web:** fix some vite lints ([`df32fa2`](https://github.com/jolars/qualpal/commit/df32fa2b7cb92d13394aa0b14a46509605db5694))
+- **ci:** configure CRAN for the site build ([`3c79be5`](https://github.com/jolars/qualpal/commit/3c79be57f2a51d0133dc7c8ce7aa96b87d9f4885))
+- **web:** remove invalid warning ([`bd0c14d`](https://github.com/jolars/qualpal/commit/bd0c14d6718e8dae6a43759569ca0e09dbf9d6cf))
+- **docs:** proxy assets under the docs path ([`f73efa5`](https://github.com/jolars/qualpal/commit/f73efa507f8ab52d2ddc70e8e5994ca6aa953621))
+- **ci:** use supported macOS Intel runner ([`fd9f9c7`](https://github.com/jolars/qualpal/commit/fd9f9c75652f2fb836fdd98998f1ce794d26f702))
+- **web:** show equal endpoints as a single hue ([`55e0907`](https://github.com/jolars/qualpal/commit/55e090704522a578bf0da319d4c64ebe0be8d774)), fixes [#91](https://github.com/jolars/qualpal/issues/91)
+
 ## [4.1.0](https://github.com/jolars/qualpal/compare/v4.0.0...v4.1.0) (2026-10-11)
 
 ### Features
