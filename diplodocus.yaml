@@ -4,15 +4,19 @@ presentation:
   site-url: https://qualpal.cc/
   canonical-url-style: clean
   description: Generate distinct color palettes for categorical data.
-  logo: {repository: core, path: docs/images/logo.png}
+  logo: { repository: core, path: docs/images/logo.png }
   home:
     tagline: Distinct colors for categorical data
     description: Generate palettes from a color space or a set of colors, with options for background contrast and color vision deficiency.
     guide: docs/index.html
     actions:
-      - {label: 'What is Qualpal?', path: docs/index.html, icon: book-open}
-      - {label: Get started, path: docs/guides/getting_started.html, icon: book-open}
-      - {label: Open the app, path: app/index.html, icon: arrow-right}
+      - { label: "What is Qualpal?", path: docs/index.html, icon: book-open }
+      - {
+          label: Get started,
+          path: docs/guides/getting_started.html,
+          icon: book-open,
+        }
+      - { label: Open the app, path: app/index.html }
     features:
       - title: Distinguish categories
         description: Qualpal chooses colors that look as different from one another as possible, so categories are easier to tell apart.
@@ -21,25 +25,33 @@ presentation:
       - title: Design for your readers
         description: Account for color vision deficiencies and choose colors that stand out against your chart background.
   sections:
-    - {label: App, path: app/index.html}
+    - { label: App, path: app/index.html }
   sidebar:
     /docs/:
       - text: Introduction
         items:
-          - {text: 'What is Qualpal?', link: docs/index.html}
-          - {text: Getting started, link: docs/guides/getting_started.html}
+          - { text: "What is Qualpal?", link: docs/index.html }
+          - { text: Getting started, link: docs/guides/getting_started.html }
       - text: Guide
         items:
-          - {text: The Algorithm, link: docs/guides/algorithm.html}
-          - {text: Examples, link: docs/guides/examples.html}
-          - {text: Colors, link: docs/guides/colors.html}
+          - { text: The Algorithm, link: docs/guides/algorithm.html }
+          - { text: Examples, link: docs/guides/examples.html }
+          - { text: Colors, link: docs/guides/colors.html }
       - text: Reference
         items:
-          - {text: Command-line, link: docs/command-line.html}
+          - { text: Command-line, link: docs/command-line.html }
 repositories:
-  - {id: core, path: ., url: 'https://github.com/jolars/qualpal'}
-  - {id: r, path: build/site-workspace/qualpalr, url: 'https://github.com/jolars/qualpalr'}
-  - {id: python, path: build/site-workspace/qualpal-py, url: 'https://github.com/jolars/qualpal-py'}
+  - { id: core, path: ., url: "https://github.com/jolars/qualpal" }
+  - {
+      id: r,
+      path: build/site-workspace/qualpalr,
+      url: "https://github.com/jolars/qualpalr",
+    }
+  - {
+      id: python,
+      path: build/site-workspace/qualpal-py,
+      url: "https://github.com/jolars/qualpal-py",
+    }
 packages:
   - id: qualpal
     name: C++
@@ -50,7 +62,12 @@ packages:
     metadata-path: build/site-workspace/Doxyfile.api
     overview: site/cpp.md
     targets:
-      - {id: api, extractor: doxygen, path: build/site-workspace/Doxyfile.api, role: public-api}
+      - {
+          id: api,
+          extractor: doxygen,
+          path: build/site-workspace/Doxyfile.api,
+          role: public-api,
+        }
   - id: qualpalr
     name: R
     slug: r
@@ -59,7 +76,7 @@ packages:
     path: .
     metadata-path: DESCRIPTION
     targets:
-      - {id: api, extractor: r, path: ., role: public-api}
+      - { id: api, extractor: r, path: ., role: public-api }
   - id: qualpal-py
     name: Python
     slug: python
@@ -68,18 +85,75 @@ packages:
     path: .
     metadata-path: pyproject.toml
     targets:
-      - {id: api, extractor: python, path: qualpal, role: public-api}
+      - { id: api, extractor: python, path: qualpal, role: public-api }
 components:
   - id: palette-generator
     repository: core
     path: build/palette-generator
     module: index.js
 content:
-  - {id: app, owner: project, repository: core, path: site/app/index.md, mount: app, format: gfm, navigation: none}
-  - {id: hub, owner: project, repository: core, path: site/index.md, mount: docs, format: gfm}
-  - {id: start, owner: project, repository: core, path: docs/getting_started.md, mount: docs/guides, format: gfm}
-  - {id: examples, owner: project, repository: core, path: docs/examples.md, mount: docs/guides, format: gfm}
-  - {id: algorithm, owner: project, repository: core, path: docs/algorithm.md, mount: docs/guides, format: gfm}
-  - {id: colors, owner: project, repository: core, path: docs/colors.md, mount: docs/guides, format: gfm}
-  - {id: headers, owner: project, repository: core, path: site/headers.md, mount: docs, format: gfm}
-  - {id: cli, owner: project, repository: core, path: site/command-line.md, mount: docs, format: gfm}
+  - {
+      id: app,
+      owner: project,
+      repository: core,
+      path: site/app/index.md,
+      mount: app,
+      format: gfm,
+      navigation: none,
+    }
+  - {
+      id: hub,
+      owner: project,
+      repository: core,
+      path: site/index.md,
+      mount: docs,
+      format: gfm,
+    }
+  - {
+      id: start,
+      owner: project,
+      repository: core,
+      path: docs/getting_started.md,
+      mount: docs/guides,
+      format: gfm,
+    }
+  - {
+      id: examples,
+      owner: project,
+      repository: core,
+      path: docs/examples.md,
+      mount: docs/guides,
+      format: gfm,
+    }
+  - {
+      id: algorithm,
+      owner: project,
+      repository: core,
+      path: docs/algorithm.md,
+      mount: docs/guides,
+      format: gfm,
+    }
+  - {
+      id: colors,
+      owner: project,
+      repository: core,
+      path: docs/colors.md,
+      mount: docs/guides,
+      format: gfm,
+    }
+  - {
+      id: headers,
+      owner: project,
+      repository: core,
+      path: site/headers.md,
+      mount: docs,
+      format: gfm,
+    }
+  - {
+      id: cli,
+      owner: project,
+      repository: core,
+      path: site/command-line.md,
+      mount: docs,
+      format: gfm,
+    }
